@@ -3318,3 +3318,44 @@ input:focus, select:focus, textarea:focus {
     0 8px 24px rgba(255,43,43,.55),
     0 0 0 3px color-mix(in srgb, var(--blue) 50%, transparent);
 }
+
+/* t210u tab badge + 6-tab squeeze */
+.tabbar.tabbar-reshaped a {
+  font-size: 8px;
+  padding: 6px 0 5px;
+  position: relative;
+}
+.tabbar.tabbar-reshaped a svg { width: 18px; height: 18px; }
+.tabbar a .tab-ico {
+  position: relative;
+  display: inline-flex;
+  line-height: 0;
+}
+.tabbar a .tab-badge {
+  position: absolute;
+  top: -6px;
+  right: -10px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: var(--acc);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 900;
+  line-height: 16px;
+  text-align: center;
+  box-shadow: 0 0 0 2px #0e0e13, 0 0 8px color-mix(in srgb, var(--blue) 40%, transparent);
+  pointer-events: none;
+}
+.tabbar a.tab-primary .tab-badge { top: 2px; right: 2px; }
+.msg-thread-row.has-unread {
+  border-color: color-mix(in srgb, var(--blue) 45%, var(--line));
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--blue) 25%, transparent);
+}
+.msg-unread-chip {
+  background: var(--acc) !important;
+  color: #fff !important;
+  border-color: transparent !important;
+  font-weight: 900;
+}

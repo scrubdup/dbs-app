@@ -7,6 +7,9 @@ import {
   sendGroupMessage,
   ensureDemoMessageContacts,
   ensureDemoGroupThread,
+  ensureDemoUnreadMessages,
+  getThreadUnreadCount,
+  markThreadRead,
   isMutualFollow,
   setThreadFlags,
   updateMessagePrefs,
@@ -54,14 +57,18 @@ function renderInbox(user) {
       ]
         .filter(Boolean)
         .join(' ');
+      const unreadN = getThreadUnreadCount(t);
+      const unreadChip = unreadN
+        ? `<span class="chip msg-unread-chip" aria-label="${unreadN} unread">${unreadN}</span>`
+        : '';
       return `
-      <button type="button" class="msg-thread-row" data-open-thread="${esc(t.id)}">
+      <button type="button" class="msg-thread-row${unreadN ? ' has-unread' : ''}" data-open-thread="${esc(t.id)}">
         <div class="msg-thread-top">
           <strong>${esc(t.peerName || t.peerId)}</strong>
           <span class="muted">${esc(timeAgo(t.updatedAt || 0))}</span>
         </div>
         <div class="msg-thread-preview muted">${esc(lastPreview(t))}</div>
-        <div class="msg-thread-chips">${chips}</div>
+        <div class="msg-thread-chips">${unreadChip}${chips}</div>
       </button>`;
     })
     .join('');
@@ -257,6 +264,8 @@ export function bindMessages(root) {
   const user = getState().user;
   if (!user) return;
 
+  ensureDemoUnreadMessages();
+
   const goInbox = () => refresh('#/messages');
 
   root.querySelector('#msgBackInbox')?.addEventListener('click', goInbox);
@@ -318,6 +327,9 @@ export function bindMessages(root) {
 
   const threadId = new URLSearchParams((location.hash.split('?')[1] || '')).get('t');
   const thread = threadId ? getThread(threadId) : null;
+  if (thread) {
+    markThreadRead(thread.id);
+  }
 
   root.querySelectorAll('[data-flag]').forEach((btn) => {
     btn.addEventListener('click', () => {

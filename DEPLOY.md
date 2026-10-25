@@ -9,8 +9,10 @@
 ## Permanent forever URL (GitHub Pages)
 
 - **Home:** https://scrubdup.github.io/dbs-app/#/home
-- **Never expires.** Source: `gh-pages` branch (`dc4c370` · t207u Explore in Home swipe + t208u sticky player blue)
+- **Messages:** https://scrubdup.github.io/dbs-app/#/messages
+- **Never expires.** Source: `gh-pages` branch (t209u+t210u: Post + Go Live center + Chat + Messages unread badge)
 - Base path: `/dbs-app/`
+- **Last shipped:** t209u+t210u — tabbar Home · Post · Go Live (#/live?go=1) · Chat (#/community) · Messages (#/messages + unread badge) · Profile
 
 ## Phone link (workers.dev — temporary until claimed)
 

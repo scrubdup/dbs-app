@@ -10,7 +10,7 @@ import {
   notifyLiveOpen,
   notifyLiveClosed,
 } from './player.js';
-import { getState, ensureDemoPosts, markSplash, shouldShowSplash, getMembership } from './store.js';
+import { getState, ensureDemoPosts, markSplash, shouldShowSplash, getMembership, getUnreadMessageCount, ensureDemoUnreadMessages } from './store.js';
 import { startRouter, onRoute, getRoute } from './router.js';
 import { ICONS, esc } from './ui.js';
 import { asset, rewriteAssetUrls } from './asset.js';
@@ -108,14 +108,39 @@ const ROUTES = {
 
 function buildTabbar() {
   const el = document.getElementById('tabbar');
+  if (getState().user) {
+    try {
+      ensureDemoUnreadMessages();
+    } catch (_) {
+      /* demo seed best-effort */
+    }
+  }
+  const unread = getUnreadMessageCount();
   el.innerHTML = TABBAR.map((t) => {
     const raw = t.href.replace(/^#/, '');
     const pathOnly = '/' + raw.replace(/^\//, '').split(/[?#]/)[0];
     const primary = t.primary ? ' tab-primary' : '';
-    return `<a href="${t.href}" class="${primary.trim()}" data-path="${pathOnly}" aria-label="${esc(t.label)}">${ICONS[t.icon] || ''}<span>${esc(t.label)}</span></a>`;
+    let badge = '';
+    if (t.badge === 'messages' && unread > 0) {
+      const n = unread > 99 ? '99+' : String(unread);
+      badge = `<span class="tab-badge" aria-label="${n} unread">${n}</span>`;
+    }
+    const label = esc(t.label);
+    const ariaExtra = unread && t.badge === 'messages' ? `, ${unread} unread` : '';
+    return `<a href="${t.href}" class="${primary.trim()}" data-path="${pathOnly}" aria-label="${label}${ariaExtra}"><span class="tab-ico">${ICONS[t.icon] || ''}${badge}</span><span>${label}</span></a>`;
   }).join('');
   el.style.gridTemplateColumns = `repeat(${TABBAR.length}, 1fr)`;
   el.classList.add('tabbar-reshaped');
+}
+
+function refreshTabBadges() {
+  const el = document.getElementById('tabbar');
+  if (!el) return;
+  buildTabbar();
+  const route = getRoute();
+  el.querySelectorAll('a').forEach((a) => {
+    a.classList.toggle('on', a.getAttribute('data-path') === route.path);
+  });
 }
 
 function buildDrawer() {
@@ -161,6 +186,7 @@ function setDrawer(open) {
 
 function updateChrome(route) {
   const path = route.path;
+  buildTabbar();
   document.querySelectorAll('#tabbar a').forEach((a) => {
     a.classList.toggle('on', a.getAttribute('data-path') === path);
   });

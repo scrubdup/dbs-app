@@ -15,7 +15,7 @@ Legend: **DONE** = usable demo in SPA · **SHELL** = routed page with copy/UI pl
 | 5 | Creator Rewards, Earnings & Commissions | `#/earnings` | DONE (ledger + commissions — Checker PASS 2026-10-25; evidence phase2/earnings/ + checker/) | Commerce |
 | 6 | Missions | `#/missions` | DONE (Checker PASS 2026-10-25 · phase2/missions/checker/) | Commerce |
 | 7 | Profiles & Messaging (profiles part) | `#/profile` | DONE | Build |
-| 8 | Navigation, Music & Vault | nav + `#/music` `#/vault` | DONE · **t209u PENDING AUDIT** (bottom tab reshape: Home · Post · Go Live center → `#/live?go=1` · Music · Profile) | Design (vis) / Build |
+| 8 | Navigation, Music & Vault | nav + `#/music` `#/vault` | DONE · **t209u+t210u PENDING AUDIT** (tabs: Home · Post · Go Live · Chat · Messages+unread badge · Profile) | Design (vis) / Build |
 | 9 | Videos & Interviews | `#/videos` | DONE (Checker re-audit PASS 2026-10-25 · Mix + channel MVs · media-links/checker/reaudit/) | Media Links |
 | 10 | Pricing & Monetization | `#/pricing` | DONE | Build |
 | 11 | Full Admin Dashboard | `#/admin` | DONE (Add Content upload — Checker PASS 2026-10-25; evidence admin-upload/) | Build |
@@ -66,19 +66,20 @@ Counts are approximate — Checker owns PASS. §§13/15/31 flipped to DONE only 
 
 
 
-## Navigation — t209u bottom tab reshape (2026-10-25) → **PENDING AUDIT**
+## Navigation — t209u+t210u bottom tab reshape (2026-10-25) → **PENDING AUDIT**
 
-**USER t209u** — Reshape bottom icons: add **Post**; make **Go Live** the main (center raised) option that goes straight to start-stream.
+**USER t209u** — Reshape bottom icons: add **Post**; make **Go Live** the main (center raised) option → start-stream.  
+**USER t210u** — Add **Chat** + **Messages** with unread number badge on Messages icon.
 
 ### Shipped
-- `TABBAR`: Home · Post (`#/posts`) · **Go Live** (`#/live?go=1`, `primary`) · Music · Profile
-- Center tab: raised red/blue gradient orb (`.tab-primary`)
-- `#live-go` on go-live form; router deep-link scrolls to Start stream
-- Videos removed from tabbar (still in drawer / Explore)
-- Build: `index-BFYqBUIm.js` / `index-243mcr1G.css`
+- `TABBAR`: Home · Post · **Go Live** (`#/live?go=1`) · **Chat** (`#/community`) · **Messages** (`#/messages` + badge) · Profile
+- Center Go Live raised orb; Music/Videos off tabbar (drawer still)
+- Unread: `getUnreadMessageCount` / `markThreadRead` / demo seed `ensureDemoUnreadMessages`
+- Badge `.tab-badge` on Messages; inbox row unread chip
+- Build: `index-B_tAbDpV.js` / `index-C310QtLU.css`
 
 ### Checker
-- Confirm 5 tabs, center Go Live scrolls to `#live-go` / Start stream, Post opens `#/posts`
+- 6 tabs; Go Live → `#live-go`; Chat → Lounge; Messages badge shows number when signed in; opens clear unread
 
 ## Commerce — t185u LIVE Gifts + Coins (2026-10-25) → **DONE**
 

@@ -1535,6 +1535,80 @@ export function listThreads() {
     .sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
 }
 
+/** t210u · unread = inbound msgs after thread.lastReadAt (0 if never opened). */
+export function getThreadUnreadCount(thread) {
+  const user = state.user;
+  if (!user || !thread) return 0;
+  if (thread.muted || thread.blocked) return 0;
+  const lastRead = thread.lastReadAt || 0;
+  return (thread.messages || []).filter((m) => m.from !== user.id && (m.at || 0) > lastRead).length;
+}
+
+export function getUnreadMessageCount() {
+  return listThreads().reduce((n, t) => n + getThreadUnreadCount(t), 0);
+}
+
+export function markThreadRead(threadId) {
+  const user = state.user;
+  if (!user || !threadId) return null;
+  const t0 = state.threads[threadId];
+  if (!t0 || !(t0.participants || []).includes(user.id)) return null;
+  const t = { ...t0, lastReadAt: Date.now() };
+  state = { ...state, threads: { ...state.threads, [t.id]: t } };
+  save(state);
+  return state.threads[t.id];
+}
+
+/** Seed 1–2 inbound demo DMs so the Messages badge shows a number (idempotent). */
+export function ensureDemoUnreadMessages() {
+  const user = state.user;
+  if (!user) return { seeded: false };
+  ensureDemoMessageContacts();
+  if (getUnreadMessageCount() > 0) return { seeded: false, count: getUnreadMessageCount() };
+  const peerId = 'maya';
+  const peerName = (state.profiles?.maya || {}).username || 'MayaBeats';
+  const t0 = getOrCreateThread(peerId, peerName);
+  if (t0.error) return t0;
+  const existing = state.threads[t0.id];
+  const hasInbound = (existing.messages || []).some((m) => m.from !== user.id);
+  if (hasInbound) {
+    // Force unread by rewinding lastReadAt before inbound
+    const inboundAts = (existing.messages || []).filter((m) => m.from !== user.id).map((m) => m.at || 0);
+    const minAt = Math.min(...inboundAts);
+    const t = { ...existing, lastReadAt: Math.max(0, minAt - 1) };
+    state = { ...state, threads: { ...state.threads, [t.id]: t } };
+    save(state);
+    return { seeded: true, count: getUnreadMessageCount() };
+  }
+  const now = Date.now();
+  const msgs = [
+    {
+      id: 'm_demo_unread_1',
+      from: peerId,
+      fromName: peerName,
+      text: 'Yo — drop coming Friday. You in for the listening party?',
+      at: now - 1000 * 60 * 12,
+    },
+    {
+      id: 'm_demo_unread_2',
+      from: peerId,
+      fromName: peerName,
+      text: 'Also sent a beat pack in the vault 🔥',
+      at: now - 1000 * 60 * 5,
+    },
+  ];
+  const t = {
+    ...existing,
+    messages: [...(existing.messages || []), ...msgs],
+    updatedAt: now - 1000 * 60 * 5,
+    lastReadAt: 0,
+    request: false,
+  };
+  state = { ...state, threads: { ...state.threads, [t.id]: t } };
+  save(state);
+  return { seeded: true, count: getUnreadMessageCount() };
+}
+
 export function getThread(threadId) {
   return (state.threads || {})[threadId] || null;
 }

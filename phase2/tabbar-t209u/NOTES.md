@@ -13,3 +13,9 @@ User: reshape bottom icons; add Post; main option Go Live → goes right to go-l
 - src/main.js buildTabbar + deep-link
 - src/pages/live.js id=live-go
 - src/styles.css .tabbar-reshaped / .tab-primary
+
+## t210u add-on
+- Chat → #/community (Lounge)
+- Messages → #/messages with red unread count badge
+- Demo seeds 2 Maya DMs when signed in if no unread
+- Opening a thread marks it read (badge drops)

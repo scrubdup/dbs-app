@@ -577,11 +577,12 @@ export const DRAWER_LINKS = DRAWER_GROUPS.flatMap((g) =>
   g.href ? [{ href: g.href, label: g.label }] : (g.links || [])
 );
 
-/** Bottom nav t209u: Home | Post | Go Live (center) | Music | Profile */
+/** Bottom nav t209u+t210u: Home | Post | Go Live | Chat | Messages | Profile */
 export const TABBAR = [
   { href: '#/home', label: 'Home', icon: 'home' },
   { href: '#/posts', label: 'Post', icon: 'posts' },
   { href: '#/live?go=1', label: 'Go Live', icon: 'live', primary: true },
-  { href: '#/music', label: 'Music', icon: 'music' },
+  { href: '#/community', label: 'Chat', icon: 'chat' },
+  { href: '#/messages', label: 'Messages', icon: 'msg', badge: 'messages' },
   { href: '#/profile', label: 'Profile', icon: 'profile' },
 ];
