@@ -1,8 +1,8 @@
 # DBS App — Section Status
 
-## Design — t298u Profile find + Block Wars lobby → **PENDING AUDIT** (2026-10-25)
+## Design — t298u Profile find + Block Wars lobby → **DONE** (Checker PASS 2026-10-25)
 
-**PENDING AUDIT** (not DONE). Owner: Design. Two Supervisor-approved slices.
+**DONE** (Checker PASS · observe `index-BA6Hkbfj.js` / `index-DYSeIUqf.css` · gh-pages `0a43ba5` · main `3015eeb`). Owner: Design.
 
 ### A) Profile discoverability
 - Header `.top-actions`: `#headerProfile` Profile pill **next to** `#headerMsg` Messages → `#/profile`. Sign in stays on Profile page only (not in Messages slot).
@@ -13,7 +13,7 @@
 - `#/blockwars`: city cards **NY · LA · Chicago** (`preview-*-still.jpg`); tap → focus still + blurb; preview video + Coming Soon badge kept; **Enter arena · Coming Soon** toast (honest — no match engine).
 - Not WebGL / not playable. Full gameplay still paused.
 
-- Evidence: `phase2/profile-find-t298u/` + `phase2/blockwars-lobby-t298u/`
+- Evidence: `phase2/profile-find-t298u/` (+ `checker/`) + `phase2/blockwars-lobby-t298u/` (+ `checker/`)
 - Observe: `index-BA6Hkbfj.js` / `index-DYSeIUqf.css` · gh-pages `0a43ba5` · main `3015eeb` · forever https://scrubdup.github.io/dbs-app/
 
 
