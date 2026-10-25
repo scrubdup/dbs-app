@@ -538,6 +538,11 @@ a.text-link:hover { color: #7aa0ff; }
   box-shadow: 0 0 0 3px var(--blue-dim);
 }
 
+/* t269u: .field { display:flex } overrides UA [hidden] — force hide Text composer media */
+.field[hidden], #postMediaField[hidden], #postPresets[hidden], #postMediaNote[hidden] {
+  display: none !important;
+}
+
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
 @media (max-width: 520px) {

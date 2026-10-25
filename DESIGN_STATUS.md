@@ -141,26 +141,27 @@ Checker PASS. Every `.card`/panel gets BW-family subtle blue edge/glow; red prim
 - Evidence: `phase2/home-app-goals-t255u/` (+ LS `phase2/daily-goals-t255u/checker/`).
 - Tabbar untouched.
 
-## t267u — Header Messages pill replaces Sign-in → **PENDING AUDIT**
+## t267u — Header Messages pill replaces Sign-in → **DONE**
 
-**PENDING AUDIT** (Checker owns PASS · 2026-10-25). Owner: Design. Scope: header `.top-actions` only.
+**DONE** (Checker PASS · 2026-10-25 · observe `index-DO3IwXZt.js`; tip also `index-CtrRwU1M.js` — DONE still stands). Owner: Design. Scope: header `.top-actions` only.
 
 - `#headerMsg` now `.pill.header-msg` (envelope + **Messages** label) — same visual weight as `#tierPill` Sign in.
 - Red `--acc` unread badge (`#headerMsgBadge`) when count > 0; hidden at 0. Swap via existing `updateChrome`.
-- Observe: `index-BaaAoKyI.js` / `index-oNwa_feG.css` · forever https://scrubdup.github.io/dbs-app/
-- Evidence: `/workspace/dbs-evidence/phase2/header-messages-t267u/`
+- Observe (PASS): `index-DO3IwXZt.js` · forever https://scrubdup.github.io/dbs-app/
+- Evidence: `/workspace/dbs-evidence/phase2/header-messages-t267u/` (+ checker/)
 - Tabbar / Block Wars untouched.
 
 ## t269u / t272u — Posts Text (words-only) → **PENDING AUDIT**
 
-**PENDING AUDIT** (Checker owns PASS · 2026-10-25). Alias **t272u** = same Text post. Owner: Design.
+**PENDING AUDIT** (re-audit after CSS fix · 2026-10-25). Alias **t272u** = same Text post. Owner: Design.
+Prior Checker REJECT (`index-DO3IwXZt.js`): `.field{display:flex}` overrode `[hidden]` on `#postMediaField` / presets. Fix: `.field[hidden], #postMediaField[hidden], #postPresets[hidden], #postMediaNote[hidden] { display:none !important; }`.
 
 - Composer `#composer` `.post-type-picker`: **Text** alongside Picture · Short · Video.
-- Text = caption only; media field hidden; `createPost({ text, mediaType: 'text' })`.
+- Text = caption only; media field/presets/note hidden; `createPost({ text, mediaType: 'text' })`.
 - Feed **Text** chip; lead + `data.js` blurb include Text.
 - Observe forever https://scrubdup.github.io/dbs-app/#/posts?compose=1
 - Evidence: `/workspace/dbs-evidence/phase2/posts-text-t269u/`
-- Tabbar / Block Wars untouched. Ships with t267u header Messages pill.
+- Tabbar / Block Wars untouched.
 
 ## t277u — Game tab + Block Wars Coming Soon → **PENDING AUDIT**
 
