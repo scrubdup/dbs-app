@@ -71,3 +71,19 @@ export function isIdbRef(ref) {
 export function newBlobId(prefix = 'blob') {
   return `${prefix}_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`;
 }
+
+/** Remove a browser-local draft blob (no server media is affected). */
+export async function deleteBlob(id) {
+  const db = await openDb();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE, 'readwrite');
+    tx.objectStore(STORE).delete(id);
+    tx.oncomplete = () => {
+      const url = urlCache.get(id);
+      if (url) URL.revokeObjectURL(url);
+      urlCache.delete(id);
+      resolve(true);
+    };
+    tx.onerror = () => reject(tx.error || new Error('Local media delete failed'));
+  });
+}

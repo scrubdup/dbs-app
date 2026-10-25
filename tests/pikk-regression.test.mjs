@@ -90,3 +90,33 @@ test('preserve the real DatBoiSkeet music catalog', () => {
     assert.ok(VIDEOS.some(({ title: actual }) => actual === title), `Missing ${title}`);
   }
 });
+
+
+test('featured video premiere and sponsored disclosure are retained', () => {
+  const source = readFileSync(new URL('../src/pages/shells.js', import.meta.url), 'utf8');
+  assert.ok(source.includes('Featured Premiere'), 'Missing featured video premiere');
+  assert.ok(source.includes('v.sponsored === true'), 'Paid videos must be explicitly marked');
+  assert.ok(source.includes('Sponsored</span>'), 'Paid video disclosure missing');
+  assert.ok(source.includes('${premiereHtml}${discoveryHtml}${sections}${extra}'), 'Original video sections must remain');
+});
+
+
+test('PIKKDUP discovery preserves organic video catalog and filters', () => {
+  const source = readFileSync(new URL('../src/pages/shells.js', import.meta.url), 'utf8');
+  assert.ok(source.includes('PIKKDUP · Discover'));
+  assert.ok(source.includes('pikkdup-search'));
+  assert.ok(source.includes('pikkdup-filter'));
+  assert.ok(source.includes('No fabricated view counts'));
+  assert.ok(source.includes('search.addEventListener(\'input\', refresh)'));
+});
+
+
+test('PIKKUP local draft UI does not claim server publishing', () => {
+  const source = readFileSync(new URL('../src/pages/shells.js', import.meta.url), 'utf8');
+  assert.ok(source.includes('PIKKUP · Create a Video'));
+  assert.ok(source.includes('browser-local draft prototype'));
+  assert.ok(source.includes('does NOT upload, publish, sync between devices'));
+  assert.ok(source.includes('readPikkupDuration(file)'));
+  assert.ok(source.includes('savePikkupLocalDraft(file'));
+  assert.ok(source.includes('Delete local draft'));
+});

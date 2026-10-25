@@ -1,5 +1,6 @@
 import { getState, setState, setNotifPrefs, listCatalog, submitCreatorSellApp } from '../store.js';
 import { resolveMediaSrc } from '../media-db.js';
+import { listPikkupLocalDrafts, readPikkupDuration, savePikkupLocalDraft, deletePikkupLocalDraft } from '../pikkup.js';
 import { VIDEOS, VIDEO_COMING_SOON, MEMBERSHIPS } from '../data.js';
 import { esc, shellPage, toast, ytEmbedSrc } from '../ui.js';
 import { navigate } from '../router.js';
@@ -17,6 +18,7 @@ function videoCard(v) {
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
       </div>
       <span class="chip">${esc(v.category || 'Music Videos')}</span>
+      ${v.sponsored === true ? '<span class="chip" aria-label="Sponsored video">Sponsored</span>' : ''}
       <h3 style="margin:8px 0 4px">${esc(v.title)}</h3>
       <p class="muted" style="margin:0 0 8px">${esc(v.artist || 'DatBoiSkeet')}</p>
       <div class="row wrap">
@@ -26,6 +28,42 @@ function videoCard(v) {
     </article>`;
 }
 
+function renderPikkupDrafts() {
+  const drafts = listPikkupLocalDrafts(getState().user?.id);
+  if (!drafts.length) return '<p class="muted">No local video drafts yet.</p>';
+  return drafts.map((d) => `
+    <article class="card" data-pikkup-draft="${esc(d.id)}">
+      <span class="chip">Local draft · not published</span>
+      <h3>${esc(d.title)}</h3>
+      <p class="muted">${esc(d.category)} · ${Math.ceil(d.durationSeconds / 60)} min · ${esc(d.description || '')}</p>
+      <video controls playsinline preload="metadata" data-idb-src="${esc(d.mediaRef)}" style="width:100%;max-height:340px;background:#000"></video>
+      <button type="button" class="btn ghost" data-pikkup-delete="${esc(d.id)}">Delete local draft</button>
+    </article>`).join('');
+}
+
+function renderPikkup() {
+  const user = getState().user;
+  return `<section class="card" id="pikkup-upload" aria-label="PIKKUP video drafts">
+    <h2 style="margin:0 0 6px">PIKKUP · Create a Video</h2>
+    <p class="muted">Phase 1: up to 20 minutes. This is a browser-local draft prototype — it does NOT upload, publish, sync between devices or create a public channel. Secure server uploads and moderation are not connected yet.</p>
+    ${user ? `<form id="pikkup-form">
+      <label for="pikkup-file">Original video (MP4, WebM or MOV · local draft maximum 100 MB)</label>
+      <input id="pikkup-file" type="file" accept="video/mp4,video/webm,video/quicktime,.mp4,.webm,.mov" required />
+      <label for="pikkup-title">Title</label>
+      <input id="pikkup-title" type="text" maxlength="120" required placeholder="Video title" />
+      <label for="pikkup-description">Description</label>
+      <textarea id="pikkup-description" maxlength="1000" rows="3" placeholder="Describe your video"></textarea>
+      <label for="pikkup-category">Category</label>
+      <select id="pikkup-category"><option>Music</option><option>Entertainment</option><option>Gaming</option><option>Other</option></select>
+      <p class="muted">Visibility: Draft only. Public publishing requires moderation and a production video service.</p>
+      <button class="btn" type="submit" id="pikkup-save">Save local draft</button>
+      <progress id="pikkup-progress" aria-label="Saving local video draft" hidden></progress>
+      <p id="pikkup-status" class="muted" role="status" aria-live="polite"></p>
+    </form>` : '<p><a class="btn" href="#/profile">Sign in to create a local video draft</a></p>'}
+    <div id="pikkup-drafts">${renderPikkupDrafts()}</div>
+  </section>`;
+}
+
 export function renderVideos() {
   const order = ['Music Videos', 'Mixes', 'Interviews'];
   const grouped = {};
@@ -33,6 +71,28 @@ export function renderVideos() {
     const cat = v.category || 'Music Videos';
     (grouped[cat] ||= []).push(v);
   });
+  // Featured placement is editorial unless a verified paid placement explicitly sets sponsored: true.
+  const discoveryVideos = VIDEOS.filter((v) => v.youtube && v.embed);
+  const discoveryFilters = ['All', 'Music Videos', 'Mixes', 'Interviews'];
+  const discoveryHtml = `<section aria-label="PIKKDUP video discovery" class="card" id="pikkdup-discovery">
+    <h2 style="margin:0 0 6px">PIKKDUP · Discover</h2>
+    <p class="muted">Discover verified videos. No fabricated view counts or trending rankings.</p>
+    <label for="pikkdup-search">Search videos</label>
+    <input id="pikkdup-search" type="search" placeholder="Search titles, artists or categories" autocomplete="off" style="width:100%;margin:8px 0" />
+    <div class="row wrap" role="group" aria-label="Video category filters">
+      ${discoveryFilters.map((cat, i) => `<button type="button" class="btn ghost pikkdup-filter" data-category="${esc(cat)}" aria-pressed="${i === 0}">${esc(cat)}</button>`).join('')}
+    </div>
+    <p id="pikkdup-count" class="muted" aria-live="polite">${discoveryVideos.length} videos</p>
+    <div id="pikkdup-results">${discoveryVideos.map((v) => `<article class="pikkdup-item" data-category="${esc(v.category || 'Music Videos')}" data-search="${esc([v.title, v.artist, v.category].join(' ').toLowerCase())}"><a href="${esc(v.youtube)}" target="_blank" rel="noopener">${esc(v.title)}</a> · ${esc(v.artist || 'DatBoiSkeet')} <span class="chip">${esc(v.category || 'Music Videos')}</span></article>`).join('')}</div>
+  </section>`;
+  const premiere = VIDEOS.find((v) => v.featured && v.embed && v.youtube)
+    || VIDEOS.find((v) => v.embed && v.youtube);
+  const premiereHtml = premiere
+    ? `<section aria-label="Featured video premiere">
+        <h2 style="margin:16px 0 8px">Featured Premiere</h2>
+        ${videoCard(premiere)}
+      </section>`
+    : '';
   const sections = order
     .filter((cat) => grouped[cat]?.length)
     .map((cat) => {
@@ -97,7 +157,7 @@ export function renderVideos() {
         <a class="btn ghost" href="https://www.youtube.com/playlist?list=PLC6_HdjaVaQERro-n6XWI2ECIC4crgf4t" target="_blank" rel="noopener">Music Videos playlist</a>
       </div>
     </div>
-    ${sections}${extra}
+    ${renderPikkup()}${premiereHtml}${discoveryHtml}${sections}${extra}
     ${adminHtml ? `<h3 style="margin:16px 0 8px">From Admin</h3>${adminHtml}` : ''}
     ${coming}`,
     { lead: 'Official MVs · Mixes · Interviews · admin uploads.' }
@@ -105,6 +165,86 @@ export function renderVideos() {
 }
 
 export function bindVideos(root) {
+  // PIKKUP prototype: validates duration and saves drafts only in this browser.
+  const pikkupForm = root.querySelector('#pikkup-form');
+  const pikkupDrafts = root.querySelector('#pikkup-drafts');
+  const refreshDrafts = async () => {
+    if (!pikkupDrafts) return;
+    pikkupDrafts.innerHTML = renderPikkupDrafts();
+    for (const el of pikkupDrafts.querySelectorAll('[data-idb-src]')) {
+      try {
+        const src = await resolveMediaSrc(el.dataset.idbSrc || '');
+        if (src && el.isConnected) el.src = src;
+      } catch (_) { /* Missing local blob: draft remains deletable. */ }
+    }
+  };
+  if (pikkupForm) {
+    pikkupForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const button = pikkupForm.querySelector('#pikkup-save');
+      const progress = pikkupForm.querySelector('#pikkup-progress');
+      const status = pikkupForm.querySelector('#pikkup-status');
+      const file = pikkupForm.querySelector('#pikkup-file')?.files?.[0];
+      if (!file || button.disabled) return;
+      button.disabled = true;
+      progress.hidden = false; // Indeterminate; IndexedDB exposes no byte-level progress.
+      status.textContent = 'Checking video duration and saving on this device…';
+      try {
+        const duration = await readPikkupDuration(file);
+        await savePikkupLocalDraft(file, {
+          title: pikkupForm.querySelector('#pikkup-title').value,
+          description: pikkupForm.querySelector('#pikkup-description').value,
+          category: pikkupForm.querySelector('#pikkup-category').value,
+        }, duration);
+        pikkupForm.reset();
+        await refreshDrafts();
+        status.textContent = 'Local draft saved on this device. Not published or uploaded to PIKK servers.';
+      } catch (error) {
+        status.textContent = error?.message || 'Could not save draft. Check available device storage.';
+      } finally {
+        button.disabled = false;
+        progress.hidden = true;
+      }
+    });
+  }
+  pikkupDrafts?.addEventListener('click', async (event) => {
+    const button = event.target.closest('[data-pikkup-delete]');
+    if (!button || button.disabled) return;
+    button.disabled = true;
+    try {
+      await deletePikkupLocalDraft(button.dataset.pikkupDelete);
+      await refreshDrafts();
+    } catch (_) {
+      button.disabled = false;
+      toast('Could not delete local draft.');
+    }
+  });
+  // PIKKDUP discovery searches only real verified catalog entries, not fake trending data.
+  const discovery = root.querySelector('#pikkdup-discovery');
+  if (discovery) {
+    const search = discovery.querySelector('#pikkdup-search');
+    const filters = [...discovery.querySelectorAll('.pikkdup-filter')];
+    const entries = [...discovery.querySelectorAll('.pikkdup-item')];
+    const count = discovery.querySelector('#pikkdup-count');
+    let category = 'All';
+    const refresh = () => {
+      const term = (search.value || '').trim().toLowerCase();
+      let visible = 0;
+      entries.forEach((entry) => {
+        const show = (category === 'All' || entry.dataset.category === category)
+          && (entry.dataset.search || '').includes(term);
+        entry.hidden = !show;
+        if (show) visible++;
+      });
+      count.textContent = visible ? `${visible} videos` : 'No matching videos';
+    };
+    search.addEventListener('input', refresh);
+    filters.forEach((button) => button.addEventListener('click', () => {
+      category = button.dataset.category || 'All';
+      filters.forEach((filter) => filter.setAttribute('aria-pressed', String(filter === button)));
+      refresh();
+    }));
+  }
   // §17: real YT play via IFrame API (Media Links binder) — not cross-origin pointerdown
   bindPageYoutubeEmbeds(root);
   root.querySelectorAll('video.catalog-video').forEach((vid) => {
