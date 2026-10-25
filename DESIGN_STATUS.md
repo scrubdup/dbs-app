@@ -151,17 +151,16 @@ Checker PASS. Every `.card`/panel gets BW-family subtle blue edge/glow; red prim
 - Evidence: `/workspace/dbs-evidence/phase2/header-messages-t267u/` (+ checker/)
 - Tabbar / Block Wars untouched.
 
-## t269u / t272u — Posts Text (words-only) → **PENDING AUDIT**
+## t269u / t272u — Posts Text (words-only) → **DONE**
 
-**PENDING AUDIT** (re-audit after CSS fix · 2026-10-25). Alias **t272u** = same Text post. Owner: Design.
-Prior Checker REJECT (`index-DO3IwXZt.js`): `.field{display:flex}` overrode `[hidden]` on `#postMediaField` / presets. Fix: `.field[hidden], #postMediaField[hidden], #postPresets[hidden], #postMediaNote[hidden] { display:none !important; }`.
+**DONE** (Checker PASS re-audit · 2026-10-25 · observe `index-Cqo3Rs-G.js` / `index-B1bmV7qo.css` · gh-pages `c647f99`). Alias **t272u** = same Text post. Owner: Design.
+Prior REJECT cleared: `.field[hidden], #postMediaField[hidden], #postPresets[hidden], #postMediaNote[hidden] { display:none !important; }`.
 
 - Composer `#composer` `.post-type-picker`: **Text** alongside Picture · Short · Video.
 - Text = caption only; media field/presets/note hidden; `createPost({ text, mediaType: 'text' })`.
 - Feed **Text** chip; lead + `data.js` blurb include Text.
-- Observe: `index-Cqo3Rs-G.js` / `index-B1bmV7qo.css` · gh-pages `c647f99` · forever https://scrubdup.github.io/dbs-app/#/posts?compose=1
 - Evidence: `/workspace/dbs-evidence/phase2/posts-text-t269u/`
-- Tabbar / Block Wars untouched.
+- Forever: https://scrubdup.github.io/dbs-app/#/posts?compose=1
 
 ## t277u — Game tab + Block Wars Coming Soon → **DONE**
 
@@ -173,3 +172,11 @@ Prior Checker REJECT (`index-DO3IwXZt.js`): `.field{display:flex}` overrode `[hi
 - Evidence: `/workspace/dbs-evidence/phase2/game-tab-blockwars-t277u/`
 - Forever: https://scrubdup.github.io/dbs-app/#/blockwars
 
+## t290u / t291u — Header Messages always + 7-tab bar → **PENDING AUDIT**
+
+**PENDING AUDIT** (2026-10-25). Owner: Design. Alias **t291u** = header half (Messages replaces Sign in).
+
+- Header: `#tierPill` Sign in **removed**; `#headerMsg` Messages pill **always** in that slot (signed-out + signed-in). Red unread badge when count > 0. Sign in only on `#/profile`.
+- Tabbar exactly 7 (no scroll): **Home · Post · Music · Go Live · Videos · Chat · Game** — Go Live 4th/center, flat. Messages OFF tabbar; Profile via drawer.
+- Evidence: `/workspace/dbs-evidence/phase2/tabbar-header-t290u/`
+- Forever: https://scrubdup.github.io/dbs-app/

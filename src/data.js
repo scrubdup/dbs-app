@@ -585,15 +585,14 @@ export const DRAWER_LINKS = DRAWER_GROUPS.flatMap((g) =>
   g.href ? [{ href: g.href, label: g.label }] : (g.links || [])
 );
 
-/** Bottom nav t241u: Post · Go Live flat after Home; Post = camera; t242u Messages icon */
+/** Bottom nav t290u: exactly 7 — Home · Post · Music · Go Live · Videos · Chat · Game.
+ *  Go Live center (4th). Messages OFF tabbar (header only). Profile via drawer. */
 export const TABBAR = [
   { href: '#/home', label: 'Home', icon: 'home' },
   { href: '#/posts?compose=1', label: 'Post', icon: 'camera' },
-  { href: '#/live?go=1', label: 'Go Live', icon: 'live' },
   { href: '#/music', label: 'Music', icon: 'music' },
+  { href: '#/live?go=1', label: 'Go Live', icon: 'live' },
   { href: '#/videos', label: 'Videos', icon: 'videos' },
-  { href: '#/blockwars', label: 'Game', icon: 'game' },
   { href: '#/community', label: 'Chat', icon: 'chat' },
-  { href: '#/messages', label: 'Messages', icon: 'msg', badge: 'messages' },
-  { href: '#/profile', label: 'Profile', icon: 'profile' },
+  { href: '#/blockwars', label: 'Game', icon: 'game' },
 ];

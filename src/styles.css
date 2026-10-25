@@ -145,7 +145,7 @@ a.header-msg.pill {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  /* same .pill padding/font/radius as #tierPill Sign in */
+  /* same .pill padding/font/radius as former Sign in slot (t290u/t291u) */
 }
 a.header-msg.pill .header-msg-ico {
   width: 14px;
@@ -3493,6 +3493,52 @@ input:focus, select:focus, textarea:focus {
   height: 17px;
   font-size: 10px;
   line-height: 17px;
+}
+
+/* t290u — exactly 7 tabs, equal flex, no horizontal swipe (~390px) */
+.tabbar.tabbar-reshaped.tabbar-fit7 {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: stretch;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  gap: 0;
+  padding-top: 4px;
+  padding-left: 2px;
+  padding-right: 2px;
+  border-top: 1px solid color-mix(in srgb, var(--blue) 35%, var(--line));
+  background:
+    radial-gradient(ellipse at 50% 0%, var(--blue-dim), transparent 55%),
+    #0e0e13;
+}
+.tabbar.tabbar-reshaped.tabbar-fit7 a {
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: none;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  padding: 7px 1px 6px;
+  gap: 2px;
+  color: var(--mut);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tabbar.tabbar-reshaped.tabbar-fit7 a span:last-child {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tabbar.tabbar-reshaped.tabbar-fit7 a svg {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+}
+/* Go Live flat (center 4th) — no raised orb */
+.tabbar.tabbar-reshaped.tabbar-fit7 a.tab-primary {
+  top: 0;
 }
 
 /* t216u/t217u — Post create: Picture / Short / Video (not tabs) */

@@ -110,6 +110,7 @@ const ROUTES = {
 
 function buildTabbar() {
   const el = document.getElementById('tabbar');
+  /* t290u — Messages unread lives in header only; still seed demo when signed in */
   if (getState().user) {
     try {
       ensureDemoUnreadMessages();
@@ -117,22 +118,16 @@ function buildTabbar() {
       /* demo seed best-effort */
     }
   }
-  const unread = getUnreadMessageCount();
   el.innerHTML = TABBAR.map((t) => {
     const raw = t.href.replace(/^#/, '');
     const pathOnly = '/' + raw.replace(/^\//, '').split(/[?#]/)[0];
-    const primary = t.primary ? ' tab-primary' : '';
-    let badge = '';
-    if (t.badge === 'messages' && unread > 0) {
-      const n = unread > 99 ? '99+' : String(unread);
-      badge = `<span class="tab-badge" aria-label="${n} unread">${n}</span>`;
-    }
     const label = esc(t.label);
-    const ariaExtra = unread && t.badge === 'messages' ? `, ${unread} unread` : '';
-    return `<a href="${t.href}" class="${primary.trim()}" data-path="${pathOnly}" aria-label="${label}${ariaExtra}"><span class="tab-ico">${ICONS[t.icon] || ''}${badge}</span><span>${label}</span></a>`;
+    return `<a href="${t.href}" data-path="${pathOnly}" aria-label="${label}"><span class="tab-ico">${ICONS[t.icon] || ''}</span><span>${label}</span></a>`;
   }).join('');
   el.style.gridTemplateColumns = '';
-  el.classList.add('tabbar-reshaped', 'tabbar-scroll');
+  /* t290u: fit-all 7 tabs, no horizontal scroll */
+  el.classList.remove('tabbar-scroll');
+  el.classList.add('tabbar-reshaped', 'tabbar-fit7');
 }
 
 function refreshTabBadges() {
@@ -213,30 +208,25 @@ function updateChrome(route) {
     const btn = g.querySelector('.drawer-cat');
     if (btn) btn.setAttribute('aria-expanded', match ? 'true' : 'false');
   });
-  const user = getState().user;
-  const pill = document.getElementById('tierPill');
+  /* t290u/t291u — Messages always in Sign-in slot (tierPill removed from HTML).
+   * Sign in lives on Profile (#/profile) only. Signed-out Messages → #/messages. */
   const headerMsg = document.getElementById('headerMsg');
-  if (user) {
-    /* t267u — Messages pill replaces Sign in in the header slot; unread badge mirrors tabbar */
-    if (pill) pill.hidden = true;
-    if (headerMsg) headerMsg.hidden = false;
-    refreshHeaderMsgBadge();
-  } else {
-    if (pill) {
-      pill.hidden = false;
-      pill.textContent = 'Sign in';
-      pill.classList.remove('on');
-      pill.setAttribute('href', '#/profile');
+  if (headerMsg) headerMsg.hidden = false;
+  if (getState().user) {
+    try {
+      ensureDemoUnreadMessages();
+    } catch (_) {
+      /* demo seed best-effort */
     }
-    if (headerMsg) headerMsg.hidden = true;
   }
+  refreshHeaderMsgBadge();
 }
 
-/** t267u · header Messages unread badge (same source as tabbar) */
+/** t290u/t291u · header Messages unread badge (Messages always visible) */
 function refreshHeaderMsgBadge() {
   const badge = document.getElementById('headerMsgBadge');
   const link = document.getElementById('headerMsg');
-  if (!badge || !link || link.hidden) return;
+  if (!badge || !link) return;
   let unread = 0;
   try {
     unread = getUnreadMessageCount();
