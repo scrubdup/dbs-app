@@ -1,5 +1,14 @@
 # DBS App — Section Status
 
+## Design — t277u Game tab + Block Wars Coming Soon → **PENDING AUDIT** (2026-10-25)
+
+**PENDING AUDIT** (Checker owns PASS). Owner: Design.
+
+- Tabbar **Game** + drawer **Block Wars · Coming Soon** → `#/blockwars` (preview only · not playable).
+- Evidence: `phase2/game-tab-blockwars-t277u/` · forever https://scrubdup.github.io/dbs-app/#/blockwars
+- Ships on Pages with Live tip ≥ `1b9f9a7` (Clips early).
+
+
 ## Live Social — t269u Clips early on Live discovery → **PENDING AUDIT** (2026-10-25)
 
 **PENDING AUDIT** (Checker owns PASS). Owner: Live Social. Scope: Live discovery tabs only (`renderLiveDiscoveryTabs` + `.live-disc-tabs`).

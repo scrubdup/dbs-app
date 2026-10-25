@@ -162,3 +162,13 @@ Checker PASS. Every `.card`/panel gets BW-family subtle blue edge/glow; red prim
 - Evidence: `/workspace/dbs-evidence/phase2/posts-text-t269u/`
 - Tabbar / Block Wars untouched. Ships with t267u header Messages pill.
 
+## t277u — Game tab + Block Wars Coming Soon → **PENDING AUDIT**
+
+**PENDING AUDIT** (Checker owns PASS · 2026-10-25). Owner: Design.
+
+- Tabbar **Game** → `#/blockwars` Coming Soon (preview video tap-to-play · not playable).
+- Drawer **Games** · Block Wars · Coming Soon. Post drawer label includes Text.
+- Assets: `public/blockwars-preview/` (mp4 + frames). Reuses Home `#home-blockwars-preview` pattern.
+- Evidence: `/workspace/dbs-evidence/phase2/game-tab-blockwars-t277u/`
+- Forever: https://scrubdup.github.io/dbs-app/#/blockwars
+

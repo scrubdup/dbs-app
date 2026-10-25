@@ -520,7 +520,7 @@ export const DRAWER_GROUPS = [
     label: 'Social',
     links: [
       { href: '#/posts', label: 'Posts' },
-      { href: '#/posts?compose=1', label: 'Post · Picture / Short / Video' },
+      { href: '#/posts?compose=1', label: 'Post · Text / Picture / Short / Video' },
       { href: '#/shorts', label: 'Shorts (in Posts)' },
       { href: '#/explore', label: 'Explore' },
       { href: '#/notifications', label: 'Notifications' },
@@ -529,6 +529,13 @@ export const DRAWER_GROUPS = [
     ],
   },
   { id: 'messages', label: 'Messages', href: '#/messages' },
+  {
+    id: 'games',
+    label: 'Games',
+    links: [
+      { href: '#/blockwars', label: 'Block Wars · Coming Soon' },
+    ],
+  },
   {
     id: 'shop',
     label: 'Shop',
@@ -585,6 +592,7 @@ export const TABBAR = [
   { href: '#/live?go=1', label: 'Go Live', icon: 'live' },
   { href: '#/music', label: 'Music', icon: 'music' },
   { href: '#/videos', label: 'Videos', icon: 'videos' },
+  { href: '#/blockwars', label: 'Game', icon: 'game' },
   { href: '#/community', label: 'Chat', icon: 'chat' },
   { href: '#/messages', label: 'Messages', icon: 'msg', badge: 'messages' },
   { href: '#/profile', label: 'Profile', icon: 'profile' },
