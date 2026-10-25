@@ -10,9 +10,9 @@
 
 - **Home:** https://scrubdup.github.io/dbs-app/#/home
 - **Messages:** https://scrubdup.github.io/dbs-app/#/messages
-- **Never expires.** Source: `gh-pages` branch (`810f4ec` · t209u+t210u: Post + Go Live center + Chat + Messages unread badge)
+- **Never expires.** Source: `gh-pages` branch (`b8b05a5` · t212u: all bottom tabs readable size + horizontal scroll)
 - Base path: `/dbs-app/`
-- **Last shipped:** t209u+t210u — tabbar Home · Post · Go Live (#/live?go=1) · Chat (#/community) · Messages (#/messages + unread badge) · Profile
+- **Last shipped:** t212u — tabbar Home · Music · Videos · Post · Go Live (center, #/live?go=1) · Chat (#/community) · Messages (#/messages + unread badge) · Profile; .tabbar-scroll horizontal scroll, 11px labels / 22px icons
 
 ## Phone link (workers.dev — temporary until claimed)
 
