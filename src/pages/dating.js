@@ -10,6 +10,15 @@ export function renderDating() {
       <p class="muted">Swipe & Match, private dating profiles, mutual-match chat and speed dating are in development. No real matches are being created here.</p>
     </div>
     <div class="card">
+      <h3>Choose your experience</h3>
+      <p class="muted">Dating is for romantic mutual matches. Random Chat is for spontaneous conversations and friendships. These are separate opt-in experiences.</p>
+      <div class="row wrap" style="gap:8px">
+        <a class="btn primary" href="#/dating" aria-current="page">Dating · current section</a>
+        <a class="btn ghost" href="#/connect#connect-random-chat">Random Chat · 18+ TEST MODE</a>
+      </div>
+      <p class="muted small">Random Chat never automatically creates a dating match. No camera is started when you open either page.</p>
+    </div>
+    <div class="card">
       <h3>Dating Live & Connections</h3>
       <p class="muted">Browse the existing Live area. Live sessions are currently a test-mode experience; gifts never buy consent or a match.</p>
       <a class="btn primary" href="#/live">Open Live</a>
