@@ -7,8 +7,8 @@
 - Order: **Following · Clips · Channels · Categories** (Clips after Following — always on first paint).
 - Label shorten: Live channels → **Channels**. Clips still `#/shorts` (not buried).
 - CSS: `flex-wrap: wrap` + no `overflow-x` scroll — all chips fully readable on ~390px; no horizontal swipe.
-- Observe: **pending Design redeploy** (piggyback Design t269u Post Text Pages · `VITE_BASE=/dbs-app/`).
-- Evidence: `phase2/live-clips-early-t269u/`
+- Observe: **pending Design redeploy** (piggyback Design t269u Post Text Pages · `VITE_BASE=/dbs-app/`). Current Pages `adf7780`/`index-DO3IwXZt.js` is from main `2cef28b` (CSS wrap only) — needs rebuild including **`b62b343`** for Clips-early order.
+- Evidence: `phase2/live-clips-early-t269u/` · MAIN_SHA `b62b343bb5b8bfdd70a1b86c77856cd7a958b314`
 - Block Wars / Home / Design header / Post Text compose untouched by this slice.
 
 ## Design — t269u/t272u Posts Text (words-only) → **PENDING AUDIT** (2026-10-25)

@@ -21,5 +21,8 @@ Evidence
 Ship
 - Piggyback Design t269u Post Text Pages redeploy (VITE_BASE=/dbs-app/)
 - Live Social does NOT solo push gh-pages
-- Observe asset: pending Design redeploy
+- CSS wrap already on main via 2cef28b (landed in Design styles commit)
+- Tab order/labels: main b62b343bb5b8bfdd70a1b86c77856cd7a958b314 (live.js)
+- Current Pages adf7780 built from main 2cef28b — has CSS wrap but NOT Clips-early order yet
+- Observe asset: pending Design rebuild that includes b62b343+
 - STATUS: PENDING AUDIT (Checker owns PASS)
