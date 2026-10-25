@@ -68,8 +68,8 @@ test('preserve developed route modules instead of the older skeleton', () => {
     // /rewards is a standalone module in some branches, while this main
     // version uses the /share and /refer routes for Rewards.
     if (route === '/rewards') {
-      assert.match(source, /'\\/share':/);
-      assert.match(source, /'\\/refer':/);
+      assert.ok(source.includes("'/share':"));
+      assert.ok(source.includes("'/refer':"));
       continue;
     }
     assert.ok(source.includes(`'${route}':`), `Missing developed route: ${route}`);
