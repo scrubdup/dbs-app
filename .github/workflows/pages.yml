@@ -2,7 +2,7 @@ name: Deploy GitHub Pages
 
 on:
   push:
-    branches: [main, master]
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -27,7 +27,7 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          VITE_BASE: /dbs-app/
+          VITE_BASE: /pikk-app/
       - name: SPA fallback 404.html
         run: cp dist/index.html dist/404.html
       - uses: actions/upload-pages-artifact@v3
