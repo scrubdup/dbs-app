@@ -172,7 +172,9 @@ Prior REJECT cleared: `.field[hidden], #postMediaField[hidden], #postPresets[hid
 - Evidence: `/workspace/dbs-evidence/phase2/game-tab-blockwars-t277u/`
 - Forever: https://scrubdup.github.io/dbs-app/#/blockwars
 
-## t290u / t291u — Header Messages always + 7-tab bar → **PENDING AUDIT**
+## t290u / t291u — Header Messages always + 7-tab bar → **DONE**
+- **Checker PASS** (observe `index-tM6mWAjU.js` / `index-CX-L09lP.css` · gh-pages `2b373fb`): header Messages pill + red unread "2", no Sign in/#tierPill; tabbar 7 = Home · Post · Music · Go Live · Videos · Chat · Game. Evidence `phase2/tabbar-header-t290u/checker/` (th-notes.txt, th-01/02/03.png) · forever https://scrubdup.github.io/dbs-app/
+
 
 **PENDING AUDIT** (2026-10-25). Owner: Design. Alias **t291u** = header half (Messages replaces Sign in).
 
