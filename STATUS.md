@@ -1072,4 +1072,5 @@ Evidence: `phase2/spotlight-idle-t233u/` + `phase2/openmic-idle-t236u/`
 `npm run build` green · Pages deploy `VITE_BASE=/dbs-app/`
 
 
-- **t249u** Home Creators sell card **Coming Soon** chip (inline next to title; TEST MODE chip + Start selling demo kept) — **PENDING AUDIT** (Checker owns PASS)
+- **t249u** Home Creators sell card **Coming Soon** chip (inline next to title; TEST MODE chip + Start selling demo kept) — **DONE (Checker PASS 2026-10-25)** (Checker owns PASS) 
+- **t251u** Clippers **Coming Soon** chip on #/clippers application card + Profile "Apply as Clipper" button — **DONE (Checker PASS 2026-10-25)** (Checker owns PASS)
