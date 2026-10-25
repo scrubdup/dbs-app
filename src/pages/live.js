@@ -199,35 +199,42 @@ function renderFollowingPanel(user) {
     </div>`;
 }
 
+const LIVE_DISCOVERY_CATEGORIES = [
+  ['Just Chatting', 'Conversations, Q&A and hanging out', '💬'],
+  ['Gaming', 'Gameplay, tournaments and community games', '🎮'],
+  ['Music', 'Artists, DJs, producers and listening sessions', '🎵'],
+  ['IRL', 'Everyday life, travel and outdoor streams', '🌎'],
+  ['Sports', 'Sports talk and watch-along discussions', '🏀'],
+  ['Creative', 'Art, design, production and making things', '🎨'],
+  ['Podcasts & Talk Shows', 'Interviews, panels and conversations', '🎙️'],
+  ['Food & Cooking', 'Recipes, kitchens and food reviews', '🍳'],
+  ['Fitness', 'Training, wellness and movement', '💪'],
+  ['Beauty & Fashion', 'Style, hair, makeup and fashion', '✨'],
+  ['Business & Money Talk', 'Entrepreneurs, careers and money discussions', '💼'],
+  ['Dating & Connections', 'Opt-in conversations and dating live rooms', '❤️'],
+  ['Education', 'Tutorials, learning and study sessions', '📚'],
+  ['News & Commentary', 'Current events and opinions', '📰'],
+  ['Comedy & Entertainment', 'Comedy, variety and entertainment', '🎭'],
+];
+
 function renderCategoriesPanel() {
+  const cards = LIVE_DISCOVERY_CATEGORIES.map(([name, description, emoji]) => `
+    <a class="live-cat-card" href="#/live?tab=channels" aria-label="${esc(name)}: browse channels">
+      <span style="font-size:26px" aria-hidden="true">${emoji}</span>
+      <strong>${esc(name)}</strong>
+      <p class="muted" style="margin:6px 0 0;font-size:12px">${esc(description)}</p>
+      <span class="chip">Browse channels</span>
+    </a>`).join('');
   return `
     <div class="card live-disc-panel" id="liveTabCategories" data-panel="categories">
-      <h3 style="margin:0 0 8px">Categories</h3>
-      <p class="muted" style="margin:0 0 12px;font-size:12px">
-        24/7 stages sit beside Live channels — Open Mic and Spotlight are always on, not one-shot streams.
-      </p>
-      ${renderLiveCategoryChips('live')}
+      <h3 style="margin:0 0 8px">Browse Live Categories</h3>
+      <p class="muted" style="margin:0 0 12px;font-size:12px">Explore topics like Twitch and Kick. Category-specific filtering and live counts are not yet connected; browse channels to discover current streams.</p>
+      <div class="live-cat-cards">${cards}</div>
+      <h3 style="margin:18px 0 8px">PIKK 24/7 Stages</h3>
       <div class="live-cat-cards">
-        <a class="live-cat-card" href="#/openmic">
-          <strong>Open Mic / Talent Discovery</strong>
-          <span class="chip">24/7</span>
-          <p class="muted" style="margin:6px 0 0;font-size:12px">Queue up · perform · get discovered · always open</p>
-        </a>
-        <a class="live-cat-card" href="#/spotlight">
-          <strong>Spotlight</strong>
-          <span class="chip">24/7</span>
-          <p class="muted" style="margin:6px 0 0;font-size:12px">FIFO stage · Keep Going votes · house track between sets</p>
-        </a>
-        <a class="live-cat-card" href="#/live?tab=channels">
-          <strong>Live channels</strong>
-          <span class="chip">Now</span>
-          <p class="muted" style="margin:6px 0 0;font-size:12px">Go live · Hot feed · gifts · song requests</p>
-        </a>
-        <a class="live-cat-card" href="#/shorts">
-          <strong>Clips / Shorts</strong>
-          <span class="chip">Watch</span>
-          <p class="muted" style="margin:6px 0 0;font-size:12px">Short-form feed · own Watch section · not a Live</p>
-        </a>
+        <a class="live-cat-card" href="#/openmic"><strong>Open Mic / Talent Discovery</strong><span class="chip">24/7 stage</span><p class="muted">Join the performance queue</p></a>
+        <a class="live-cat-card" href="#/spotlight"><strong>Spotlight Live</strong><span class="chip">24/7 stage</span><p class="muted">Keep Going votes and creator performances</p></a>
+        <a class="live-cat-card" href="#/shorts"><strong>Clips / Shorts</strong><span class="chip">Watch</span><p class="muted">Watch short videos</p></a>
       </div>
     </div>`;
 }
