@@ -80,7 +80,7 @@ Evidence: `phase2/tabbar-t212u/FIX-unread.md` + `checker/tb-reaudit-notes.txt`.
 ## Build — t212u unread badge PASS → DONE (2026-10-25)
 Checker re-audit PASS. STATUS locked DONE (Checker does not edit STATUS).
 
-## Navigation — t211u bottom tab (2026-10-25) → **PENDING AUDIT**
+## Navigation — t212u bottom tab (2026-10-25) → **DONE** (Checker PASS re-audit)
 
 **USER t211u** — Restore Music + Videos on bottom (were dropped in t209/t210 squeeze). Chat/Lounge stays in hamburger; Messages keeps unread badge.
 
@@ -90,7 +90,7 @@ Checker re-audit PASS. STATUS locked DONE (Checker does not edit STATUS).
 
 ---
 
-## Navigation — t209u+t210u bottom tab reshape (2026-10-25) → **superseded by t211u**
+## Navigation — t209u+t210u bottom tab reshape (2026-10-25) → **superseded · t212u DONE**
 
 **USER t209u** — Reshape bottom icons: add **Post**; make **Go Live** the main (center raised) option → start-stream.  
 **USER t210u** — Add **Chat** + **Messages** with unread number badge on Messages icon.
