@@ -179,6 +179,34 @@ a.header-msg.pill .header-msg-label {
 .header-msg-badge[hidden] { display: none !important; }
 a.header-msg[hidden], #tierPill[hidden] { display: none !important; }
 
+/* t298u — header Profile next to Messages (discoverability; Sign in stays on #/profile) */
+a.header-profile.pill {
+  position: relative;
+  text-decoration: none;
+  color: var(--tx);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+a.header-profile.pill .header-profile-ico {
+  width: 14px;
+  height: 14px;
+  flex: 0 0 auto;
+  display: block;
+}
+a.header-profile.pill .header-profile-label {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .04em;
+  line-height: 1;
+}
+@media (max-width: 360px) {
+  a.header-profile.pill .header-profile-label,
+  a.header-msg.pill .header-msg-label { display: none; }
+  a.header-profile.pill, a.header-msg.pill { padding: 8px 10px; }
+}
+
+
 
 .side {
   position: fixed; top: 0; right: 0; bottom: 0;
@@ -2772,6 +2800,111 @@ a.text-link:hover { color: #7aa0ff; }
   .bw-preview-play-icon { box-shadow: 0 0 0 3px rgba(255,255,255,.12); transition: none; }
   .bw-preview-play:hover .bw-preview-play-icon { transform: none; }
 }
+
+/* t298u — Block Wars lobby / fighter select (Coming Soon · not playable) */
+.bw-lobby {
+  margin: 0 0 14px;
+}
+.bw-lobby-head {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 10px; margin-bottom: 8px;
+}
+.bw-lobby-title {
+  margin: 4px 0 0; font-size: 20px; font-weight: 900; letter-spacing: .04em;
+  text-transform: uppercase;
+  background: linear-gradient(90deg, var(--acc) 0%, #ff6b4a 40%, var(--blue) 100%);
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent;
+}
+.bw-city-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 10px 0 12px;
+}
+.bw-city-card {
+  appearance: none; -webkit-appearance: none;
+  display: flex; flex-direction: column; align-items: stretch;
+  padding: 0; margin: 0; border: 0; cursor: pointer;
+  background: transparent; color: inherit; text-align: left;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid #3a3250;
+  background: #0c0c12;
+  min-height: 48px;
+  transition: border-color .15s ease, box-shadow .15s ease, transform .12s ease;
+}
+.bw-city-card:hover,
+.bw-city-card:focus-visible {
+  border-color: rgba(47,107,255,.55);
+  box-shadow: 0 0 0 1px rgba(47,107,255,.25);
+  outline: none;
+}
+.bw-city-card.is-active {
+  border-color: var(--acc);
+  box-shadow:
+    0 0 0 1px rgba(255,43,43,.35),
+    0 8px 24px rgba(255,43,43,.18);
+}
+.bw-city-card img {
+  display: block; width: 100%; aspect-ratio: 3 / 4;
+  object-fit: cover; background: #000;
+}
+.bw-city-card .bw-city-meta {
+  padding: 8px 8px 10px;
+  display: flex; flex-direction: column; gap: 2px;
+}
+.bw-city-card .bw-city-name {
+  font-size: 12px; font-weight: 900; letter-spacing: .06em;
+  text-transform: uppercase; color: #fff;
+}
+.bw-city-card .bw-city-tag {
+  font-size: 10px; color: var(--mut); font-weight: 700;
+}
+.bw-focus {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 12px;
+  align-items: center;
+  margin: 0 0 12px;
+  padding: 10px;
+  border-radius: 14px;
+  border: 1px solid #322848;
+  background:
+    radial-gradient(ellipse at 0% 50%, rgba(255,43,43,.12), transparent 55%),
+    radial-gradient(ellipse at 100% 50%, rgba(47,107,255,.12), transparent 55%),
+    #0e0e16;
+}
+.bw-focus-still {
+  width: 110px; height: 140px; border-radius: 12px; overflow: hidden;
+  border: 1px solid #3a3250; background: #000; flex: 0 0 auto;
+}
+.bw-focus-still img {
+  display: block; width: 100%; height: 100%; object-fit: cover;
+}
+.bw-focus-copy h3 {
+  margin: 0 0 4px; font-size: 16px; font-weight: 900;
+}
+.bw-focus-copy .bw-focus-city {
+  margin: 0 0 6px; font-size: 11px; font-weight: 800;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--blue);
+}
+.bw-focus-copy p {
+  margin: 0; font-size: 12px; color: var(--mut); line-height: 1.45;
+}
+.bw-arena-cta {
+  width: 100%;
+  margin-top: 4px;
+}
+@media (max-width: 360px) {
+  .bw-city-grid { gap: 6px; }
+  .bw-focus { grid-template-columns: 88px 1fr; gap: 10px; }
+  .bw-focus-still { width: 88px; height: 112px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bw-city-card { transition: none; }
+}
+
 
 
 /* Live IA t165u — category chips (Live · Open Mic 24/7 · Spotlight 24/7) */

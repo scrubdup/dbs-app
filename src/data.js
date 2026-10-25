@@ -497,6 +497,8 @@ export const HOME_SECTIONS = [
 /** Drawer / side nav — grouped accordion (≤8 top-level). */
 export const DRAWER_GROUPS = [
   { id: 'home', label: 'Home', href: '#/home' },
+  /* t298u — Profile / Sign in pinned near top (not only under Account accordion) */
+  { id: 'profile', label: 'Profile / Sign in', href: '#/profile' },
   {
     id: 'watch',
     label: 'Watch',

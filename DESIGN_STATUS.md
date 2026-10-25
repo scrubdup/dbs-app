@@ -183,3 +183,18 @@ Prior REJECT cleared: `.field[hidden], #postMediaField[hidden], #postPresets[hid
 - Evidence: `/workspace/dbs-evidence/phase2/tabbar-header-t290u/`
 - Observe: `index-tM6mWAjU.js` / `index-CX-L09lP.css` · gh-pages `2b373fb` · main `674645f`
 - Forever: https://scrubdup.github.io/dbs-app/
+
+## t298u — Profile find + Block Wars lobby → **PENDING AUDIT**
+
+**PENDING AUDIT** (2026-10-25). Owner: Design. Not DONE until Checker PASS.
+
+### A) Profile discoverability
+- Header: `#headerProfile` next to Messages → `#/profile`. No Sign in in header.
+- Drawer: **Profile / Sign in** top-level after Home.
+- Tabbar 7 unchanged.
+
+### B) Block Wars lobby
+- City select NY · LA · Chicago + focus + Coming Soon + preview video + honest arena toast.
+- Evidence: `/workspace/dbs-evidence/phase2/profile-find-t298u/` + `blockwars-lobby-t298u/`
+- Observe: `index-BA6Hkbfj.js` / `index-DYSeIUqf.css` · forever https://scrubdup.github.io/dbs-app/
+

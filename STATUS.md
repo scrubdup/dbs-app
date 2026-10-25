@@ -1,5 +1,23 @@
 # DBS App — Section Status
 
+## Design — t298u Profile find + Block Wars lobby → **PENDING AUDIT** (2026-10-25)
+
+**PENDING AUDIT** (not DONE). Owner: Design. Two Supervisor-approved slices.
+
+### A) Profile discoverability
+- Header `.top-actions`: `#headerProfile` Profile pill **next to** `#headerMsg` Messages → `#/profile`. Sign in stays on Profile page only (not in Messages slot).
+- Drawer: top-level **Profile / Sign in** direct link right after Home (not only under Account accordion).
+- Tabbar unchanged: **Home · Post · Music · Go Live · Videos · Chat · Game** (7).
+
+### B) Block Wars lobby / fighter select
+- `#/blockwars`: city cards **NY · LA · Chicago** (`preview-*-still.jpg`); tap → focus still + blurb; preview video + Coming Soon badge kept; **Enter arena · Coming Soon** toast (honest — no match engine).
+- Not WebGL / not playable. Full gameplay still paused.
+
+- Evidence: `phase2/profile-find-t298u/` + `phase2/blockwars-lobby-t298u/`
+- Observe: `index-BA6Hkbfj.js` / `index-DYSeIUqf.css` · forever https://scrubdup.github.io/dbs-app/
+- (gh-pages SHA filled after deploy)
+
+
 ## Design — t290u / t291u Header Messages always + 7-tab bar → **DONE** (Checker PASS 2026-10-25)
 
 **DONE** (Checker PASS · observe `index-tM6mWAjU.js` / `index-CX-L09lP.css` · gh-pages `2b373fb`).
