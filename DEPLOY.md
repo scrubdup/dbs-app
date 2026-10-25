@@ -10,9 +10,9 @@
 
 - **Home:** https://scrubdup.github.io/dbs-app/#/home
 - **Messages:** https://scrubdup.github.io/dbs-app/#/messages
-- **Never expires.** Source: `gh-pages` (`41ce7cf` · t238u house catalog + zip verify + t227u fix; main `30c3bed` / feature `26a50b8`; assets **index-h8R1xtzF.js** / **index-C3Bpvr9L.css**)
+- **Never expires.** Source: `gh-pages` (`4902ccd` · t241u+t242u tabbar/header; main `2ba4f49`; assets **index-D78kGnFr.js** / **index-eRs-bVYG.css**)
 - Base path: `/dbs-app/`
-- **Last shipped:** t238u — zip folders verified · §§1–36 routes OK · idle DatBoiSkeet house catalog on Spotlight + Open Mic (+ Live teaser) · includes Design t227u reject-fix + Build t228u tabbar — prior: t212u badge / t215–217 Post create
+- **Last shipped:** t241u+t242u — Home·Post(camera)·Go Live(flat)·… · header Messages replaces Sign in when logged in · prior: t238u house catalog / t228u / t227u
 
 ## Phone link (workers.dev — temporary until claimed)
 
