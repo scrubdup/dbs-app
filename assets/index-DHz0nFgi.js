@@ -241,7 +241,10 @@
     
     <div class="card home-sell-promo" id="home-creator-sell-promo">
       <p class="kicker">Creators · sell on DBS</p>
-      <h3 style="margin:0 0 8px">Upload music, videos, beats &amp; list merch</h3>
+      <div class="home-sell-title-row">
+        <h3 style="margin:0">Upload music, videos, beats &amp; list merch</h3>
+        <span class="badge-cs badge-cs-inline" id="home-sell-coming-soon">Coming Soon</span>
+      </div>
       <p style="margin:0 0 8px">Artists and producers can sell <strong>music, videos, beats,</strong> and merch on DBS. We keep a fair, creator-friendly cut — and merch runs on <strong>your</strong> payments (DBS is not the merchant of record).</p>
       <p class="muted" style="margin:0 0 12px;font-size:12px">Rules, fees, and the apply form live on Pricing — tap below. No fee numbers on Home.</p>
       <div class="row wrap" style="gap:8px;margin-top:4px">
