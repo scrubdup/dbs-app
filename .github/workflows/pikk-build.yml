@@ -6,6 +6,13 @@ on:
     branches: [master]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
+concurrency:
+  group: pikk-pages-deploy
+  cancel-in-progress: false
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -23,3 +30,12 @@ jobs:
           test -f dist/index.html
           grep -q 'PIKK' dist/index.html
           grep -q '/dbs-app/' dist/index.html
+
+      - name: Publish tested build to GitHub Pages
+        if: github.event_name == 'push' && github.ref == 'refs/heads/pikk-rebrand'
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: gh-pages
+          keep_files: false
