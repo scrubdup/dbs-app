@@ -5,6 +5,7 @@ import {
   isAdmin,
   getSpotlightState,
   getSpotlightHouseTrack,
+  advanceSpotlightHouseTrack,
   joinSpotlightQueue,
   leaveSpotlightQueue,
   removeFromSpotlightQueue,
@@ -19,8 +20,8 @@ import {
   listSpotlightHistory,
   tickSpotlight,
 } from '../store.js';
-import { COMING_SOON } from '../data.js';
-import { esc, toast, shellPage, timeAgo } from '../ui.js';
+import { esc, toast, shellPage, timeAgo, ytEmbedSrc } from '../ui.js';
+import { asset } from '../asset.js';
 import { navigate } from '../router.js';
 
 let clockTimer = null;
@@ -83,7 +84,7 @@ function renderRules(thresholds) {
         <li><strong>Live Freestyle</strong> — ${Math.round((thresholds.freestyleMs || 60000) / 1000)}s timer. Fans press <strong>Keep Going</strong> (threshold ${thresholds.keepGoing}). Max ${thresholds.maxExtensions} extensions · <strong>3 min total</strong>.</li>
         <li><strong>Uploaded Music</strong> — After End set, audience votes <strong>Play Another?</strong> (threshold ${thresholds.playAnother}). Max <strong>${thresholds.maxUploadStreak}</strong> in a row, then next in queue.</li>
         <li><strong>Votes extend stage time or pick the next track</strong> — they are <em>not</em> wagers, cash prizes, or paid voting advantage. Distinct from Gift Battles.</li>
-        <li>House catalog plays when the queue is empty (Coming Soon metadata · no fabricated live act).</li>
+        <li><strong>House catalog</strong> plays when the queue is empty — real DatBoiSkeet YouTube (Music Videos · Interviews · BTS/vlogs). Labeled <em>House · …</em> · never a fake live act · original source only.</li>
       </ul>
       <p class="muted" style="margin:10px 0 0">TEST MODE · no real uploads / WebRTC · background music pause wiring later.</p>
       <div class="row wrap" style="gap:8px;margin-top:10px">
@@ -95,27 +96,64 @@ function renderRules(thresholds) {
     </div>`;
 }
 
-function renderHouse(house) {
-  const cover = house.cover || (COMING_SOON[0] && COMING_SOON[0].cover) || '';
+function renderHouse(house, { showSkip = true } = {}) {
+  const chip = house.chipLabel || house.status || 'House rotation';
+  const embed = house.embed ? ytEmbedSrc(house.embed, 'rel=0') : '';
   return `
     <div class="card sp-stage sp-house" role="status">
       <div class="row wrap" style="justify-content:space-between;gap:8px;align-items:center">
-        <div class="chip">House rotation</div>
+        <div class="chip">${esc(chip)}</div>
         <span class="chip">TEST MODE</span>
       </div>
+      ${
+        embed
+          ? `<div class="sp-house-embed hero-video" style="margin-top:12px">
+               <iframe src="${esc(embed)}" title="${esc(house.title)}" allowfullscreen loading="lazy"
+                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+             </div>`
+          : ''
+      }
       <div class="sp-now">
-        ${cover ? `<img class="sp-cover" src="${esc(cover)}" alt="" />` : ''}
+        ${house.cover ? `<img class="sp-cover" src="${esc(asset(house.cover))}" alt="" />` : ''}
         <div>
           <div class="sp-now-title">${esc(house.title)}</div>
-          <div class="sp-now-meta">${esc(house.artist)} · ${esc(house.status || 'Coming Soon')}</div>
-          <p class="muted sp-note">${esc(house.note || 'No live performer on stage')}</p>
+          <div class="sp-now-meta">${esc(house.artist || 'DatBoiSkeet')} · house catalog</div>
+          <p class="muted sp-note">${esc(house.note || 'Approved catalog filler · not a live act')}</p>
+          ${
+            house.youtube
+              ? `<p style="margin:8px 0 0"><a class="btn ghost" href="${esc(house.youtube)}" target="_blank" rel="noopener">Open on YouTube</a></p>`
+              : ''
+          }
         </div>
       </div>
+      ${
+        showSkip && canMod()
+          ? `<div class="row wrap" style="gap:8px;margin-top:12px">
+               <button class="btn" id="spSkipHouse">Skip house · next</button>
+               <span class="muted" style="font-size:12px;align-self:center">Join queue takes the stage over house · Skip advances catalog</span>
+             </div>`
+          : ''
+      }
     </div>`;
 }
 
 function renderStage(np, thresholds) {
-  if (!np) return renderHouse(getSpotlightHouseTrack());
+  if (!np || np.house) {
+    const house = np && np.house
+      ? {
+          id: np.id,
+          title: np.title,
+          artist: np.artist,
+          embed: np.embed,
+          youtube: np.youtube,
+          chipLabel: np.chipLabel || 'House · Music Video',
+          note: np.note,
+          cover: np.cover,
+          kind: np.houseKind,
+        }
+      : getSpotlightHouseTrack();
+    return renderHouse(house);
+  }
 
   const user = getState().user;
   const isFreestyle = np.type === 'freestyle';
@@ -222,12 +260,12 @@ function renderQueue(queue, nowPlaying, user) {
     .join('');
 
   const inQueue = user && (queue || []).some((q) => q.userId === user.id);
-  const onStage = user && nowPlaying && nowPlaying.userId === user.id;
+  const onStage = user && nowPlaying && !nowPlaying.house && nowPlaying.userId === user.id;
 
   return `
     <div class="card sp-queue">
       <h3>FIFO queue</h3>
-      <p class="muted" style="margin-top:0">${queue.length ? queue.length + ' waiting' : 'Queue empty — house rotation on stage'}${nowPlaying ? ' · now: ' + esc(nowPlaying.username) : ''}</p>
+      <p class="muted" style="margin-top:0">${queue.length ? queue.length + ' waiting' : 'Queue empty — house catalog on stage'}${nowPlaying && !nowPlaying.house ? ' · now: ' + esc(nowPlaying.username) : nowPlaying && nowPlaying.house ? ' · house: ' + esc(nowPlaying.chipLabel || 'House') : ''}</p>
       <ul class="sp-list">${rows || '<li class="muted">No one waiting</li>'}</ul>
       ${
         inQueue || onStage
@@ -258,14 +296,15 @@ function renderQueue(queue, nowPlaying, user) {
 function renderMod(np) {
   if (!canMod()) return '';
   const adminChip = isAdmin() ? 'Admin' : 'Demo moderator · TEST MODE';
+  const real = np && !np.house;
   return `
     <div class="card sp-mod">
       <h3>Moderator controls</h3>
-      <p class="muted" style="margin-top:0"><span class="chip">${esc(adminChip)}</span> Skip / remove for safety · fair order otherwise.</p>
+      <p class="muted" style="margin-top:0"><span class="chip">${esc(adminChip)}</span> Skip / remove for safety · fair order otherwise. House Skip → next queue or next house.</p>
       <div class="row wrap" style="gap:8px">
         <button class="btn" id="spSkip" ${np ? '' : 'disabled'}>Skip current</button>
         ${
-          np && np.type !== 'freestyle' && !np.awaitingPlayAnother
+          real && np.type !== 'freestyle' && !np.awaitingPlayAnother
             ? `<button class="btn ghost" id="spEndSet">End set</button>`
             : ''
         }
@@ -275,7 +314,7 @@ function renderMod(np) {
 
 function renderPerformerEndSet(np) {
   const user = getState().user;
-  if (!np || np.type === 'freestyle' || np.awaitingPlayAnother) return '';
+  if (!np || np.house || np.type === 'freestyle' || np.awaitingPlayAnother) return '';
   if (!user) return '';
   // Performer can always end own set; mod button also in mod card
   if (user.id !== np.userId) return '';
@@ -288,7 +327,7 @@ function renderPerformerEndSet(np) {
 }
 
 function renderChat(np) {
-  if (!np) return '';
+  if (!np || np.house) return '';
   const rows = (np.chat || [])
     .slice(-20)
     .map(
@@ -421,11 +460,17 @@ export function bindSpotlight(root) {
     });
   });
 
-  root.querySelector('#spSkip')?.addEventListener('click', () => {
+  const doSkip = () => {
+    const before = getSpotlightState().nowPlaying;
     skipSpotlight();
-    toast('Skipped · next in queue');
+    const after = getSpotlightState().nowPlaying;
+    if (after && after.house) toast('Next house · ' + (after.chipLabel || 'House'));
+    else if (after) toast('Skipped · ' + (after.username || 'next') + ' on stage');
+    else toast('Skipped');
     refresh();
-  });
+  };
+  root.querySelector('#spSkip')?.addEventListener('click', doSkip);
+  root.querySelector('#spSkipHouse')?.addEventListener('click', doSkip);
 
   const endSet = () => {
     const res = endSpotlightSet();

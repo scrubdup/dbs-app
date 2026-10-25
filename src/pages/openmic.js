@@ -8,8 +8,10 @@ import {
   listOpenMicShowcase,
   submitOpenMicApplication,
   setOpenMicStatus,
+  getOpenMicHouseTrack,
+  advanceOpenMicHouseTrack,
 } from '../store.js';
-import { esc, toast, shellPage, timeAgo } from '../ui.js';
+import { esc, toast, shellPage, timeAgo, ytEmbedSrc } from '../ui.js';
 import { navigate } from '../router.js';
 
 function refresh() {
@@ -27,6 +29,47 @@ function ensureSignedIn(name = 'MicHopeful') {
 function statusChip(s) {
   const label = s === 'approved' ? 'Approved' : s === 'rejected' ? 'Rejected' : 'Pending';
   return `<span class="chip">${esc(label)}</span>`;
+}
+
+
+function renderOpenMicHouse() {
+  const house = getOpenMicHouseTrack();
+  const chip = house.chipLabel || 'House rotation';
+  const embed = house.embed ? ytEmbedSrc(house.embed, 'rel=0') : '';
+  return `
+    <div class="card sp-stage sp-house" id="omHouse" role="status">
+      <div class="row wrap" style="justify-content:space-between;gap:8px;align-items:center">
+        <div class="chip">${esc(chip)}</div>
+        <span class="chip">TEST MODE</span>
+      </div>
+      <p class="muted" style="margin:8px 0 0;font-size:12px">
+        24/7 idle filler · DatBoiSkeet catalog when no live Open Mic performer · <strong>not a fake live act</strong> · original YouTube only
+      </p>
+      ${
+        embed
+          ? `<div class="sp-house-embed hero-video" style="margin-top:12px">
+               <iframe src="${esc(embed)}" title="${esc(house.title)}" allowfullscreen loading="lazy"
+                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+             </div>`
+          : ''
+      }
+      <div class="sp-now">
+        <div>
+          <div class="sp-now-title">${esc(house.title)}</div>
+          <div class="sp-now-meta">${esc(house.artist || 'DatBoiSkeet')} · house catalog</div>
+          <p class="muted sp-note">${esc(house.note || '')}</p>
+          ${
+            house.youtube
+              ? `<p style="margin:8px 0 0"><a class="btn ghost" href="${esc(house.youtube)}" target="_blank" rel="noopener">Open on YouTube</a></p>`
+              : ''
+          }
+        </div>
+      </div>
+      <div class="row wrap" style="gap:8px;margin-top:12px">
+        <button class="btn" type="button" id="omNextHouse">Next house</button>
+        <a class="btn ghost" href="#/spotlight">24/7 Spotlight</a>
+      </div>
+    </div>`;
 }
 
 export function renderOpenMic() {
@@ -100,6 +143,8 @@ export function renderOpenMic() {
   return shellPage(
     'Open Mic',
     `
+    ${renderOpenMicHouse()}
+
     <div class="card">
       <p class="kicker">§30 · 24/7 Live category · Talent Discovery</p>
       <h2 style="margin:0 0 6px">Open Mic &amp; Talent Discovery</h2>
@@ -157,7 +202,7 @@ export function renderOpenMic() {
       ${showcaseHtml}
     </div>
     `,
-    { lead: 'Opt-in talent showcase · DEMO.', badge: 'Phase 2 demo' }
+    { lead: '24/7 house catalog when idle · opt-in talent showcase · DEMO.', badge: 'Phase 2 demo' }
   );
 }
 
@@ -210,5 +255,11 @@ export function bindOpenMic(root) {
       toast('Rejected');
       refresh();
     });
+  });
+
+  root.querySelector('#omNextHouse')?.addEventListener('click', () => {
+    const next = advanceOpenMicHouseTrack();
+    toast('Next house · ' + (next.chipLabel || 'House'));
+    refresh();
   });
 }

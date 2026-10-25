@@ -1,5 +1,13 @@
 # DBS App — Section Status
 
+
+## t238u (2026-10-25) — Supervisor verify + house catalog ship
+- Zip `assets/design/merch/music` ↔ `public/*`: OK (loading screen, Profile Shop concept, 10 merch, 2 Coming Soon covers).
+- §§1–36 (+37–39) hash routes: all page modules present in `main.js` (no blank route gaps).
+- Today markers: t228u tabbar PASS already on observe; t227u reject-fix on observe `a8303e7` / `index-Cej89PCx.js` (Checker re-audit); this ship adds idle house catalog.
+- Idle: Spotlight + Open Mic rotate DatBoiSkeet MVs/Interviews/BTS (`buildDbsHouseCatalog`) labeled House · not fake live; Live empty teaser.
+- Block Wars still paused. Do not claim Checker PASS for t238u/t227u.
+
 Last updated: 2026-10-25  
 App root: `/workspace/dbs-app`  
 Owners: **Design** = §§19, 21, 34, 22, 15, 8 (visual), 20, 17 · **Build** = interactive rest · **Supervisor** = §§12, 13, 14, 31 · **Progress Checker** = audits

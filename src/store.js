@@ -1,3 +1,4 @@
+import { VIDEOS, YOUTUBE_CHANNEL_PLAYLISTS } from './data.js';
 const KEY = 'dbs_v1';
 
 const defaultState = () => ({
@@ -60,9 +61,10 @@ const defaultState = () => ({
     history: [], // ended sessions (cap 20)
   },
   spotlight: {
-    nowPlaying: null, // active stage slot (freestyle / uploaded)
+    nowPlaying: null, // active stage slot (freestyle / uploaded / house catalog)
     queue: [], // FIFO join list
     history: [], // recent stage turns (cap 30)
+    houseIndex: 0, // t233u rotation into DatBoiSkeet house catalog
   },
   // §26 Fan Clubs — append-only nested block (Build)
   fanClubs: {
@@ -110,6 +112,7 @@ const defaultState = () => ({
   openMic: {
     applications: [], // { id, userId, username, talent, trackTitle, profileNote, rightsCertified, status, at, reviewedAt? }
     seeded: false,
+    houseIndex: 0, // t236u shared idle house catalog rotation
   },
   // §22 Profile Shop — Design (append-only · digital cosmetics CONCEPT / TEST MODE)
   profileShop: {
@@ -276,6 +279,7 @@ function load() {
           ? parsed.openMic.applications
           : [],
         seeded: !!parsed.openMic?.seeded,
+        houseIndex: typeof parsed.openMic?.houseIndex === 'number' ? parsed.openMic.houseIndex : 0,
       },
       profileShop: {
         ...base.profileShop,
@@ -3575,13 +3579,13 @@ const SP_UPLOAD_TYPES = ['song', 'beat', 'music_video'];
 const SP_TYPES = [...SP_UPLOAD_TYPES, 'freestyle'];
 
 function spBucket() {
-  return (
-    state.spotlight || {
-      nowPlaying: null,
-      queue: [],
-      history: [],
-    }
-  );
+  const s = state.spotlight || {};
+  return {
+    nowPlaying: s.nowPlaying || null,
+    queue: Array.isArray(s.queue) ? s.queue : [],
+    history: Array.isArray(s.history) ? s.history : [],
+    houseIndex: typeof s.houseIndex === 'number' ? s.houseIndex : 0,
+  };
 }
 
 function saveSpotlight(sp) {
@@ -3619,9 +3623,14 @@ function finalizeSpotlightSlot(np, reason = 'ended') {
  * Safe to call on every getSpotlightState / page render.
  */
 export function tickSpotlight(now = Date.now()) {
-  const sp = spBucket();
+  let sp = spBucket();
   let np = sp.nowPlaying;
-  if (!np) return sp;
+  if (!np) {
+    // t233u/t238u — never leave stage blank; house catalog fills idle
+    return ensureSpotlightHousePlaying(sp, now);
+  }
+  // House tracks have no freestyle timer / play-another window
+  if (np.house) return sp;
 
   // Freestyle: when endsAt passes and no pending extension decision, auto-advance
   if (np.type === 'freestyle' && np.endsAt && now >= np.endsAt && !np.awaitingPlayAnother) {
@@ -3642,15 +3651,18 @@ export function tickSpotlight(now = Date.now()) {
       saveSpotlight(next);
       return next;
     }
-    // End freestyle → advance queue
+    // End freestyle → advance queue (or house catalog if empty)
     const hist = [finalizeSpotlightSlot(np, 'timer'), ...(sp.history || [])].slice(0, 30);
     const queue = [...(sp.queue || [])];
     let nextPlaying = null;
+    let houseIndex = typeof sp.houseIndex === 'number' ? sp.houseIndex : 0;
     if (queue.length) {
       const next = queue.shift();
       nextPlaying = promoteQueueItem(next, now);
+    } else {
+      nextPlaying = makeHouseNowPlaying(houseTrackAt(houseIndex), now);
     }
-    const out = { nowPlaying: nextPlaying, queue, history: hist };
+    const out = { nowPlaying: nextPlaying, queue, history: hist, houseIndex };
     saveSpotlight(out);
     return out;
   }
@@ -3675,14 +3687,17 @@ export function tickSpotlight(now = Date.now()) {
       saveSpotlight(out);
       return out;
     }
-    // Fail vote or max streak → advance
+    // Fail vote or max streak → advance (or house if empty)
     const hist = [finalizeSpotlightSlot(np, 'play_another_fail'), ...(sp.history || [])].slice(0, 30);
     const queue = [...(sp.queue || [])];
     let nextPlaying = null;
+    let houseIndex = typeof sp.houseIndex === 'number' ? sp.houseIndex : 0;
     if (queue.length) {
       nextPlaying = promoteQueueItem(queue.shift(), now);
+    } else {
+      nextPlaying = makeHouseNowPlaying(houseTrackAt(houseIndex), now);
     }
-    const out = { nowPlaying: nextPlaying, queue, history: hist };
+    const out = { nowPlaying: nextPlaying, queue, history: hist, houseIndex };
     saveSpotlight(out);
     return out;
   }
@@ -3729,6 +3744,7 @@ export function getSpotlightState() {
     nowPlaying: sp.nowPlaying || null,
     queue: [...(sp.queue || [])],
     history: [...(sp.history || [])],
+    houseIndex: typeof sp.houseIndex === 'number' ? sp.houseIndex : 0,
     thresholds: {
       keepGoing: SP_KEEP_GOING_THRESHOLD,
       playAnother: SP_PLAY_ANOTHER_THRESHOLD,
@@ -3739,17 +3755,152 @@ export function getSpotlightState() {
   };
 }
 
-/** House filler metadata when stage empty (not a fabricated live performer). */
-export function getSpotlightHouseTrack() {
-  // Lazy import avoided — callers pass COMING_SOON or we hardcode demo titles matching data.js
+/* ========== t233u/t236u/t238u · shared DatBoiSkeet house catalog ========== */
+/** Build rotation list: Music Videos + Interviews + Vlogs-as-BTS (honest). Original YT only. */
+export function buildDbsHouseCatalog() {
+  const items = [];
+  for (const v of VIDEOS || []) {
+    if (!v || !v.embed) continue;
+    if (v.category === 'Music Videos') {
+      items.push({
+        id: v.id,
+        title: v.title,
+        artist: v.artist || 'DatBoiSkeet',
+        embed: v.embed,
+        youtube: v.youtube || '',
+        kind: 'music_video',
+        chipLabel: 'House · Music Video',
+        note: 'DatBoiSkeet catalog · original YouTube · not a live act',
+        cover: v.cover || '',
+      });
+    } else if (v.category === 'Interviews') {
+      items.push({
+        id: v.id,
+        title: v.title,
+        artist: v.artist || 'DatBoiSkeet',
+        embed: v.embed,
+        youtube: v.youtube || '',
+        kind: 'interview',
+        chipLabel: 'House · Interview',
+        note: 'DatBoiSkeet interview · original YouTube · not a live act',
+        cover: v.cover || '',
+      });
+    }
+  }
+  // BTS thin — use official Vlogs playlist with honest label (no fabricated BTS embeds)
+  const vlogs = (YOUTUBE_CHANNEL_PLAYLISTS || []).find((pl) => pl.id === 'pl-vlogs');
+  if (vlogs && vlogs.youtube) {
+    const m = String(vlogs.youtube).match(/[?&]list=([^&]+)/);
+    const listId = m && m[1];
+    if (listId) {
+      items.push({
+        id: 'house-bts-vlogs',
+        title: vlogs.title || 'DatBoiSkeet Vlogs',
+        artist: 'DatBoiSkeet',
+        embed: 'https://www.youtube.com/embed/videoseries?list=' + listId,
+        youtube: vlogs.youtube,
+        kind: 'bts',
+        chipLabel: 'House · BTS',
+        note: 'Channel vlogs · dedicated BTS clips thin · original YouTube · not a live act',
+        cover: '',
+      });
+    }
+  }
+  return items;
+}
+
+function houseCatalogLen() {
+  const n = buildDbsHouseCatalog().length;
+  return n > 0 ? n : 1;
+}
+
+function houseTrackAt(index) {
+  const cat = buildDbsHouseCatalog();
+  if (!cat.length) {
+    return {
+      id: 'house_empty',
+      title: 'DatBoiSkeet catalog',
+      artist: 'DatBoiSkeet',
+      embed: '',
+      youtube: 'https://www.youtube.com/@DatBoiSkeet1',
+      kind: 'music_video',
+      chipLabel: 'House · Music Video',
+      note: 'Catalog loading · not a live act',
+      cover: '',
+      status: 'House rotation',
+    };
+  }
+  const i = ((index % cat.length) + cat.length) % cat.length;
+  return { ...cat[i], status: cat[i].chipLabel };
+}
+
+function makeHouseNowPlaying(track, now = Date.now()) {
   return {
-    id: 'house_lss',
-    title: 'Long Story Short',
-    artist: 'DatBoiSkeet',
-    cover: '/music/01_Long_Story_Short_Coming_Soon.jpg',
-    status: 'Coming Soon · house rotation',
-    note: 'Approved catalog filler when no queued performer · not a live act',
+    id: 'house_' + (track.id || 'x') + '_' + now.toString(36),
+    userId: 'dbs',
+    username: 'DatBoiSkeet',
+    type: 'music_video',
+    house: true,
+    houseKind: track.kind || 'music_video',
+    chipLabel: track.chipLabel || 'House · Music Video',
+    title: track.title,
+    artist: track.artist || 'DatBoiSkeet',
+    embed: track.embed || '',
+    youtube: track.youtube || '',
+    note: track.note || 'House catalog · not a live act',
+    cover: track.cover || '',
+    startedAt: now,
+    endsAt: null,
+    extensions: 0,
+    playCount: 1,
+    keepGoingVotes: {},
+    playAnotherVotes: {},
+    voteWindowOpen: false,
+    awaitingPlayAnother: false,
+    playAnotherDeadline: null,
+    reactions: { fire: 0, heart: 0, clap: 0 },
+    chat: [
+      {
+        id: 'c_house_' + now.toString(36),
+        userId: 'system',
+        username: 'DBS',
+        text: `House catalog · ${track.chipLabel || 'House'} · ${track.title} · not a live act · TEST MODE`,
+        at: now,
+        system: true,
+      },
+    ],
   };
+}
+
+/** Ensure empty stage shows house catalog (never blank). */
+function ensureSpotlightHousePlaying(sp, now = Date.now()) {
+  if (sp.nowPlaying) return sp;
+  const idx = typeof sp.houseIndex === 'number' ? sp.houseIndex : 0;
+  const track = houseTrackAt(idx);
+  const np = makeHouseNowPlaying(track, now);
+  const next = { ...sp, nowPlaying: np, houseIndex: idx };
+  saveSpotlight(next);
+  return next;
+}
+
+/** House filler when stage idle — real DatBoiSkeet YT (MV / Interview / BTS). */
+export function getSpotlightHouseTrack() {
+  const sp = spBucket();
+  return houseTrackAt(typeof sp.houseIndex === 'number' ? sp.houseIndex : 0);
+}
+
+/** Advance house rotation index; returns next track metadata. */
+export function advanceSpotlightHouseTrack() {
+  const sp = spBucket();
+  const len = houseCatalogLen();
+  const nextIdx = ((typeof sp.houseIndex === 'number' ? sp.houseIndex : 0) + 1) % len;
+  const next = { ...sp, houseIndex: nextIdx };
+  // If currently showing house on stage, swap to next house item (unless queue waiting — caller handles)
+  if (sp.nowPlaying && sp.nowPlaying.house) {
+    next.nowPlaying = makeHouseNowPlaying(houseTrackAt(nextIdx));
+  }
+  saveSpotlight(next);
+  return houseTrackAt(nextIdx);
 }
 
 export function joinSpotlightQueue({ type = 'song', title = '', artist = '' } = {}) {
@@ -3759,7 +3910,11 @@ export function joinSpotlightQueue({ type = 'song', title = '', artist = '' } = 
   const sp = tickSpotlight();
   const uid = user.id;
   const alreadyQ = (sp.queue || []).some((q) => q.userId === uid);
-  const onStage = sp.nowPlaying && sp.nowPlaying.userId === uid && !sp.nowPlaying.awaitingPlayAnother;
+  const onStage =
+    sp.nowPlaying &&
+    !sp.nowPlaying.house &&
+    sp.nowPlaying.userId === uid &&
+    !sp.nowPlaying.awaitingPlayAnother;
   if (alreadyQ || onStage) return { error: 'already_queued', state: getSpotlightState() };
 
   const label =
@@ -3780,16 +3935,20 @@ export function joinSpotlightQueue({ type = 'song', title = '', artist = '' } = 
 
   let nowPlaying = sp.nowPlaying;
   let queue = [...(sp.queue || [])];
+  let houseIndex = typeof sp.houseIndex === 'number' ? sp.houseIndex : 0;
 
-  // If stage empty, go live immediately
+  // t233u: house on stage → enqueue (take stage after Skip / house advance)
+  // truly empty → go live immediately (ensureHouse normally prevents empty)
   if (!nowPlaying) {
     nowPlaying = promoteQueueItem(item);
     queue = [];
+  } else if (nowPlaying.house) {
+    queue.push(item);
   } else {
     queue.push(item);
   }
 
-  saveSpotlight({ ...sp, nowPlaying, queue });
+  saveSpotlight({ ...sp, nowPlaying, queue, houseIndex });
   return { ok: true, state: getSpotlightState() };
 }
 
@@ -3819,15 +3978,23 @@ export function advanceSpotlight(reason = 'advance') {
   if (!user) return { error: 'signin' };
   const sp = tickSpotlight();
   const np = sp.nowPlaying;
-  const hist = np
+  const wasHouse = !!(np && np.house);
+  const hist = np && !wasHouse
     ? [finalizeSpotlightSlot(np, reason), ...(sp.history || [])].slice(0, 30)
     : [...(sp.history || [])];
   const queue = [...(sp.queue || [])];
+  let houseIndex = typeof sp.houseIndex === 'number' ? sp.houseIndex : 0;
+  // Leaving a house item → bump rotation for next idle fill
+  if (wasHouse) {
+    houseIndex = (houseIndex + 1) % houseCatalogLen();
+  }
   let nextPlaying = null;
   if (queue.length) {
     nextPlaying = promoteQueueItem(queue.shift());
+  } else {
+    nextPlaying = makeHouseNowPlaying(houseTrackAt(houseIndex));
   }
-  saveSpotlight({ nowPlaying: nextPlaying, queue, history: hist });
+  saveSpotlight({ nowPlaying: nextPlaying, queue, history: hist, houseIndex });
   return { ok: true, state: getSpotlightState() };
 }
 
@@ -3842,6 +4009,7 @@ export function endSpotlightSet() {
   const sp = tickSpotlight();
   const np = sp.nowPlaying;
   if (!np) return { error: 'empty_stage' };
+  if (np.house) return { error: 'house_use_skip' };
   if (np.type === 'freestyle') return { error: 'freestyle_use_timer' };
   if (np.awaitingPlayAnother) return { error: 'already_voting' };
   // Performer or demo mod
@@ -5522,6 +5690,7 @@ function getOpenMicBucket() {
   return {
     applications: Array.isArray(o.applications) ? o.applications : [],
     seeded: !!o.seeded,
+    houseIndex: typeof o.houseIndex === 'number' ? o.houseIndex : 0,
   };
 }
 
@@ -5579,7 +5748,8 @@ export function ensureOpenMicSeeded({ force = false } = {}) {
       reviewNote: 'Rights certification required',
     },
   ];
-  saveOpenMic({ applications: demos, seeded: true });
+  const prevIdx = typeof bucket.houseIndex === 'number' ? bucket.houseIndex : 0;
+  saveOpenMic({ applications: demos, seeded: true, houseIndex: prevIdx });
   return { seeded: demos.length, applications: demos };
 }
 
@@ -5592,6 +5762,19 @@ export function listOpenMicApplications({ status = null } = {}) {
 
 export function listOpenMicShowcase() {
   return listOpenMicApplications({ status: 'approved' });
+}
+
+/** t236u/t238u — same DatBoiSkeet house catalog as Spotlight when Open Mic idle. */
+export function getOpenMicHouseTrack() {
+  const bucket = getOpenMicBucket();
+  return houseTrackAt(typeof bucket.houseIndex === 'number' ? bucket.houseIndex : 0);
+}
+
+export function advanceOpenMicHouseTrack() {
+  const bucket = getOpenMicBucket();
+  const nextIdx = ((typeof bucket.houseIndex === 'number' ? bucket.houseIndex : 0) + 1) % houseCatalogLen();
+  saveOpenMic({ ...bucket, houseIndex: nextIdx });
+  return houseTrackAt(nextIdx);
 }
 
 export function submitOpenMicApplication({

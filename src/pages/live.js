@@ -34,8 +34,9 @@ import {
   listLiveGiftCatalog,
   listLiveGiftHistory,
   sendLiveGift,
+  getSpotlightHouseTrack,
 } from '../store.js';
-import { esc, toast, shellPage, timeAgo } from '../ui.js';
+import { esc, toast, shellPage, timeAgo, ytEmbedSrc } from '../ui.js';
 import { navigate, getRoute } from '../router.js';
 import { notifyLiveOpen, notifyLiveClosed } from '../player.js';
 import { giftStickerHtml, getGiftSticker } from '../gift-stickers.js';
@@ -104,6 +105,38 @@ function renderLiveDiscoveryTabs(active = 'channels') {
     </nav>`;
 }
 
+
+/** t238u — when a Live surface is empty, surface DatBoiSkeet house catalog (not blank). */
+function renderHouseCatalogTeaser(opts = {}) {
+  const house = getSpotlightHouseTrack();
+  const chip = house.chipLabel || 'House · Music Video';
+  const embed = house.embed ? ytEmbedSrc(house.embed, 'rel=0') : '';
+  const title = opts.title || 'House catalog · while stages are quiet';
+  return `
+    <div class="card sp-house live-house-teaser" style="margin-top:12px">
+      <div class="row wrap" style="justify-content:space-between;gap:8px;align-items:center">
+        <div class="chip">${esc(chip)}</div>
+        <span class="chip">TEST MODE</span>
+      </div>
+      <p class="muted" style="margin:8px 0 0;font-size:12px">${esc(title)} · original YouTube · not a fake live act</p>
+      ${
+        embed
+          ? `<div class="sp-house-embed hero-video" style="margin-top:10px">
+               <iframe src="${esc(embed)}" title="${esc(house.title)}" allowfullscreen loading="lazy"
+                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+             </div>`
+          : ''
+      }
+      <div class="sp-now-title" style="margin-top:10px">${esc(house.title)}</div>
+      <div class="muted" style="font-size:12px">${esc(house.artist || 'DatBoiSkeet')} · ${esc(house.note || '')}</div>
+      <div class="row wrap" style="gap:8px;margin-top:10px">
+        <a class="btn ghost" href="#/spotlight">24/7 Spotlight</a>
+        <a class="btn ghost" href="#/openmic">Open Mic</a>
+        ${house.youtube ? `<a class="btn ghost" href="${esc(house.youtube)}" target="_blank" rel="noopener">YouTube</a>` : ''}
+      </div>
+    </div>`;
+}
+
 function renderFollowingPanel(user) {
   const following = user ? listFollowing(user.id) : [];
   const ids = new Set(following.map((f) => f.id));
@@ -128,7 +161,8 @@ function renderFollowingPanel(user) {
       </p>
       <div class="row wrap" style="gap:6px;margin-bottom:10px">${followChips}</div>
       <a class="btn ghost" href="#/live?tab=channels">Browse Live channels</a>
-      <p class="chip" style="margin-top:10px">TEST MODE · honest empty · not a scrape</p>`;
+      <p class="chip" style="margin-top:10px">TEST MODE · not a scrape</p>
+      ${renderHouseCatalogTeaser({ title: 'Meanwhile — DatBoiSkeet house catalog on 24/7 stages' })}`;
   } else {
     const cards = lives
       .map((live) => {
@@ -687,6 +721,7 @@ export function renderLive() {
       ${renderHotLivesRail()}
       ${renderDailyGbWinners()}
       ${!active ? renderGoLiveForm(user) : ''}
+      ${!active ? renderHouseCatalogTeaser({ title: 'No active Live on this device — house catalog on Spotlight / Open Mic' }) : ''}
       ${renderHistory(hist)}
       <div class="card">
         <p class="muted" style="margin:0 0 8px">More Live tools</p>

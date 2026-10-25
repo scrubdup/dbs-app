@@ -10,9 +10,9 @@
 
 - **Home:** https://scrubdup.github.io/dbs-app/#/home
 - **Messages:** https://scrubdup.github.io/dbs-app/#/messages
-- **Never expires.** Source: `gh-pages` (`a8303e7` · t227u reject fix + `.nojekyll`; main `d384211`; assets **index-Cej89PCx.js** / **index-BWlhTyvE.css**)
+- **Never expires.** Source: `gh-pages` (PENDING_SHA · t238u house catalog + zip verify + t227u fix; assets **index-QPYnkjdN.js** / **index-DJ9DglBC.css**)
 - Base path: `/dbs-app/`
-- **Last shipped:** t227u reject fix (hide title LIVE chrome; `dbs_home_stage_v2`; cycle delay 10s) — prior: t228u Go Live between Home and Music
+- **Last shipped:** t238u — zip folders verified · §§1–36 routes OK · idle DatBoiSkeet house catalog on Spotlight + Open Mic (+ Live teaser) · includes Design t227u reject-fix + Build t228u tabbar — prior: t212u badge / t215–217 Post create
 
 ## Phone link (workers.dev — temporary until claimed)
 
@@ -28,4 +28,4 @@
 
 - **Repo:** https://github.com/scrubdup/dbs-app
 - Rebuild Pages: `VITE_BASE=/dbs-app/ npm run build` → push `dist/` to `gh-pages` (or use Actions workflow on main)
-- Includes: brand black/red/blue (`--blue: #2f6bff`), t227u Top live stage tab (no HOME title LIVE pill), t180u song packs, splash 3s, sticky player, drawer IA, BW crop, t185u gifts
+- Includes: brand black/red/blue (`--blue: #2f6bff`), t227u Top live (no HOME title LIVE), t228u Home·Go Live·Music…, t233u/t236u/t238u house catalog (MV/Interview/BTS), splash, sticky player, drawer IA, gifts
