@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#0a0a0a" />
+  <meta name="apple-mobile-web-app-title" content="DBS" />
+  <meta name="application-name" content="DBS" />
+  <title>DBS — DatBoiSkeet</title>
+  <meta name="description" content="DBS: music, the Vault, Posts, merch, and creator network — direct from the artist." />
+  <link rel="icon" href="/favicon.ico" sizes="48x48" />
+  <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+  <link rel="icon" href="/favicon-16.png" sizes="16x16" type="image/png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <meta property="og:title" content="DBS" />
+  <meta property="og:description" content="Music, the Vault, Posts, merch — DatBoiSkeet network." />
+  <meta property="og:image" content="/og-image.png" />
+</head>
+<body>
+  <div id="splash" class="splash" aria-live="polite">
+    <img class="splash-art" src="/loading/DBS_Official_Loading_Screen.png" alt="DBS Loading" />
+    <p class="splash-credit">Made by Cox Creations</p>
+  </div>
+  <div class="demo-ribbon" id="testRibbon">TEST MODE · NO REAL CHARGES · LOCAL DEMO</div>
+  <header class="top" id="topBar">
+    <a href="#/home" class="logo" aria-label="DBS Home">
+      <img class="logo-img" src="/brand/logo-dbs-v3@2x.webp" srcset="/brand/logo-dbs-v3@1x.webp 1x, /brand/logo-dbs-v3@2x.webp 2x, /brand/logo-dbs-v3@3x.webp 3x" alt="DBS" width="86" height="58" />
+    </a>
+    <div class="top-actions">
+      <a class="pill tier-pill" id="tierPill" href="#/profile">Sign in</a>
+      <button class="icon-btn" id="notifBtn" aria-label="Notifications" title="Notifications">
+        <svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 22a2 2 0 0 0 2-2h-4a2 2 0 0 0 2 2zm6-6V11a6 6 0 1 0-12 0v5l-2 2v1h16v-1l-2-2z" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+      </button>
+      <button class="icon-btn" id="menuBtn" aria-label="Menu">
+        <svg viewBox="0 0 24 24" width="22" height="22"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </header>
+  <nav class="side" id="sideNav" aria-hidden="true"></nav>
+  <div class="scrim" id="scrim"></div>
+  <main id="app"></main>
+  <footer class="foot">
+    <p>TEST MODE: no cards charged. Catalog and merch links are demo placeholders.</p>
+    <p class="credit">Built by <a href="https://cox-creations-studio.pages.dev/" target="_blank" rel="noopener">Cox Creations Studio</a></p>
+  </footer>
+  <div class="mini-player" id="miniPlayer" aria-label="Mini player">
+    <img class="art" id="mpArt" src="/music/01_Long_Story_Short_Coming_Soon.jpg" alt="" />
+    <div class="meta">
+      <div class="mp-title" id="mpTitle">Long Story Short</div>
+      <div class="mp-sub" id="mpSub">DatBoiSkeet · Coming Soon</div>
+      <div class="prog"><i id="mpProg"></i></div>
+    </div>
+    <button class="play" id="mpPlay" aria-label="Play / Pause">▶</button>
+  </div>
+  <nav class="tabbar" id="tabbar" aria-label="Primary"></nav>
+  <div class="toast" id="toast" role="status"></div>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
