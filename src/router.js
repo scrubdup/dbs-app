@@ -15,12 +15,14 @@ export function getRoute() {
 
 export function navigate(to) {
   const href = to.startsWith('#') ? to : '#' + (to.startsWith('/') ? to : '/' + to);
-  if (location.hash === href.slice(1) || '#' + location.hash === href) {
-    // force refresh same route
+  const next = href.replace(/^#/, '');
+  const current = (location.hash || '').replace(/^#/, '');
+  if (current === next) {
+    // force refresh same route (hashchange does not fire)
     listeners.forEach((fn) => fn(getRoute()));
     return;
   }
-  location.hash = href.replace(/^#/, '');
+  location.hash = next;
 }
 
 export function onRoute(fn) {

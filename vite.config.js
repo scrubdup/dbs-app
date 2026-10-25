@@ -1,6 +1,11 @@
 import { defineConfig } from 'vite';
 
+// GitHub Pages project site: https://scrubdup.github.io/dbs-app/
+// Override with VITE_BASE=/ for root hosts (e.g. workers.dev).
+const base = process.env.VITE_BASE || (process.env.NODE_ENV === 'production' ? '/dbs-app/' : '/');
+
 export default defineConfig({
+  base,
   root: '.',
   publicDir: 'public',
   server: {
