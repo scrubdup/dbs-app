@@ -30,7 +30,12 @@ test('hash routes keep deep links, query strings and in-page anchors', () => {
 
 test('same-route navigation refreshes listeners without changing the hash', () => {
   const original = globalThis.location;
-  globalThis.location = { hash: '#/music' };
+  // Match browser Location.hash normalization (a plain object does not add '#').
+  let hash = '#/music';
+  globalThis.location = {
+    get hash() { return hash; },
+    set hash(value) { hash = value.startsWith('#') ? value : '#' + value; },
+  };
   let refreshes = 0;
   const unsubscribe = onRoute(() => refreshes++);
   try {
