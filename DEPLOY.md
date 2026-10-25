@@ -10,9 +10,9 @@
 
 - **Home:** https://scrubdup.github.io/dbs-app/#/home
 - **Messages:** https://scrubdup.github.io/dbs-app/#/messages
-- **Never expires.** Source: `gh-pages` (`39bc57a` · tip `b62da30` · t277u+Live Clips+t269u Text+t267u · **index-CtrRwU1M.js** / **index-DBwP17qe.css**)
+- **Never expires.** Source: `gh-pages` (`c647f99` · tip `ce5f561` · t269u Text `[hidden]` CSS fix · **index-Cqo3Rs-G.js** / **index-B1bmV7qo.css**)
 - Base path: `/dbs-app/`
-- **Last shipped:** tip b62da30 — t277u Game/Block Wars Coming Soon + Live Clips early + t269u/t272u Text + t267u Messages · PENDING AUDIT
+- **Last shipped:** tip ce5f561 — t269u/t272u Text media-field hide fix (re-PENDING AUDIT) · t267u DONE · t277u DONE · Live Clips DONE
 
 ## Phone link (workers.dev — temporary until claimed)
 

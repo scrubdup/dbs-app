@@ -27,6 +27,7 @@
 - Prior REJECT (`index-DO3IwXZt.js`): `.field{display:flex}` overrode UA `[hidden]`. Fix shipped: `.field[hidden], #postMediaField[hidden], #postPresets[hidden], #postMediaNote[hidden] { display:none !important; }`.
 - `#/posts` composer: **Text** type in same picker as Picture · Short · Video.
 - Caption-only; media URL / presets / note hidden on Text; `createPost({ text, mediaType: 'text' })`; feed **Text** chip.
+- Observe: `index-Cqo3Rs-G.js` / `index-B1bmV7qo.css` · gh-pages `c647f99` · main `ce5f561`
 - Evidence: `phase2/posts-text-t269u/` · forever https://scrubdup.github.io/dbs-app/#/posts?compose=1
 - Tabbar unchanged.
 

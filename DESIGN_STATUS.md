@@ -159,13 +159,13 @@ Prior Checker REJECT (`index-DO3IwXZt.js`): `.field{display:flex}` overrode `[hi
 - Composer `#composer` `.post-type-picker`: **Text** alongside Picture · Short · Video.
 - Text = caption only; media field/presets/note hidden; `createPost({ text, mediaType: 'text' })`.
 - Feed **Text** chip; lead + `data.js` blurb include Text.
-- Observe forever https://scrubdup.github.io/dbs-app/#/posts?compose=1
+- Observe: `index-Cqo3Rs-G.js` / `index-B1bmV7qo.css` · gh-pages `c647f99` · forever https://scrubdup.github.io/dbs-app/#/posts?compose=1
 - Evidence: `/workspace/dbs-evidence/phase2/posts-text-t269u/`
 - Tabbar / Block Wars untouched.
 
-## t277u — Game tab + Block Wars Coming Soon → **PENDING AUDIT**
+## t277u — Game tab + Block Wars Coming Soon → **DONE**
 
-**PENDING AUDIT** (Checker owns PASS · 2026-10-25). Owner: Design.
+**DONE** (Checker PASS · 2026-10-25 · Supervisor locked). Owner: Design.
 
 - Tabbar **Game** → `#/blockwars` Coming Soon (preview video tap-to-play · not playable).
 - Drawer **Games** · Block Wars · Coming Soon. Post drawer label includes Text.
