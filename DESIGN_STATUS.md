@@ -196,5 +196,5 @@ Prior REJECT cleared: `.field[hidden], #postMediaField[hidden], #postPresets[hid
 ### B) Block Wars lobby
 - City select NY · LA · Chicago + focus + Coming Soon + preview video + honest arena toast.
 - Evidence: `/workspace/dbs-evidence/phase2/profile-find-t298u/` + `blockwars-lobby-t298u/`
-- Observe: `index-BA6Hkbfj.js` / `index-DYSeIUqf.css` · forever https://scrubdup.github.io/dbs-app/
+- Observe: `index-BA6Hkbfj.js` / `index-DYSeIUqf.css` · gh-pages `0a43ba5` · main `3015eeb` · forever https://scrubdup.github.io/dbs-app/
 

@@ -14,8 +14,7 @@
 - Not WebGL / not playable. Full gameplay still paused.
 
 - Evidence: `phase2/profile-find-t298u/` + `phase2/blockwars-lobby-t298u/`
-- Observe: `index-BA6Hkbfj.js` / `index-DYSeIUqf.css` · forever https://scrubdup.github.io/dbs-app/
-- (gh-pages SHA filled after deploy)
+- Observe: `index-BA6Hkbfj.js` / `index-DYSeIUqf.css` · gh-pages `0a43ba5` · main `3015eeb` · forever https://scrubdup.github.io/dbs-app/
 
 
 ## Design — t290u / t291u Header Messages always + 7-tab bar → **DONE** (Checker PASS 2026-10-25)
