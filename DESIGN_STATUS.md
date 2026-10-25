@@ -132,7 +132,12 @@ Checker PASS. Every `.card`/panel gets BW-family subtle blue edge/glow; red prim
 - **t251u** `#/clippers` `#clippers-coming-soon` next to Clipper application; Profile Apply as Clipper Coming Soon chip.
 - Tabbar untouched. Evidence: `phase2/home-sell-coming-soon-t249u/checker/`.
 
-## t255u JOINT — Home daily app goal UI — READY / waiting on LS (PARTIAL)
-- Home card `#home-app-goal` above sell promo: name, USD progress bar (raised/targetAmount), time left (30s + visibility refresh), Donate 50/100/250 coins chips → `donateToGoal(goalId, amountCoins)` with TEST MODE toast.
-- Uses LS API `getAppDailyGoal` / `donateToGoal`; temporary stubs in `src/store.js` marked `/* t255u: LS will own — remove when LS lands */`.
-- No gh-pages deploy until joint ship with LS. Not DONE.
+## t255u JOINT — Home daily app goal UI → **PENDING AUDIT**
+
+**PENDING AUDIT** (Checker owns PASS · joint with Live Social + Commerce). Owner Design (Home card).
+
+- `#home-app-goal` on Home: name · USD progress (`raised`/`targetAmount`) · time left · Donate 50/100/250 coins via `donateToGoal(goalId, amountCoins)` · TEST MODE · blue accent.
+- Store: LS `getAppDailyGoal` / `donateToGoal` on main `ded7066` · Pages `c024365` · observe `index-FnZdyRFa.js` / `index-Blll5lBt.css`.
+- Evidence: `phase2/home-app-goals-t255u/` (+ LS `phase2/daily-goals-t255u/`).
+- Tabbar untouched.
+
