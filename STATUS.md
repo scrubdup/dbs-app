@@ -20,9 +20,9 @@
 - Evidence: `phase2/live-clips-early-t269u/` · MAIN_SHA `b62b343bb5b8bfdd70a1b86c77856cd7a958b314` · phone shot `live-tabs-390.png` · checker `phase2/live-clips-early-t269u/checker/ce-notes.txt`
 - Block Wars / Home / Design header / Post Text compose untouched by this slice.
 
-## Design — t269u/t272u Posts Text (words-only) → **PENDING AUDIT** (2026-10-25)
+## Design — t269u/t272u Posts Text (words-only) → **DONE** (Checker PASS 2026-10-25)
 
-**PENDING AUDIT** (re-audit after CSS `[hidden]` fix · Checker owns PASS). Alias **t272u** = t269u Post Text. Owner: Design.
+**DONE** (Checker PASS re-audit · observe `index-Cqo3Rs-G.js` / `index-B1bmV7qo.css` · gh-pages `c647f99`). Alias **t272u** = t269u Post Text. Owner: Design.
 
 - Prior REJECT (`index-DO3IwXZt.js`): `.field{display:flex}` overrode UA `[hidden]`. Fix shipped: `.field[hidden], #postMediaField[hidden], #postPresets[hidden], #postMediaNote[hidden] { display:none !important; }`.
 - `#/posts` composer: **Text** type in same picker as Picture · Short · Video.
