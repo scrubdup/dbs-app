@@ -2985,42 +2985,12 @@ a.text-link:hover { color: #7aa0ff; }
   .lg-gift { transition: none; }
 }
 
-/* t173u · Home title LIVE pill (highest-viewed live) */
-/* t227u reject fix: never show LIVE chrome in the page-head next to HOME */
-.page-head .badge-home-live,
+/* t227u: never show LIVE chrome beside HOME title */
 .page-head a.badge-phase,
 .page-head .badge-phase,
-.page-head #homeLiveBadge,
 .page-head .live-hoodie,
 .page-head .live-hoodie-pill {
   display: none !important;
-}
-.badge-home-live {
-  display: inline-flex;
-  align-items: center;
-  gap: 0;
-  text-decoration: none;
-  background: #e91916 !important;
-  color: #fff !important;
-  border-color: #c41210 !important;
-  letter-spacing: .08em;
-  padding: 5px 10px !important;
-  box-shadow: 0 2px 8px rgba(233,25,22,.4);
-}
-.badge-home-live .dot {
-  display: inline-block;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #fff;
-  margin-right: 6px;
-  box-shadow: 0 0 0 0 rgba(255,255,255,.55);
-  animation: livePulse 1.4s infinite;
-}
-.badge-home-live:hover { filter: brightness(1.08); }
-@media (prefers-reduced-motion: reduce) {
-  .badge-home-live .dot { animation: none; box-shadow: none; }
-  .badge-home-live { box-shadow: none; }
 }
 
 /* t197u · Live discovery tabs (Twitch/Kick-style) */

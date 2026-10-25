@@ -29,7 +29,7 @@ export function timeAgo(ts) {
 }
 
 export function shellPage(title, bodyHtml, opts = {}) {
-  /* badgeHtml: trusted markup (Home LIVE link). badge + optional badgeHref for plain chips. */
+  /* badgeHtml: trusted markup for rare title chips. badge + optional badgeHref for plain chips. */
   let badge = '';
   if (opts.badgeHtml) {
     badge = opts.badgeHtml;

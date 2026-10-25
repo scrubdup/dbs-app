@@ -576,7 +576,7 @@ export function bindHome(root) {
   /* t227u reject fix: hard-clear any LIVE chrome that landed in the Home page-head */
   const pageHead = root.querySelector('.page-head');
   if (pageHead) {
-    pageHead.querySelectorAll('.badge-home-live, .badge-phase, #homeLiveBadge, a.badge-phase, .live-hoodie-pill, .live-hoodie').forEach((el) => {
+    pageHead.querySelectorAll('.badge-phase, a.badge-phase, .live-hoodie-pill, .live-hoodie').forEach((el) => {
       el.remove();
     });
     pageHead.querySelectorAll('a, span, button').forEach((el) => {
@@ -588,7 +588,7 @@ export function bindHome(root) {
       /* Keep only the title text node(s); drop leftover badge children */
       [...h1.children].forEach((ch) => {
         const t = (ch.textContent || '').replace(/\s+/g, ' ').trim();
-        if (/LIVE/i.test(t) || ch.classList.contains('badge-phase') || ch.classList.contains('badge-home-live') || ch.classList.contains('live-hoodie-pill')) {
+        if (/LIVE/i.test(t) || ch.classList.contains('badge-phase') || ch.classList.contains('live-hoodie-pill')) {
           ch.remove();
         }
       });
