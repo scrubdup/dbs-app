@@ -90,7 +90,7 @@ Counts are approximate — Checker owns PASS. §§13/15/31 flipped to DONE only 
 - Header: when **signed in**, Messages replaces Sign in (`#headerMsg`) with unread badge; signed out keeps Sign in
 - Bottom tab Messages kept; badge via `getUnreadMessageCount` / `dbs:messages-unread`
 
-Evidence: `phase2/tabbar-t241u/`. Bundles this ship: see README after deploy.
+Evidence: `phase2/tabbar-t241u/`. main `2ba4f49` · gh-pages `4902ccd` · observe `index-D78kGnFr.js` / `index-eRs-bVYG.css`.
 
 ## Navigation — t212u tabbar unread badge → **DONE** (2026-10-25)
 
