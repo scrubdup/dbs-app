@@ -17,3 +17,11 @@
 3. Make minimal change on `pikk-rebrand`.
 4. Re-fetch and audit changed files; run build/browser tests when environment supports them.
 5. Record evidence, failures, and next step. Do not merge or deploy without owner approval.
+
+## Cycle 2 — GitHub Pages preparation (2026-10-25)
+- User-selected preview URL: https://scrubdup.github.io/dbs-app/#/home
+- Found Vite default configuration lacked the /dbs-app/ project base. Set `base: '/dbs-app/'` on `pikk-rebrand` and re-fetched to verify. **PASS: static configuration read-back.**
+- ZIP contains the exact approved 1169x336 JPG at `Brand_Assets/PIKK_Official_Approved_Logo.jpg`; extracted and inspected locally. Not yet uploaded into repository.
+- Existing HTML and JavaScript reference absolute `/brand/`, `/loading/`, `/music/` and similar paths. These may resolve incorrectly under GitHub Pages' /dbs-app/ prefix. **BLOCKER: audit/fix before publishing.**
+- No deployment workflow confirmed at common `.github/workflows/*pages*.yml` paths; Pages settings and published build remain unverified. Do not assume the live URL changed.
+- Next gate: correct root-relative assets, verify build, configure publishing, then validate published preview. No merge to master without owner approval.
