@@ -13,3 +13,11 @@ test('PIKK Live preserves 24/7 Open Mic and Spotlight routes', () => {
   assert.match(live, /href="#\/spotlight"/);
   assert.match(live, /renderCategoriesPanel\(\)/);
 });
+
+test('Category cards deep-link to filtered channel results, without fake live counts', () => {
+  assert.match(live, /encodeURIComponent\(name\)/);
+  assert.match(live, /getRoute\(\)\.query\?\.category/);
+  assert.match(live, /allLives\.filter/);
+  assert.match(live, /renderHotLivesRail\(category\)/);
+  assert.match(live, /No matching live channels in this category yet/);
+});
