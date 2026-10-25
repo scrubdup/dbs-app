@@ -54,11 +54,11 @@ test('same-route navigation refreshes listeners without changing the hash', () =
 
 test('preserve the seven approved navigation tabs and their order', () => {
   assert.deepEqual(TABBAR.map(({ label }) => label), [
-    'Home', 'Post', 'Music', 'Go Live', 'Videos', 'Chat', 'Game',
+    'Home', 'Music', 'Live', 'Shop', 'Dating', 'Videos', 'Profile',
   ]);
   assert.deepEqual(TABBAR.map(({ href }) => href), [
-    '#/home', '#/posts?compose=1', '#/music', '#/live?go=1',
-    '#/videos', '#/community', '#/blockwars',
+    '#/home', '#/music', '#/live', '#/shop',
+    '#/dating', '#/videos', '#/profile',
   ]);
 });
 
@@ -68,7 +68,7 @@ test('preserve developed route modules instead of the older skeleton', () => {
     '/home', '/posts', '/music', '/videos', '/live', '/messages',
     '/spotlight', '/openmic', '/giftbattles', '/multiguest',
     '/clippers', '/wallet', '/earnings', '/shop', '/rewards',
-    '/blockwars', '/connect', '/shorts', '/fanclubs',
+    '/blockwars', '/connect', '/shorts', '/fanclubs', '/dating', '/games',
   ]) {
     // /rewards is a standalone module in some branches, while this main
     // version uses the /share and /refer routes for Rewards.
