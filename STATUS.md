@@ -29,7 +29,7 @@ Legend: **DONE** = usable demo in SPA · **SHELL** = routed page with copy/UI pl
 | 19 | Official DBS Loading Screen | splash in `index.html` | DONE | Design |
 | 20 | Interactive Home Dashboard & Live Activity | `#/home` | DONE (copy polish 2026-10-25 · Content Polish) | Design |
 | 21 | Foreign X-Change Merch Showcase | `#/merch` | DONE | Design |
-| 22 | Profile Shop — Digital Cosmetics | `#/shop` | PENDING AUDIT (Design demo · phase2/shop/) | Design |
+| 22 | Profile Shop — Digital Cosmetics | `#/shop` | DONE (Checker PASS 2026-10-25 · phase2/shop/checker/) | Design |
 | 23 | Expanded Earnings & Live Gift Battles | `#/giftbattles` | DONE (Checker PASS 2026-10-25 · phase2/giftbattles/checker/) | Live Social |
 | 24 | Explore — Search & Discovery | `#/explore` | DONE (Checker PASS 2026-10-25 · phase2/explore/checker/) | Build |
 | 25 | Smart Notifications & Fan Controls | `#/notifications` | DONE | Build |
@@ -45,6 +45,7 @@ Legend: **DONE** = usable demo in SPA · **SHELL** = routed page with copy/UI pl
 | 35 | 24/7 Spotlight | `#/spotlight` | DONE (Checker PASS 2026-10-25; evidence phase2/spotlight/ + checker/) | Live Social |
 | 36 | DBS Connect — Random Video Chat | `#/connect` | DONE (Checker PASS 2026-10-25; opt-in shell only · no WebRTC · evidence phase2/connect/ + checker/) | Live Social |
 | 37 | DBS Restream — Free Multi-Platform Go Live + streamer tier campaigns | `#/restream` | DONE (Checker PASS 2026-10-25 · TEST MODE · phase2/restream/checker/) | Live Social |
+| 38 | Hot Feed — High-Engagement Posts & Lives + Admin Alerts | `#/posts` `#/live` + Admin | PENDING (user ask 2026-10-25 · Build + Live Social) | Build / Live Social |
 
 ## Counts
 
@@ -53,8 +54,8 @@ Counts below are approximate; **PENDING AUDIT** / **PARTIAL** are not DONE. Chec
 
 | Status | Count |
 | --- | --- |
-| DONE | 28 |
-| PENDING AUDIT | 4 |
+| DONE | 29 |
+| PENDING AUDIT | 3 |
 | PARTIAL | 1 |
 | SHELL | 5 |
 | TODO | 0 |
@@ -64,7 +65,7 @@ Counts are approximate — Checker owns PASS. §§13/15/31 flipped to DONE only 
 
 ## Phase 1 checklist
 
-**CLAIMABLE** (Progress Checker 2026-10-25) — evidence `phase1/` + `phase1/vault/` + `design-audit/`. §15 Lounge copy DONE (rooms still Phase 2); §22 → PENDING AUDIT (cosmetics demo · phase2/shop/).
+**CLAIMABLE** (Progress Checker 2026-10-25) — evidence `phase1/` + `phase1/vault/` + `design-audit/`. §15 Lounge copy DONE (rooms still Phase 2); §22 DONE (Checker PASS · phase2/shop/checker/).
 
 
 - [x] Loading splash (first visit)
@@ -117,7 +118,7 @@ Also folded Checker notes (non-blocking):
 - `#/videos` idb upload: hardened `data-idb-src` + `el.load()` after blob resolve; `playsinline`/`webkit-playsinline`.
 - `#/home` admin pictures badge → **From Admin** (same pattern as Music/Videos).
 
-Stopped before Messages / Explore per Supervisor (Wallet later claimed by Commerce). §22 Shop → PENDING AUDIT (phase2/shop/). `npm run build` green.
+Stopped before Messages / Explore per Supervisor (Wallet later claimed by Commerce). §22 Shop DONE (Checker PASS · phase2/shop/checker/). `npm run build` green.
 
 
 ## Checker — §3 Live + §4 Marketplace PASS (2026-10-25)
@@ -446,7 +447,7 @@ Rights gate + admin approve→showcase + not pay-to-win. Evidence `phase2/openmi
 Checker authorized DONE. Rights gate, approve/reject, showcase verified. Next: Admin follow-ups.
 
 ## Checker — §§13/15/31 Content Polish PASS (2026-10-25)
-Guidelines + Community + Launch. Evidence `content-polish/checker/`. Remaining: §17 PARTIAL, §22 PENDING AUDIT. §12 DONE.
+Guidelines + Community + Launch. Evidence `content-polish/checker/`. Remaining: §17 PARTIAL. §12 + §22 DONE.
 
 ## Build — Admin follow-ups (2026-10-25)
 Admin follow-ups (Build 2026-10-25) — Phase 2 panels on `#/admin`; §11 remains DONE.
@@ -475,4 +476,32 @@ Cosmetics demo on `#/shop`. Evidence `phase2/shop/`.
 
 ## Supervisor — §12 Development Phases (2026-10-25)
 
-**§12 → DONE.** Usable `#/phases` roadmap (Phase 1 Foundation / Phase 2 Growth / Phase 3 Live & Marketplace) with status chips tied to STATUS: §17 PARTIAL mini-player, §22 PENDING AUDIT shop called out. Drawer link next to Launch. Evidence: `/workspace/dbs-evidence/phase2/phases/`.
+**§12 → DONE.** Usable `#/phases` roadmap (Phase 1 Foundation / Phase 2 Growth / Phase 3 Live & Marketplace) with status chips tied to STATUS: §17 PARTIAL mini-player called out; §22 DONE after Checker PASS. Drawer link next to Launch. Evidence: `/workspace/dbs-evidence/phase2/phases/`.
+
+
+## §38 Hot Feed — High-Engagement surface + Admin alerts (user ask 2026-10-25)
+
+**Purpose:** Posts and Live are not only DatBoiSkeet house content. Surface **top streamers**, **pics**, and **videos** with high engagement so the network feels alive. When something spikes, **alert Admin** so DBS can comment / like / share for more engagement.
+
+**v1 demo:**
+- `#/posts`: Hot / Trending strip — posts ranked by likes+comments+shares (demo scores); mix of house + community creators (seeded).
+- `#/live`: Top streamers / hot lives rail — high viewer or gift engagement demos.
+- Admin `#/admin`: **Engagement alerts** panel — new hot items, one-tap Like / Comment (demo) / Share (copy link); mark handled.
+- Persist `dbs_v1.hotFeed` + `dbs_v1.engagementAlerts`.
+- TEST MODE honesty; no scraping third-party platforms.
+
+**Owners:** Build (Posts + Admin alerts) · Live Social (Live rail). Checker when both ping PENDING AUDIT. Evidence `phase2/hotfeed/`.
+
+## Design — §22 Profile Shop DONE confirm (2026-10-25)
+
+**§22 Profile Shop → DONE** (Checker PASS 2026-10-25 · phase2/shop/checker/). Owner: Design.
+
+Verified by Checker: 20-item catalog + chips · live Preview · Unlock TEST MODE (wallet $0 · no charge) · Equip/Unequip · starter bundle · Reset · reduce-motion · digital ≠ merch · badges cosmetic-only.
+
+Minor note (non-blocking): Unequip leaves last Preview selection until reload — Preview ≠ equipped.
+
+Evidence: `/workspace/dbs-evidence/phase2/shop/` + `phase2/shop/checker/`. No deploy / push / merge.
+
+
+## Checker — §22 Profile Shop PASS (2026-10-25)
+Unlock/equip/bundle/reset + merch honesty. Minor: preview can linger after Unequip. Evidence `phase2/shop/checker/`.

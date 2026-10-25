@@ -488,7 +488,7 @@ export function renderPhases() {
         { label: '§25 Notifications', status: 'DONE', href: '#/notifications' },
         { label: '§26 Fan Clubs', status: 'DONE', href: '#/fanclubs' },
         { label: '§28 Loyalty Club', status: 'DONE', href: '#/loyalty' },
-        { label: '§22 Profile Shop cosmetics', status: 'PENDING AUDIT', href: '#/shop', note: 'Design demo live · Checker decides PASS' },
+        { label: '§22 Profile Shop cosmetics', status: 'DONE', href: '#/shop', note: 'Checker PASS · cosmetics demo' },
       ],
     },
     {
