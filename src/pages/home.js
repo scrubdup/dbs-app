@@ -19,6 +19,7 @@ const SECTION_ICONS = {
 };
 
 const STAGE_TABS = [
+  { id: 'toplive', label: 'Top live' },
   { id: 'videos', label: 'Videos' },
   { id: 'rising', label: 'Rising' },
   { id: 'hot', label: 'Hot lives' },
@@ -78,7 +79,7 @@ function pickActivityPosts(limit = 4) {
   return out.slice(0, limit);
 }
 
-/** Highest-viewed live for Home title LIVE pill (hot seeds + active session). */
+/** Highest-viewed live for Featured Stage · Top live (hot seeds + active session). */
 function topLiveForBadge() {
   const session = getState().live;
   const candidates = listHotLives().map((l) => ({ ...l }));
@@ -103,14 +104,6 @@ function topLiveForBadge() {
   );
   return candidates[0] || null;
 }
-
-function homeLiveBadgeHtml(top) {
-  if (!top) return '';
-  const viewersLabel = fmtViewers(top.viewers);
-  const aria = `@${top.hostName || 'Creator'} · ${viewersLabel} watching`;
-  return `<a class="badge-phase badge-home-live" id="homeLiveBadge" href="#/live" aria-label="${esc(aria)}" title="${esc(aria)}"><span class="dot" aria-hidden="true"></span> LIVE</a>`;
-}
-
 
 function liveCard(l, { rising = false } = {}) {
   const tag = l.house ? 'House' : rising ? 'Rising' : 'Hot';
@@ -235,7 +228,7 @@ function readStagePref() {
     const v = sessionStorage.getItem(STAGE_PREF_KEY);
     if (STAGE_TABS.some((t) => t.id === v)) return v;
   } catch (_) {}
-  return 'videos';
+  return 'toplive';
 }
 
 function writeStagePref(id) {
@@ -394,6 +387,18 @@ export function renderHome() {
     </a>`
   ).join('');
 
+  const topLive = topLiveForBadge();
+  const topLiveInner = topLive
+    ? liveCard(topLive)
+    : `<p class="muted">No live streams right now — go Live or check Hot Feed.</p>`;
+
+  const toplivePanel = `
+    <div class="home-stage-panel${activeTab === 'toplive' ? ' on' : ''}" data-panel="toplive" role="tabpanel" id="homeTopLivePanel" ${activeTab === 'toplive' ? '' : 'hidden'}>
+      <p class="muted home-stage-lead">Top live · highest viewers right now. Red LIVE hoodie on the card · updates as rankings change.</p>
+      <div class="home-live-grid" id="homeTopLiveGrid">${topLiveInner}</div>
+      <a class="btn ghost block" href="#/live" style="margin-top:10px">Open Live</a>
+    </div>`;
+
   const videosPanel = `
     <div class="home-stage-panel${activeTab === 'videos' ? ' on' : ''}" data-panel="videos" role="tabpanel" ${activeTab === 'videos' ? '' : 'hidden'}>
       <div class="hero-video" id="homeFeaturedVideo">
@@ -449,12 +454,13 @@ export function renderHome() {
       <div class="home-stage-head">
         <div>
           <p class="kicker" style="margin:0">Featured stage</p>
-          <h2 class="home-stage-title">Videos · Rising · Hot · Songs</h2>
+          <h2 class="home-stage-title">Top live · Videos · Rising · Hot · Songs</h2>
         </div>
         <span class="chip chip-audit">TEST MODE · auto-cycle</span>
       </div>
       <div class="home-stage-tabs" role="tablist" aria-label="Featured stage">${stageTabs}</div>
       <div class="home-stage-panels">
+        ${toplivePanel}
         ${videosPanel}
         ${risingPanel}
         ${hotPanel}
@@ -549,12 +555,8 @@ export function renderHome() {
     </div>
   `;
 
-  const topLive = topLiveForBadge();
-  const liveBadgeHtml = homeLiveBadgeHtml(topLive);
-
   return shellPage('Home', body, {
-    badgeHtml: liveBadgeHtml || undefined,
-    lead: 'Featured stage · Block Wars preview · Live activity (hot lives · high-engagement posts from creators &amp; community · house updates) · Mix · Coming Soon · creator sell DEMO.',
+    lead: 'Featured stage · Top live · Block Wars preview · Live activity (hot lives · high-engagement posts from creators &amp; community · house updates) · Mix · Coming Soon · creator sell DEMO.',
   });
 }
 
@@ -622,48 +624,37 @@ export function bindHome(root) {
     syncBwOverlay();
   }
 
-  /* t173u — Home title LIVE pill tracks highest-viewed live */
-  const HOME_LIVE_BADGE_MS = 20000;
-  function refreshHomeLiveBadge() {
-    const h1 = root.querySelector('.page-head h1');
-    if (!h1 || !document.body.contains(h1)) return false;
+  /* t227u — Top live panel tracks highest-viewed live (~20s) */
+  const HOME_TOP_LIVE_MS = 20000;
+  function refreshTopLivePanel() {
+    const grid = root.querySelector('#homeTopLiveGrid');
+    if (!grid || !document.body.contains(grid)) return false;
     const top = topLiveForBadge();
-    let el = root.querySelector('#homeLiveBadge');
-    if (!top) {
-      el?.remove();
-      return true;
-    }
-    const html = homeLiveBadgeHtml(top);
-    if (el) {
-      const tmp = document.createElement('div');
-      tmp.innerHTML = html;
-      const next = tmp.firstElementChild;
-      if (next) el.replaceWith(next);
-    } else {
-      h1.insertAdjacentHTML('beforeend', ' ' + html);
-    }
+    grid.innerHTML = top
+      ? liveCard(top)
+      : `<p class="muted">No live streams right now — go Live or check Hot Feed.</p>`;
     return true;
   }
-  let liveBadgeTimer = setInterval(() => {
-    if (!refreshHomeLiveBadge()) {
-      clearInterval(liveBadgeTimer);
-      liveBadgeTimer = null;
+  let topLiveTimer = setInterval(() => {
+    if (!refreshTopLivePanel()) {
+      clearInterval(topLiveTimer);
+      topLiveTimer = null;
     }
-  }, HOME_LIVE_BADGE_MS);
+  }, HOME_TOP_LIVE_MS);
   const onVis = () => {
-    if (document.visibilityState === 'visible') refreshHomeLiveBadge();
+    if (document.visibilityState === 'visible') refreshTopLivePanel();
   };
   document.addEventListener('visibilitychange', onVis);
-  window.addEventListener('focus', refreshHomeLiveBadge);
+  window.addEventListener('focus', refreshTopLivePanel);
 
   /* §39 stage tabs + auto-cycle */
   const stage = root.querySelector('#homeFeaturedStage');
   if (!stage) {
     const obsEarly = new MutationObserver(() => {
       if (!document.body.contains(root)) {
-        if (liveBadgeTimer) clearInterval(liveBadgeTimer);
+        if (topLiveTimer) clearInterval(topLiveTimer);
         document.removeEventListener('visibilitychange', onVis);
-        window.removeEventListener('focus', refreshHomeLiveBadge);
+        window.removeEventListener('focus', refreshTopLivePanel);
         obsEarly.disconnect();
       }
     });
@@ -684,7 +675,7 @@ export function bindHome(root) {
     document.body?.classList?.contains('reduce-motion');
 
   function showStage(id) {
-    if (!STAGE_TABS.some((t) => t.id === id)) id = 'videos';
+    if (!STAGE_TABS.some((t) => t.id === id)) id = 'toplive';
     stage.dataset.active = id;
     writeStagePref(id);
     tabs.forEach((t) => {
@@ -702,7 +693,7 @@ export function bindHome(root) {
 
   function nextStage() {
     const ids = STAGE_TABS.map((t) => t.id);
-    const cur = stage.dataset.active || 'videos';
+    const cur = stage.dataset.active || 'toplive';
     const i = ids.indexOf(cur);
     showStage(ids[(i + 1) % ids.length]);
   }
@@ -743,12 +734,12 @@ export function bindHome(root) {
   const obs = new MutationObserver(() => {
     if (!document.body.contains(stage)) {
       stopCycle();
-      if (liveBadgeTimer) {
-        clearInterval(liveBadgeTimer);
-        liveBadgeTimer = null;
+      if (topLiveTimer) {
+        clearInterval(topLiveTimer);
+        topLiveTimer = null;
       }
       document.removeEventListener('visibilitychange', onVis);
-      window.removeEventListener('focus', refreshHomeLiveBadge);
+      window.removeEventListener('focus', refreshTopLivePanel);
       obs.disconnect();
     }
   });

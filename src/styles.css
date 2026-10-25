@@ -2391,6 +2391,17 @@ a.text-link:hover { color: #7aa0ff; }
 .home-stage-panel.on { display: block; }
 .home-stage-panel[hidden] { display: none !important; }
 
+/* t227u — Top live panel (Featured Stage first tab) */
+.home-stage-panel[data-panel="toplive"] .home-live-grid {
+  max-width: 420px;
+}
+.home-stage-panel[data-panel="toplive"] .home-live-card {
+  /* card already has triad blue edge; slight lift for #1 */
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--blue) 28%, transparent),
+    0 8px 28px rgba(47, 107, 255, 0.12);
+}
+
 
 /* Shared LIVE hoodie badges (Twitch/Kick-style) — Home + Live Social */
 .live-hoodie {
