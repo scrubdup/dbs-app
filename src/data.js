@@ -121,14 +121,16 @@ export const VIDEOS = [
     youtube: 'https://www.youtube.com/watch?v=sADinuRcRr4',
     embed: 'https://www.youtube.com/embed/sADinuRcRr4',
   },
-  // User-pasted official Mix (t96u) — YouTube Mix playlist; stream original only
+  // Mixes: embed stable official channel Music Videos playlist (oEmbed author DatBoiSkeet).
+  // User t96u RD Mix (RDEMDY…) does not embed/oEmbed in Checker — kept as openLink only.
   {
     id: 'dbs-mix',
     title: 'DatBoiSkeet Mix',
     artist: 'DatBoiSkeet',
     category: 'Mixes',
-    youtube: 'https://www.youtube.com/playlist?list=RDEMDYIvPhQWVGU3Zf3gcxT_4w',
-    embed: 'https://www.youtube.com/embed/videoseries?list=RDEMDYIvPhQWVGU3Zf3gcxT_4w',
+    youtube: 'https://www.youtube.com/playlist?list=PLC6_HdjaVaQERro-n6XWI2ECIC4crgf4t',
+    embed: 'https://www.youtube.com/embed/videoseries?list=PLC6_HdjaVaQERro-n6XWI2ECIC4crgf4t',
+    openLink: 'https://www.youtube.com/playlist?list=RDEMDYIvPhQWVGU3Zf3gcxT_4w',
   },
   {
     id: 'on-the-radar',
@@ -145,10 +147,11 @@ export const YOUTUBE_MIXES = [
   {
     id: 'dbs-mix',
     title: 'DatBoiSkeet Mix',
-    blurb: 'Official DatBoiSkeet Mix on YouTube — streams from the original playlist (not rehosted).',
-    youtube: 'https://www.youtube.com/playlist?list=RDEMDYIvPhQWVGU3Zf3gcxT_4w',
-    embed: 'https://www.youtube.com/embed/videoseries?list=RDEMDYIvPhQWVGU3Zf3gcxT_4w',
-    source: 'user-t96u',
+    blurb: 'Official channel Music Videos playlist embed (stable). YouTube Radio Mix link kept as Play on YouTube — RD mixes often fail to embed.',
+    youtube: 'https://www.youtube.com/playlist?list=PLC6_HdjaVaQERro-n6XWI2ECIC4crgf4t',
+    embed: 'https://www.youtube.com/embed/videoseries?list=PLC6_HdjaVaQERro-n6XWI2ECIC4crgf4t',
+    openLink: 'https://www.youtube.com/playlist?list=RDEMDYIvPhQWVGU3Zf3gcxT_4w',
+    source: 'channel-pl-music-videos + user-t96u openLink',
   },
 ];
 
@@ -489,42 +492,88 @@ export const HOME_SECTIONS = [
   { route: '/clippers', title: 'Clippers', blurb: 'Apply · cut clips · earn' },
 ];
 
-/** Drawer / side nav entries */
-export const DRAWER_LINKS = [
-  { href: '#/home', label: 'Home' },
-  { href: '#/posts', label: 'Posts' },
-  { href: '#/music', label: 'Music & Vault' },
-  { href: '#/videos', label: 'Videos' },
-  { href: '#/merch', label: 'Foreign X-Change Merch' },
-  { href: '#/live', label: 'Live' },
-  { href: '#/restream', label: 'Restream' },
-  { href: '#/explore', label: 'Explore' },
-  { href: '#/spotlight', label: '24/7 Spotlight' },
-  { href: '#/connect', label: 'Connect' },
-  { href: '#/clippers', label: 'Clippers Apply' },
-  { href: '#/marketplace', label: 'Marketplace' },
-  { href: '#/missions', label: 'Missions' },
-  { href: '#/messages', label: 'Messages' },
-  { href: '#/shop', label: 'Profile Shop' },
-  { href: '#/wallet', label: 'Wallet' },
-  { href: '#/earnings', label: 'Creator Earnings' },
-  { href: '#/loyalty', label: 'Loyalty Club' },
-  { href: '#/fanclubs', label: 'Fan Clubs' },
-  { href: '#/community', label: 'Community / Lounge' },
-  { href: '#/openmic', label: 'Open Mic' },
-  { href: '#/share', label: 'Share & Earn' },
-  { href: '#/refer', label: 'Refer & Earn' },
-  { href: '#/giftbattles', label: 'Gift Battles' },
-  { href: '#/multiguest', label: 'Multi-Guest Live' },
-  { href: '#/notifications', label: 'Notifications' },
-  { href: '#/pricing', label: 'Pricing' },
-  { href: '#/signup', label: 'Signup / Creator Apps' },
-  { href: '#/guidelines', label: 'Community Guidelines' },
-  { href: '#/admin', label: 'Admin' },
-  { href: '#/phases', label: 'Development Phases' },
-  { href: '#/launch', label: 'Launch Readiness' },
-  { href: '#/profile', label: 'Profile' },
+/** Drawer / side nav — grouped accordion (≤8 top-level). */
+export const DRAWER_GROUPS = [
+  { id: 'home', label: 'Home', href: '#/home' },
+  {
+    id: 'watch',
+    label: 'Watch',
+    links: [
+      { href: '#/videos', label: 'Videos' },
+      { href: '#/live', label: 'Live' },
+      { href: '#/restream', label: 'Restream' },
+      { href: '#/openmic', label: 'Open Mic / Talent Discovery (24/7)' },
+      { href: '#/spotlight', label: 'Spotlight (24/7)' },
+      { href: '#/multiguest', label: 'Multi-Guest Live' },
+    ],
+  },
+  {
+    id: 'music',
+    label: 'Music',
+    links: [
+      { href: '#/music', label: 'Music & Vault' },
+    ],
+  },
+  {
+    id: 'social',
+    label: 'Social',
+    links: [
+      { href: '#/posts', label: 'Posts' },
+      { href: '#/explore', label: 'Explore' },
+      { href: '#/notifications', label: 'Notifications' },
+      { href: '#/connect', label: 'Connect' },
+      { href: '#/community', label: 'Community / Lounge' },
+    ],
+  },
+  { id: 'messages', label: 'Messages', href: '#/messages' },
+  {
+    id: 'shop',
+    label: 'Shop',
+    links: [
+      { href: '#/merch', label: 'Foreign X-Change Merch' },
+      { href: '#/marketplace', label: 'Marketplace' },
+      { href: '#/shop', label: 'Profile Shop' },
+    ],
+  },
+  {
+    id: 'earn',
+    label: 'Creators & Earnings',
+    links: [
+      { href: '#/wallet', label: 'Wallet' },
+      { href: '#/earnings', label: 'Creator Earnings' },
+      { href: '#/missions', label: 'Missions' },
+      { href: '#/clippers', label: 'Clippers Apply' },
+      { href: '#/share', label: 'Share & Earn' },
+      { href: '#/refer', label: 'Refer & Earn' },
+      { href: '#/pricing', label: 'Pricing (rules & fees)' },
+    ],
+  },
+  {
+    id: 'account',
+    label: 'Account',
+    links: [
+      { href: '#/profile', label: 'Profile' },
+      { href: '#/signup', label: 'Signup / Creator Apps' },
+      { href: '#/loyalty', label: 'Loyalty Club' },
+      { href: '#/fanclubs', label: 'Fan Clubs' },
+      { href: '#/guidelines', label: 'Community Guidelines' },
+    ],
+  },
+  {
+    id: 'studio',
+    label: 'Studio / Owner',
+    links: [
+      { href: '#/admin', label: 'Admin' },
+      { href: '#/phases', label: 'Development Phases' },
+      { href: '#/launch', label: 'Launch Readiness' },
+    ],
+  },
 ];
+
+/** Flat drawer links (compat) — derived from DRAWER_GROUPS. */
+export const DRAWER_LINKS = DRAWER_GROUPS.flatMap((g) =>
+  g.href ? [{ href: g.href, label: g.label }] : (g.links || [])
+);
 
 /** Bottom nav per plan §8: Home | Music | Videos | Live | Profile */
 export const TABBAR = [

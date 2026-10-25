@@ -50,7 +50,7 @@ function renderSignIn() {
       <p class="muted">Gift battles need a local demo account so scores and history persist on this device.</p>
       <a class="btn primary" href="#/profile">Sign in</a>
     </div>`,
-    { lead: '60s viewer gift battles · voluntary support · TEST MODE' }
+    { lead: 'Runs during Live · not a separate stream · voluntary support · TEST MODE' }
   );
 }
 
@@ -58,6 +58,7 @@ function renderRules() {
   return `
     <div class="card gb-rules">
       <h3>How Gift Battles work</h3>
+      <p class="muted" style="margin:0 0 10px;font-size:12px">Runs <strong>during Live</strong> — not its own stream product. Deep-link demo stays here.</p>
       <ul class="gb-rules-list">
         <li><strong>60-second</strong> viewer vs viewer countdown during a live (or sandbox demo).</li>
         <li>Gifts &amp; tips are <strong>voluntary fan support</strong> to the creator — <strong>not wagers</strong>.</li>
@@ -313,7 +314,7 @@ export function renderGiftBattles() {
   `;
 
   return shellPage('Gift Battles', body, {
-    lead: '60s gift battles · voluntary support · not wagers · TEST MODE',
+    lead: 'Runs during Live · not a separate stream · 60s voluntary gift battles · not wagers · TEST MODE',
     badge: battle?.status === 'active' ? 'BATTLE' : champ ? 'CHAMP' : undefined,
   });
 }

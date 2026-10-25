@@ -29,9 +29,22 @@ export function timeAgo(ts) {
 }
 
 export function shellPage(title, bodyHtml, opts = {}) {
-  const badge = opts.badge
-    ? `<span class="badge-phase">${esc(opts.badge)}</span>`
-    : '';
+  /* badgeHtml: trusted markup (Home LIVE link). badge + optional badgeHref for plain chips. */
+  let badge = '';
+  if (opts.badgeHtml) {
+    badge = opts.badgeHtml;
+  } else if (opts.badge) {
+    const label = esc(opts.badge);
+    const aria = opts.badgeAria ? ` aria-label="${esc(opts.badgeAria)}"` : '';
+    const titleAttr = opts.badgeTitle || opts.badgeAria
+      ? ` title="${esc(opts.badgeTitle || opts.badgeAria)}"`
+      : '';
+    if (opts.badgeHref) {
+      badge = `<a class="badge-phase"${aria}${titleAttr} href="${esc(opts.badgeHref)}">${label}</a>`;
+    } else {
+      badge = `<span class="badge-phase"${aria}${titleAttr}>${label}</span>`;
+    }
+  }
   const lead = opts.lead ? `<p class="lead">${opts.lead}</p>` : '';
   return `
     <section class="page">
@@ -53,3 +66,12 @@ export const ICONS = {
   live: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" fill="currentColor"/><circle cx="12" cy="12" r="7" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".5"/></svg>',
   profile: '<svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M5 19a7 7 0 0 1 14 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
 };
+
+
+/** Append query params to a YouTube embed URL without breaking ?list= playlists. */
+export function ytEmbedSrc(embed, extra = 'rel=0') {
+  const base = String(embed || '').trim();
+  if (!base) return '';
+  const join = base.includes('?') ? '&' : '?';
+  return `${base}${join}${extra}`;
+}

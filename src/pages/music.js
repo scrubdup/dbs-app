@@ -16,9 +16,10 @@ import {
   purchaseTrack,
   listCatalog,
 } from '../store.js';
-import { esc, shellPage, toast } from '../ui.js';
+import { esc, shellPage, toast, ytEmbedSrc } from '../ui.js';
 import { navigate } from '../router.js';
 import { resolveMediaSrc } from '../media-db.js';
+import { bindPageYoutubeEmbeds } from '../player.js';
 
 function refresh(hash) {
   navigate(hash || '#/music');
@@ -240,7 +241,7 @@ export function renderMusic() {
           (m) => `
           <article class="yt-mix-card">
             <div class="hero-video" style="margin:0 0 10px">
-              <iframe src="${esc(m.embed)}?rel=0" title="${esc(m.title)}" allowfullscreen loading="lazy"
+              <iframe src="${esc(ytEmbedSrc(m.embed))}" title="${esc(m.title)}" allowfullscreen loading="lazy"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
             </div>
             <h3 style="margin:0 0 6px">${esc(m.title)}</h3>
@@ -324,6 +325,9 @@ export function renderMusic() {
 }
 
 export function bindMusic(root) {
+  // §17: Mix embeds → IFrame API interrupt; Stream Everywhere / Open links do not pause
+  const mixRoot = root.querySelector('#youtube-mixes') || root;
+  bindPageYoutubeEmbeds(mixRoot);
   root.querySelectorAll('.mem-toggle').forEach((btn) => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();

@@ -18,10 +18,16 @@ const defaultState = () => ({
   comments: {}, // postId -> [{ id, userId, username, text, at }]
   likes: {}, // postId -> [userId]
   clipperApps: [],
+  creatorSellApps: [], // t172u · Pricing apply form (TEST MODE)
   brandApps: [],
   listings: [], // sponsored marketplace listings (demo)
   live: null, // { id, hostId, hostName, title, startedAt, chat, viewers, giftsTotal, tipsTotal, endedAt? }
   liveHistory: [], // ended demo streams (cap 20)
+  // t180u · Song requests during Live (append-only)
+  liveSongRequests: [], // { id, liveId, hostId, userId, username, pack, price, titles[], songStatuses[], status, at, charged }
+  // t185u · Live gifts coins (separate from USD fan wallet)
+  coins: { balance: 0, history: [] }, // { at, amount, note, kind?: 'buy'|'gift'|'adjust' }
+  liveGiftLedger: [], // append-only gift sends · Commerce/Earnings reads creatorShare
   threads: {}, // threadId -> { id, peerId, peerName, messages, kind?, muted?, blocked?, reportedAt? }
   messagePrefs: { allowDMs: true, allowRequests: true },
   notifications: {
@@ -109,6 +115,16 @@ const defaultState = () => ({
     equipped: {}, // { frame?, effect?, banner?, nameStyle?, badge? }
     reduceMotion: false,
   },
+  // §38 Hot Feed — Build (posts) + Live Social (lives) · append-only
+  hotFeed: {
+    lives: [], // Live Social owns seed/rank · { id, hostId, hostName, title, viewers, giftsTotal, house, spikedAt?, score }
+    posts: [], // Build owns · ranked hot posts
+    seededLives: false,
+    seededPosts: false,
+    seededPostsVer: 0, // t172u · bump community engagement reseed
+  },
+  engagementAlerts: [], // { id, kind:'live'|'post', refId, title, username, score, viewers?, gifts?, at, handledAt?, handledNote? }
+  postShares: {}, // postId -> share count (demo)
   splashSeenAt: 0,
 });
 
@@ -147,6 +163,12 @@ function load() {
       listings: Array.isArray(parsed.listings) ? parsed.listings : [],
       live: parsed.live ?? null,
       liveHistory: Array.isArray(parsed.liveHistory) ? parsed.liveHistory : [],
+      liveSongRequests: Array.isArray(parsed.liveSongRequests) ? parsed.liveSongRequests : [],
+      coins: {
+        balance: Number(parsed.coins?.balance) || 0,
+        history: Array.isArray(parsed.coins?.history) ? parsed.coins.history : [],
+      },
+      liveGiftLedger: Array.isArray(parsed.liveGiftLedger) ? parsed.liveGiftLedger : [],
       threads: { ...(parsed.threads || {}) },
       messagePrefs: { ...base.messagePrefs, ...(parsed.messagePrefs || {}) },
       catalog: Array.isArray(parsed.catalog) ? parsed.catalog : [],
@@ -261,6 +283,19 @@ function load() {
             : {},
         reduceMotion: !!parsed.profileShop?.reduceMotion,
       },
+      hotFeed: {
+        ...base.hotFeed,
+        ...(parsed.hotFeed || {}),
+        lives: Array.isArray(parsed.hotFeed?.lives) ? parsed.hotFeed.lives : [],
+        posts: Array.isArray(parsed.hotFeed?.posts) ? parsed.hotFeed.posts : [],
+        seededLives: !!parsed.hotFeed?.seededLives,
+        seededPosts: !!parsed.hotFeed?.seededPosts,
+        seededPostsVer: Number(parsed.hotFeed?.seededPostsVer) || 0,
+      },
+      engagementAlerts: Array.isArray(parsed.engagementAlerts) ? parsed.engagementAlerts : [],
+      postShares:
+        parsed.postShares && typeof parsed.postShares === 'object' ? parsed.postShares : {},
+      creatorSellApps: Array.isArray(parsed.creatorSellApps) ? parsed.creatorSellApps : [],
     };
   } catch {
     return defaultState();
@@ -526,6 +561,7 @@ export function toggleLike(postId) {
   else list.add(user.id);
   state = { ...state, likes: { ...state.likes, [postId]: [...list] } };
   save(state);
+  try { refreshHotFeed(); } catch (_) {}
   return { count: list.size, liked: list.has(user.id) };
 }
 
@@ -542,6 +578,7 @@ export function addComment(postId, text) {
   const prev = state.comments[postId] || [];
   state = { ...state, comments: { ...state.comments, [postId]: [...prev, c] } };
   save(state);
+  try { refreshHotFeed(); } catch (_) {}
   return c;
 }
 
@@ -596,6 +633,30 @@ export function submitClipperApp(form) {
   state = { ...state, clipperApps: [app, ...state.clipperApps] };
   save(state);
   return app;
+}
+
+/** t172u · Creator sell apply on Pricing (TEST MODE · localStorage only). */
+export function submitCreatorSellApp(form) {
+  const f = form || {};
+  const name = String(f.name || '').trim().slice(0, 80);
+  const contact = String(f.contact || f.email || f.handle || '').trim().slice(0, 120);
+  const sells = String(f.sells || 'both').trim().slice(0, 40);
+  const agreed = !!f.agreed;
+  if (!name || !contact) return { error: 'missing' };
+  if (!agreed) return { error: 'rules' };
+  const app = {
+    id: 'csa_' + Date.now().toString(36),
+    name,
+    contact,
+    sells: ['music', 'merch', 'both'].includes(sells) ? sells : 'both',
+    agreed: true,
+    status: 'pending',
+    at: Date.now(),
+  };
+  const creatorSellApps = [app, ...(state.creatorSellApps || [])].slice(0, 40);
+  state = { ...state, creatorSellApps };
+  save(state);
+  return { ok: true, app };
 }
 
 export function setClipperStatus(appId, status) {
@@ -896,6 +957,446 @@ export function sendLiveSupport({ kind = 'tip', amount = 1, label = '' } = {}) {
 
 export function getLiveHistory() {
   return state.liveHistory || [];
+}
+
+/** t180u · Song request packs during Live (TEST MODE) */
+export const LIVE_SONG_REQUEST_PACKS = [
+  { pack: 1, price: 10, label: '1 song', save: 0 },
+  { pack: 2, price: 25, label: '2 songs', save: 0 },
+  { pack: 3, price: 45, label: '3 songs', save: 5 }, // Save $5 vs $50
+];
+
+function songRequestBucket() {
+  return Array.isArray(state.liveSongRequests) ? state.liveSongRequests : [];
+}
+
+export function listLiveSongRequests(liveId) {
+  const id = liveId || state.live?.id;
+  if (!id) return [];
+  return songRequestBucket().filter((r) => r.liveId === id);
+}
+
+/** Flatten queue items for a live (one row per song title). */
+export function listLiveSongRequestQueue(liveId) {
+  const rows = [];
+  for (const req of listLiveSongRequests(liveId)) {
+    (req.titles || []).forEach((title, idx) => {
+      rows.push({
+        requestId: req.id,
+        songIndex: idx,
+        title,
+        status: (req.songStatuses && req.songStatuses[idx]) || 'queued',
+        username: req.username,
+        userId: req.userId,
+        pack: req.pack,
+        price: req.price,
+        at: req.at,
+      });
+    });
+  }
+  return rows;
+}
+
+/**
+ * Submit a paid song request during an active live.
+ * Debits fan wallet (TEST MODE). Requires exact pack size titles.
+ */
+export function submitLiveSongRequest({ pack, titles } = {}) {
+  const user = state.user;
+  if (!user) return { error: 'signin' };
+  if (!state.live || state.live.endedAt) return { error: 'offline' };
+  const packDef = LIVE_SONG_REQUEST_PACKS.find((p) => p.pack === Number(pack));
+  if (!packDef) return { error: 'bad_pack' };
+  const cleaned = (Array.isArray(titles) ? titles : [])
+    .map((t) => String(t || '').trim().slice(0, 80))
+    .filter(Boolean);
+  if (cleaned.length !== packDef.pack) {
+    return { error: 'title_count', need: packDef.pack, got: cleaned.length };
+  }
+  const spent = spendWallet(
+    packDef.price,
+    `Song request ×${packDef.pack} · ${state.live.title} · TEST MODE`
+  );
+  if (spent?.error === 'insufficient') {
+    return {
+      error: 'insufficient',
+      need: packDef.price,
+      balance: Number(state.wallet?.balance || 0),
+    };
+  }
+  const entry = {
+    id: 'lsr_' + Date.now().toString(36),
+    liveId: state.live.id,
+    hostId: state.live.hostId,
+    userId: user.id,
+    username: user.username,
+    pack: packDef.pack,
+    price: packDef.price,
+    titles: cleaned,
+    songStatuses: cleaned.map(() => 'queued'),
+    status: 'open',
+    at: Date.now(),
+    charged: packDef.price,
+  };
+  const liveSongRequests = [entry, ...songRequestBucket()].slice(0, 200);
+  const chatMsg = {
+    id: 'lc_' + Date.now().toString(36) + 'sr',
+    userId: user.id,
+    username: user.username,
+    text: `requested ${packDef.pack} song${packDef.pack > 1 ? 's' : ''} ($${packDef.price}) · TEST MODE`,
+    at: Date.now(),
+    support: true,
+  };
+  const live = {
+    ...state.live,
+    chat: [...(state.live.chat || []), chatMsg],
+  };
+  state = { ...state, liveSongRequests, live };
+  save(state);
+  // Creator share — song requests use tips-like 90/10 in TEST MODE
+  creditCreatorEarning({
+    category: 'tips',
+    gross: packDef.price,
+    note: `Song request ×${packDef.pack} from @${user.username} · ${state.live.title}`,
+    source: 'live_song_request',
+  });
+  return { ok: true, entry, wallet: state.wallet, live: state.live };
+}
+
+/** Host Play / Skip a queued song on the active (or given) live. */
+export function updateLiveSongRequestSong(requestId, songIndex, nextStatus) {
+  const user = state.user;
+  if (!user) return { error: 'signin' };
+  const allowed = ['playing', 'played', 'skipped', 'queued'];
+  if (!allowed.includes(nextStatus)) return { error: 'bad_status' };
+  const idx = songRequestBucket().findIndex((r) => r.id === requestId);
+  if (idx < 0) return { error: 'missing' };
+  const req = songRequestBucket()[idx];
+  const live = state.live;
+  const isHost =
+    (live && live.hostId === user.id && live.id === req.liveId) || user.id === req.hostId;
+  if (!isHost && !isAdmin()) return { error: 'host_only' };
+  const si = Number(songIndex);
+  if (!Number.isInteger(si) || si < 0 || si >= (req.titles || []).length) {
+    return { error: 'bad_index' };
+  }
+  let songStatuses = [...(req.songStatuses || req.titles.map(() => 'queued'))];
+  // Only one playing at a time per live — demote other playing → played
+  if (nextStatus === 'playing') {
+    const updatedAll = songRequestBucket().map((r) => {
+      if (r.liveId !== req.liveId) return r;
+      const ss = [...(r.songStatuses || (r.titles || []).map(() => 'queued'))];
+      let changed = false;
+      for (let i = 0; i < ss.length; i++) {
+        if (ss[i] === 'playing') {
+          ss[i] = 'played';
+          changed = true;
+        }
+      }
+      if (!changed) return r;
+      const allDone = ss.every((s) => s === 'played' || s === 'skipped');
+      return { ...r, songStatuses: ss, status: allDone ? 'done' : 'open' };
+    });
+    state = { ...state, liveSongRequests: updatedAll };
+    songStatuses = [...(state.liveSongRequests[idx]?.songStatuses || songStatuses)];
+  }
+  songStatuses[si] = nextStatus;
+  const allDone = songStatuses.every((s) => s === 'played' || s === 'skipped');
+  const nextReq = {
+    ...state.liveSongRequests[idx],
+    songStatuses,
+    status: allDone ? 'done' : 'open',
+  };
+  const liveSongRequests = [...state.liveSongRequests];
+  liveSongRequests[idx] = nextReq;
+  state = { ...state, liveSongRequests };
+  save(state);
+  return { ok: true, entry: nextReq };
+}
+
+export function playLiveSongRequest(requestId, songIndex) {
+  return updateLiveSongRequestSong(requestId, songIndex, 'playing');
+}
+
+export function skipLiveSongRequest(requestId, songIndex) {
+  return updateLiveSongRequestSong(requestId, songIndex, 'skipped');
+}
+
+export function completeLiveSongRequest(requestId, songIndex) {
+  return updateLiveSongRequestSong(requestId, songIndex, 'played');
+}
+
+/** t185u · Live gifts catalog (from docs/gifts/gifts_catalog.csv) · coins @ 100 = $2 */
+export const LIVE_GIFT_CATALOG = [
+  { slug: 'rose', name: 'DBS Rose', coins: 5, usd: 0.1, animation: 'Rotating glossy rose and petals', tier: 'small' },
+  { slug: 'big-love', name: 'Big Love', coins: 25, usd: 0.5, animation: 'Pulsing luminous heart', tier: 'small' },
+  { slug: 'turn-up', name: 'Turn Up', coins: 50, usd: 1, animation: 'Flame burst and DBS sparks', tier: 'small' },
+  { slug: 'cash-rain', name: 'Cash Rain', coins: 150, usd: 3, animation: 'Stylized bills and confetti', tier: 'mid' },
+  { slug: 'bottle-pop', name: 'Bottle Pop', coins: 300, usd: 6, animation: 'Bottle pop and confetti', tier: 'mid' },
+  { slug: 'money-gun', name: 'Money Gun', coins: 750, usd: 15, animation: 'Stylized cash launcher', tier: 'premium' },
+  { slug: 'diamond-drip', name: 'Diamond Drip', coins: 1500, usd: 30, animation: 'Rotating diamond', tier: 'premium' },
+  { slug: 'foreign-whip', name: 'Foreign Whip', coins: 3000, usd: 60, animation: 'Original luxury vehicle drives across screen', tier: 'premium' },
+  { slug: 'helicopter', name: 'Helicopter', coins: 5000, usd: 100, animation: 'Helicopter spotlight flyover', tier: 'cinematic' },
+  { slug: 'private-jet', name: 'Private Jet', coins: 10000, usd: 200, animation: 'Jet cinematic flyover', tier: 'cinematic' },
+  { slug: 'dbs-crown', name: 'DBS Crown', coins: 25000, usd: 500, animation: 'Gold diamond crown', tier: 'cinematic' },
+  { slug: 'dbs-universe', name: 'DBS Universe', coins: 50000, usd: 1000, animation: 'Galaxy DBS logo reveal', tier: 'cinematic' },
+];
+
+/** Coin packages — transparent pricing, no discount assumed (TEST MODE local credit) */
+export const COIN_PACKAGES = [
+  { coins: 100, usd: 2 },
+  { coins: 500, usd: 10 },
+  { coins: 1000, usd: 20 },
+  { coins: 2500, usd: 50 },
+  { coins: 5000, usd: 100 },
+  { coins: 10000, usd: 200 },
+];
+
+/** Confirm spend at Money Gun+ (≥750 coins / ≥$15) */
+export const LIVE_GIFT_CONFIRM_COINS = 750;
+
+const GIFT_CREATOR_PCT = 80;
+const GIFT_DBS_PCT = 20;
+
+function normalizeCoins(raw) {
+  return {
+    balance: Math.max(0, Number(raw?.balance) || 0),
+    history: Array.isArray(raw?.history) ? raw.history : [],
+  };
+}
+
+export function getCoinBalance() {
+  return normalizeCoins(state.coins).balance;
+}
+
+export function listCoinPacks() {
+  return COIN_PACKAGES.map((p) => ({ ...p }));
+}
+
+/** Alias for Commerce Wallet UI */
+export function listLiveGiftCatalog() {
+  return LIVE_GIFT_CATALOG.map((g) => ({ ...g }));
+}
+
+export function getGiftCatalog() {
+  return listLiveGiftCatalog();
+}
+
+/**
+ * Buy coins package — TEST MODE local credit (no real processor).
+ * @param {number} packageCoins — must match COIN_PACKAGES.coins
+ */
+export function buyCoins(packageCoins) {
+  const pack = COIN_PACKAGES.find((p) => p.coins === Number(packageCoins));
+  if (!pack) return { error: 'bad_package' };
+  const coins = normalizeCoins(state.coins);
+  const entry = {
+    at: Date.now(),
+    amount: pack.coins,
+    note: `Bought ${pack.coins} coins ($${pack.usd}) · TEST MODE`,
+    kind: 'buy',
+    packageCoins: pack.coins,
+    usd: pack.usd,
+  };
+  const next = {
+    balance: coins.balance + pack.coins,
+    history: [entry, ...coins.history].slice(0, 200),
+  };
+  state = { ...state, coins: next };
+  save(state);
+  return { ok: true, coins: next, pack, entry };
+}
+
+/** Compatibility alias — packId `pack_100` or raw coin count */
+export function purchaseCoinPack(packId) {
+  const n = Number(String(packId).replace(/^pack_/, ''));
+  return buyCoins(n);
+}
+
+function giftLedgerBucket() {
+  return Array.isArray(state.liveGiftLedger) ? state.liveGiftLedger : [];
+}
+
+/**
+ * Viewer-safe gift history for a live (no revenue split fields).
+ * Creator/admin should use listCreatorGiftEarnings / liveGiftLedger.
+ */
+export function listLiveGiftHistory(liveId) {
+  const id = liveId || state.live?.id;
+  if (!id) return [];
+  return giftLedgerBucket()
+    .filter((g) => g.liveId === id)
+    .map((g) => ({
+      id: g.id,
+      liveId: g.liveId,
+      giftSlug: g.giftSlug,
+      giftName: g.giftName,
+      coins: g.coins,
+      usd: g.usd,
+      fromUserId: g.fromUserId,
+      fromUser: g.fromUser,
+      at: g.at,
+      animation: g.animation,
+      tier: g.tier,
+    }));
+}
+
+/** Creator-facing gift earnings (includes 80/20 split). Optional userId filter unused in single-demo wallet. */
+export function listCreatorGiftEarnings(userId) {
+  const cw = normalizeCreatorWallet(state.creatorWallet);
+  let rows = (cw.earnings || []).filter((e) => e.category === 'gifts');
+  if (userId) {
+    // Demo single creatorWallet — keep rows; filter by host if ledger has hostId match via source note
+    rows = rows.filter((e) => !e.hostId || e.hostId === userId);
+  }
+  return rows.map((e) => ({ ...e }));
+}
+
+/**
+ * Send a catalog gift during an active live.
+ * Debits coins; credits creator at 80% of NET. TEST MODE: catalog USD treated as net (fees=0).
+ * Viewers never see creatorShare / dbsShare in listLiveGiftHistory.
+ */
+export function sendLiveGift({ liveId, slug } = {}) {
+  const user = state.user;
+  if (!user) return { error: 'signin' };
+  const live = state.live;
+  if (!live || live.endedAt) return { error: 'offline' };
+  if (liveId && liveId !== live.id) return { error: 'live_mismatch' };
+  const gift = LIVE_GIFT_CATALOG.find((g) => g.slug === slug);
+  if (!gift) return { error: 'bad_gift' };
+  const coins = normalizeCoins(state.coins);
+  if (coins.balance < gift.coins) {
+    return { error: 'insufficient', need: gift.coins, balance: coins.balance };
+  }
+  const usd = round2(gift.usd);
+  // TEST MODE honesty: listed USD = NET eligible (0% extra external fee on gift send)
+  const fees = 0;
+  const net = usd;
+  const creatorShare = round2((net * GIFT_CREATOR_PCT) / 100);
+  const platformShare = round2(net - creatorShare);
+  const at = Date.now();
+  const id = 'lgift_' + at.toString(36) + '_' + Math.random().toString(36).slice(2, 6);
+
+  const coinHist = {
+    at,
+    amount: -gift.coins,
+    note: `Gift ${gift.name} · ${live.title} · TEST MODE`,
+    kind: 'gift',
+    giftSlug: gift.slug,
+    liveId: live.id,
+    usd,
+  };
+  const nextCoins = {
+    balance: coins.balance - gift.coins,
+    history: [coinHist, ...coins.history].slice(0, 200),
+  };
+
+  const ledgerRow = {
+    id,
+    liveId: live.id,
+    hostId: live.hostId,
+    giftSlug: gift.slug,
+    giftName: gift.name,
+    coins: gift.coins,
+    usd,
+    fees,
+    net,
+    creatorShare,
+    platformShare,
+    dbsShare: platformShare,
+    creatorPct: GIFT_CREATOR_PCT,
+    dbsPct: GIFT_DBS_PCT,
+    fromUserId: user.id,
+    fromUser: user.username,
+    at,
+    animation: gift.animation,
+    tier: gift.tier,
+    testModeNetAsListed: true,
+  };
+
+  const viewerEntry = {
+    id,
+    userId: user.id,
+    username: user.username,
+    kind: 'gift',
+    giftSlug: gift.slug,
+    label: gift.name,
+    amount: usd,
+    coins: gift.coins,
+    at,
+  };
+
+  const chatMsg = {
+    id: 'lc_' + at.toString(36) + 'gf',
+    userId: user.id,
+    username: user.username,
+    text: `sent ${gift.name} (${gift.coins} coins) · TEST MODE`,
+    at,
+    support: true,
+    giftSlug: gift.slug,
+  };
+
+  const nextLive = {
+    ...live,
+    giftsTotal: round2((live.giftsTotal || 0) + usd),
+    giftLog: [...(live.giftLog || []), viewerEntry],
+    chat: [...(live.chat || []), chatMsg],
+  };
+
+  const liveGiftLedger = [ledgerRow, ...giftLedgerBucket()].slice(0, 500);
+
+  // Credit creator redeemable share — treat listed USD as net (fees already 0)
+  const cw = normalizeCreatorWallet(state.creatorWallet);
+  const earning = {
+    id: 'earn_' + at.toString(36) + '_' + Math.random().toString(36).slice(2, 6),
+    category: 'gifts',
+    label: 'Live gifts',
+    note: `Live gift ${gift.name} from @${user.username} · ${live.title}`,
+    gross: usd,
+    fees,
+    net,
+    creatorPct: GIFT_CREATOR_PCT,
+    dbsPct: GIFT_DBS_PCT,
+    creatorShare,
+    dbsShare: platformShare,
+    source: 'live_gift',
+    giftSlug: gift.slug,
+    giftId: id,
+    liveId: live.id,
+    hostId: live.hostId,
+    fromUserId: user.id,
+    at,
+    payoutId: null,
+  };
+  const creatorWallet = {
+    ...cw,
+    available: round2(cw.available + creatorShare),
+    earnings: [earning, ...(cw.earnings || [])],
+  };
+
+  state = {
+    ...state,
+    coins: nextCoins,
+    live: nextLive,
+    liveGiftLedger,
+    creatorWallet,
+  };
+  save(state);
+  return {
+    ok: true,
+    entry: ledgerRow,
+    viewerEntry,
+    coins: nextCoins,
+    live: nextLive,
+    earning,
+    creatorWallet,
+  };
+}
+
+/** Alias */
+export function sendGift(opts) {
+  return sendLiveGift(opts);
 }
 
 /** §4 Marketplace — brand applications */
@@ -4891,6 +5392,12 @@ export function setOpenMicStatus(appId, status, reviewNote = '') {
 export function getAdminOverview() {
   ensureOpenMicSeeded();
   ensureFanClubsSeeded();
+  try {
+    ensureHotPostsSeeded();
+    refreshHotFeed();
+  } catch (_) {
+    /* hot feed optional until §38 wired */
+  }
 
   const omApps = getOpenMicBucket().applications || [];
   const omByStatus = { pending: 0, approved: 0, rejected: 0 };
@@ -4973,6 +5480,13 @@ export function getAdminOverview() {
       warnings: [],
       suspensions: [],
       note: 'Stub · Content Polish owns Guidelines copy',
+    },
+    hotFeed: {
+      openAlerts: (state.engagementAlerts || []).filter((a) => !a.handledAt).length,
+      totalAlerts: (state.engagementAlerts || []).length,
+      hotPosts: Array.isArray(state.hotFeed?.posts) ? state.hotFeed.posts.length : 0,
+      hotLives: Array.isArray(state.hotFeed?.lives) ? state.hotFeed.lives.length : 0,
+      note: '§38 · Build posts + Live Social lives',
     },
     stats,
   };
@@ -5095,3 +5609,716 @@ export function resetProfileShopDemo() {
 }
 
 export { SHOP_SLOT_BY_CATEGORY, DEMO_BUNDLE_IDS };
+
+/* ========== §38 Hot Feed (Build posts + shared alerts) — append-only 2026-10-25 ==========
+ * Lives rail / seededLives owned by Live Social — PRESERVE on post refresh.
+ * Shared exports: pushEngagementAlert, listEngagementAlerts, markEngagementAlertHandled.
+ */
+
+const HOT_POST_THRESHOLD = 5;
+const HOT_POSTS_LIMIT = 8;
+
+const COMMUNITY_HOT_SEED = [
+  {
+    id: 'hp_maya_1',
+    userId: 'maya',
+    username: 'MayaBeats',
+    text: 'Studio loop dropping later — who wants the stem pack? 🔥',
+    image: '/music/01_Long_Story_Short_Coming_Soon.jpg',
+    mediaType: 'image',
+    atOffset: 3600000 * 5,
+    likeUsers: ['dbs', 'fanjay', 'u_seed_a', 'u_seed_b', 'u_seed_c', 'u_seed_d', 'clipqueen'],
+    comments: [
+      { id: 'hc_m1', userId: 'fanjay', username: 'FanJay', text: 'Send it 🙌' },
+      { id: 'hc_m2', userId: 'dbs', username: 'DatBoiSkeet', text: 'Pull up on Spotlight' },
+      { id: 'hc_m3', userId: 'clipqueen', username: 'ClipQueen', text: 'Stem pack please' },
+    ],
+    shares: 5,
+  },
+  {
+    id: 'hp_jay_1',
+    userId: 'fanjay',
+    username: 'FanJay',
+    text: 'Foreign X-Change fit check from the community — buffalo energy.',
+    image: '/merch/03_blue_buffalo_jacket.jpeg',
+    mediaType: 'image',
+    atOffset: 3600000 * 8,
+    likeUsers: ['maya', 'dbs', 'u_seed_a', 'u_seed_c', 'u_seed_d', 'clipqueen', 'u_seed_b'],
+    comments: [
+      { id: 'hc_j1', userId: 'maya', username: 'MayaBeats', text: 'Jacket hits' },
+      { id: 'hc_j2', userId: 'clipqueen', username: 'ClipQueen', text: 'Need this' },
+    ],
+    shares: 6,
+  },
+  {
+    id: 'hp_clip_1',
+    userId: 'clipqueen',
+    username: 'ClipQueen',
+    text: 'New clip cut from last Live — tag @DatBoiSkeet if you remix 🎬',
+    image: '/merch/06_black_ptsd_tee.jpeg',
+    mediaType: 'video',
+    atOffset: 3600000 * 12,
+    likeUsers: ['dbs', 'maya', 'fanjay', 'u_seed_a', 'u_seed_b', 'u_seed_c'],
+    comments: [
+      { id: 'hc_c1', userId: 'dbs', username: 'DatBoiSkeet', text: 'Clean edit' },
+      { id: 'hc_c2', userId: 'maya', username: 'MayaBeats', text: 'Clipping goals' },
+      { id: 'hc_c3', userId: 'fanjay', username: 'FanJay', text: 'Saved' },
+      { id: 'hc_c4', userId: 'u_seed_a', username: 'FanA', text: 'Fire' },
+    ],
+    shares: 4,
+  },
+  {
+    id: 'hp_dbs_boost',
+    userId: 'dbs',
+    username: 'DatBoiSkeet',
+    text: 'Community shoutout — Maya + Jay keeping the feed hot. Keep posting.',
+    image: '/music/02_Ladies_Only_Coming_Soon.jpg',
+    mediaType: 'image',
+    atOffset: 3600000 * 3,
+    likeUsers: ['maya', 'fanjay', 'u_seed_a'],
+    comments: [
+      { id: 'hc_d1', userId: 'maya', username: 'MayaBeats', text: 'Grateful 💛' },
+      { id: 'hc_d2', userId: 'fanjay', username: 'FanJay', text: 'Lets go' },
+    ],
+    shares: 2,
+  },
+];
+
+function getHotFeedBucket() {
+  const h = state.hotFeed || {};
+  return {
+    lives: Array.isArray(h.lives) ? h.lives : [],
+    posts: Array.isArray(h.posts) ? h.posts : [],
+    seededLives: !!h.seededLives,
+    seededPosts: !!h.seededPosts,
+    seededPostsVer: Number(h.seededPostsVer) || 0,
+  };
+}
+
+function saveHotFeed(bucket) {
+  state = { ...state, hotFeed: bucket };
+  save(state);
+}
+
+function ensureCommunityProfiles() {
+  const profiles = { ...state.profiles };
+  let dirty = false;
+  const ensure = (id, username, bio) => {
+    if (profiles[id]) return;
+    profiles[id] = {
+      id,
+      username,
+      bio,
+      avatar: '',
+      followers: [],
+      following: ['dbs'],
+      verified: false,
+    };
+    dirty = true;
+  };
+  ensure('maya', 'MayaBeats', 'Creator · beats & live demos');
+  ensure('fanjay', 'FanJay', 'Day-one fan · playlist curator');
+  ensure('clipqueen', 'ClipQueen', 'Clipper · community edits');
+  if (dirty) {
+    state = { ...state, profiles };
+  }
+}
+
+/** Seed community + house posts with engagement so Hot strip is mixed (not only DatBoiSkeet). */
+export function ensureHotPostsSeeded() {
+  ensureDemoPosts();
+  ensureCommunityProfiles();
+  const bucket = getHotFeedBucket();
+  const ver = Number(bucket.seededPostsVer) || 0;
+  /* t172u V2: once-only bump so community seeds outrank house shoutout in existing localStorage */
+  if (bucket.seededPosts && ver >= 2) return getHotFeedBucket();
+  if (bucket.seededPosts && ver < 2) {
+    const likes = { ...(state.likes || {}) };
+    const comments = { ...(state.comments || {}) };
+    const postShares = { ...(state.postShares || {}) };
+    const boost = (id, likeUsers, extraComments, shares) => {
+      likes[id] = [...new Set([...(likes[id] || []), ...likeUsers])];
+      const have = new Set((comments[id] || []).map((c) => c.id));
+      const merged = [...(comments[id] || [])];
+      (extraComments || []).forEach((c) => {
+        if (!have.has(c.id)) merged.push({ ...c, at: c.at || Date.now() });
+      });
+      comments[id] = merged;
+      postShares[id] = Math.max(Number(postShares[id] || 0), shares);
+    };
+    boost('hp_maya_1', ['dbs', 'fanjay', 'u_seed_a', 'u_seed_b', 'u_seed_c', 'u_seed_d', 'clipqueen'], [
+      { id: 'hc_m3', userId: 'clipqueen', username: 'ClipQueen', text: 'Stem pack please' },
+    ], 5);
+    boost('hp_jay_1', ['maya', 'dbs', 'u_seed_a', 'u_seed_c', 'u_seed_d', 'clipqueen', 'u_seed_b'], [
+      { id: 'hc_j2', userId: 'clipqueen', username: 'ClipQueen', text: 'Need this' },
+    ], 6);
+    boost('hp_clip_1', ['dbs', 'maya', 'fanjay', 'u_seed_a', 'u_seed_b', 'u_seed_c'], [
+      { id: 'hc_c4', userId: 'u_seed_a', username: 'FanA', text: 'Fire' },
+    ], 4);
+    // Soften house shoutout if present
+    if (likes.hp_dbs_boost) {
+      likes.hp_dbs_boost = (likes.hp_dbs_boost || []).slice(0, 3);
+      postShares.hp_dbs_boost = Math.min(Number(postShares.hp_dbs_boost || 0), 2);
+    }
+    state = {
+      ...state,
+      likes,
+      comments,
+      postShares,
+      hotFeed: { ...bucket, seededPosts: true, seededPostsVer: 2 },
+    };
+    save(state);
+    refreshHotFeed();
+    return getHotFeedBucket();
+  }
+
+  const existingIds = new Set((state.posts || []).map((p) => p.id));
+  const posts = [...(state.posts || [])];
+  const likes = { ...(state.likes || {}) };
+  const comments = { ...(state.comments || {}) };
+  const postShares = { ...(state.postShares || {}) };
+  const now = Date.now();
+
+  COMMUNITY_HOT_SEED.forEach((s) => {
+    if (existingIds.has(s.id)) return;
+    posts.unshift({
+      id: s.id,
+      userId: s.userId,
+      username: s.username,
+      text: s.text,
+      image: s.image || '',
+      mediaType: s.mediaType || (s.image ? 'image' : 'text'),
+      at: now - (s.atOffset || 0),
+      house: s.userId === 'dbs',
+    });
+    likes[s.id] = [...(s.likeUsers || [])];
+    comments[s.id] = (s.comments || []).map((c) => ({
+      ...c,
+      text: c.text,
+      at: now - (s.atOffset || 0) + 60000,
+    }));
+    if (s.shares) postShares[s.id] = s.shares;
+  });
+
+  // Boost a couple of original house posts so they can also rank
+  if (likes.p1 && likes.p1.length < 3) {
+    likes.p1 = [...new Set([...(likes.p1 || []), 'maya', 'fanjay', 'u_seed_a'])];
+  }
+  if (likes.p2 && likes.p2.length < 2) {
+    likes.p2 = [...new Set([...(likes.p2 || []), 'maya', 'fanjay'])];
+  }
+  if (!comments.p1 || comments.p1.length < 2) {
+    comments.p1 = [
+      ...(comments.p1 || []),
+      {
+        id: 'hc_p1a',
+        userId: 'maya',
+        username: 'MayaBeats',
+        text: 'Cover art goes crazy',
+        at: now - 80000000,
+      },
+      {
+        id: 'hc_p1b',
+        userId: 'fanjay',
+        username: 'FanJay',
+        text: 'Been waiting on this',
+        at: now - 70000000,
+      },
+    ];
+  }
+  postShares.p1 = Math.max(postShares.p1 || 0, 2);
+  postShares.p2 = Math.max(postShares.p2 || 0, 1);
+
+  state = {
+    ...state,
+    posts,
+    likes,
+    comments,
+    postShares,
+    hotFeed: { ...bucket, seededPosts: true, seededPostsVer: 2 },
+  };
+  save(state);
+  refreshHotFeed();
+  return getHotFeedBucket();
+}
+
+/** Alias used by task brief / parent */
+export function ensureHotFeedSeed() {
+  return ensureHotPostsSeeded();
+}
+
+export function engagementScore(postId) {
+  const likes = (state.likes && state.likes[postId]) || [];
+  const comments = (state.comments && state.comments[postId]) || [];
+  const shares = (state.postShares && state.postShares[postId]) || 0;
+  return likes.length + comments.length + Number(shares || 0);
+}
+
+/**
+ * Rebuild hotFeed.posts from engagement; create alerts for newly hot posts.
+ * PRESERVES hotFeed.lives and seededLives (Live Social).
+ */
+export function refreshHotFeed() {
+  const bucket = getHotFeedBucket();
+  const posts = state.posts || [];
+  const ranked = posts
+    .map((p) => {
+      const likes = ((state.likes && state.likes[p.id]) || []).length;
+      const comments = ((state.comments && state.comments[p.id]) || []).length;
+      const shares = Number((state.postShares && state.postShares[p.id]) || 0);
+      const score = likes + comments + shares;
+      return {
+        id: p.id,
+        postId: p.id,
+        score,
+        likes,
+        comments,
+        shares,
+        username: p.username,
+        userId: p.userId,
+        preview: (p.text || '').slice(0, 120),
+        text: p.text || '',
+        image: p.image || '',
+        mediaType: p.mediaType || (p.image ? 'image' : 'text'),
+        at: p.at || 0,
+        house: p.userId === 'dbs' || !!p.house,
+      };
+    })
+    .filter((r) => r.score >= HOT_POST_THRESHOLD)
+    .sort((a, b) => b.score - a.score || b.at - a.at)
+    .slice(0, HOT_POSTS_LIMIT);
+
+  const prevIds = new Set((bucket.posts || []).map((p) => p.postId || p.id));
+  const alerts = Array.isArray(state.engagementAlerts) ? [...state.engagementAlerts] : [];
+  const alertedRefs = new Set(
+    alerts.filter((a) => a.kind === 'post').map((a) => a.refId)
+  );
+
+  ranked.forEach((r) => {
+    if (alertedRefs.has(r.id)) return;
+    // Only alert when newly crossing into hot (or first refresh after seed)
+    if (prevIds.has(r.id) && bucket.posts.length) return;
+    alerts.unshift({
+      id: 'ea_post_' + r.id + '_' + Date.now().toString(36),
+      kind: 'post',
+      refId: r.id,
+      title: (r.preview || r.text || 'Hot post').slice(0, 80),
+      username: r.username,
+      score: r.score,
+      mediaType: r.mediaType || 'text',
+      at: Date.now(),
+      handledAt: null,
+      handledNote: null,
+    });
+    alertedRefs.add(r.id);
+  });
+
+  // Cap alerts
+  const trimmed = alerts.slice(0, 60);
+
+  state = {
+    ...state,
+    hotFeed: {
+      lives: bucket.lives, // PRESERVE Live Social
+      seededLives: bucket.seededLives,
+      posts: ranked,
+      seededPosts: bucket.seededPosts || ranked.length > 0,
+      seededPostsVer: Number(bucket.seededPostsVer) || 0,
+    },
+    engagementAlerts: trimmed,
+  };
+  save(state);
+  return getHotFeedBucket();
+}
+
+export function getHotPosts(limit = 8) {
+  ensureHotPostsSeeded();
+  const bucket = getHotFeedBucket();
+  if (!bucket.posts.length) refreshHotFeed();
+  const list = getHotFeedBucket().posts || [];
+  return list.slice(0, Math.max(1, Number(limit) || 8));
+}
+
+export function sharePost(postId) {
+  const id = String(postId || '');
+  if (!id) return { error: 'missing' };
+  const post = (state.posts || []).find((p) => p.id === id);
+  if (!post) return { error: 'missing' };
+  const postShares = { ...(state.postShares || {}) };
+  postShares[id] = Number(postShares[id] || 0) + 1;
+  state = { ...state, postShares };
+  save(state);
+  refreshHotFeed();
+  return { ok: true, shares: postShares[id], score: engagementScore(id) };
+}
+
+/** Shared — Live Social may call for live spikes */
+export function pushEngagementAlert(alertPartial) {
+  const partial = alertPartial || {};
+  const kind = partial.kind === 'live' ? 'live' : 'post';
+  const refId = String(partial.refId || partial.id || '');
+  if (!refId) return { error: 'missing' };
+  const alerts = Array.isArray(state.engagementAlerts) ? [...state.engagementAlerts] : [];
+  const openDup = alerts.find(
+    (a) => a.kind === kind && a.refId === refId && !a.handledAt
+  );
+  if (openDup) return { ok: true, alert: openDup, deduped: true };
+  const alert = {
+    id: partial.id || 'ea_' + kind + '_' + refId + '_' + Date.now().toString(36),
+    kind,
+    refId,
+    title: String(partial.title || 'Hot item').slice(0, 120),
+    username: String(partial.username || ''),
+    score: Number(partial.score) || 0,
+    viewers: partial.viewers != null ? Number(partial.viewers) : undefined,
+    gifts: partial.gifts != null ? Number(partial.gifts) : undefined,
+    mediaType: partial.mediaType || (kind === 'live' ? 'live' : 'text'),
+    at: partial.at || Date.now(),
+    handledAt: partial.handledAt || null,
+    handledNote: partial.handledNote || null,
+  };
+  state = { ...state, engagementAlerts: [alert, ...alerts].slice(0, 60) };
+  save(state);
+  return { ok: true, alert };
+}
+
+export function listEngagementAlerts({ openOnly = true } = {}) {
+  const alerts = Array.isArray(state.engagementAlerts) ? state.engagementAlerts : [];
+  const list = openOnly ? alerts.filter((a) => !a.handledAt) : alerts.slice();
+  return list.sort((a, b) => (b.at || 0) - (a.at || 0));
+}
+
+export function markEngagementAlertHandled(id, note) {
+  const aid = String(id || '');
+  if (!aid) return { error: 'missing' };
+  const alerts = Array.isArray(state.engagementAlerts) ? state.engagementAlerts : [];
+  let found = null;
+  const next = alerts.map((a) => {
+    if (a.id !== aid) return a;
+    found = {
+      ...a,
+      handledAt: Date.now(),
+      handledNote: note != null ? String(note) : a.handledNote || 'handled',
+    };
+    return found;
+  });
+  if (!found) return { error: 'missing' };
+  state = { ...state, engagementAlerts: next };
+  save(state);
+  return { ok: true, alert: found };
+}
+
+/** Alias */
+export function markAlertHandled(id, note) {
+  return markEngagementAlertHandled(id, note);
+}
+
+export function adminQuickLike(postId) {
+  if (!isAdmin()) return { error: 'admin' };
+  const user = state.user;
+  if (!user) return { error: 'signin' };
+  const id = String(postId || '');
+  const list = new Set((state.likes && state.likes[id]) || []);
+  list.add(user.id);
+  state = { ...state, likes: { ...state.likes, [id]: [...list] } };
+  save(state);
+  refreshHotFeed();
+  return { ok: true, count: list.size, score: engagementScore(id) };
+}
+
+export function adminQuickComment(postId, text) {
+  if (!isAdmin()) return { error: 'admin' };
+  const user = state.user;
+  if (!user) return { error: 'signin' };
+  const id = String(postId || '');
+  const body = (text || '🔥 DBS team — keep it up! (TEST MODE)').trim();
+  if (!body) return { error: 'empty' };
+  const c = {
+    id: 'c_admin_' + Date.now().toString(36),
+    userId: user.id,
+    username: user.username,
+    text: body,
+    at: Date.now(),
+    admin: true,
+  };
+  const prev = (state.comments && state.comments[id]) || [];
+  state = { ...state, comments: { ...state.comments, [id]: [...prev, c] } };
+  save(state);
+  refreshHotFeed();
+  return { ok: true, comment: c, score: engagementScore(id) };
+}
+
+export function adminQuickShare(postId) {
+  if (!isAdmin()) return { error: 'admin' };
+  const res = sharePost(postId);
+  if (res.error) return res;
+  const link = `#/posts`;
+  return { ok: true, shares: res.shares, link, score: res.score };
+}
+
+export { HOT_POST_THRESHOLD, HOT_POSTS_LIMIT };
+
+
+
+/* ========== §38 Hot Feed — Live Social (lives rail) · append-only ========== */
+/* Reuses Build: getHotFeedBucket / saveHotFeed / pushEngagementAlert */
+/* Never wipe hotFeed.posts or seededPosts. */
+
+function liveHotScore(viewers, giftsTotal) {
+  return Math.max(0, Number(viewers) || 0) + Math.max(0, Number(giftsTotal) || 0) * 20;
+}
+
+/** Normalize live row — accept Build or Live field aliases. */
+function normalizeHotLive(raw) {
+  if (!raw || typeof raw !== 'object') return null;
+  const id = String(raw.id || raw.liveId || '');
+  if (!id) return null;
+  const hostId = String(raw.hostId || raw.userId || '');
+  const hostName = String(raw.hostName || raw.username || raw.handle || 'Creator');
+  const viewers = Math.max(0, Number(raw.viewers) || 0);
+  const giftsTotal = Math.max(0, Number(raw.giftsTotal ?? raw.gifts) || 0);
+  const score =
+    raw.score != null && Number.isFinite(Number(raw.score))
+      ? Number(raw.score)
+      : liveHotScore(viewers, giftsTotal);
+  return {
+    id,
+    hostId,
+    hostName,
+    title: String(raw.title || 'Live'),
+    viewers,
+    giftsTotal,
+    house: !!raw.house,
+    spikedAt: raw.spikedAt || null,
+    score,
+  };
+}
+
+export function ensureHotLivesSeeded({ force = false } = {}) {
+  const bucket = getHotFeedBucket();
+  if (bucket.seededLives && !force && (bucket.lives || []).length > 0) {
+    return {
+      skipped: true,
+      lives: bucket.lives.map(normalizeHotLive).filter(Boolean),
+    };
+  }
+  const seeds = [
+    {
+      id: 'hl_dbs_house',
+      hostId: 'dbs',
+      hostName: 'DatBoiSkeet',
+      title: 'DBS Live · Listening Session',
+      viewers: 8420,
+      giftsTotal: 186,
+      house: true,
+    },
+    {
+      id: 'hl_dbs_vault',
+      hostId: 'dbs',
+      hostName: 'DatBoiSkeet',
+      title: 'Vault Drop Afterparty · House',
+      viewers: 3210,
+      giftsTotal: 94,
+      house: true,
+    },
+    {
+      id: 'hl_skeetfan',
+      hostId: 'u_skeetfanatl',
+      hostName: 'SkeetFanATL',
+      title: 'ATL reacts · Long Story Short',
+      viewers: 1540,
+      giftsTotal: 42,
+      house: false,
+    },
+    {
+      id: 'hl_vaultwatch',
+      hostId: 'u_vaultwatcher',
+      hostName: 'VaultWatcher',
+      title: 'Vault deep cut night',
+      viewers: 980,
+      giftsTotal: 61,
+      house: false,
+    },
+    {
+      id: 'hl_fxclip',
+      hostId: 'u_fxclipper',
+      hostName: 'FXClipper',
+      title: 'Foreign X-Change clips live',
+      viewers: 2210,
+      giftsTotal: 28,
+      house: false,
+    },
+    {
+      id: 'hl_nightowl',
+      hostId: 'u_nightowldbs',
+      hostName: 'NightOwlDBS',
+      title: 'Late night lounge · chill',
+      viewers: 412,
+      giftsTotal: 15,
+      house: false,
+    },
+    {
+      id: 'hl_longstory',
+      hostId: 'u_longstorylistener',
+      hostName: 'LongStoryListener',
+      title: 'LSS theory hour',
+      viewers: 128,
+      giftsTotal: 7,
+      house: false,
+    },
+    {
+      id: 'hl_ladies',
+      hostId: 'u_ladiesonlyfan',
+      hostName: 'LadiesOnlyFan',
+      title: 'Ladies Only countdown',
+      viewers: 67,
+      giftsTotal: 3,
+      house: false,
+    },
+  ].map((s) => ({
+    ...s,
+    spikedAt: null,
+    score: liveHotScore(s.viewers, s.giftsTotal),
+  }));
+
+  // Preserve Build posts / seededPosts
+  saveHotFeed({
+    ...bucket,
+    lives: seeds,
+    seededLives: true,
+  });
+  return { ok: true, lives: seeds };
+}
+
+export function listHotLives() {
+  ensureHotLivesSeeded();
+  const bucket = getHotFeedBucket();
+  return (bucket.lives || [])
+    .map(normalizeHotLive)
+    .filter(Boolean)
+    .sort(
+      (a, b) =>
+        (b.score || 0) - (a.score || 0) || (b.viewers || 0) - (a.viewers || 0)
+    );
+}
+
+export function simulateLiveSpike(liveId) {
+  const id = String(liveId || '');
+  if (!id) return { error: 'missing' };
+  ensureHotLivesSeeded();
+  const bucket = getHotFeedBucket();
+  let found = null;
+  const lives = (bucket.lives || []).map((raw) => {
+    const live = normalizeHotLive(raw);
+    if (!live || live.id !== id) return raw;
+    const bumpViewers = 180 + Math.floor(Math.random() * 920);
+    const bumpGifts = 4 + Math.floor(Math.random() * 28);
+    const viewers = live.viewers + bumpViewers;
+    const giftsTotal = live.giftsTotal + bumpGifts;
+    const score = liveHotScore(viewers, giftsTotal);
+    found = {
+      ...live,
+      viewers,
+      giftsTotal,
+      score,
+      spikedAt: Date.now(),
+    };
+    return found;
+  });
+  if (!found) return { error: 'missing' };
+  saveHotFeed({
+    ...bucket,
+    lives,
+    seededLives: true,
+  });
+  const alertRes = pushEngagementAlert({
+    kind: 'live',
+    refId: found.id,
+    title: found.title,
+    username: found.hostName,
+    score: found.score,
+    viewers: found.viewers,
+    gifts: found.giftsTotal,
+  });
+  return {
+    ok: true,
+    live: found,
+    alert: alertRes?.alert || null,
+    deduped: !!alertRes?.deduped,
+  };
+}
+
+/**
+ * Rising streamers for Home §39 / Hot Feed §38.
+ * Mid-tier / non-house creators — Live Social may replace with richer ranking.
+ * Temporary Design fallback until Live Social owns the export fully.
+ */
+export function listRisingStreamers() {
+  const all = listHotLives();
+  const rising = all
+    .filter((l) => l && !l.house)
+    .sort(
+      (a, b) =>
+        (b.score || 0) - (a.score || 0) || (b.viewers || 0) - (a.viewers || 0)
+    );
+  // Prefer mid/high rising: drop bottom outliers if we have enough; keep top non-house
+  return rising.slice(0, 6).map((l) => ({
+    id: l.id,
+    hostId: l.hostId,
+    hostName: l.hostName,
+    title: l.title,
+    viewers: l.viewers,
+    giftsTotal: l.giftsTotal,
+    house: !!l.house,
+    score: l.score,
+    spikedAt: l.spikedAt || null,
+    playbacksToday: l.playbacksToday != null ? l.playbacksToday : Math.max(1, Math.round((l.viewers || 0) / 40)),
+  }));
+}
+
+/**
+ * Most played song of the day — Home Live activity.
+ * Prefers published catalog songs with playsToday; DEMO house seed if none.
+ * TEST MODE · counters illustrative until real playback analytics land.
+ */
+export function getMostPlayedSongToday() {
+  const day = new Date().toISOString().slice(0, 10);
+  const songs = listCatalog({ publishedOnly: true, types: ['song'] }) || [];
+  const ranked = songs
+    .map((s) => {
+      const plays =
+        Number(s.playsToday) ||
+        Number(s.playCount) ||
+        Number(s.plays) ||
+        0;
+      let cover = '';
+      if (s.coverRef && !String(s.coverRef).startsWith('idb:')) cover = s.coverRef;
+      return {
+        id: s.id,
+        title: s.title || 'Untitled',
+        artist: s.artist || 'DatBoiSkeet',
+        cover,
+        playsToday: plays,
+        href: '#/music',
+        demo: false,
+        day,
+        status: s.status || (s.published ? 'Published' : 'Catalog'),
+      };
+    })
+    .filter((s) => s.playsToday > 0)
+    .sort((a, b) => b.playsToday - a.playsToday || String(a.title).localeCompare(String(b.title)));
+  if (ranked[0]) return ranked[0];
+  // DEMO seed — house Coming Soon track (stable for the calendar day)
+  const seedPlays = 900 + (day.split('-').reduce((n, p) => n + Number(p), 0) % 400);
+  return {
+    id: 'demo_most_played_lss',
+    title: 'Long Story Short',
+    artist: 'DatBoiSkeet',
+    cover: '/music/01_Long_Story_Short_Coming_Soon.jpg',
+    playsToday: seedPlays,
+    href: '#/music',
+    demo: true,
+    day,
+    status: 'Coming Soon',
+  };
+}

@@ -18,12 +18,45 @@
   <meta property="og:image" content="/og-image.png" />
 </head>
 <body>
-  <!-- §19 Official loading screen: /public/loading/DBS_Official_Loading_Screen.png -->
+  <!-- §19 Splash t178u: official logo 3s + tuning-fork chime (legacy PNG kept under /loading/) -->
   <div id="splash" class="splash" aria-live="polite" role="status">
-    <img class="splash-art" src="/loading/DBS_Official_Loading_Screen.png" alt="DBS Loading" width="1024" height="1024" decoding="async" fetchpriority="high" />
+    <img class="splash-logo" src="/brand/logo-dbs-v3@2x.webp" srcset="/brand/logo-dbs-v3@1x.webp 1x, /brand/logo-dbs-v3@2x.webp 2x, /brand/logo-dbs-v3@3x.webp 3x" alt="DBS" width="280" height="188" decoding="async" fetchpriority="high" />
+    <p class="splash-loading" aria-hidden="true">LOADING</p>
     <p class="splash-credit">Made by Cox Creations</p>
+    <audio id="splashChime" preload="auto" playsinline>
+      <source src="/loading/dbs-tuning-fork.mp3" type="audio/mpeg" />
+      <source src="/loading/dbs-tuning-fork.wav" type="audio/wav" />
+    </audio>
   </div>
   <div class="demo-ribbon" id="testRibbon">TEST MODE · NO REAL CHARGES · LOCAL DEMO</div>
+  <!-- §17 Sticky top player — YouTube embeds / Stream Everywhere open links (no rehost) -->
+  <div class="sticky-player" id="dbs-sticky-player" data-also="stickyPlayer" aria-label="DBS music player">
+    <div class="sp-row">
+      <img class="sp-art" id="spArt" src="/brand/logo-dbs-v3@2x.webp" alt="" width="44" height="44" />
+      <div class="sp-meta">
+        <div class="sp-title" id="spTitle">DatBoiSkeet</div>
+        <div class="sp-sub" id="spSub">Tap Play · YouTube embed · Stream Everywhere</div>
+      </div>
+      <div class="sp-controls">
+        <button type="button" class="sp-btn" id="spPrev" aria-label="Previous track">‹</button>
+        <button type="button" class="sp-btn sp-play" id="spPlay" aria-label="Play DBS Music">▶</button>
+        <button type="button" class="sp-btn" id="spNext" aria-label="Next track">›</button>
+      </div>
+      <button type="button" class="sp-play-next" id="spPlayNextMost" aria-label="Play next — most played today" title="Most played today → Play next">
+        <span class="sp-pn-label">Play next</span>
+        <span class="sp-pn-sub" id="spPlayNextSub">Most played today</span>
+      </button>
+      <button type="button" class="sp-btn sp-queue" id="spQueueBtn" aria-label="Queue" title="His tracks">☰</button>
+      <a class="sp-btn sp-open" id="spOpen" href="https://open.spotify.com/artist/0Po64h8VleQOR97okM68zh" target="_blank" rel="noopener" title="Open on official platform">↗</a>
+      <span class="sp-badge" id="spBadge">TEST · YT EMBED</span>
+      <span class="sp-source" id="spSource">YouTube</span>
+    </div>
+    <div class="sp-queue-panel" id="spQueuePanel" hidden></div>
+    <!-- Hidden YT host — continuous across routes; outside #app -->
+    <div class="sp-yt-wrap" aria-hidden="true">
+      <div id="dbsStickyFrame"></div><!-- legacy alias: dbsYtHost → use dbsStickyFrame -->
+    </div>
+  </div>
   <header class="top" id="topBar">
     <a href="#/home" class="logo" aria-label="DBS Home">
       <img class="logo-img" src="/brand/logo-dbs-v3@2x.webp" srcset="/brand/logo-dbs-v3@1x.webp 1x, /brand/logo-dbs-v3@2x.webp 2x, /brand/logo-dbs-v3@3x.webp 3x" alt="DBS" width="86" height="58" />
@@ -47,15 +80,7 @@
     <p class="credit">Built by <a href="https://cox-creations-studio.pages.dev/" target="_blank" rel="noopener">Cox Creations Studio</a></p>
     <p class="credit"><a href="https://cursor.com/canvas/store-4b630a92-1dd3-4b0e-b141-42c424845f21/c81bf315-76c4-4599-bb5d-4bec1a35a001" target="_blank" rel="noopener">Open with Grok Bot team</a> · progress board</p>
   </footer>
-  <div class="mini-player" id="miniPlayer" aria-label="Mini player">
-    <img class="art" id="mpArt" src="/music/01_Long_Story_Short_Coming_Soon.jpg" alt="" />
-    <div class="meta">
-      <div class="mp-title" id="mpTitle">Long Story Short</div>
-      <div class="mp-sub" id="mpSub">DatBoiSkeet · Coming Soon</div>
-      <div class="prog"><i id="mpProg"></i></div>
-    </div>
-    <button class="play" id="mpPlay" aria-label="Play / Pause">▶</button>
-  </div>
+  <!-- bottom mini-player removed — §17 sticky top player -->
   <nav class="tabbar" id="tabbar" aria-label="Primary"></nav>
   <div class="toast" id="toast" role="status"></div>
   <script type="module" src="/src/main.js"></script>

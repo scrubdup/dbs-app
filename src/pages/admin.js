@@ -13,6 +13,13 @@ import {
   setOpenMicStatus,
   ensureOpenMicSeeded,
   ensureFanClubsSeeded,
+  ensureHotPostsSeeded,
+  listEngagementAlerts,
+  markEngagementAlertHandled,
+  adminQuickLike,
+  adminQuickComment,
+  adminQuickShare,
+  refreshHotFeed,
 } from '../store.js';
 import { navigate, getRoute } from '../router.js';
 import { esc, shellPage, toast } from '../ui.js';
@@ -304,6 +311,59 @@ function revenueShellHtml(overview) {
   </section>`;
 }
 
+
+function engagementAlertsHtml(overview) {
+  ensureHotPostsSeeded();
+  refreshHotFeed();
+  const open = listEngagementAlerts({ openOnly: true });
+  const allCount = listEngagementAlerts({ openOnly: false }).length;
+  const hf = overview.hotFeed || {};
+  const rows = open.length
+    ? open
+        .slice(0, 12)
+        .map((a) => {
+          const kindChip = a.kind === 'live' ? '<span class="chip">live</span>' : '<span class="chip">post</span>';
+          const extra =
+            a.kind === 'live'
+              ? ` · viewers ${a.viewers ?? '—'} · gifts ${a.gifts ?? '—'}`
+              : ` · score ${a.score ?? 0}`;
+          const actions =
+            a.kind === 'post'
+              ? `<button type="button" class="btn primary admin-ea-like" data-ref="${esc(a.refId)}" data-alert="${esc(a.id)}">Like</button>
+                 <button type="button" class="btn ghost admin-ea-comment" data-ref="${esc(a.refId)}" data-alert="${esc(a.id)}">Comment</button>
+                 <button type="button" class="btn ghost admin-ea-share" data-ref="${esc(a.refId)}" data-alert="${esc(a.id)}">Share</button>`
+              : `<a class="btn ghost" href="#/live">Open Live</a>`;
+          return `<div class="admin-ea-row" data-alert-id="${esc(a.id)}">
+            <div class="admin-ea-main">
+              <strong>${esc(a.username || 'creator')}</strong> ${kindChip}
+              <div class="muted">${esc(a.title || '')}${extra}</div>
+            </div>
+            <div class="admin-ea-actions row wrap">
+              ${actions}
+              <button type="button" class="btn ghost admin-ea-handle" data-alert="${esc(a.id)}">Mark handled</button>
+            </div>
+          </div>`;
+        })
+        .join('')
+    : '<p class="muted">No open engagement alerts. Hot posts/lives will appear here when score spikes (TEST MODE).</p>';
+  return `<section class="card admin-engagement" id="adminEngagement">
+    <h3>Engagement alerts</h3>
+    <div class="row wrap" style="gap:8px;margin-bottom:8px">
+      <span class="chip">TEST MODE</span>
+      <span class="chip">§38 Hot Feed</span>
+    </div>
+    <p class="muted">When posts or lives go hot, alert Admin · one-tap Like / Comment / Share · mark handled. Persist <code>dbs_v1.engagementAlerts</code>.</p>
+    <div class="stats">
+      <div><strong>${open.length}</strong><span>Open</span></div>
+      <div><strong>${allCount}</strong><span>Total alerts</span></div>
+      <div><strong>${hf.hotPosts || 0}</strong><span>Hot posts</span></div>
+      <div><strong>${hf.hotLives || 0}</strong><span>Hot lives</span></div>
+    </div>
+    ${rows}
+    <p class="admin-panel-links"><a class="btn" href="#/posts">Open Posts Hot strip</a><a class="btn" href="#/live">Open Live</a></p>
+  </section>`;
+}
+
 function moderationStubHtml(overview) {
   const m = overview.moderation || {};
   return `<section class="card admin-moderation" id="adminModeration">
@@ -330,6 +390,7 @@ export function renderAdmin() {
 
   ensureOpenMicSeeded();
   ensureFanClubsSeeded();
+  ensureHotPostsSeeded();
   const stats = getAdminStats();
   const overview = getAdminOverview();
   const bs = stats.clipperByStatus;
@@ -348,6 +409,7 @@ export function renderAdmin() {
     </div>
 
     ${quickLinksHtml()}
+    ${engagementAlertsHtml(overview)}
     ${openMicQueueHtml(overview)}
     ${fanClubsGlanceHtml(overview)}
     ${loyaltyGlanceHtml(overview)}
@@ -444,6 +506,51 @@ export function bindAdmin(root) {
         return;
       }
       toast(btn.dataset.status === 'approved' ? 'Open Mic approved' : 'Open Mic rejected');
+      navigate('#/admin');
+    });
+  });
+
+  root.querySelectorAll('.admin-ea-like').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const res = adminQuickLike(btn.dataset.ref);
+      if (res?.error) return toast(res.error === 'admin' ? 'Admin required' : 'Like failed');
+      if (btn.dataset.alert) markEngagementAlertHandled(btn.dataset.alert, 'liked');
+      toast('Liked · TEST MODE');
+      navigate('#/admin');
+    });
+  });
+
+  root.querySelectorAll('.admin-ea-comment').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const res = adminQuickComment(btn.dataset.ref, '🔥 DBS team — keep it up! (TEST MODE)');
+      if (res?.error) return toast(res.error === 'admin' ? 'Admin required' : 'Comment failed');
+      if (btn.dataset.alert) markEngagementAlertHandled(btn.dataset.alert, 'commented');
+      toast('Comment posted · TEST MODE');
+      navigate('#/admin');
+    });
+  });
+
+  root.querySelectorAll('.admin-ea-share').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const res = adminQuickShare(btn.dataset.ref);
+      if (res?.error) return toast(res.error === 'admin' ? 'Admin required' : 'Share failed');
+      const link = `${location.origin}${location.pathname}#/posts?focus=${encodeURIComponent(btn.dataset.ref)}`;
+      try {
+        if (navigator.clipboard?.writeText) await navigator.clipboard.writeText(link);
+        toast('Link copied · share +1 (TEST MODE)');
+      } catch (_) {
+        toast('Share +1 (TEST MODE)');
+      }
+      if (btn.dataset.alert) markEngagementAlertHandled(btn.dataset.alert, 'shared');
+      navigate('#/admin');
+    });
+  });
+
+  root.querySelectorAll('.admin-ea-handle').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const res = markEngagementAlertHandled(btn.dataset.alert, 'handled');
+      if (res?.error) return toast('Could not mark handled');
+      toast('Alert handled');
       navigate('#/admin');
     });
   });

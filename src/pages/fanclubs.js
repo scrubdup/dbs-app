@@ -160,7 +160,7 @@ function renderDetail(clubId) {
         <a class="btn" href="#/music">Music</a>
         <a class="btn" href="#/explore">Explore</a>
       </div>
-      <p class="muted" style="font-size:12px;margin:10px 0 0">Follows are optional — DBS never forces a follow. Not a Discord clone; music-first Lounge club.</p>
+      <p class="muted" style="font-size:12px;margin:10px 0 0">Follows are optional — DBS never forces a follow. Channel-style Lounge (Discord-inspired UX) — music-first, DatBoiSkeet branded.</p>
       ${!user ? `<p class="chip" style="margin-top:8px">Sign in to join · local demo</p>` : ''}
       ${mod ? `<p class="chip" style="margin-top:8px">Mod tools · TEST MODE</p>` : ''}
     </div>

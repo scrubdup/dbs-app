@@ -1,7 +1,17 @@
 import './styles.css';
-import { DRAWER_LINKS, TABBAR, COMING_SOON } from './data.js';
+import { DRAWER_GROUPS, TABBAR } from './data.js';
+import {
+  initDbsPlayer,
+  onRouteForPlayer,
+  pauseDbsPlayer,
+  resumeDbsPlayerIfAllowed,
+  notifyVideoPlaying,
+  notifyVideoIdle,
+  notifyLiveOpen,
+  notifyLiveClosed,
+} from './player.js';
 import { getState, ensureDemoPosts, markSplash, shouldShowSplash, getMembership } from './store.js';
-import { startRouter, onRoute } from './router.js';
+import { startRouter, onRoute, getRoute } from './router.js';
 import { ICONS, esc } from './ui.js';
 import { asset, rewriteAssetUrls } from './asset.js';
 
@@ -31,8 +41,10 @@ import {
   renderVideos,
   bindVideos,
   renderPricing,
+  bindPricing,
   renderGuidelines,
   renderCommunity,
+  bindCommunity,
   renderSignup,
   renderNotifications,
   bindNotifications,
@@ -61,10 +73,10 @@ const ROUTES = {
   '/marketplace': { render: renderMarketplace, bind: bindMarketplace },
   '/earnings': { render: renderEarnings, bind: bindEarnings },
   '/missions': { render: renderMissions, bind: bindMissions },
-  '/pricing': { render: renderPricing },
+  '/pricing': { render: renderPricing, bind: bindPricing },
   '/admin': { render: renderAdmin, bind: bindAdmin },
   '/guidelines': { render: renderGuidelines },
-  '/community': { render: renderCommunity },
+  '/community': { render: renderCommunity, bind: bindCommunity },
   '/signup': { render: renderSignup },
   '/messages': { render: renderMessages, bind: bindMessages },
   '/shop': { render: renderShop, bind: bindShop },
@@ -95,9 +107,37 @@ function buildTabbar() {
 
 function buildDrawer() {
   const el = document.getElementById('sideNav');
-  el.innerHTML =
-    `<h2>DBS Network</h2>` +
-    DRAWER_LINKS.map((l) => `<a href="${l.href}">${esc(l.label)}</a>`).join('');
+  const route = getRoute();
+  const activeHash = '#' + (route.raw || route.path);
+  const activePath = '#' + route.path;
+
+  const groupsHtml = DRAWER_GROUPS.map((g) => {
+    if (g.href) {
+      const on = g.href === activePath || g.href === activeHash ? ' on' : '';
+      return `<a class="drawer-direct${on}" href="${g.href}">${esc(g.label)}</a>`;
+    }
+    const links = g.links || [];
+    const hasActive = links.some((l) => l.href === activePath || l.href === activeHash);
+    const open = hasActive ? ' open' : '';
+    const activeCls = hasActive ? ' has-active' : '';
+    const children = links
+      .map((l) => {
+        const on = l.href === activePath || l.href === activeHash ? ' on' : '';
+        return `<a class="drawer-link${on}" href="${l.href}">${esc(l.label)}</a>`;
+      })
+      .join('');
+    return (
+      `<div class="drawer-group${open}${activeCls}" data-group="${esc(g.id)}">` +
+      `<button type="button" class="drawer-cat" aria-expanded="${hasActive ? 'true' : 'false'}">` +
+      `<span>${esc(g.label)}</span>` +
+      `<span class="drawer-caret" aria-hidden="true"></span>` +
+      `</button>` +
+      `<div class="drawer-children" role="group">${children}</div>` +
+      `</div>`
+    );
+  }).join('');
+
+  el.innerHTML = `<h2>DBS Network</h2>${groupsHtml}`;
 }
 
 function setDrawer(open) {
@@ -114,6 +154,18 @@ function updateChrome(route) {
   document.querySelectorAll('#sideNav a').forEach((a) => {
     const href = a.getAttribute('href') || '';
     a.classList.toggle('on', href === '#' + path || href === '#' + route.raw);
+  });
+  // Accordion: keep the category that owns the active route open (one at a time)
+  const activeHref = '#' + path;
+  const activeRaw = '#' + route.raw;
+  document.querySelectorAll('#sideNav .drawer-group').forEach((g) => {
+    const match = [...g.querySelectorAll('a')].some(
+      (a) => a.getAttribute('href') === activeHref || a.getAttribute('href') === activeRaw
+    );
+    g.classList.toggle('open', match);
+    g.classList.toggle('has-active', match);
+    const btn = g.querySelector('.drawer-cat');
+    if (btn) btn.setAttribute('aria-expanded', match ? 'true' : 'false');
   });
   const user = getState().user;
   const pill = document.getElementById('tierPill');
@@ -137,33 +189,22 @@ function render(route) {
   rewriteAssetUrls(app);
   entry?.bind?.(app);
   updateChrome(route);
+  onRouteForPlayer(route.path);
   window.scrollTo(0, 0);
   // Vault deep-link
   if ((route.path === '/music' || route.path === '/vault') && (location.hash.includes('vault') || route.path === '/vault')) {
     setTimeout(() => document.getElementById('vault')?.scrollIntoView({ behavior: 'smooth' }), 50);
   }
+  // Creator sell apply deep-link (#/pricing?focus=sell → #creator-sell)
+  if (route.path === '/pricing' && (location.hash.includes('focus=sell') || location.hash.includes('creator-sell'))) {
+    setTimeout(() => document.getElementById('creator-sell')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+  }
 }
 
-function initMiniPlayer() {
-  const track = COMING_SOON[0];
-  document.getElementById('mpTitle').textContent = track.title;
-  document.getElementById('mpSub').textContent = `${track.artist} · Coming Soon`;
-  document.getElementById('mpArt').src = asset(track.cover);
-  let playing = false;
-  const mpPlay = document.getElementById('mpPlay');
-  mpPlay.dataset.playing = '0';
-  mpPlay.addEventListener('click', () => {
-    playing = !playing;
-    mpPlay.textContent = playing ? '❚❚' : '▶';
-    mpPlay.dataset.playing = playing ? '1' : '0';
-    import('./ui.js').then(({ toast }) =>
-      toast(playing ? 'Coming Soon — no audio yet (UI-only · no DBS-hosted audio)' : 'Paused')
-    );
-  });
-}
+
 
 function hideSplash() {
-  // Design/QA: ?holdSplash=1 keeps official loading art visible for screenshots
+  // Design/QA: ?holdSplash=1 keeps official logo splash visible for screenshots
   if (new URLSearchParams(location.search).has('holdSplash')) return;
   const splash = document.getElementById('splash');
   if (!splash || splash.classList.contains('hide')) return;
@@ -172,16 +213,68 @@ function hideSplash() {
   setTimeout(() => splash.remove(), 500);
 }
 
+/** §19 t178u — play tuning-fork chime once; swallow autoplay blocks. */
+function playSplashChime() {
+  const el = document.getElementById('splashChime');
+  if (!el) return;
+  const tryPlay = () => {
+    const p = el.play();
+    if (p && typeof p.catch === 'function') p.catch(() => {});
+  };
+  tryPlay();
+  // Unlock on first gesture if browser blocked autoplay
+  const unlock = () => {
+    tryPlay();
+    window.removeEventListener('pointerdown', unlock);
+    window.removeEventListener('keydown', unlock);
+  };
+  window.addEventListener('pointerdown', unlock, { once: true });
+  window.addEventListener('keydown', unlock, { once: true });
+}
+
+
+/** §17 Build call-site bridge — Media Links owns player.js. Anyone may:
+ *   dispatchEvent(new CustomEvent('dbs:interrupt-music', { detail: { reason: 'live'|'video'|'route' } }))
+ *   dispatchEvent(new CustomEvent('dbs:resume-music', { detail: { reason: 'live'|'video' } }))
+ * Do NOT fire on track skip/prev or Open Spotify/Apple/YTM (#spOpen).
+ */
+function wireMusicInterruptBridge() {
+  window.addEventListener('dbs:interrupt-music', (e) => {
+    const reason = e?.detail?.reason || 'route';
+    pauseDbsPlayer(reason);
+  });
+  window.addEventListener('dbs:resume-music', (e) => {
+    const reason = e?.detail?.reason;
+    if (reason === 'live') notifyLiveClosed();
+    else if (reason === 'video') notifyVideoIdle();
+    else resumeDbsPlayerIfAllowed(reason);
+  });
+}
+
 function boot() {
   ensureDemoPosts();
   rewriteAssetUrls(document);
   buildTabbar();
   buildDrawer();
-  initMiniPlayer();
+  initDbsPlayer();
+  wireMusicInterruptBridge();
 
   document.getElementById('menuBtn').addEventListener('click', () => setDrawer(true));
   document.getElementById('scrim').addEventListener('click', () => setDrawer(false));
   document.getElementById('sideNav').addEventListener('click', (e) => {
+    const cat = e.target.closest('.drawer-cat');
+    if (cat) {
+      e.preventDefault();
+      const group = cat.closest('.drawer-group');
+      const willOpen = !group.classList.contains('open');
+      document.querySelectorAll('#sideNav .drawer-group').forEach((g) => {
+        const open = willOpen && g === group;
+        g.classList.toggle('open', open);
+        const b = g.querySelector('.drawer-cat');
+        if (b) b.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+      return;
+    }
     if (e.target.closest('a')) setDrawer(false);
   });
   document.getElementById('notifBtn').addEventListener('click', () => {
@@ -191,22 +284,21 @@ function boot() {
   onRoute(render);
   startRouter();
 
-  // Splash §19: first visit shows /public/loading/DBS_Official_Loading_Screen.png
-  // Dismiss ASAP when ready — no artificial long delay. ?holdSplash=1 for evidence.
+  // Splash §19 t178u: official logo + tuning fork · hold ~3s when shown.
+  // Subsequent visits skip via shouldShowSplash(); ?holdSplash=1 for evidence.
   if (!shouldShowSplash() && !new URLSearchParams(location.search).has('holdSplash')) {
     const splash = document.getElementById('splash');
     if (splash) splash.remove();
   } else {
+    playSplashChime();
     let done = false;
     const ready = () => {
       if (done) return;
       done = true;
       hideSplash();
     };
-    const dismiss = () => setTimeout(ready, 320);
-    if (document.readyState === 'complete') dismiss();
-    else window.addEventListener('load', dismiss, { once: true });
-    setTimeout(ready, 1800); // safety max if load hangs
+    // Fixed 3s hold from boot (user ask t178u); same as safety max.
+    setTimeout(ready, 3000);
   }
 }
 

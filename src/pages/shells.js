@@ -1,7 +1,9 @@
-import { getState, setState, setNotifPrefs, listCatalog } from '../store.js';
+import { getState, setState, setNotifPrefs, listCatalog, submitCreatorSellApp } from '../store.js';
 import { resolveMediaSrc } from '../media-db.js';
 import { VIDEOS, VIDEO_COMING_SOON, MEMBERSHIPS } from '../data.js';
-import { esc, shellPage, toast } from '../ui.js';
+import { esc, shellPage, toast, ytEmbedSrc } from '../ui.js';
+import { navigate } from '../router.js';
+import { notifyVideoPlaying, notifyVideoIdle, bindPageYoutubeEmbeds } from '../player.js';
 
 function phase(n) {
   return { badge: `Phase ${n} shell` };
@@ -11,7 +13,7 @@ function videoCard(v) {
   return `
     <article class="card">
       <div class="hero-video" style="margin:0 0 10px">
-        <iframe src="${esc(v.embed)}?rel=0" title="${esc(v.title)}" allowfullscreen loading="lazy"
+        <iframe src="${esc(ytEmbedSrc(v.embed))}" title="${esc(v.title)}" allowfullscreen loading="lazy"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
       </div>
       <span class="chip">${esc(v.category || 'Music Videos')}</span>
@@ -52,7 +54,7 @@ export function renderVideos() {
       if (emb || yt) {
         const embedSrc = emb || '';
         return `<article class="card catalog-admin-video" data-id="${esc(c.id)}">
-          ${embedSrc ? `<div class="hero-video" style="margin:0 0 10px"><iframe src="${esc(embedSrc)}?rel=0" title="${esc(c.title)}" allowfullscreen loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe></div>` : ''}
+          ${embedSrc ? `<div class="hero-video" style="margin:0 0 10px"><iframe src="${esc(ytEmbedSrc(embedSrc))}" title="${esc(c.title)}" allowfullscreen loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe></div>` : ''}
           <span class="chip">Admin</span>
           <h3 style="margin:8px 0 4px">${esc(c.title)}</h3>
           <p class="muted">${esc(c.artist)}</p>
@@ -103,6 +105,13 @@ export function renderVideos() {
 }
 
 export function bindVideos(root) {
+  // §17: real YT play via IFrame API (Media Links binder) — not cross-origin pointerdown
+  bindPageYoutubeEmbeds(root);
+  root.querySelectorAll('video.catalog-video').forEach((vid) => {
+    vid.addEventListener('play', () => notifyVideoPlaying());
+    vid.addEventListener('pause', () => notifyVideoIdle());
+    vid.addEventListener('ended', () => notifyVideoIdle());
+  });
   root.querySelectorAll('.video-share').forEach((btn) => {
     btn.addEventListener('click', async () => {
       const url = btn.dataset.url || '';
@@ -165,10 +174,85 @@ export function renderPricing() {
   const tiers = MEMBERSHIPS.map(
     (m) => `<li><span>${esc(m.name)}</span><strong>$${m.price}/mo</strong></li>`
   ).join('');
+  const apps = getState().creatorSellApps || [];
+  const appsList = apps.length
+    ? `<ul class="list-plain" style="margin-top:10px">${apps
+        .slice(0, 8)
+        .map(
+          (a) =>
+            `<li><span>${esc(a.name)} · ${esc(a.contact)} · ${esc(a.sells)}</span><span class="chip">${esc(a.status || 'pending')}</span></li>`
+        )
+        .join('')}</ul>`
+    : '<p class="muted" style="margin:8px 0 0;font-size:12px">No applications on this device yet.</p>';
   return shellPage(
     'Pricing',
-    `<div class="card"><h3>Memberships</h3><ul class="list-plain">${tiers}</ul></div>
-     <div class="card"><h3>Music</h3>
+    `<div class="card">
+      <p class="kicker">Creators &amp; producers</p>
+      <h2 style="margin:0 0 8px">Upload &amp; sell your music on DBS</h2>
+      <p>Artists and producers can upload tracks and sell them directly on the DBS Network. Our demo platform cut is <strong>lower than typical stores</strong> — creators keep <strong>much more</strong> of each sale.</p>
+      <p class="muted" style="margin:8px 0 0">TEST MODE only — no real charges, no live contracts. Numbers below are illustrative DEMO rates for the SPA.</p>
+      <p class="chip" style="margin-top:10px">TEST MODE · no charges</p>
+    </div>
+
+    <div class="card" id="creator-sell-fees">
+      <p class="kicker">Fair cut · DEMO</p>
+      <h3 style="margin:0 0 8px">Who keeps what</h3>
+      <p class="muted" style="margin:0 0 10px">Illustrative comparison — not a live contract. Labelled DEMO for Checker &amp; Design. Fee numbers live here — not on Home.</p>
+      <ul class="list-plain">
+        <li><span>Typical digital store<br/><span class="muted" style="font-size:12px">Platform cut ~30%</span></span><strong>Creator ~70%</strong></li>
+        <li><span>Major streaming / storefront<br/><span class="muted" style="font-size:12px">Effective cut ~30–50%+</span></span><strong>Creator ~50–70%</strong></li>
+        <li><span><strong>DBS music sales (demo)</strong><br/><span class="muted" style="font-size:12px">Platform cut <strong>10%</strong></span></span><strong style="color:var(--acc)">Creator 90%</strong></li>
+      </ul>
+      <p class="chip chip-partial" style="margin-top:10px">DEMO rates · illustrative only</p>
+    </div>
+
+    <div class="card">
+      <p class="kicker">Creator merch</p>
+      <h3 style="margin:0 0 8px">Your storefront · your payments</h3>
+      <p>Creators may add a merch section on their profile or shop area, but <strong>must use their own payment methods</strong> (Stripe, PayPal, or other external checkout). DBS lists and links — it is <strong>not</strong> the merchant of record for creator merch.</p>
+      <ul class="list-plain" style="margin-top:10px">
+        <li><span>Payment processing</span><span class="chip">Creator’s Stripe / PayPal</span></li>
+        <li><span>Merchant of record</span><span class="chip">Not DBS</span></li>
+        <li><span>Foreign X-Change official merch</span><span><a href="#/merch" style="color:var(--sk)">External shop →</a></span></li>
+      </ul>
+      <p class="chip" style="margin-top:10px">TEST MODE · no merch charges inside DBS</p>
+    </div>
+
+    <div class="card">
+      <p class="kicker">Buyer ↔ seller</p>
+      <h3 style="margin:0 0 8px">Transactions are final between parties</h3>
+      <p>Buyer↔seller music and creator-merch transactions are <strong>not reversed or disputed through DBS</strong>. Chargebacks, refunds, and product disputes stay between the buyer and the seller (or their payment provider). Disputes do <strong>not</strong> fall on DBS as merchant of record for those sales.</p>
+      <p class="muted" style="margin:8px 0 0">This is demo legal-style notice for the SPA. Final Terms ship before public launch. Membership billing rules remain separate (see Community Guidelines).</p>
+      <p class="chip" style="margin-top:10px">TEST MODE · disclosure copy · not live MoR</p>
+    </div>
+
+    <div class="card" id="creator-sell">
+      <p class="kicker">Apply · TEST MODE</p>
+      <h3 style="margin:0 0 8px">Creator apply</h3>
+      <p class="muted" style="margin:0 0 10px">Tell us who you are and what you sell. Saved on this device only — no real backend. Review rules &amp; fees above before submitting.</p>
+      <div class="grid-2">
+        <div class="field"><label for="csName">Name *</label><input id="csName" autocomplete="name" required /></div>
+        <div class="field"><label for="csContact">Email or handle *</label><input id="csContact" placeholder="you@email or @handle" required /></div>
+      </div>
+      <div class="field">
+        <label for="csSells">What do you sell?</label>
+        <select id="csSells">
+          <option value="music">Music</option>
+          <option value="merch">Merch</option>
+          <option value="both" selected>Both</option>
+        </select>
+      </div>
+      <label class="row" style="gap:8px;align-items:flex-start;margin:8px 0 12px;cursor:pointer">
+        <input type="checkbox" id="csAgree" style="margin-top:3px" />
+        <span style="font-size:13px">I agree to the DEMO rules, fee schedule, merch MoR, and final-transaction notice on this page.</span>
+      </label>
+      <button type="button" class="btn primary block" id="csSubmit">Submit application</button>
+      <p class="chip" style="margin-top:10px">TEST MODE · localStorage <code>creatorSellApps</code></p>
+      ${appsList}
+    </div>
+
+    <div class="card"><h3>Memberships</h3><ul class="list-plain">${tiers}</ul></div>
+     <div class="card"><h3>Music price ranges</h3>
        <ul class="list-plain">
          <li><span>Song</span><span>$0.99–$1.29</span></li>
          <li><span>EP</span><span>$4.99–$6.99</span></li>
@@ -176,9 +260,34 @@ export function renderPricing() {
        </ul>
        <p class="chip">TEST MODE · no charges</p>
      </div>`,
-    { lead: 'Memberships, music, gifts, messaging — admin-adjustable.' }
+    { lead: 'Sell music · rules &amp; fees · apply form · memberships &amp; gifts — admin-adjustable.' }
   );
 }
+
+export function bindPricing(root) {
+  const focusSell =
+    typeof location !== 'undefined' &&
+    (location.hash.includes('focus=sell') || location.hash.includes('creator-sell'));
+  if (focusSell) {
+    setTimeout(
+      () => document.getElementById('creator-sell')?.scrollIntoView({ behavior: 'smooth', block: 'start' }),
+      60
+    );
+  }
+  root.querySelector('#csSubmit')?.addEventListener('click', () => {
+    const name = root.querySelector('#csName')?.value?.trim();
+    const contact = root.querySelector('#csContact')?.value?.trim();
+    const sells = root.querySelector('#csSells')?.value || 'both';
+    const agreed = !!root.querySelector('#csAgree')?.checked;
+    if (!name || !contact) return toast('Name and email/handle required');
+    if (!agreed) return toast('Agree to rules & fees to continue');
+    const res = submitCreatorSellApp({ name, contact, sells, agreed });
+    if (res?.error) return toast(res.error === 'rules' ? 'Agree to rules & fees to continue' : 'Name and email/handle required');
+    toast('Application saved · TEST MODE');
+    navigate('#/pricing?focus=sell');
+  });
+}
+
 
 export function renderAdmin() {
   const { posts, clipperApps, user } = getState();
@@ -253,32 +362,205 @@ export function renderGuidelines() {
   );
 }
 
+const LOUNGE_CHANNELS = [
+  {
+    id: 'dbs-lounge',
+    cat: 'NETWORK',
+    hash: '#dbs-lounge',
+    name: 'DBS Lounge',
+    blurb: 'Main hub · official announcements & network news',
+    chip: 'Hub',
+  },
+  {
+    id: 'conversation',
+    cat: 'NETWORK',
+    hash: '#the-conversation',
+    name: 'The Conversation',
+    blurb: 'Public music & fan discussion threads',
+    chip: 'Public',
+  },
+  {
+    id: 'listening',
+    cat: 'VOICE / LISTENING',
+    hash: '#listening-rooms',
+    name: 'Listening Rooms',
+    blurb: 'Listening parties & reactions to new releases',
+    chip: 'Parties',
+  },
+  {
+    id: 'backstage',
+    cat: 'MEMBERS',
+    hash: '#backstage-rooms',
+    name: 'Backstage Rooms',
+    blurb: 'Tier-restricted spaces for Skeet+ / Backstage / Inner Circle',
+    chip: 'Members',
+  },
+  {
+    id: 'live-rooms',
+    cat: 'NETWORK',
+    hash: '#live-rooms',
+    name: 'Live Rooms',
+    blurb: 'Scheduled community events & discussions',
+    chip: 'Events',
+  },
+  {
+    id: 'spotlight',
+    cat: 'NETWORK',
+    hash: '#the-spotlight',
+    name: 'The Spotlight',
+    blurb: 'Featured fan conversations & creator posts',
+    chip: 'Featured',
+  },
+];
+
+const LOUNGE_DEMO_MSGS = {
+  'dbs-lounge': [
+    { who: 'DBS · System', text: 'Welcome to DBS Lounge — DatBoiSkeet’s channel-style community hub.', tag: 'DEMO' },
+    { who: 'TEST MODE', text: 'Live chat isn’t connected yet. These rows are placeholders so the room pane feels real.', tag: 'DEMO' },
+  ],
+  conversation: [
+    { who: 'DEMO', text: 'Drop takes on new releases here once Phase 2 chat ships.', tag: 'DEMO' },
+  ],
+  listening: [
+    { who: 'DEMO', text: 'Listening parties will sync reactions here — preview only.', tag: 'DEMO' },
+  ],
+  backstage: [
+    { who: 'DEMO', text: 'Member-tier rooms unlock with Skeet+ / Backstage / Inner Circle.', tag: 'DEMO' },
+  ],
+  'live-rooms': [
+    { who: 'DEMO', text: 'Scheduled community events will list here — no live presence yet.', tag: 'DEMO' },
+  ],
+  spotlight: [
+    { who: 'DEMO', text: 'Featured fan conversations land here in Phase 2.', tag: 'DEMO' },
+  ],
+};
+
+const LOUNGE_DEMO_MEMBERS = [
+  { name: 'DatBoiSkeet', role: 'Owner' },
+  { name: 'SkeetMod', role: 'Mod · DEMO' },
+  { name: 'FanDemo01', role: 'DEMO' },
+  { name: 'ListenerX', role: 'DEMO' },
+];
+
+function loungeChannelPane(ch) {
+  const msgs = LOUNGE_DEMO_MSGS[ch.id] || LOUNGE_DEMO_MSGS['dbs-lounge'];
+  const msgHtml = msgs
+    .map(
+      (m) => `<div class="lounge-msg">
+        <div class="lounge-msg-avatar" aria-hidden="true">${esc(m.who.slice(0, 1))}</div>
+        <div class="lounge-msg-body">
+          <div class="lounge-msg-meta"><strong>${esc(m.who)}</strong> <span class="chip">${esc(m.tag)}</span></div>
+          <p>${esc(m.text)}</p>
+        </div>
+      </div>`
+    )
+    .join('');
+  return `<div class="lounge-pane" data-pane="${esc(ch.id)}" ${ch.id === 'dbs-lounge' ? '' : 'hidden'}>
+    <header class="lounge-pane-head">
+      <div>
+        <h2><span class="lounge-hash">#</span> ${esc(ch.name)}</h2>
+        <p class="muted">${esc(ch.blurb)}</p>
+      </div>
+      <span class="chip">${esc(ch.chip)}</span>
+    </header>
+    <div class="lounge-honesty">
+      <span class="chip">Phase 2</span>
+      <span class="chip">TEST MODE</span>
+      <p>Live chat, presence, and real member lists aren’t online yet — this is Discord-inspired chrome for DBS Lounge only.</p>
+    </div>
+    <div class="lounge-msgs" aria-label="Demo messages">${msgHtml}</div>
+    <div class="lounge-compose">
+      <input type="text" disabled placeholder="Message #${esc(ch.name.toLowerCase().replace(/\s+/g, '-'))} · Phase 2" aria-label="Message composer disabled"/>
+      <button class="btn" disabled>Send</button>
+    </div>
+  </div>`;
+}
+
 export function renderCommunity() {
+  const cats = [];
+  const seen = new Set();
+  LOUNGE_CHANNELS.forEach((c) => {
+    if (!seen.has(c.cat)) {
+      seen.add(c.cat);
+      cats.push(c.cat);
+    }
+  });
+  const railCats = cats
+    .map((cat) => {
+      const items = LOUNGE_CHANNELS.filter((c) => c.cat === cat)
+        .map(
+          (c) => `<button type="button" class="lounge-channel${c.id === 'dbs-lounge' ? ' on' : ''}" data-channel="${esc(c.id)}" aria-pressed="${c.id === 'dbs-lounge' ? 'true' : 'false'}">
+            <span class="lounge-hash">#</span>
+            <span class="lounge-channel-label">${esc(c.name)}</span>
+            <span class="chip lounge-channel-chip">${esc(c.chip)}</span>
+          </button>`
+        )
+        .join('');
+      return `<div class="lounge-cat-block">
+        <p class="lounge-cat-label">${esc(cat)}</p>
+        ${items}
+      </div>`;
+    })
+    .join('');
+
+  const panes = LOUNGE_CHANNELS.map(loungeChannelPane).join('');
+  const members = LOUNGE_DEMO_MEMBERS.map(
+    (m) => `<li><span class="lounge-member-dot" aria-hidden="true"></span><span><strong>${esc(m.name)}</strong><br/><span class="muted" style="font-size:11px">${esc(m.role)}</span></span></li>`
+  ).join('');
+
   return shellPage(
     'DBS Lounge',
-    `<div class="card">
+    `<div class="card lounge-intro">
       <p class="kicker">Artist-owned network</p>
-      <h2 style="margin:0 0 8px">Where the culture gathers</h2>
-      <p>DBS Lounge is DatBoiSkeet’s premium community — announcements, listening parties, and fan conversations under one silver/dark brand. Built as an artist-owned entertainment network, not a Discord lookalike.</p>
-      <p class="muted" style="margin:8px 0 0">Room cards below preview the redesign. Live chat, member counts, and real-time presence unlock in Phase 2 — nothing here invents active users or fake chats.</p>
+      <h2 style="margin:0 0 8px">Channel-style Lounge</h2>
+      <p>DBS Lounge is DatBoiSkeet’s premium community — Discord-type channel UX (sidebar + room panes) under silver/dark DBS branding. Announcements, listening parties, and fan conversations in one place.</p>
+      <p class="muted" style="margin:8px 0 0">Not affiliated with Discord. Channels below are the same rooms as before; live chat unlocks in Phase 2.</p>
     </div>
 
-    <div class="card">
-      <p class="kicker">Rooms</p>
-      <h3 style="margin:0 0 10px">Lounge map</h3>
-      <ul class="list-plain lounge-list">
-        <li><span><strong>DBS Lounge</strong><br/><span class="muted" style="font-size:12px">Main hub · official announcements &amp; network news</span></span><span class="chip">Hub</span></li>
-        <li><span><strong>The Conversation</strong><br/><span class="muted" style="font-size:12px">Public music &amp; fan discussion threads</span></span><span class="chip">Public</span></li>
-        <li><span><strong>Listening Rooms</strong><br/><span class="muted" style="font-size:12px">Listening parties &amp; reactions to new releases</span></span><span class="chip">Parties</span></li>
-        <li><span><strong>Backstage Rooms</strong><br/><span class="muted" style="font-size:12px">Tier-restricted spaces for Skeet+ / Backstage / Inner Circle</span></span><span class="chip">Members</span></li>
-        <li><span><strong>Live Rooms</strong><br/><span class="muted" style="font-size:12px">Scheduled community events &amp; discussions</span></span><span class="chip">Events</span></li>
-        <li><span><strong>The Spotlight</strong><br/><span class="muted" style="font-size:12px">Featured fan conversations &amp; creator posts</span></span><span class="chip">Featured</span></li>
-      </ul>
-      <button class="btn" disabled>Rooms · Phase 2</button>
-      <p class="chip" style="margin-top:10px">Moderation + reporting follow Community Guidelines (§13)</p>
+    <div class="lounge-discord" id="loungeDiscord">
+      <aside class="lounge-channels" aria-label="Lounge channels">
+        <div class="lounge-server">
+          <div class="lounge-server-mark" aria-hidden="true">DBS</div>
+          <div>
+            <strong>DatBoiSkeet</strong>
+            <p class="muted" style="margin:0;font-size:11px">Lounge · silver/dark</p>
+          </div>
+        </div>
+        ${railCats}
+        <p class="chip" style="margin:12px 8px 4px">Moderation · §13 Guidelines</p>
+      </aside>
+      <section class="lounge-main" aria-label="Room pane">
+        ${panes}
+      </section>
+      <aside class="lounge-members" aria-label="Demo members">
+        <p class="lounge-cat-label">MEMBERS · DEMO</p>
+        <ul class="lounge-member-list">${members}</ul>
+        <p class="muted" style="font-size:11px;margin:8px 4px 0">Placeholder names — not live presence.</p>
+      </aside>
     </div>`,
-    { lead: 'DBS Lounge · listening parties · music-first rooms.', ...phase(2) }
+    { lead: 'Discord-inspired channels · DatBoiSkeet branded.', ...phase(2) }
   );
+}
+
+export function bindCommunity(root = document) {
+  const shell = root.querySelector('#loungeDiscord') || root;
+  const buttons = [...shell.querySelectorAll('.lounge-channel')];
+  const panes = [...shell.querySelectorAll('.lounge-pane')];
+  if (!buttons.length) return;
+  buttons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.channel;
+      buttons.forEach((b) => {
+        const on = b === btn;
+        b.classList.toggle('on', on);
+        b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
+      panes.forEach((p) => {
+        if (p.dataset.pane === id) p.removeAttribute('hidden');
+        else p.setAttribute('hidden', '');
+      });
+    });
+  });
 }
 
 export function renderSignup() {
@@ -399,7 +681,7 @@ export function renderLaunch() {
     { label: 'Music & video rights', status: 'Partial', note: '3 official MVs · streaming links still SHELL' },
     { label: 'Gift-battle fraud prevention', status: 'SHELL', note: 'Gift Battles not wired for launch' },
     { label: 'Livestream safety', status: 'Demo', note: 'Go-live demo PASS · age/safety stack incomplete' },
-    { label: 'Background audio pause/resume', status: 'SHELL', note: '§17 mini-player UI-only until authorized audio' },
+    { label: 'Background audio pause/resume', status: 'PARTIAL', note: '§17 sticky top YT player + pauseDbsPlayer hooks' },
     { label: 'Account recovery / optional 2FA', status: 'TODO', note: 'Local demo sign-in only' },
     { label: 'Loyalty analytics consent', status: 'SHELL', note: 'Privacy/consent controls before launch' },
     { label: 'DBS Connect safety (age + WebRTC)', status: 'Blocked', note: 'Must not launch without assurance' },
@@ -467,7 +749,7 @@ export function renderPhases() {
         { label: '§20 Home dashboard', status: 'DONE', href: '#/home' },
         { label: '§21 Merch showcase', status: 'DONE', href: '#/merch' },
         { label: '§34 Coming Soon covers', status: 'DONE', href: '#/music' },
-        { label: '§17 Home MV + continuous play', status: 'PARTIAL', href: '#/home', note: 'MV carousel OK · mini-player UI-only until authorized audio' },
+        { label: '§17 Home MV + continuous play', status: 'PARTIAL', href: '#/home', note: 'Sticky top YT player · Stream Everywhere open links · PENDING AUDIT' },
       ],
     },
     {
@@ -551,7 +833,7 @@ export function renderPhases() {
       <p class="kicker">Plan §12</p>
       <h2 style="margin:0 0 8px">Roadmap · what shipped vs remaining</h2>
       <p class="muted" style="margin:0">Phase 1–3 from the DatBoiSkeet developer plan. Chips mirror STATUS.md — <strong>DONE</strong> needs Checker PASS; <strong>PARTIAL</strong> and <strong>PENDING AUDIT</strong> are not launch-complete.</p>
-      <p class="muted" style="margin:10px 0 0">Still open: <a href="#/home">§17 mini-player</a> (needs authorized audio) · <a href="#/shop">§22 Profile Shop</a> (awaiting Checker) · identity/payout verification &amp; fraud controls before activating real money features.</p>
+      <p class="muted" style="margin:10px 0 0">Still open: <a href="#/home">§17 sticky player</a> (YT embed · no DBS-hosted audio yet) · <a href="#/shop">§22 Profile Shop</a> (awaiting Checker) · identity/payout verification &amp; fraud controls before activating real money features.</p>
     </div>
 
     ${phaseCards}

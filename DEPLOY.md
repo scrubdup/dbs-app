@@ -1,9 +1,29 @@
 # DBS public deploy
 
-- **Live app:** https://scrubdup.github.io/dbs-app/
-- **Repo:** https://github.com/scrubdup/dbs-app
-- **Host:** GitHub Pages (`gh-pages` branch from `dist/`)
-- **Phone:** open link → Add to Home Screen / Install
-- **Base path:** `/dbs-app/` in vite.config.js
+## CLAIM THIS ACCOUNT (keeps workers.dev forever) — do first
 
-Rebuild + republish: `npm run build`, then push `dist/` contents to `gh-pages`.
+- **Claim URL (expires ~2026-10-25 03:55 UTC):** https://dash.cloudflare.com/claim-preview?claimToken=<SENT_IN_CHAT_EXPIRES_03:55_UTC>
+- Temporary CF account: **Abundant Passionfruit** (reused on latest deploy)
+- After claim: `wrangler login` on the box, then deploy **without** `--temporary`
+
+## Permanent forever URL (GitHub Pages)
+
+- **Home:** https://scrubdup.github.io/dbs-app/#/home
+- **Never expires.** Source: `gh-pages` branch (`e5b2bec` · blue triad + today’s ships)
+- Base path: `/dbs-app/`
+
+## Phone link (workers.dev — temporary until claimed)
+
+- **Home:** https://dbs-app.abundant-passionfruit.workers.dev/#/home
+- **Live:** https://dbs-app.abundant-passionfruit.workers.dev/#/live
+- **Version ID:** `bc0806d9-32f9-46af-822b-5eda22691b9a` (2026-10-25 t187u/t188u)
+- Prior suave-marimba preview **expired** — do not use
+- Build root base: `VITE_BASE=/ npm run build`
+- Redeploy temporary:  
+  `PATH=/tmp/node-v22.20.0-linux-x64/bin:$PATH npx -y wrangler@4.152.0 deploy --assets=./dist --name dbs-app --temporary`
+
+## Also
+
+- **Repo:** https://github.com/scrubdup/dbs-app
+- Rebuild Pages: `VITE_BASE=/dbs-app/ npm run build` → push `dist/` to `gh-pages` (or use Actions workflow on main)
+- Includes: brand black/red/blue (`--blue: #2f6bff`), t180u song packs, splash 3s, sticky player fix, drawer IA, Home LIVE pill, BW crop, t185u gifts catalog (in-flight OK)

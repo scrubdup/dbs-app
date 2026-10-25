@@ -4,6 +4,7 @@ import {
   summarizeCreatorEarnings,
   seedDemoCreatorEarnings,
   creditCreatorEarning,
+  listCreatorGiftEarnings,
 } from '../store.js';
 import { esc, toast, shellPage, timeAgo } from '../ui.js';
 import { navigate, getRoute } from '../router.js';
@@ -61,6 +62,18 @@ export function renderEarnings() {
       : allEarnings.filter((e) => e.category === filter || (filter === 'subscriptions' && e.category === 'paid_content'));
   const life = lifetimeTotals(allEarnings);
   const summary = summarizeCreatorEarnings();
+  const coinGiftLines = listCreatorGiftEarnings();
+  const giftIntro =
+    filter === 'gifts'
+      ? `<div class="card" style="margin:0 0 12px;background:#12121a">
+      <div class="row wrap">
+        <span class="chip">t185u · catalog gifts</span>
+        <span class="chip">80% creator / 20% DBS · NET</span>
+        <span class="chip">TEST MODE · listed USD = net</span>
+      </div>
+      <p class="muted" style="margin:8px 0 0;font-size:13px">Coin gifts from Live use <code>sendLiveGift</code> → creator earnings here. Viewers on Live / gift tray never see this split. ${coinGiftLines.length ? `${coinGiftLines.length} gift line(s) on device.` : 'Send a catalog gift on an active Live to populate.'}</p>
+    </div>`
+      : '';
 
   const filterChips = FILTERS.map((f) => {
     const href = f.id === 'all' ? '#/earnings' : `#/earnings?cat=${f.id}`;
@@ -190,7 +203,7 @@ export function renderEarnings() {
 
     <div class="card">
       <h3>Commission rates · TEST MODE</h3>
-      <p class="muted" style="margin:0 0 10px;font-size:13px">Admin-adjustable examples. Fees (2.9% + $0.30) apply to gross first; splits apply to eligible net.</p>
+      <p class="muted" style="margin:0 0 10px;font-size:13px">Admin-adjustable examples. Default fees (2.9% + $0.30) apply to gross first; splits apply to eligible net. <strong>Live catalog gifts</strong> (t185u): listed USD treated as net (0% external fee chip) then <strong>80/20</strong>. Optional 85/15 is not enabled.</p>
       <div style="overflow-x:auto">
         <table style="width:100%;border-collapse:collapse;font-size:13px">
           <thead>
@@ -208,6 +221,7 @@ export function renderEarnings() {
 
     <div class="card">
       <h3>Earnings ledger</h3>
+      ${giftIntro}
       <div class="row wrap" style="margin:0 0 12px;gap:6px">${filterChips}</div>
       ${ledger}
     </div>

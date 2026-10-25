@@ -101,9 +101,14 @@ export function renderOpenMic() {
     'Open Mic',
     `
     <div class="card">
-      <p class="kicker">§30 · Talent discovery</p>
+      <p class="kicker">§30 · 24/7 Live category · Talent Discovery</p>
       <h2 style="margin:0 0 6px">Open Mic &amp; Talent Discovery</h2>
-      <p class="muted" style="margin:0 0 10px">Opt-in showcase for rappers, singers, DJs, producers. Submit music + profile, certify rights, apply for approval. Approved artists appear in the DBS discovery showcase — <strong>not a paid ranking</strong>.</p>
+      <p class="muted" style="margin:0 0 10px"><strong>24/7 Live category</strong> (like Spotlight) — not Social. Opt-in showcase for rappers, singers, DJs, producers. Submit music + profile, certify rights, apply for approval. Approved artists appear in the DBS discovery showcase — <strong>not a paid ranking</strong>.</p>
+      <nav class="live-cat-chips" aria-label="Live categories" style="margin:0 0 12px">
+        <a class="live-cat-chip" href="#/live">Live</a>
+        <a class="live-cat-chip on" href="#/openmic" aria-current="page">Open Mic / Talent Discovery (24/7)</a>
+        <a class="live-cat-chip" href="#/spotlight">Spotlight (24/7)</a>
+      </nav>
       <div class="row wrap" style="gap:8px">
         <a class="btn" href="#/spotlight">24/7 Spotlight</a>
         <a class="btn" href="#/live">Live</a>

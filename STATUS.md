@@ -10,7 +10,7 @@ Legend: **DONE** = usable demo in SPA · **SHELL** = routed page with copy/UI pl
 | --- | --- | --- | --- | --- |
 | 1 | DBS Posts — Social Network | `#/posts` | DONE | Build |
 | 2 | DBS Clippers — Application & Earning | `#/clippers` | DONE | Build |
-| 3 | DBS Live — Creator Livestreaming | `#/live` | DONE (Checker PASS 2026-10-25 · phase2/live/checker/) | Live Social |
+| 3 | DBS Live — Creator Livestreaming | `#/live` | DONE (core PASS) · **t180u song requests PASS** (evidence phase2/live-song-requests-t180u/checker/) · **t185u gifts catalog in flight** | Live Social |
 | 4 | DBS Marketplace — Advertising | `#/marketplace` | DONE (Checker PASS 2026-10-25 · phase2/marketplace/checker/) | Commerce |
 | 5 | Creator Rewards, Earnings & Commissions | `#/earnings` | DONE (ledger + commissions — Checker PASS 2026-10-25; evidence phase2/earnings/ + checker/) | Commerce |
 | 6 | Missions | `#/missions` | DONE (Checker PASS 2026-10-25 · phase2/missions/checker/) | Commerce |
@@ -22,11 +22,11 @@ Legend: **DONE** = usable demo in SPA · **SHELL** = routed page with copy/UI pl
 | 12 | Development Phases | `#/phases` | DONE (roadmap + status chips 2026-10-25 · evidence phase2/phases/) | Supervisor |
 | 13 | Community Guidelines, Violations & Suspensions | `#/guidelines` | DONE (Checker PASS 2026-10-25 · content-polish/checker/) | Content Polish |
 | 14 | Existing Music — Streaming Platform Integration | `#/music` links | DONE (Checker re-audit PASS 2026-10-25 · YouTube Mixes + Stream Everywhere · media-links/checker/reaudit/) | Media Links |
-| 15 | Real Content, Website Design & Community Redesign | global + `#/community` | DONE (Checker PASS 2026-10-25 · rooms Phase 2 honesty · content-polish/checker/) | Content Polish / Design |
+| 15 | Real Content, Website Design & Community Redesign | global + `#/community` | DONE (Checker PASS 2026-10-25 · phase2/lounge-discord/checker/) | Design |
 | 16 | Platform-Wide Signup & Creator Applications | `#/signup` | DONE (copy polish 2026-10-25 · Content Polish) | Build |
-| 17 | Homepage Music Videos & Continuous Playback | `#/home` + mini-player | PARTIAL (MV carousel OK; mini-player UI-only until authorized audio) | Media Links |
+| 17 | Homepage Music Videos & Continuous Playback | `#/home` + sticky top player | DONE (Checker PASS sticky+interrupt+Play-next+Mix embed 2026-10-25 · evidence phase2/sticky-player/ + player-interrupt/) | Media Links / Build |
 | 18 | Private Messaging & Group Chats | `#/messages` | DONE (Checker PASS 2026-10-25 · phase2/messages/checker/) | Live Social |
-| 19 | Official DBS Loading Screen | splash in `index.html` | DONE | Design |
+| 19 | Official DBS Loading Screen | splash in `index.html` | DONE (Checker PASS 2026-10-25 · t178u logo 3s + tuning fork · phase2/splash-t178u/checker/) | Design |
 | 20 | Interactive Home Dashboard & Live Activity | `#/home` | DONE (copy polish 2026-10-25 · Content Polish) | Design |
 | 21 | Foreign X-Change Merch Showcase | `#/merch` | DONE | Design |
 | 22 | Profile Shop — Digital Cosmetics | `#/shop` | DONE (Checker PASS 2026-10-25 · phase2/shop/checker/) | Design |
@@ -43,9 +43,10 @@ Legend: **DONE** = usable demo in SPA · **SHELL** = routed page with copy/UI pl
 | 33 | Refer & Earn | `#/refer` | DONE (Checker PASS 2026-10-25 · phase2/refer/checker/ · demo claim note) | Commerce |
 | 34 | Coming Soon Releases — Cover Art | `#/music` covers | DONE | Design |
 | 35 | 24/7 Spotlight | `#/spotlight` | DONE (Checker PASS 2026-10-25; evidence phase2/spotlight/ + checker/) | Live Social |
-| 36 | DBS Connect — Random Video Chat | `#/connect` | DONE (Checker PASS 2026-10-25; opt-in shell only · no WebRTC · evidence phase2/connect/ + checker/) | Live Social |
+| 36 | DBS Connect — Random Video Chat | `#/connect` | DONE (Checker PASS Design visual 2026-10-25 · phase2/connect-monkey/checker/; shell · no WebRTC) | Design (visual) / Live Social |
 | 37 | DBS Restream — Free Multi-Platform Go Live + streamer tier campaigns | `#/restream` | DONE (Checker PASS 2026-10-25 · TEST MODE · phase2/restream/checker/) | Live Social |
-| 38 | Hot Feed — High-Engagement Posts & Lives + Admin Alerts | `#/posts` `#/live` + Admin | PENDING (user ask 2026-10-25 · Build + Live Social) | Build / Live Social |
+| 38 | Hot Feed (Posts + Live + Admin alerts) | `#/hot` / Home / Admin | DONE | Build / Live Social |
+| 39 | Home Rotation + Creator Sell (music/merch terms) | `#/home` + Pricing | DONE | Design / Commerce / Live Social |
 
 ## Counts
 
@@ -54,14 +55,28 @@ Counts below are approximate; **PENDING AUDIT** / **PARTIAL** are not DONE. Chec
 
 | Status | Count |
 | --- | --- |
-| DONE | 29 |
-| PENDING AUDIT | 3 |
-| PARTIAL | 1 |
-| SHELL | 5 |
+| DONE | 39 |
+| PENDING AUDIT | 2 |
+| PARTIAL | 0 |
+| SHELL | 0 |
 | TODO | 0 |
-| **Total** | **37** |
+| **Total** | **39** |
 
 Counts are approximate — Checker owns PASS. §§13/15/31 flipped to DONE only after Checker PASS (2026-10-25).
+
+
+## Commerce — t185u LIVE Gifts + Coins (2026-10-25) → **PENDING AUDIT**
+
+**USER ADD / package t185u · docs/gifts/** — Commerce Wallet/Earnings display on Live Social store APIs.
+
+### Shipped (Commerce)
+- `#/wallet` **Gift coins** card: balance (`dbs_v1.coins`), packs 100/$2 … 10k/$200 via `buyCoins`, TEST MODE, no processor
+- Creator gift earnings card + `#/earnings?cat=gifts` note: **80/20 NET** (listed USD = net, fees $0); viewers never see split on Live
+- Reuses locked APIs: `getCoinBalance`, `buyCoins`, `listCoinPacks`, `listLiveGiftCatalog`, `sendLiveGift`, `listLiveGiftHistory`, `listCreatorGiftEarnings` (+ `purchaseCoinPack` alias)
+- Coins **separate** from USD `wallet`. No Millionaire. No 85/15. Home untouched. No deploy.
+
+Evidence: `/workspace/dbs-evidence/phase2/gifts-coins/`  
+**Do not self-DONE** — Checker owns PASS. Live Social owns gift tray.
 
 ## Phase 1 checklist
 
@@ -492,6 +507,21 @@ Cosmetics demo on `#/shop`. Evidence `phase2/shop/`.
 
 **Owners:** Build (Posts + Admin alerts) · Live Social (Live rail). Checker when both ping PENDING AUDIT. Evidence `phase2/hotfeed/`.
 
+## Live Social — §38 Hot Feed DONE (2026-10-25)
+
+**§38 Hot Feed → DONE** (Checker JOINT PASS 2026-10-25 · Live rail SLICE PASS + Build Posts/Admin PASS). Owners: Live Social (lives) · Build (posts + Admin).
+
+Verified Live rail: 8-card Hot lives (2 house + 6 community) · Watch demo · Simulate spike → HOT + Admin engagement alert · persists · TEST MODE honesty.
+
+Shipped on `#/live`:
+- Hot lives / Top streamers horizontal rail (house DatBoiSkeet + community seeds)
+- Watch demo + Simulate spike → `pushEngagementAlert` (`kind:'live'`) into shared `dbs_v1.engagementAlerts`
+- Store: `ensureHotLivesSeeded` / `listHotLives` / `simulateLiveSpike` (reuses Build `getHotFeedBucket` / `saveHotFeed` / `pushEngagementAlert`; preserves `hotFeed.posts`)
+- Also exported `listRisingStreamers()` for Design §39 Home rotation (community non-house; no `home.js` edits)
+
+Evidence: `/workspace/dbs-evidence/phase2/hotfeed/` + `phase2/hotfeed/checker/`.
+
+
 ## Design — §22 Profile Shop DONE confirm (2026-10-25)
 
 **§22 Profile Shop → DONE** (Checker PASS 2026-10-25 · phase2/shop/checker/). Owner: Design.
@@ -505,3 +535,332 @@ Evidence: `/workspace/dbs-evidence/phase2/shop/` + `phase2/shop/checker/`. No de
 
 ## Checker — §22 Profile Shop PASS (2026-10-25)
 Unlock/equip/bundle/reset + merch honesty. Minor: preview can linger after Unequip. Evidence `phase2/shop/checker/`.
+
+
+## §39 Home Rotation + Creator Sell terms (user ask 2026-10-25)
+
+**Home hero rotation (not videos-only):**
+- Auto-rotate / tabs on `#/home` featured stage: **Videos → Rising streamers → Hot lives** (high live viewers OR strong playbacks from earlier lives that day) → **Enhancements & songs** (coming soon / featured tracks).
+- Rising streamers + hot lives pull from same engagement signals as §38 Hot Feed where possible.
+- Keep Mix + Coming Soon; don’t remove MV carousel — fold into the rotation.
+
+**Creator / producer sell (promote on Home + Pricing):**
+- Artists & producers can **upload and sell** their music on DBS.
+- DBS takes a **platform cut lower than typical majors/stores** — creators keep **a lot more** of their money (show clear % table in Pricing / Earnings; DEMO numbers OK).
+- Same spirit for **creator merch sections**: creators may list merch, but **they must use their own payment methods** (Stripe/PayPal/etc. external). DBS does not process those charges.
+- **Transactions are final between buyer and seller** — not reversed or disputed through DBS; disputes don’t hit DBS as merchant of record. Disclose clearly (TEST MODE + legal-style notice).
+
+**Owners:** Design (Home rotation UI) · Live Social (rising/hot live rails data) · Commerce (cut % table + merch payment/disclosure copy on Pricing/Home) · Build (Admin upload sell flags if needed).
+**Evidence:** Commerce sell-terms → `phase2/creator-sell/` + `checker/` (**Commerce slice PASS 2026-10-25**). Design rotation → `phase2/home-rotation/`. Whole §39 still open until Design + Live Social.
+
+## Commerce — §39 Creator sell terms slice (2026-10-25)
+
+**Commerce slice → Checker PASS** (2026-10-25). Whole §39 still **PENDING** / shared — do **not** DONE full §39. Owner: Commerce.
+
+Shipped:
+- `#/pricing` (`src/pages/shells.js` `renderPricing`): creator sell intro · DEMO fair-cut table (Typical ~30%/70%, Major ~30–50%+/50–70%, **DBS demo 10%/90%**) · creator merch own Stripe/PayPal (DBS not MoR) · buyer↔seller finality / no DBS disputes disclosure · TEST MODE chips · memberships + music price ranges kept.
+- `#/home` (`src/pages/home.js`): compact `#home-creator-sell-promo` card → `#/pricing` (Design may rotate/reposition).
+- Evidence: `/workspace/dbs-evidence/phase2/creator-sell/` (+ `DESIGN_BLURB.md`) · Checker: `phase2/creator-sell/checker/` (`checker-cs-pricing-full.png`, `checker-cs-home-promo.png`).
+
+Wallet / Marketplace / Earnings untouched. Design owns Home rotation; Live Social owns rising/hot rails.
+
+## Checker — §39 Commerce sell-terms slice PASS (2026-10-25)
+Verified Pricing DEMO table + merch MoR + finality + Home promo → `#/pricing`. Whole §39 remains OPEN. Evidence `phase2/creator-sell/checker/`.
+
+
+## §17 expand — Sticky top music player (user ask 2026-10-25)
+
+**Behavior:**
+- Sticky **player at top of screen** (all main routes): plays DatBoiSkeet catalog via **official music platform links / embeds** (YouTube Music / YouTube / Spotify where embeddable) — **Stream Everywhere · do not rehost** until new music is on the app with authorized files.
+- Music **keeps playing across screens** unless the fan selects another song, starts a **video**, or opens a **live** (those interrupt; stopping interrupt can resume last track).
+- If they don’t tap an interrupt, keep the queue going (easy skip/prev among **his** songs).
+- Fan can **switch song** from the top player (his tracks only for now).
+- **Download / Open in platform** option → opens the official platform link for that track.
+- Until new music is uploaded in-app: source of truth = existing streaming links (§14).
+
+**Owners:** Media Links (player + queue + platform embeds) · Build (interrupt hooks from Posts video / Live / Videos) · Design (top bar chrome if needed).
+**Evidence:** `phase2/sticky-player/` · **PENDING AUDIT** (YT IFrame continuous + Open-on-platform · TEST MODE · not Spotify in-app).
+
+
+## Build — §17 interrupt call-site wiring (2026-10-25)
+
+Media Links owns `src/player.js` (sticky shell + `pauseDbsPlayer` / `notifyVideoPlaying` / `notifyLiveOpen` …). Build did **not** rewrite the player.
+
+**Call sites:**
+- `#/videos` — `notifyVideoPlaying()` on embed pointerdown / `<video>` play; `notifyVideoIdle()` on pause/ended. No interrupt on Open YouTube / Share.
+- `#/music` Mix embeds — `notifyVideoPlaying()` on embed engage only. Stream Everywhere / Spotify / Apple / YTM links do **not** pause.
+- `#/home` — already notifies on MV select / embed pointerdown (unchanged).
+- `#/live` — Live Social already calls `notifyLiveOpen` / `notifyLiveClosed` (Build did not rewrite live.js).
+- `main.js` — CustomEvent bridge: `dbs:interrupt-music` / `dbs:resume-music` → existing player exports (for pages that prefer dispatch over import).
+
+**Never:** pause on sticky `#spPrev` / `#spNext` / `#spOpen` (Media Links UI).
+**Evidence:** `/workspace/dbs-evidence/phase2/player-interrupt/README.md`
+**§17 stays PARTIAL** until Media Links + Checker PASS on full sticky player.
+
+
+## Design — §39 Home Rotation PENDING AUDIT (2026-10-25)
+
+Featured stage on `#/home`: tabs **Videos | Rising | Hot lives | Songs** + auto-cycle ~8s (pauses on tab click / prefers-reduced-motion).
+
+- **Videos:** existing MV carousel / featured embed folded into stage (not removed).
+- **Rising:** `listRisingStreamers()` — non-house mid-tier from §38 hotFeed lives.
+- **Hot lives:** `listHotLives()` top by score (house OK).
+- **Songs:** Coming Soon covers + enhancements promo.
+- Kept: DatBoiSkeet Mix, Coming Soon row, section swipe, live activity, admin From Admin blocks.
+- Creator sell promo `#home-creator-sell-promo`: DEMO **10% platform / 90% creator**; merch = seller’s own Stripe/PayPal (DBS not MoR); transactions final buyer↔seller. CTA `#/pricing` (Commerce owns full table — Design did not overwrite).
+- CSS: `.home-stage*`, `.home-live-*`, `.home-sell-promo`, `.home-cut-table`.
+- Evidence: `/workspace/dbs-evidence/phase2/home-rotation/` + `design/evidence/39_home_rotation.png`.
+- **Not DONE** — awaiting Progress Checker PASS. No deploy / push / merge.
+
+## Build — §38 Hot Feed half (superseded — JOINT PASS / DONE 2026-10-25)
+
+**Build shipped:** `#/posts` Hot/Trending strip · `#/admin` Engagement alerts (Like / Comment / Share / Mark handled) · store `dbs_v1.hotFeed` + `engagementAlerts` + `postShares`.
+
+**Exports for Live Social:** `pushEngagementAlert`, `listEngagementAlerts`, `markEngagementAlertHandled` (+ `markAlertHandled`), `getHotPosts`, `refreshHotFeed` (preserves `lives`/`seededLives`), `ensureHotPostsSeeded`.
+
+**Live Social:** owns `#/live` rail · `ensureHotLivesSeeded` / `listHotLives` / `simulateLiveSpike` already appended; Build does not edit `live.js`.
+
+Evidence: `/workspace/dbs-evidence/phase2/hotfeed/` (README, seed HTML, 05_seed.json, 06_api_surface.json). **Do not self-DONE** — Checker when both halves ready (or Build half with Live note).
+
+## Checker — §38 JOINT PASS (2026-10-25)
+Live Social Live rail SLICE PASS + Build Posts/Admin PASS → **§38 DONE**. Evidence `phase2/hotfeed/checker/`.
+
+## Checker queue — §39 Home UI PENDING AUDIT (2026-10-25)
+Design: Home rotation UI shipped (`phase2/home-rotation/`). Commerce slice PASS + Live helpers wired. Whole §39 waits Checker.
+
+## Checker queue — §38 Build half (closed 2026-10-25)
+Build Posts/Admin + Live rail → JOINT PASS / §38 DONE. Build next: §17 sticky interrupt hooks.
+
+## Build — §38 Hot Feed DONE confirm (2026-10-25)
+Checker **JOINT PASS** (Build Posts/Admin + Live rail SLICE). Evidence `phase2/hotfeed/checker/` (checker-hf-posts-* + checker-hf-admin-*). Table `| 38 |` → **DONE**. Live Social may confirm their STATUS note too.
+
+## Checker — §38 Hot Feed JOINT PASS → DONE (2026-10-25)
+Live rail SLICE PASS + Build Posts/Admin JOINT PASS. Evidence `phase2/hotfeed/`. Build continuing §17 interrupt hooks.
+
+
+## Media Links — §17 sticky top player (2026-10-25)
+
+Sticky `#dbs-sticky-player` on all routes; continuous play via **YouTube IFrame API** (`#dbsStickyFrame`) — official MVs / Mix only. Spotify/Apple/YTM = **Open on platform** (`#spOpen`), not in-app Spotify. Skip/prev/queue keep playing; video/live interrupts via shared `src/player.js` (`pauseGlobalMusic` / `dbs:interrupt-music`). Build call sites shipped separately (`phase2/player-interrupt/`). Evidence: `phase2/sticky-player/`. **§17 → PENDING AUDIT** (honest TEST MODE · not DONE). `npm run build` green. No deploy.
+
+## Checker queue — §17 interrupt hooks PENDING AUDIT (2026-10-25)
+Build: interrupt call sites ready (song/video/live). §17 still PARTIAL until Media Links player shell + Checker PASS.
+
+## Checker queue — §17 sticky top player PENDING AUDIT (2026-10-25)
+Media Links: sticky player shipped (YT IFrame queue + Open-on-platform). Build interrupt hooks coordinated. Evidence `phase2/sticky-player/`.
+
+## Design — §39 Home Rotation DONE confirm (2026-10-25)
+
+**§39 → DONE** (Checker PASS Design UI 2026-10-25 · Commerce sell-terms slice PASS). Owners: Design / Commerce / Live Social.
+
+Verified: Videos · Rising (`listRisingStreamers`) · Hot lives (`listHotLives`) · Songs · Mix + Coming Soon kept · `#home-creator-sell-promo` DEMO 10%/90% + MoR/finality → `#/pricing`.
+
+Non-blocking: auto-cycle not timed this pass; no reduce-motion copy on page.
+
+Evidence: `/workspace/dbs-evidence/phase2/home-rotation/checker/` (+ Commerce `phase2/creator-sell/checker/`). No deploy / push / merge.
+
+## Checker — §39 whole DONE (2026-10-25)
+Design Home Rotation PASS + Commerce sell-terms SLICE PASS. Evidence `phase2/home-rotation/checker/` + creator-sell.
+
+## Checker — §38 Hot Feed JOINT PASS confirmed (2026-10-25)
+Live + Build Posts/Admin. Evidence `phase2/hotfeed/checker/`.
+
+## Checker — §17 sticky shell PASS / interrupt REJECT (2026-10-25)
+Media Links sticky shell **PASS** (`phase2/sticky-player/checker/`). Build interrupt call sites **REJECT** — real YT iframe clicks don’t pause sticky. Media Links + Build fixing via YT IFrame API `onStateChange` → `notifyVideoPlaying`/`Idle`. §17 remains **PARTIAL** until interrupt re-PASS.
+
+## Checker — §17 Build interrupt REJECT (2026-10-25)
+YT iframe cross-origin. Build fixing with Media Links via IFrame API onStateChange. Live interrupt already PASS. §17 stays PARTIAL.
+
+## Checker board — §17 (2026-10-25)
+• Media Links sticky shell — PASS
+• Build interrupt call sites — REJECT (real YT iframe click; synthetic OK; Live interrupt OK)
+§17 PARTIAL. Fix: YT IFrame API / blur → re-audit. Evidence sticky-player/checker/ + player-interrupt/checker/.
+Block Wars Home teaser wired (`#home-blockwars-preview`); fighter recut in flight → PENDING AUDIT after ship.
+
+## Live Social — LIVE hoodie badges DONE (2026-10-25)
+
+**User ask (t149u):** Twitch/Kick-style LIVE pill + big viewer count on live cards → **DONE** (Checker PASS 2026-10-25).
+
+Verified: `#/live` Hot rail 8 cards LIVE pill + big viewers · stage `.live-hoodie--stage` + `#liveViewers` · Home Rising/Hot spot-check PASS · TEST MODE honesty. Note: Watch demo = toast only (intentional).
+
+**Shipped (Live Social):** Hot rail + Live stage hoodie via shared `.live-hoodie*`. Home Rising/Hot: Design.
+
+Evidence: `/workspace/dbs-evidence/phase2/live-hoodie/` + `phase2/live-hoodie/checker/`.
+
+
+## Media Links — §17 page YT interrupt API (2026-10-25)
+
+**Sticky shell:** Checker PASS (unchanged). **Interrupt:** API fix shipped in `src/player.js` only — Build must call helpers from Videos/Home/Music Mix binds.
+
+**Exports for Build:**
+- `ensureYtApi()` → `Promise<YT>`
+- `bindYoutubeInterrupt(iframeOrId)` / `bindPageYtIframe(iframeOrHost)`
+- `bindPageYoutubeEmbeds(root)` — scan page YouTube iframes; skips `#dbsStickyFrame` / `#dbsYtHost` / sticky chrome
+- `mountYtEmbed(hostEl, { videoId, playlistId? })` / `mountPageYtPlayer` / `destroyPageYtPlayer`
+
+**onStateChange:** `1` → `notifyVideoPlaying()` · `0`/`2` → `notifyVideoIdle()` (when no other page embed playing).
+
+**Build one-liner:** `bindPageYoutubeEmbeds(root)` inside `bindVideos` / `bindHome` / `bindMusic`.
+
+**Evidence:** `/workspace/dbs-evidence/phase2/player-interrupt/FIX.md`  
+**§17:** sticky PASS noted · overall **PARTIAL** / **PENDING AUDIT** until Build wires + Checker re-PASS on real YT click. No deploy. `player.js` only (Media Links); page files = Build.
+
+
+## User ask — hamburger categories (2026-10-25 t154u)
+Collapse ~33 DRAWER_LINKS into ≤8 accordion categories (Watch / Music / Social / Shop & Earn / Account / Studio). In flight.
+
+## Build — §17 interrupt call sites rewire (2026-10-25)
+Checker REJECT (cross-origin iframe). Media Links shipped `bindPageYoutubeEmbeds` / `bindYoutubeInterrupt`. Build wired Videos / Music Mix / Home. Evidence `phase2/player-interrupt/`. §17 stays PARTIAL — awaiting re-audit.
+
+## Build — §17 YT iframe fix wired (2026-10-25)
+Media Links binder used; Checker re-pinged for interrupt re-audit. §17 stays PARTIAL until PASS.
+
+## User — hamburger categories shipped (2026-10-25 t154u)
+`DRAWER_GROUPS` accordion ≤7 cats. Evidence `phase2/drawer-nav/`. Design polish pending. Workers redeployed.
+
+## Home — Live activity expanded (2026-10-25 t157u/t159u)
+Most played today + hot lives/posts/pics. `getMostPlayedSongToday()`. Evidence `phase2/home-activity/`. Sticky Play-next chip still with Media Links.
+
+## Build — §17 interrupt SLICE PASS (2026-10-25)
+Checker re-audit PASS: real click inside Videos YT iframe → sticky video interrupt. Share/Open/#spNext OK. Live OK. Gaps: Music Mix embed unavailable (Media Links); Home MV not re-tested. §17 table stays **PARTIAL** until Supervisor/Media Links decide Mix gap. Evidence `phase2/player-interrupt/checker-reaudit/`.
+
+## Checker — §17 sticky + interrupt PASS (2026-10-25)
+Sticky shell PASS + Build interrupt re-audit PASS (real Videos iframe click pauses sticky). Evidence `phase2/sticky-player/checker/` + `phase2/player-interrupt/checker-reaudit/`. Media Links marked §17 **DONE**. Mix playlist `RDEMDY…` showed unavailable in Checker env — follow-up to refresh ID; not blocking DONE. t161u Play-next chip shipping separately.
+
+## Checker — §17 sticky + interrupt DONE (2026-10-25)
+Media Links: sticky PASS + interrupt re-PASS. Mix playlist oEmbed 404 follow-up. t161u Play-next chip still shipping.
+
+## Build — §17 DONE align (2026-10-25)
+Interrupt SLICE PASS + Media Links Mix fix (playlist embed; RD Mix open-only). Table `| 17 |` DONE. Build idle on interrupt; Play-next chip is Media Links additive.
+
+## Checker — §17 DONE with Mix follow-up (2026-10-25)
+Sticky PASS + interrupt re-PASS. Mix embed unverified → Media Links follow-up (non-blocking). Play-next chip still shipping.
+
+## Build — §17 interrupt SLICE PASS → DONE (Supervisor 2026-10-25)
+Supervisor authorized DONE. Build interrupt call sites Checker PASS (reaudit `phase2/player-interrupt/checker-reaudit/`). Sticky shell PASS (Media Links). Mix embed follow-up = Media Links (non-blocking). Play-next chip = Media Links additive. Table `| 17 |` → **DONE**.
+
+## Media Links — §17 Play next chip (t161u · 2026-10-25)
+
+Sticky `#spPlayNextMost` (**Play next**) surfaces **Most played today** from `getMostPlayedSongToday()` (store only — DEMO **Long Story Short**). Tap → queue-as-next if playing / jump-play if idle; no `pauseGlobalMusic`. Coming Soon = honesty toast. Evidence `phase2/sticky-player/` (+ PLAY-NEXT.md). **§17 stays DONE** (sticky + interrupt PASS); chip expand **PENDING AUDIT**. `npm run build` green. No deploy. Mix embed already on channel MVs `PLC6_HdjaVaQERro-n6XWI2ECIC4crgf4t` (no change this pass).
+
+## Media Links — t161u Play next chip (2026-10-25)
+
+Sticky `#spPlayNextMost` — **Most played today → Play next** via `getMostPlayedSongToday()` (same Home seed). Queues as next while playing; jump-play when idle (user gesture). No interrupt hooks. DEMO seed: Long Story Short. §17 remains **DONE**; chip expand **PENDING AUDIT**. Evidence: `/workspace/dbs-evidence/phase2/sticky-player/PLAY-NEXT.md`.
+
+## Media Links — Mix embed query join fix (2026-10-25)
+Double `?` bug patched via `ytEmbedSrc`. Checker re-pinged. Play-next chip PENDING AUDIT.
+
+## User ask — Live IA + Connect/Lounge look (2026-10-25 t165u)
+Gift Battles = option during Live (not own live). Open Mic + Talent Discovery = 24/7 Live category. Lounge → Discord-type UI. Connect → Monkey-type UI. In flight (Live Social + Design).
+
+## Drawer IA t165u (2026-10-25)
+Open Mic → Watch (24/7). Gift Battles **removed** from Watch peer list (deep link + Live CTA). Superseded detail: Live Social **Live IA → PENDING AUDIT** note below + evidence `phase2/live-ia/`. Design Lounge/Connect still Design-owned.
+
+## Checker — Play-next PASS + Mix embed PASS (2026-10-25)
+t161u `#spPlayNextMost` PASS (`phase2/sticky-player/checker-play-next/`). Mix embed query fix PASS (`phase2/player-interrupt/mix-recheck/mix-02-after-fix.png`). §17 **DONE**; chip expand + Mix follow-up cleared.
+
+## Play-next + Mix (Checker PASS 2026-10-25)
+- Play-next chip (t161u) PASS — Media Links. Evidence `phase2/sticky-player/checker-play-next/`.
+- Mix embed follow-up PASS — `ytEmbedSrc`; `#/music` Mix loads. Evidence `phase2/player-interrupt/mix-recheck/`.
+§17 DONE. Still open: BW Home teaser recut; Live IA chips; Lounge Discord; Connect Monkey.
+
+## Live Social — Live IA fix t165u → DONE (2026-10-25)
+
+**Live IA t165u → DONE** (Checker SLICE PASS 2026-10-25 · `phase2/live-ia/checker/`).
+
+Verified: Watch drawer Open Mic + Spotlight (24/7), no Gift Battles · Social no Open Mic · `#/live` category chips · Start Gift Battle during Live → `#/giftbattles` · deep link honesty.
+
+Evidence: `/workspace/dbs-evidence/phase2/live-ia/` + `phase2/live-ia/checker/` (lia-01…06).
+
+## Design — §15 Lounge Discord + §36 Connect Monkey (2026-10-25 t165u)
+Discord-inspired Lounge chrome (`#/community`) + Monkey-style Connect shell (`#/connect`). Gates/prefs kept; matching pulse → BLOCK_MSG; no WebRTC/camera. Evidence: `phase2/lounge-discord/` + `phase2/connect-monkey/`. Fan Clubs anti-Discord line reworded. **PENDING AUDIT** — Checker owns PASS. No deploy/merge/push. Live Gift Battles / Open Mic untouched.
+
+## Checker — §15 Lounge Discord + §36 Connect Monkey PASS (2026-10-25)
+- §15 Lounge Discord PASS (Design) · `phase2/lounge-discord/checker/`
+- §36 Connect Monkey PASS (Design visual) · `phase2/connect-monkey/checker/`
+Live IA t165u next (Live Social). BW Home teaser still watched.
+
+## Checker — Live IA t165u SLICE PASS (2026-10-25)
+Live Social · evidence `phase2/live-ia/checker/`. Drawer Watch/Social + `#/live` chips + Start Gift Battle verified. Still open: BW Home teaser recut.
+
+## BW Home teaser fix (2026-10-25 t162u)
+Fighter frames 1920×1080 fill + city blur (no pillarbox). Video 12s. CSS `object-fit: contain`. Evidence `phase2/bw-home-fix/`. PENDING AUDIT (Checker).
+
+
+- **Drawer IA t175u** — PENDING AUDIT. Messages top-level; Shop split → Shop (3) + Creators & Earnings (7); Loyalty/Fan Clubs → Account. Evidence `phase2/drawer-nav/IA-t175u.md`.
+
+## Checker — BW Home teaser REJECT (2026-10-25)
+`#home-blockwars-preview` REJECT. Leftover SIGNATURE MOVES / PERSONALITY / mask patches / LA AGE→GE crop. Evidence `phase2/bw-home-fix/checker/`. Recut in flight.
+
+
+## Home sell / activity / LIVE badge — t172u + t173u → PENDING AUDIT (2026-10-25)
+
+Home: fee numbers hidden (CTA `#/pricing?focus=sell`); Live activity community-first; title **LIVE** pill = highest-viewed live (link `#/live`, refreshes). Pricing: fees + Creator apply `#creator-sell` → `dbs_v1.creatorSellApps`. Evidence: `/workspace/dbs-evidence/phase2/home-sell-activity-t172u/`. **Do not mark DONE** — Checker owns PASS. No deploy.
+
+## Checker — Home t172u/t173u PASS + Drawer t175u PASS (2026-10-25)
+- Home: no fee table; CTA pricing apply; community-first Live activity; LIVE pill top viewers. Evidence `phase2/home-sell-activity-t172u/checker/`.
+- Drawer: Messages top-level; Shop shop-only; Creators & Earnings. Evidence `phase2/drawer-nav/checker-t175u/`.
+BW Home teaser still REJECT / scrub in flight.
+
+## BW Home teaser post-REJECT recut (2026-10-25)
+Cropped above Personality/Signature Moves (no mask boxes). Evidence `phase2/bw-home-fix/post-reject/`. PENDING AUDIT re-ping Checker.
+
+## t178u — Logo stable + sticky resume on leave Live/Music · PASS (2026-10-25)
+
+**Build:** `#topBar` / `.logo` reserved (`--top-h`); sticky `.sp-row` fixed height. `onRouteForPlayer`: leave `#/live` → `resumeGlobalMusicIfAllowed('live')`; leave Mix pages → clear `video` interrupt. Sticky DOM outside `#app` untouched. **Splash Design-owned** (3s + `dbs-tuning-fork`). Evidence: `phase2/splash-player-t178u/` (+ checker/). `npm run build` green. **No deploy.**
+
+## Build — splash-player t178u PASS (2026-10-25)
+Checker PASS — logo chrome + leave Live/Music sticky resume verified. Evidence `phase2/splash-player-t178u/checker/`. STATUS flipped (Checker does not edit STATUS).
+
+## Checker bug flag — player.js recursion · FIXED (2026-10-25)
+Root cause: `pauseGlobalMusic` dispatched `dbs:interrupt-music` while a bridge/observer re-entered via `notifyLiveOpen`/`notifyVideoPlaying` → `pauseGlobalMusic` (stack overflow at dispatch). **Fix (Media Links):** `notify*` → `pauseDbsPlayer` only (no re-dispatch); `pauseGlobalMusic` re-entrancy guard skips nested dispatch. Public API unchanged. **§17 stays DONE.** Evidence: `phase2/splash-player-t178u/recursion-fix.md`. No deploy.
+
+## Splash + player resume t178u (2026-10-25)
+Design splash 3s logo + dbs-tuning-fork (**§19 PASS**); Build logo stable + leave-Live/Music resume sticky (**PASS** · `phase2/splash-player-t178u/checker/`).
+
+## Checker — BW Home teaser re-audit PASS (2026-10-25)
+`#home-blockwars-preview` PASS post-REJECT scrub. Evidence `phase2/bw-home-fix/checker-reaudit/`.
+
+## Checker — §19 Splash t178u PASS (2026-10-25)
+Design · evidence `phase2/splash-t178u/checker/`. 3s logo + dbs-tuning-fork. Next: Build splash-player (logo chrome + sticky resume).
+
+## Live Social — USER ADD t180u Live song requests → DONE (2026-10-25)
+
+**USER ADD t180u → DONE** (Checker PASS). Owner: Live Social.
+
+### Shipped
+- Song request packs on `#/live` during active live: **1→$10 · 2→$25 · 3→$45 (Save $5)**
+- Demo wallet debit (`spendWallet`) · `dbs_v1.liveSongRequests` · host Play / Skip / Mark played
+- **Removed from Live surface:** Start Gift Battle CTA, gift send chip/button, Related `#/giftbattles` promo
+- Tips kept · category chips kept · `#/giftbattles` deep-link page file kept · splash / BW / drawer Messages/Shop untouched
+
+Evidence: `/workspace/dbs-evidence/phase2/live-song-requests-t180u/` + `.../checker/`  
+`npm run build` green. **No deploy.**
+
+## Checker — t180u Live song requests PASS (2026-10-25)
+
+**PASS** (Checker). Packs $10/$25/$45 Save $5; queue Play/Skip; Gift Battles not promoted from Live. Evidence: `phase2/live-song-requests-t180u/checker/`.
+
+**t185u gifts** held until Live Social PENDING AUDIT.
+
+## Design — Brand triad blue t187u → PENDING AUDIT (2026-10-25)
+
+**Brand triad (black / red / blue) → PENDING AUDIT** (do not self-DONE). Owner: Design.
+
+- Added `--blue` `#2f6bff` (+ aliases/helpers); refined `--sk` → brand blue.
+- Kept `--acc` red for primary CTA / LIVE hot / danger.
+- Blue on links, default focus, secondary CTAs, info chips, Connect pulse, cool LIVE chrome, light stage/splash gradients.
+- Evidence: `/workspace/dbs-evidence/phase2/brand-blue-t187u/`. `npm run build` green. **No deploy.**
+
+## Commerce — t185u gift coins → SLICE PASS / PARTIAL (2026-10-25)
+
+**SLICE PASS (PARTIAL)** — Checker. Owner: Commerce. Full Live gifts held for Live Social tray.
+- `#/wallet` coin packs + creator gift earnings 80/20 NET (split hidden from viewers)
+- Evidence: `phase2/gifts-coins/`
+- Live gift tray: Live Social (separate)
+
+## Design — t187u brand blue triad → PENDING AUDIT (2026-10-25)
+
+**PENDING AUDIT** (do not self-DONE). Owner: Design.
+- `--blue` #2f6bff; black + red kept
+- Evidence: `phase2/brand-blue-t187u/`
+

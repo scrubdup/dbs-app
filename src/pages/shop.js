@@ -293,8 +293,12 @@ export function bindShop(root) {
         return refresh();
       }
       if (act === 'unequip') {
-        const res = unequipCosmetic(btn.dataset.slot);
+        const slot = btn.dataset.slot;
+        const res = unequipCosmetic(slot);
         if (res.error) return toast('Could not unequip');
+        // Clear ephemeral Preview override when it was this slot (Preview ≠ equipped)
+        const sel = previewId ? itemById(previewId) : null;
+        if (sel && shopSlotForItem(sel) === slot) previewId = null;
         toast('Unequipped');
         return refresh();
       }
