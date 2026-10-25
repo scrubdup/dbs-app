@@ -24,6 +24,7 @@ import { renderMultiGuest, bindMultiGuest } from './pages/multiguest.js';
 import { renderFanClubs, bindFanClubs } from './pages/fanclubs.js';
 import { renderLoyalty, bindLoyalty } from './pages/loyalty.js';
 import { renderOpenMic, bindOpenMic } from './pages/openmic.js';
+import { renderShop, bindShop } from './pages/shop.js';
 import { renderSpotlight, bindSpotlight } from './pages/spotlight.js';
 import { renderRestream, bindRestream } from './pages/restream.js';
 import {
@@ -33,11 +34,10 @@ import {
   renderGuidelines,
   renderCommunity,
   renderSignup,
-  renderShop,
-  bindShop,
   renderNotifications,
   bindNotifications,
   renderLaunch,
+  renderPhases,
   renderShare,
   bindShare,
   renderRefer,
@@ -76,6 +76,7 @@ const ROUTES = {
   '/multiguest': { render: renderMultiGuest, bind: bindMultiGuest },
   '/openmic': { render: renderOpenMic, bind: bindOpenMic },
   '/launch': { render: renderLaunch },
+  '/phases': { render: renderPhases },
   '/share': { render: renderShare, bind: bindShare },
   '/refer': { render: renderRefer, bind: bindRefer },
   '/spotlight': { render: renderSpotlight, bind: bindSpotlight },

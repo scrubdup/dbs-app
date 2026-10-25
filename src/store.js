@@ -103,6 +103,12 @@ const defaultState = () => ({
     applications: [], // { id, userId, username, talent, trackTitle, profileNote, rightsCertified, status, at, reviewedAt? }
     seeded: false,
   },
+  // §22 Profile Shop — Design (append-only · digital cosmetics CONCEPT / TEST MODE)
+  profileShop: {
+    owned: [], // cosmetic ids unlocked in demo (no charge)
+    equipped: {}, // { frame?, effect?, banner?, nameStyle?, badge? }
+    reduceMotion: false,
+  },
   splashSeenAt: 0,
 });
 
@@ -244,6 +250,16 @@ function load() {
           ? parsed.openMic.applications
           : [],
         seeded: !!parsed.openMic?.seeded,
+      },
+      profileShop: {
+        ...base.profileShop,
+        ...(parsed.profileShop || {}),
+        owned: Array.isArray(parsed.profileShop?.owned) ? parsed.profileShop.owned : [],
+        equipped:
+          parsed.profileShop?.equipped && typeof parsed.profileShop.equipped === 'object'
+            ? parsed.profileShop.equipped
+            : {},
+        reduceMotion: !!parsed.profileShop?.reduceMotion,
       },
     };
   } catch {
@@ -4961,3 +4977,121 @@ export function getAdminOverview() {
     stats,
   };
 }
+
+/* ========== §22 Profile Shop (Design) — append-only · CONCEPT / TEST MODE ========== */
+
+const SHOP_SLOT_BY_CATEGORY = {
+  frames: 'frame',
+  effects: 'effect',
+  banners: 'banner',
+  'name styles': 'nameStyle',
+  badges: 'badge',
+};
+
+const DEMO_BUNDLE_IDS = [
+  'frame-rodeo-gold',
+  'fx-snowfall',
+  'ban-skyline',
+  'name-neon',
+  'badge-dayone',
+];
+
+function normalizeEquipped(raw) {
+  const e = raw && typeof raw === 'object' ? raw : {};
+  const out = {};
+  ['frame', 'effect', 'banner', 'nameStyle', 'badge'].forEach((k) => {
+    if (typeof e[k] === 'string' && e[k]) out[k] = e[k];
+  });
+  return out;
+}
+
+function getProfileShopBucket() {
+  const p = state.profileShop || {};
+  return {
+    owned: Array.isArray(p.owned) ? [...new Set(p.owned.map(String))] : [],
+    equipped: normalizeEquipped(p.equipped),
+    reduceMotion: !!p.reduceMotion,
+  };
+}
+
+function saveProfileShop(bucket) {
+  state = { ...state, profileShop: bucket };
+  save(state);
+}
+
+export function getProfileShop() {
+  return getProfileShopBucket();
+}
+
+export function shopSlotForItem(item) {
+  if (!item) return null;
+  return SHOP_SLOT_BY_CATEGORY[item.category] || null;
+}
+
+/** UI-only select for live preview — does not persist (use equip for that). */
+export function previewCosmetic(id) {
+  return { ok: true, id: String(id || '') };
+}
+
+export function unlockCosmetic(id) {
+  const cid = String(id || '');
+  if (!cid) return { error: 'missing' };
+  const P = getProfileShopBucket();
+  if (P.owned.includes(cid)) return { ok: true, already: true, shop: getProfileShop() };
+  saveProfileShop({ ...P, owned: [...P.owned, cid] });
+  return { ok: true, shop: getProfileShop() };
+}
+
+export function unlockDemoBundle() {
+  const P = getProfileShopBucket();
+  const owned = new Set(P.owned);
+  DEMO_BUNDLE_IDS.forEach((id) => owned.add(id));
+  saveProfileShop({ ...P, owned: [...owned] });
+  return { ok: true, unlocked: DEMO_BUNDLE_IDS, shop: getProfileShop() };
+}
+
+function slotFromCosmeticId(id) {
+  const cid = String(id || '');
+  if (cid.startsWith('frame-')) return 'frame';
+  if (cid.startsWith('fx-')) return 'effect';
+  if (cid.startsWith('ban-')) return 'banner';
+  if (cid.startsWith('name-')) return 'nameStyle';
+  if (cid.startsWith('badge-')) return 'badge';
+  return null;
+}
+
+export function equipCosmetic(id) {
+  const cid = String(id || '');
+  const P = getProfileShopBucket();
+  if (!P.owned.includes(cid)) return { error: 'not_owned' };
+  const slot = slotFromCosmeticId(cid);
+  if (!slot) return { error: 'unknown_item' };
+  const equipped = { ...P.equipped, [slot]: cid };
+  saveProfileShop({ ...P, equipped });
+  return { ok: true, slot, shop: getProfileShop() };
+}
+
+export function unequipCosmetic(slot) {
+  const key = String(slot || '');
+  if (!['frame', 'effect', 'banner', 'nameStyle', 'badge'].includes(key)) {
+    return { error: 'bad_slot' };
+  }
+  const P = getProfileShopBucket();
+  const equipped = { ...P.equipped };
+  delete equipped[key];
+  saveProfileShop({ ...P, equipped });
+  return { ok: true, shop: getProfileShop() };
+}
+
+export function setShopReduceMotion(bool) {
+  const P = getProfileShopBucket();
+  saveProfileShop({ ...P, reduceMotion: !!bool });
+  return getProfileShop();
+}
+
+export function resetProfileShopDemo() {
+  saveProfileShop({ owned: [], equipped: {}, reduceMotion: false });
+  return getProfileShop();
+}
+
+export { SHOP_SLOT_BY_CATEGORY, DEMO_BUNDLE_IDS };

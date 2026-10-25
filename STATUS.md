@@ -19,7 +19,7 @@ Legend: **DONE** = usable demo in SPA · **SHELL** = routed page with copy/UI pl
 | 9 | Videos & Interviews | `#/videos` | DONE (Checker re-audit PASS 2026-10-25 · Mix + channel MVs · media-links/checker/reaudit/) | Media Links |
 | 10 | Pricing & Monetization | `#/pricing` | DONE | Build |
 | 11 | Full Admin Dashboard | `#/admin` | DONE (Add Content upload — Checker PASS 2026-10-25; evidence admin-upload/) | Build |
-| 12 | Development Phases | plan / process | TODO | Supervisor |
+| 12 | Development Phases | `#/phases` | DONE (roadmap + status chips 2026-10-25 · evidence phase2/phases/) | Supervisor |
 | 13 | Community Guidelines, Violations & Suspensions | `#/guidelines` | DONE (Checker PASS 2026-10-25 · content-polish/checker/) | Content Polish |
 | 14 | Existing Music — Streaming Platform Integration | `#/music` links | DONE (Checker re-audit PASS 2026-10-25 · YouTube Mixes + Stream Everywhere · media-links/checker/reaudit/) | Media Links |
 | 15 | Real Content, Website Design & Community Redesign | global + `#/community` | DONE (Checker PASS 2026-10-25 · rooms Phase 2 honesty · content-polish/checker/) | Content Polish / Design |
@@ -29,7 +29,7 @@ Legend: **DONE** = usable demo in SPA · **SHELL** = routed page with copy/UI pl
 | 19 | Official DBS Loading Screen | splash in `index.html` | DONE | Design |
 | 20 | Interactive Home Dashboard & Live Activity | `#/home` | DONE (copy polish 2026-10-25 · Content Polish) | Design |
 | 21 | Foreign X-Change Merch Showcase | `#/merch` | DONE | Design |
-| 22 | Profile Shop — Digital Cosmetics | `#/shop` | SHELL | Design |
+| 22 | Profile Shop — Digital Cosmetics | `#/shop` | PENDING AUDIT (Design demo · phase2/shop/) | Design |
 | 23 | Expanded Earnings & Live Gift Battles | `#/giftbattles` | DONE (Checker PASS 2026-10-25 · phase2/giftbattles/checker/) | Live Social |
 | 24 | Explore — Search & Discovery | `#/explore` | DONE (Checker PASS 2026-10-25 · phase2/explore/checker/) | Build |
 | 25 | Smart Notifications & Fan Controls | `#/notifications` | DONE | Build |
@@ -53,18 +53,18 @@ Counts below are approximate; **PENDING AUDIT** / **PARTIAL** are not DONE. Chec
 
 | Status | Count |
 | --- | --- |
-| DONE | 27 |
-| PENDING AUDIT | 3 |
+| DONE | 28 |
+| PENDING AUDIT | 4 |
 | PARTIAL | 1 |
-| SHELL | 6 |
-| TODO | 1 |
+| SHELL | 5 |
+| TODO | 0 |
 | **Total** | **37** |
 
 Counts are approximate — Checker owns PASS. §§13/15/31 flipped to DONE only after Checker PASS (2026-10-25).
 
 ## Phase 1 checklist
 
-**CLAIMABLE** (Progress Checker 2026-10-25) — evidence `phase1/` + `phase1/vault/` + `design-audit/`. §15 Lounge copy DONE (rooms still Phase 2); §22 remains SHELL.
+**CLAIMABLE** (Progress Checker 2026-10-25) — evidence `phase1/` + `phase1/vault/` + `design-audit/`. §15 Lounge copy DONE (rooms still Phase 2); §22 → PENDING AUDIT (cosmetics demo · phase2/shop/).
 
 
 - [x] Loading splash (first visit)
@@ -117,7 +117,7 @@ Also folded Checker notes (non-blocking):
 - `#/videos` idb upload: hardened `data-idb-src` + `el.load()` after blob resolve; `playsinline`/`webkit-playsinline`.
 - `#/home` admin pictures badge → **From Admin** (same pattern as Music/Videos).
 
-Stopped before Messages / Explore per Supervisor (Wallet later claimed by Commerce). §22 Shop remains SHELL. `npm run build` green.
+Stopped before Messages / Explore per Supervisor (Wallet later claimed by Commerce). §22 Shop → PENDING AUDIT (phase2/shop/). `npm run build` green.
 
 
 ## Checker — §3 Live + §4 Marketplace PASS (2026-10-25)
@@ -446,9 +446,33 @@ Rights gate + admin approve→showcase + not pay-to-win. Evidence `phase2/openmi
 Checker authorized DONE. Rights gate, approve/reject, showcase verified. Next: Admin follow-ups.
 
 ## Checker — §§13/15/31 Content Polish PASS (2026-10-25)
-Guidelines + Community + Launch. Evidence `content-polish/checker/`. Remaining: §17 PARTIAL, §22 SHELL, §12 TODO.
+Guidelines + Community + Launch. Evidence `content-polish/checker/`. Remaining: §17 PARTIAL, §22 PENDING AUDIT. §12 DONE.
 
 ## Build — Admin follow-ups (2026-10-25)
 Admin follow-ups (Build 2026-10-25) — Phase 2 panels on `#/admin`; §11 remains DONE.
 Panels: Open Mic queue (Approve/Reject), Fan Clubs glance, Loyalty glance, Clippers (kept), Catalog/Add Content (kept), Quick links by owner, Revenue/analytics shell (demo figures · not production), Moderation stub → `#/guidelines`.
 Store: append-only `getAdminOverview()`. Evidence `/workspace/dbs-evidence/admin-followups/`. No PENDING AUDIT (optional Checker re-look at parent discretion). Live Social / Commerce page files untouched.
+
+## Design — §22 Profile Shop (2026-10-25)
+
+**§22 Profile Shop → PENDING AUDIT** (do not self-DONE). Owner: Design. Evidence: `/workspace/dbs-evidence/phase2/shop/`
+
+Shipped CONCEPT / TEST MODE cosmetics demo on `#/shop`:
+- Concept hero + honesty note (digital ≠ Foreign X-Change merch; link `#/merch` + foreignx-change.com homepage only)
+- Category chips + full `PROFILE_SHOP` grid (20) with rarity / price / CONCEPT / TEST MODE
+- Live preview panel (frame / effect / banner / name style / cosmetic badge)
+- Unlock · TEST MODE (local grant · **no wallet debit**), Equip/Unequip, starter bundle, reset
+- Persist `dbs_v1.profileShop` `{ owned, equipped, reduceMotion }`
+- Reduce-motion toggle + `prefers-reduced-motion`
+- Files: `src/pages/shop.js`, store append-only helpers, CSS preview states; shells re-export
+- Screenshots: `shop-1-catalog.png`, `shop-2-preview.png`, `shop-3-equipped.png` + `design/evidence/22_shop.png`
+- `npm run build` green
+
+Checker owns PASS. No deploy / push / merge.
+
+## Design — §22 Profile Shop PENDING AUDIT (2026-10-25)
+Cosmetics demo on `#/shop`. Evidence `phase2/shop/`.
+
+## Supervisor — §12 Development Phases (2026-10-25)
+
+**§12 → DONE.** Usable `#/phases` roadmap (Phase 1 Foundation / Phase 2 Growth / Phase 3 Live & Marketplace) with status chips tied to STATUS: §17 PARTIAL mini-player, §22 PENDING AUDIT shop called out. Drawer link next to Launch. Evidence: `/workspace/dbs-evidence/phase2/phases/`.

@@ -12,7 +12,7 @@
 | **19** | Loading screen | **done** | `design/evidence/19_loading.png` | `index.html`, `src/styles.css` (`.splash*`), `src/main.js` (`hideSplash` / first-visit + `?holdSplash=1`) |
 | **21** | Foreign X-Change Merch | **done** | `design/evidence/21_merch.png` | `src/pages/merch.js`, `src/styles.css` (`.merch-*`, `.lightbox`), `src/data.js` (`MERCH` → all 10 `/public/merch/*`) |
 | **34** | Coming Soon covers | **done** | `design/evidence/34_covers.png` | `src/pages/music.js`, `src/pages/home.js`, `src/styles.css` (`.cover-*`, `.badge-cs`), covers at `/public/music/01_*.jpg`, `02_*.jpg` |
-| **22** | Profile Shop | **SHELL / CONCEPT (Phase 2)** — not full DONE | `design/evidence/22_shop.png` | Concept hero + sample cosmetics only; payment/live preview deferred. Files: `shells.js` renderShop, `data.js` PROFILE_SHOP, styles `.shop-*`, `/public/design/DBS_Profile_Shop_Concept.png` |
+| **22** | Profile Shop | **PENDING AUDIT** (CONCEPT / TEST MODE · not DONE) | `design/evidence/22_shop.png` + `phase2/shop/` | Live preview + unlock/equip demo. Files: `src/pages/shop.js`, `store.js` `profileShop`, `styles.css` preview states, concept PNG preserved |
 | **15** | Community redesign polish | **visual shell done** (Lounge Phase 2) | `design/evidence/15_community.png` | Polished DBS Lounge room list UI; rooms not live yet. Global card/typography polish in `styles.css`. Real Instagram/content import is Build/content, not Design. |
 | **8** | Music & Vault layout | **done** | `design/evidence/08_vault.png` | `src/pages/music.js` (Upcoming + Vault panel + tiers), `src/styles.css` (`.vault-panel`, `.tier-*`) — Build owns membership/purchase logic |
 | **20** | Home dashboard polish | **done** | `design/evidence/20_home.png` | `src/pages/home.js` (swipe previews, live activity, covers row), `src/styles.css` (`.preview-card`, `.live-activity`) |
@@ -46,13 +46,17 @@
 - Premium square frames, Coming Soon badge, titles/artist.
 
 ### 22 Profile Shop
-- Concept art hero + category chips (frames / effects / banners / name styles / badges).
-- Sample cosmetics from plan names; labeled **CONCEPT** + **TEST MODE**; Preview only.
-- Clearly separated from Foreign X-Change merch (note + link to `#/merch`).
+- **PENDING AUDIT** (2026-10-25) — interactive CONCEPT / TEST MODE demo shipped; Checker owns PASS.
+- Concept art hero + category chips (All / frames / effects / banners / name styles / badges).
+- Full `PROFILE_SHOP` catalog; **CONCEPT** + **TEST MODE**; live preview before unlock.
+- Unlock = local grant (no real pay / no wallet debit); Equip/Unequip; starter bundle; reset.
+- Persist `dbs_v1.profileShop` `{ owned, equipped, reduceMotion }`.
+- Separated from Foreign X-Change merch (`#/merch` + foreignx-change.com homepage only).
+- Evidence: `/workspace/dbs-evidence/phase2/shop/` + `design/evidence/22_shop.png`.
 
 ### Build coordination
 - Do not remove `TEST MODE` labels or splash asset path.
-- Merch checkout stays external; Profile Shop is digital-only concept until payment wiring.
+- Merch checkout stays external; Profile Shop is digital-only CONCEPT / TEST MODE (local unlock grant — no payment wiring yet).
 - Music membership / My Music / buy-demo logic is Build’s — Design only polished covers/Vault chrome.
 - Routing unchanged (`#/home`, `#/merch`, `#/music`, `#/shop`, `#/community`, …).
 

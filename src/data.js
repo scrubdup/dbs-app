@@ -521,6 +521,7 @@ export const DRAWER_LINKS = [
   { href: '#/signup', label: 'Signup / Creator Apps' },
   { href: '#/guidelines', label: 'Community Guidelines' },
   { href: '#/admin', label: 'Admin' },
+  { href: '#/phases', label: 'Development Phases' },
   { href: '#/launch', label: 'Launch Readiness' },
   { href: '#/profile', label: 'Profile' },
 ];

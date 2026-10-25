@@ -324,20 +324,8 @@ export function renderMessages() {
   );
 }
 
-export function bindShop() {}
-
-export function renderShop() {
-  return shellPage(
-    'Profile Shop',
-    `<div class="shop-concept"><img src="/design/DBS_Profile_Shop_Concept.png" alt="Profile Shop concept" /></div>
-     <div class="card">
-       <p class="muted">Digital cosmetics only (frames, effects, banners, name styles, badges). Separate from Foreign X-Change physical merch.</p>
-       <p class="muted">Intro pricing targets $2.99–$14.99 · bundles $14.99–$24.99. Live preview before purchase.</p>
-       <button class="btn primary" disabled>Browse items · coming soon</button>
-     </div>`,
-    { lead: 'Original DBS digital cosmetics.', ...phase(2) }
-  );
-}
+/** §22 Profile Shop moved to pages/shop.js (Design cosmetics demo) */
+export { renderShop, bindShop } from './shop.js';
 
 /** §23 Gift Battles moved to pages/giftbattles.js */
 export { renderGiftBattles, bindGiftBattles } from './giftbattles.js';
@@ -459,6 +447,122 @@ export { renderSpotlight, bindSpotlight } from './spotlight.js';
 
 /** §36 DBS Connect moved to pages/connect.js */
 export { renderConnect, bindConnect } from './connect.js';
+
+export function renderPhases() {
+  // §12 Development Phases — roadmap tied to STATUS.md (2026-10-25)
+  const phases = [
+    {
+      n: 1,
+      title: 'Foundation',
+      summary: 'Videos, Music/Vault, Posts, profiles, followers, engagement alerts, Clippers applications.',
+      status: 'DONE',
+      items: [
+        { label: '§1 Posts', status: 'DONE', href: '#/posts' },
+        { label: '§2 Clippers apply', status: 'DONE', href: '#/clippers' },
+        { label: '§7 Profiles', status: 'DONE', href: '#/profile' },
+        { label: '§8 Music & Vault', status: 'DONE', href: '#/music' },
+        { label: '§9 Videos & Interviews', status: 'DONE', href: '#/videos' },
+        { label: '§14 Streaming links', status: 'DONE', href: '#/music' },
+        { label: '§19 Loading splash', status: 'DONE', href: '#/home' },
+        { label: '§20 Home dashboard', status: 'DONE', href: '#/home' },
+        { label: '§21 Merch showcase', status: 'DONE', href: '#/merch' },
+        { label: '§34 Coming Soon covers', status: 'DONE', href: '#/music' },
+        { label: '§17 Home MV + continuous play', status: 'PARTIAL', href: '#/home', note: 'MV carousel OK · mini-player UI-only until authorized audio' },
+      ],
+    },
+    {
+      n: 2,
+      title: 'Growth & Creator Economy',
+      summary: 'Clipper campaigns, missions, referrals, creator earnings, and payouts.',
+      status: 'DONE',
+      items: [
+        { label: '§5 Creator Earnings', status: 'DONE', href: '#/earnings' },
+        { label: '§6 Missions', status: 'DONE', href: '#/missions' },
+        { label: '§27 Wallet & Payouts', status: 'DONE', href: '#/wallet' },
+        { label: '§32 Share & Earn', status: 'DONE', href: '#/share' },
+        { label: '§33 Refer & Earn', status: 'DONE', href: '#/refer' },
+        { label: '§10 Pricing', status: 'DONE', href: '#/pricing' },
+        { label: '§11 Admin dashboard', status: 'DONE', href: '#/admin' },
+        { label: '§16 Signup / Creator apps', status: 'DONE', href: '#/signup' },
+        { label: '§24 Explore', status: 'DONE', href: '#/explore' },
+        { label: '§25 Notifications', status: 'DONE', href: '#/notifications' },
+        { label: '§26 Fan Clubs', status: 'DONE', href: '#/fanclubs' },
+        { label: '§28 Loyalty Club', status: 'DONE', href: '#/loyalty' },
+        { label: '§22 Profile Shop cosmetics', status: 'PENDING AUDIT', href: '#/shop', note: 'Design demo live · Checker decides PASS' },
+      ],
+    },
+    {
+      n: 3,
+      title: 'Live & Marketplace',
+      summary: 'Creator livestreaming, gifts, donations, advertising, creator subscriptions, and Marketplace.',
+      status: 'DONE',
+      items: [
+        { label: '§3 Live', status: 'DONE', href: '#/live' },
+        { label: '§4 Marketplace ads', status: 'DONE', href: '#/marketplace' },
+        { label: '§18 Messages', status: 'DONE', href: '#/messages' },
+        { label: '§23 Gift Battles', status: 'DONE', href: '#/giftbattles' },
+        { label: '§29 Multi-Guest Live', status: 'DONE', href: '#/multiguest' },
+        { label: '§30 Open Mic', status: 'DONE', href: '#/openmic' },
+        { label: '§35 24/7 Spotlight', status: 'DONE', href: '#/spotlight' },
+        { label: '§36 Connect (opt-in shell)', status: 'DONE', href: '#/connect' },
+        { label: '§37 Restream + streamer tiers', status: 'DONE', href: '#/restream' },
+        { label: '§13 Guidelines', status: 'DONE', href: '#/guidelines' },
+        { label: '§15 Community / Lounge', status: 'DONE', href: '#/community' },
+        { label: '§31 Launch readiness', status: 'DONE', href: '#/launch' },
+      ],
+    },
+  ];
+
+  const chipClass = (s) => {
+    if (s === 'DONE') return 'chip chip-ok';
+    if (s === 'PARTIAL') return 'chip chip-partial';
+    if (s === 'PENDING AUDIT') return 'chip chip-audit';
+    return 'chip';
+  };
+
+  const phaseCards = phases
+    .map((p) => {
+      const rows = p.items
+        .map((it) => {
+          const note = it.note
+            ? `<br/><span class="muted" style="font-size:12px">${esc(it.note)}</span>`
+            : '';
+          const link = it.href
+            ? `<a href="${esc(it.href)}" style="color:inherit;text-decoration:none"><strong>${esc(it.label)}</strong></a>`
+            : `<strong>${esc(it.label)}</strong>`;
+          return `<li><span>${link}${note}</span><span class="${chipClass(it.status)}">${esc(it.status)}</span></li>`;
+        })
+        .join('');
+      return `<div class="card">
+      <div class="row wrap" style="gap:8px;align-items:center;margin-bottom:8px">
+        <span class="chip">Phase ${p.n}</span>
+        <span class="${chipClass(p.status)}">${esc(p.status)}</span>
+      </div>
+      <h2 style="margin:0 0 6px">${esc(p.title)}</h2>
+      <p class="muted" style="margin:0 0 12px">${esc(p.summary)}</p>
+      <ul class="list-plain">${rows}</ul>
+    </div>`;
+    })
+    .join('\n\n    ');
+
+  return shellPage(
+    'Development Phases',
+    `<div class="card">
+      <p class="kicker">Plan §12</p>
+      <h2 style="margin:0 0 8px">Roadmap · what shipped vs remaining</h2>
+      <p class="muted" style="margin:0">Phase 1–3 from the DatBoiSkeet developer plan. Chips mirror STATUS.md — <strong>DONE</strong> needs Checker PASS; <strong>PARTIAL</strong> and <strong>PENDING AUDIT</strong> are not launch-complete.</p>
+      <p class="muted" style="margin:10px 0 0">Still open: <a href="#/home">§17 mini-player</a> (needs authorized audio) · <a href="#/shop">§22 Profile Shop</a> (awaiting Checker) · identity/payout verification &amp; fraud controls before activating real money features.</p>
+    </div>
+
+    ${phaseCards}
+
+    <div class="card">
+      <h3>Before activating paid features</h3>
+      <p class="muted" style="margin:0">Implement identity and payout verification, payment security, copyright controls, moderation, and fraud prevention before turning on real charges, gifts, or payouts. See <a href="#/launch">Launch Readiness</a>.</p>
+    </div>`,
+    { lead: 'Phase 1 · Phase 2 · Phase 3 roadmap with live status chips · §12.' }
+  );
+}
 
 export function renderNotFound(path) {
   return shellPage('Not found', `<div class="card"><p>No page for <code>${esc(path)}</code>.</p><a class="btn" href="#/home">Home</a></div>`);
