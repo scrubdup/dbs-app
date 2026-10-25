@@ -109,3 +109,14 @@ test('PIKKDUP discovery preserves organic video catalog and filters', () => {
   assert.ok(source.includes('No fabricated view counts'));
   assert.ok(source.includes('search.addEventListener(\'input\', refresh)'));
 });
+
+
+test('PIKKUP local draft UI does not claim server publishing', () => {
+  const source = readFileSync(new URL('../src/pages/shells.js', import.meta.url), 'utf8');
+  assert.ok(source.includes('PIKKUP · Create a Video'));
+  assert.ok(source.includes('browser-local draft prototype'));
+  assert.ok(source.includes('does NOT upload, publish, sync between devices'));
+  assert.ok(source.includes('readPikkupDuration(file)'));
+  assert.ok(source.includes('savePikkupLocalDraft(file'));
+  assert.ok(source.includes('Delete local draft'));
+});
