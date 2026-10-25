@@ -89,7 +89,7 @@ function buildTabbar() {
 function buildDrawer() {
   const el = document.getElementById('sideNav');
   el.innerHTML =
-    `<h2>DBS Network</h2>` +
+    `<h2>PIKK</h2>` +
     DRAWER_LINKS.map((l) => `<a href="${l.href}">${esc(l.label)}</a>`).join('');
 }
 
