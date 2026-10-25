@@ -10,7 +10,7 @@
 
 - **Home:** https://scrubdup.github.io/dbs-app/#/home
 - **Messages:** https://scrubdup.github.io/dbs-app/#/messages
-- **Never expires.** Source: `gh-pages` branch (`8143d8c` · t228u Go Live tab order; includes t227u Top live · main `8e8164c` / t227u `aab4a48`; assets index-D23-pzCG.js / index-CRvgdFY0.css)
+- **Never expires.** Source: `gh-pages` (`d2ac734` · t228u+`.nojekyll`; includes **t227u** Top live · main `8e8164c` / t227u `aab4a48`; assets **index-D23-pzCG.js** / **index-CRvgdFY0.css**)
 - Base path: `/dbs-app/`
 - **Last shipped:** t228u Go Live between Home and Music (includes **t227u** Top live first in Featured Stage; HOME title LIVE pill removed) — prior: t212u instant Messages badge refresh
 
