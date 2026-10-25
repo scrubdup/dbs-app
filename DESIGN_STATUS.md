@@ -111,6 +111,7 @@ Checker PASS 2026-10-25. Original DBS SVG sticker pack for Live gifts (Rose→Un
 - Evidence: `/workspace/dbs-evidence/phase2/gift-stickers-t198u/checker/`
 - **No deploy.**
 
-- t202u more blue (light touch): PENDING AUDIT — evidence phase2/brand-blue-more-t202u/
-## Card blue triad (t205u · PENDING AUDIT)
-Every `.card`/panel gets BW-family subtle blue edge/glow; red primary kept. Evidence: `/workspace/dbs-evidence/phase2/card-blue-t205u/`.
+- t202u more blue (light touch): DONE (Checker PASS) — evidence phase2/brand-blue-more-t202u/checker/
+
+## Card blue triad (t205u · DONE)
+Checker PASS. Every `.card`/panel gets BW-family subtle blue edge/glow; red primary kept. Evidence: `/workspace/dbs-evidence/phase2/card-blue-t205u/checker/`.

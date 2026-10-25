@@ -26,7 +26,8 @@ function renderMultiPlatform() {
   const rs = getRestream();
   const selected = rs.selected || [];
   const session = getActiveRestreamSession();
-  const cap = getRestreamDestinationCap();
+  const capInfo = getRestreamDestinationCap();
+  const cap = Number(capInfo?.max) || 0;
   const live = !!session;
 
   const cards = platforms

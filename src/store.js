@@ -533,16 +533,23 @@ export function purchaseTrack(trackId) {
   return next;
 }
 
-export function createPost({ text, image }) {
+export function createPost({ text, image, mediaType, mediaUrl }) {
   const user = state.user;
   if (!user) throw new Error('Sign in required');
   const id = 'p_' + Date.now().toString(36);
+  const kind = ['picture', 'short', 'video', 'image', 'text'].includes(mediaType)
+    ? (mediaType === 'image' ? 'picture' : mediaType)
+    : image
+      ? 'picture'
+      : 'text';
   const post = {
     id,
     userId: user.id,
     username: user.username,
     text: (text || '').trim(),
     image: (image || '').trim(),
+    mediaType: kind === 'text' && !(image || '').trim() ? 'text' : kind,
+    mediaUrl: (mediaUrl || '').trim(),
     at: Date.now(),
   };
   state = {

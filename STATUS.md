@@ -10,7 +10,7 @@ Legend: **DONE** = usable demo in SPA · **SHELL** = routed page with copy/UI pl
 | --- | --- | --- | --- | --- |
 | 1 | DBS Posts — Social Network | `#/posts` | DONE | Build |
 | 2 | DBS Clippers — Application & Earning | `#/clippers` | DONE | Build |
-| 3 | DBS Live — Creator Livestreaming | `#/live` · `#/shorts` | DONE (core) · t180u/t185u DONE · **t198u+t199u+t200u PENDING AUDIT** (tabs/Shorts · Connect multi-platform · GB day · bars · Request Spotlight · paid-gift Challenge pop · phase2/t198u-connect-gb-stickers/) | Live Social / Commerce |
+| 3 | DBS Live — Creator Livestreaming | `#/live` · `#/shorts` | DONE (core) · t180u/t185u DONE · **t198u+t199u+t200u DONE** (tabs/Shorts · Connect multi-platform · GB day · bars · Request Spotlight · paid-gift Challenge pop · phase2/t198u-connect-gb-stickers/) | Live Social / Commerce |
 | 4 | DBS Marketplace — Advertising | `#/marketplace` | DONE (Checker PASS 2026-10-25 · phase2/marketplace/checker/) | Commerce |
 | 5 | Creator Rewards, Earnings & Commissions | `#/earnings` | DONE (ledger + commissions — Checker PASS 2026-10-25; evidence phase2/earnings/ + checker/) | Commerce |
 | 6 | Missions | `#/missions` | DONE (Checker PASS 2026-10-25 · phase2/missions/checker/) | Commerce |
@@ -91,6 +91,20 @@ Counts are approximate — Checker owns PASS. §§13/15/31 flipped to DONE only 
 ### Checker
 - 6 tabs; Go Live → `#live-go`; Chat → Lounge; Messages badge shows number when signed in; opens clear unread
 
+
+## Posts — t215u/t216u/t217u create picker (2026-10-25) → **PENDING AUDIT**
+
+**USER** Shorts under Posts; tapping Post offers **Picture · Short · Video** (not separate tabs).
+
+### Shipped
+- Bottom **Post** → `#/posts?compose=1` opens create card with 3 type buttons
+- Composer fields switch by type; `createPost({ mediaType, mediaUrl })`
+- Shorts feed still `#/shorts` but labeled under Posts; drawer Shorts moved under Social
+- No Discover/Following/Shorts tab split for media types
+
+### Checker
+- Tap Post → Picture/Short/Video choices (not tabs); posting each type works in TEST MODE
+
 ## Commerce — t185u LIVE Gifts + Coins (2026-10-25) → **DONE**
 
 **USER ADD / package t185u · docs/gifts/** — Commerce Wallet/Earnings display on Live Social store APIs. **DONE** (Checker Cash Rain 80/20 PASS cleared PARTIAL · joint with LS tray).
@@ -110,7 +124,7 @@ Evidence: `/workspace/dbs-evidence/phase2/gifts-coins/` (+ `checker/` + `checker
 
 ## Design — t198u Gift stickers (2026-10-25) → **DONE**
 
-**DONE** (Checker PASS). Original SVG gift stickers (12 Live catalog + battle-win/crown/vs/fire) under `/public/gifts/`. Helper `getGiftSticker` in `src/gifts-stickers.js`. Evidence: `phase2/gift-stickers-t198u/checker/`. No deploy. (Live Social t198–t200 bars remain their PENDING AUDIT.)
+**DONE** (Checker PASS). Original SVG gift stickers (12 Live catalog + battle-win/crown/vs/fire) under `/public/gifts/`. Helper `getGiftSticker` in `src/gifts-stickers.js`. Evidence: `phase2/gift-stickers-t198u/checker/`. No deploy. (Live Social t198–t200 bars DONE — Checker PASS.)
 
 ## Phase 1 checklist
 
@@ -962,12 +976,19 @@ Evidence: `/workspace/dbs-evidence/phase2/t198u-connect-gb-stickers/`
 (t197u Restream subtitle piece **superseded** — see cross-link in that folder if present)  
 `npm run build` green. **No deploy.**
 
-- t202u more blue (light touch): PENDING AUDIT — evidence phase2/brand-blue-more-t202u/
+- t202u more blue (light touch): DONE (Checker PASS) — evidence phase2/brand-blue-more-t202u/checker/
 
 ## Live Social — t197–t200 Live overlays → PENDING AUDIT (2026-10-25)
 
 **PENDING AUDIT**. Shorts, Live tabs, hide Restream brand, GB day winners/Top Gifters/Request Spotlight, paid-gift challenge pop, stickers wired. Evidence `phase2/t198u-connect-gb-stickers/`. Pages observe deploy in flight (t202u).
-## Design — t205u card blue on every box → PENDING AUDIT (2026-10-25)
-**PENDING AUDIT** (do not self-DONE). Owner: Design.
+## Design — t205u card blue on every box → DONE (2026-10-25)
+**DONE** (Checker PASS). Owner: Design.
 - Global `.card` + panels + drawer-children + home-sell-promo: BW-family subtle blue accent; red CTAs/LIVE kept.
-- Evidence: `phase2/card-blue-t205u/`
+- Evidence: `phase2/card-blue-t205u/checker/`
+
+## Live Social — t198u+t199u+t200u (2026-10-25) → **DONE**
+
+Checker PASS locked DONE (tabs/Shorts · Connect multi-platform no Restream brand · GB day ≤10 + stickers · Top Gifters/Gift Battle bars · Request Spotlight · paid-gift Challenge pop). Same wrap: non-blocking Connect cap label stringify fixed (`src/pages/connect.js` uses `getRestreamDestinationCap().max`). Evidence `phase2/t198u-connect-gb-stickers/`. No deploy.
+
+## Design — t202u more blue → DONE (2026-10-25)
+**DONE** (Checker PASS). Light blue bump; primary/LIVE/active/ribbon stay red. Evidence: `phase2/brand-blue-more-t202u/checker/`.

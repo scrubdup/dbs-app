@@ -1,5 +1,5 @@
 /**
- * t197u · Shorts / Clips — own Watch section (not nested under Live).
+ * t215u/t217u · Shorts under Posts (create via Picture/Short/Video picker — not separate tabs).
  * Vertical short-form feed shell · DEMO clips from VIDEOS catalog · TEST MODE.
  */
 import { VIDEOS } from '../data.js';
@@ -64,8 +64,8 @@ export function renderShorts() {
         <span class="chip">TEST MODE</span>
       </div>
       <div class="row wrap" style="margin-top:10px;gap:8px">
-        <a class="btn ghost" href="#/live">← Live</a>
-        <a class="btn ghost" href="#/live?tab=categories">Live categories</a>
+        <a class="btn primary" href="#/posts?compose=1&type=short">Post a Short</a>
+        <a class="btn ghost" href="#/posts">← Posts</a>
         <a class="btn ghost" href="#/videos">Videos</a>
       </div>
     </div>
@@ -77,7 +77,7 @@ export function renderShorts() {
     </p>`;
 
   return shellPage('Shorts / Clips', body, {
-    lead: 'Watch · short-form feed · not under Live · TEST MODE',
+    lead: 'Posts · short-form feed · Picture / Short / Video create on Posts · TEST MODE',
   });
 }
 
