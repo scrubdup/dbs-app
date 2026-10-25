@@ -10,9 +10,9 @@
 
 - **Home:** https://scrubdup.github.io/dbs-app/#/home
 - **Messages:** https://scrubdup.github.io/dbs-app/#/messages
-- **Never expires.** Source: `gh-pages` (`4902ccd` · t241u+t242u tabbar/header; main `2ba4f49`; assets **index-D78kGnFr.js** / **index-eRs-bVYG.css**)
+- **Never expires.** Source: `gh-pages` (`c024365` · t255u daily goals; main `ded7066`; assets **index-FnZdyRFa.js** / **index-Blll5lBt.css**)
 - Base path: `/dbs-app/`
-- **Last shipped:** t241u+t242u — Home·Post(camera)·Go Live(flat)·… · header Messages replaces Sign in when logged in · prior: t238u house catalog / t228u / t227u
+- **Last shipped:** t255u — Live daily goals (store APIs + Live bar/donate; Design Home card consumes same APIs) · PENDING AUDIT
 
 ## Phone link (workers.dev — temporary until claimed)
 

@@ -49,3 +49,10 @@ Coin debit lives in `donateToGoal` for now (same 100=$2 as gifts). Commerce may 
 ## Build
 `VITE_BASE=/dbs-app/ npm run build` → green  
 Assets: see STATUS / DEPLOY after Pages push
+
+## Ship SHAs
+- **main:** `ded7066`
+- **gh-pages:** `c024365` — assets `index-FnZdyRFa.js` / `index-Blll5lBt.css`
+- Observe Live: https://scrubdup.github.io/dbs-app/#/live
+- Observe Live go: https://scrubdup.github.io/dbs-app/#/live (Start stream form)
+- Observe Home goal: https://scrubdup.github.io/dbs-app/#/home (`#home-app-goal`)
