@@ -1071,3 +1071,5 @@ Anytime Spotlight / Open Mic / similar Live stages are **missing** a live act, s
 Evidence: `phase2/spotlight-idle-t233u/` + `phase2/openmic-idle-t236u/`  
 `npm run build` green · Pages deploy `VITE_BASE=/dbs-app/`
 
+
+- **t249u** Home Creators sell card **Coming Soon** chip (inline next to title; TEST MODE chip + Start selling demo kept) — **PENDING AUDIT** (Checker owns PASS)

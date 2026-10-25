@@ -3528,3 +3528,7 @@ input:focus, select:focus, textarea:focus {
   margin: 8px 0;
   background: #000;
 }
+
+/* t249u Home sell card Coming Soon */
+.home-sell-title-row { display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin:0 0 8px; }
+.badge-cs.badge-cs-inline { position: static; top:auto; left:auto; flex:0 0 auto; }

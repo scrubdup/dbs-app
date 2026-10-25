@@ -123,3 +123,5 @@ Checker PASS. Every `.card`/panel gets BW-family subtle blue edge/glow; red prim
 - Files: `src/pages/home.js`, `src/styles.css`.
 - Evidence: `/workspace/dbs-evidence/phase2/home-top-live-t227u/checker-reaudit/`.
 - Tabbar untouched (t228u).
+
+- **t249u** Home Creators sell card **Coming Soon** chip (inline next to title; TEST MODE chip + Start selling demo kept) — **PENDING AUDIT** (Checker owns PASS)
