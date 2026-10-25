@@ -20,7 +20,8 @@
 
 ## Verification and release status
 - Read back source files and validated seven route/catalog/hash behaviors with the available JS runtime.
-- A full `npm ci && npm test && npm run build` has **not yet** been observed. Do not claim CI/build success until GitHub Actions reports it.
+- **Verified PASS** on GitHub Actions run `40229606847` (2026-10-25): `npm ci`, all **5** Node regression tests, and `npm run build` succeeded on this isolated branch. This is a build/test result, **not** browser feature QA or a live deployment.
+- `npm ci` reported **2 dependency advisories (1 moderate, 1 high)**; investigate separately rather than blindly forcing breaking upgrades.
 - No production or GitHub Pages deployment was made from this branch.
 
 ## QA coordination / critical follow-ups
