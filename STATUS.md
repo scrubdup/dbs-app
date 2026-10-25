@@ -15,7 +15,7 @@ Legend: **DONE** = usable demo in SPA · **SHELL** = routed page with copy/UI pl
 | 5 | Creator Rewards, Earnings & Commissions | `#/earnings` | DONE (ledger + commissions — Checker PASS 2026-10-25; evidence phase2/earnings/ + checker/) | Commerce |
 | 6 | Missions | `#/missions` | DONE (Checker PASS 2026-10-25 · phase2/missions/checker/) | Commerce |
 | 7 | Profiles & Messaging (profiles part) | `#/profile` | DONE | Build |
-| 8 | Navigation, Music & Vault | nav + `#/music` `#/vault` | DONE · **t212u DONE** · **t215–t217 DONE** · **t228u PENDING AUDIT** (Go Live between Home & Music, raised primary kept) | Design (vis) / Build |
+| 8 | Navigation, Music & Vault | nav + `#/music` `#/vault` | DONE · **t212u DONE** · **t215–t217 DONE** · **t228u DONE** (Checker PASS Go Live 2nd + primary) | Design (vis) / Build |
 | 9 | Videos & Interviews | `#/videos` | DONE (Checker re-audit PASS 2026-10-25 · Mix + channel MVs · media-links/checker/reaudit/) | Media Links |
 | 10 | Pricing & Monetization | `#/pricing` | DONE | Build |
 | 11 | Full Admin Dashboard | `#/admin` | DONE (Add Content upload — Checker PASS 2026-10-25; evidence admin-upload/) | Build |
@@ -80,27 +80,16 @@ Evidence: `phase2/tabbar-t212u/FIX-unread.md` + `checker/tb-reaudit-notes.txt`.
 ## Build — t212u unread badge PASS → DONE (2026-10-25)
 Checker re-audit PASS. STATUS locked DONE (Checker does not edit STATUS).
 
-## Navigation — t228u Go Live between Home & Music (2026-10-25) → **PENDING AUDIT**
+## Navigation — t228u Go Live between Home & Music → **DONE** (2026-10-25)
 
-**USER t228u** — Move **Go Live** between Home and Music. Keep raised primary (red orb) even as 2nd tab — do not demote.
+**DONE** (Checker PASS 2026-10-25 · local + observe `index-D23-pzCG.js`).
 
-### Before (t212)
-Home · Music · Videos · Post · Go Live · Chat · Messages · Profile
+Order: **Home · Go Live · Music · Videos · Post · Chat · Messages · Profile**. Go Live 2nd + `.tab-primary` + `#/live?go=1`. `tabbar-reshaped tabbar-scroll` OK. Caveat: `#live-go` not confirmed after click (may be late render / already live).
 
-### After (t228u)
-**Home · Go Live · Music · Videos · Post · Chat · Messages · Profile**
+Evidence: `phase2/tabbar-t228u/` + `checker/t228-notes.txt`. main `8e8164c` · gh-pages `d2ac734`.
 
-### Shipped
-- `src/data.js` `TABBAR` reorder; `primary: true` still on Go Live (`#/live?go=1` → `#live-go`)
-- `src/styles.css`: `.tab-primary` remains class-based (raised `top` + red orb) — works off-center; scroll tabbar ambient glow shifted ~14% toward 2nd-tab slot
-- `src/main.js` unchanged (builds from `t.primary`; Messages badge wiring intact)
-- All 8 tabs + `tabbar-scroll` kept
-- Design t227u home.js untouched; Block Wars paused
-
-Evidence: `phase2/tabbar-t228u/README.md`
-
-**Do not mark DONE** — Checker owns PASS.
-
+## Build — t228u PASS → DONE (2026-10-25)
+Checker PASS. STATUS locked DONE (Checker does not edit STATUS).
 
 ## Navigation — t212u bottom tab (2026-10-25) → **DONE** (Checker PASS re-audit)
 
@@ -1033,7 +1022,7 @@ Checker PASS locked DONE (tabs/Shorts · Connect multi-platform no Restream bran
 ## Design — t202u more blue → DONE (2026-10-25)
 **DONE** (Checker PASS). Light blue bump; primary/LIVE/active/ribbon stay red. Evidence: `phase2/brand-blue-more-t202u/checker/`.
 
-## Design — t227u Home Top live first → PENDING AUDIT (2026-10-25)
+## Design — t227u Home Top live first → **REJECT** (Checker 2026-10-25) — fix in flight
 
 **PENDING AUDIT** (do not self-DONE · Checker owns PASS). Owner: Design.
 
