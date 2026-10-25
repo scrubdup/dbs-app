@@ -219,7 +219,7 @@ const LIVE_DISCOVERY_CATEGORIES = [
 
 function renderCategoriesPanel() {
   const cards = LIVE_DISCOVERY_CATEGORIES.map(([name, description, emoji]) => `
-    <a class="live-cat-card" href="#/live?tab=channels" aria-label="${esc(name)}: browse channels">
+    <a class="live-cat-card" href="#/live?tab=channels&category=${encodeURIComponent(name)}" aria-label="${esc(name)}: browse channels">
       <span style="font-size:26px" aria-hidden="true">${emoji}</span>
       <strong>${esc(name)}</strong>
       <p class="muted" style="margin:6px 0 0;font-size:12px">${esc(description)}</p>
@@ -228,7 +228,7 @@ function renderCategoriesPanel() {
   return `
     <div class="card live-disc-panel" id="liveTabCategories" data-panel="categories">
       <h3 style="margin:0 0 8px">Browse Live Categories</h3>
-      <p class="muted" style="margin:0 0 12px;font-size:12px">Explore topics like Twitch and Kick. Category-specific filtering and live counts are not yet connected; browse channels to discover current streams.</p>
+      <p class="muted" style="margin:0 0 12px;font-size:12px">Explore topics like Twitch and Kick. Select a topic to filter available PIKK live channels. Categories without an active stream show an empty result; no invented viewers.</p>
       <div class="live-cat-cards">${cards}</div>
       <h3 style="margin:18px 0 8px">PIKK 24/7 Stages</h3>
       <div class="live-cat-cards">
@@ -244,8 +244,11 @@ function recentlySpiked(live) {
   return Date.now() - Number(live.spikedAt) < 15 * 60 * 1000;
 }
 
-function renderHotLivesRail() {
-  const lives = listHotLives();
+function renderHotLivesRail(category = '') {
+  const allLives = listHotLives();
+  const lives = category
+    ? allLives.filter((live) => String(live.category || '').toLowerCase() === category.toLowerCase())
+    : allLives;
   const cards = lives
     .map((live) => {
       const hot = recentlySpiked(live);
@@ -280,7 +283,7 @@ function renderHotLivesRail() {
       </div>
       <p class="muted" style="margin:6px 0 10px;font-size:12px">TEST MODE · seeded demo · not third-party scrape · house + community</p>
       <div class="hot-lives-track">
-        ${cards || '<p class="muted">No hot lives yet.</p>'}
+        ${cards || '<p class="muted">No matching live channels in this category yet.</p>'}
       </div>
     </div>`;
 }
@@ -824,8 +827,9 @@ export function renderLive() {
 
   const channelsPanel = `
     <div class="live-disc-panel" data-panel="channels">
-      ${renderHotLivesRail()}
-      ${renderDailyGbWinners()}
+      ${category ? `<div class="card"><strong>Category: ${esc(category)}</strong> <a class="btn ghost" href="#/live?tab=categories">All categories</a> <a class="btn ghost" href="#/live?tab=channels">All channels</a><p class="muted small">Only channels tagged with this category are shown below.</p></div>` : ''}
+      ${renderHotLivesRail(category)}
+      ${category ? '' : renderDailyGbWinners()}
       ${!active ? renderGoLiveForm(user) : ''}
       ${!active ? renderHouseCatalogTeaser({ title: 'No active Live on this device — house catalog on Spotlight / Open Mic' }) : ''}
       ${renderHistory(hist)}
