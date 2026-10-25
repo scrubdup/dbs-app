@@ -35,6 +35,19 @@ export function renderVideos() {
     (grouped[cat] ||= []).push(v);
   });
   // Featured placement is editorial unless a verified paid placement explicitly sets sponsored: true.
+  const discoveryVideos = VIDEOS.filter((v) => v.youtube && v.embed);
+  const discoveryFilters = ['All', 'Music Videos', 'Mixes', 'Interviews'];
+  const discoveryHtml = `<section aria-label="PIKKDUP video discovery" class="card" id="pikkdup-discovery">
+    <h2 style="margin:0 0 6px">PIKKDUP · Discover</h2>
+    <p class="muted">Discover verified videos. No fabricated view counts or trending rankings.</p>
+    <label for="pikkdup-search">Search videos</label>
+    <input id="pikkdup-search" type="search" placeholder="Search titles, artists or categories" autocomplete="off" style="width:100%;margin:8px 0" />
+    <div class="row wrap" role="group" aria-label="Video category filters">
+      ${discoveryFilters.map((cat, i) => `<button type="button" class="btn ghost pikkdup-filter" data-category="${esc(cat)}" aria-pressed="${i === 0}">${esc(cat)}</button>`).join('')}
+    </div>
+    <p id="pikkdup-count" class="muted" aria-live="polite">${discoveryVideos.length} videos</p>
+    <div id="pikkdup-results">${discoveryVideos.map((v) => `<article class="pikkdup-item" data-category="${esc(v.category || 'Music Videos')}" data-search="${esc([v.title, v.artist, v.category].join(' ').toLowerCase())}"><a href="${esc(v.youtube)}" target="_blank" rel="noopener">${esc(v.title)}</a> · ${esc(v.artist || 'DatBoiSkeet')} <span class="chip">${esc(v.category || 'Music Videos')}</span></article>`).join('')}</div>
+  </section>`;
   const premiere = VIDEOS.find((v) => v.featured && v.embed && v.youtube)
     || VIDEOS.find((v) => v.embed && v.youtube);
   const premiereHtml = premiere
@@ -107,7 +120,7 @@ export function renderVideos() {
         <a class="btn ghost" href="https://www.youtube.com/playlist?list=PLC6_HdjaVaQERro-n6XWI2ECIC4crgf4t" target="_blank" rel="noopener">Music Videos playlist</a>
       </div>
     </div>
-    ${premiereHtml}${sections}${extra}
+    ${premiereHtml}${discoveryHtml}${sections}${extra}
     ${adminHtml ? `<h3 style="margin:16px 0 8px">From Admin</h3>${adminHtml}` : ''}
     ${coming}`,
     { lead: 'Official MVs · Mixes · Interviews · admin uploads.' }
@@ -115,6 +128,32 @@ export function renderVideos() {
 }
 
 export function bindVideos(root) {
+  // PIKKDUP discovery searches only real verified catalog entries, not fake trending data.
+  const discovery = root.querySelector('#pikkdup-discovery');
+  if (discovery) {
+    const search = discovery.querySelector('#pikkdup-search');
+    const filters = [...discovery.querySelectorAll('.pikkdup-filter')];
+    const entries = [...discovery.querySelectorAll('.pikkdup-item')];
+    const count = discovery.querySelector('#pikkdup-count');
+    let category = 'All';
+    const refresh = () => {
+      const term = (search.value || '').trim().toLowerCase();
+      let visible = 0;
+      entries.forEach((entry) => {
+        const show = (category === 'All' || entry.dataset.category === category)
+          && (entry.dataset.search || '').includes(term);
+        entry.hidden = !show;
+        if (show) visible++;
+      });
+      count.textContent = visible ? `${visible} videos` : 'No matching videos';
+    };
+    search.addEventListener('input', refresh);
+    filters.forEach((button) => button.addEventListener('click', () => {
+      category = button.dataset.category || 'All';
+      filters.forEach((filter) => filter.setAttribute('aria-pressed', String(filter === button)));
+      refresh();
+    }));
+  }
   // §17: real YT play via IFrame API (Media Links binder) — not cross-origin pointerdown
   bindPageYoutubeEmbeds(root);
   root.querySelectorAll('video.catalog-video').forEach((vid) => {
