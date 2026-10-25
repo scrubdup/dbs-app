@@ -1,4 +1,6 @@
-/** Seed / static catalog for DBS demo */
+/** Seed / static catalog for PIKK demo. Public assets respect Vite's base path. */
+const ASSET_BASE = import.meta.env.BASE_URL;
+const asset = (path) => ASSET_BASE + path;
 
 export const VIDEOS = [
   {
@@ -26,7 +28,7 @@ export const COMING_SOON = [
     id: 'long-story-short',
     title: 'Long Story Short',
     artist: 'DatBoiSkeet',
-    cover: '/music/01_Long_Story_Short_Coming_Soon.jpg',
+    cover: asset('music/01_Long_Story_Short_Coming_Soon.jpg'),
     status: 'Coming Soon',
     order: 1,
   },
@@ -34,7 +36,7 @@ export const COMING_SOON = [
     id: 'ladies-only',
     title: 'Ladies Only',
     artist: 'DatBoiSkeet',
-    cover: '/music/02_Ladies_Only_Coming_Soon.jpg',
+    cover: asset('music/02_Ladies_Only_Coming_Soon.jpg'),
     status: 'Coming Soon',
     order: 2,
   },
@@ -46,7 +48,7 @@ export const MERCH = [
     name: '716 Buffalo Braves Snapback (Black/Orange)',
     price: 30,
     category: 'Hats',
-    image: '/merch/01_black_orange_716_hat.jpeg',
+    image: asset('merch/01_black_orange_716_hat.jpeg'),
     shopUrl: 'https://foreignx-change.com',
   },
   {
@@ -54,7 +56,7 @@ export const MERCH = [
     name: '716 Buffalo Hat (Blue/Red)',
     price: 30,
     category: 'Hats',
-    image: '/merch/02_blue_red_716_hat.jpeg',
+    image: asset('merch/02_blue_red_716_hat.jpeg'),
     shopUrl: 'https://foreignx-change.com',
   },
   {
@@ -62,7 +64,7 @@ export const MERCH = [
     name: 'Buffalo Sports Varsity Jacket (Blue/White)',
     price: 200,
     category: 'Jackets',
-    image: '/merch/03_blue_buffalo_jacket.jpeg',
+    image: asset('merch/03_blue_buffalo_jacket.jpeg'),
     shopUrl: 'https://foreignx-change.com',
   },
   {
@@ -70,7 +72,7 @@ export const MERCH = [
     name: 'Foreign X-Change Buffalo Varsity (Black/White)',
     price: 200,
     category: 'Jackets',
-    image: '/merch/07_black_buffalo_jacket.jpeg',
+    image: asset('merch/07_black_buffalo_jacket.jpeg'),
     shopUrl: 'https://foreignx-change.com',
   },
   {
@@ -78,7 +80,7 @@ export const MERCH = [
     name: 'Foreign X-Change Graphic Tee (Back)',
     price: 65,
     category: 'Shirts',
-    image: '/merch/04_black_fx_tee_back_screenshot.jpeg',
+    image: asset('merch/04_black_fx_tee_back_screenshot.jpeg'),
     shopUrl: 'https://foreignx-change.com',
   },
   {
@@ -86,7 +88,7 @@ export const MERCH = [
     name: 'Foreign X-Change Text Tee (Front)',
     price: 65,
     category: 'Shirts',
-    image: '/merch/05_black_fx_tee_front_screenshot.jpeg',
+    image: asset('merch/05_black_fx_tee_front_screenshot.jpeg'),
     shopUrl: 'https://foreignx-change.com',
   },
   {
@@ -94,7 +96,7 @@ export const MERCH = [
     name: 'PTSD Tee (Black)',
     price: 65,
     category: 'Shirts',
-    image: '/merch/06_black_ptsd_tee.jpeg',
+    image: asset('merch/06_black_ptsd_tee.jpeg'),
     shopUrl: 'https://foreignx-change.com',
   },
   {
@@ -102,7 +104,7 @@ export const MERCH = [
     name: 'Abstract FX Tee (White)',
     price: 65,
     category: 'Shirts',
-    image: '/merch/08_white_abstract_fx_tee.jpeg',
+    image: asset('merch/08_white_abstract_fx_tee.jpeg'),
     shopUrl: 'https://foreignx-change.com',
   },
   {
@@ -110,7 +112,7 @@ export const MERCH = [
     name: 'Support Your Local Dealer Tee (Navy)',
     price: 65,
     category: 'Shirts',
-    image: '/merch/09_navy_dealer_tee.jpeg',
+    image: asset('merch/09_navy_dealer_tee.jpeg'),
     shopUrl: 'https://foreignx-change.com',
   },
   {
@@ -118,7 +120,7 @@ export const MERCH = [
     name: 'Skulls FX Tee (White)',
     price: 65,
     category: 'Shirts',
-    image: '/merch/10_white_skulls_tee.jpeg',
+    image: asset('merch/10_white_skulls_tee.jpeg'),
     shopUrl: 'https://foreignx-change.com',
   },
 ];
