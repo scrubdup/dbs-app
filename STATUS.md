@@ -1091,7 +1091,7 @@ Evidence: `phase2/spotlight-idle-t233u/` + `phase2/openmic-idle-t236u/`
 - **t251u** `#/clippers` + Profile Apply as Clipper Coming Soon chips.
 - Tabbar untouched. Evidence: `phase2/home-sell-coming-soon-t249u/checker/`.
 
-## Commerce — t255u daily-goal donate path → **PENDING AUDIT** (2026-10-25)
+## Commerce — t255u daily-goal donate path → **PENDING AUDIT** (re-ping after Pages) (2026-10-25)
 
 **USER ADD t255u** — Commerce debit review on Live Social goal land. Do **not** self-DONE.
 
@@ -1100,7 +1100,10 @@ Evidence: `phase2/spotlight-idle-t233u/` + `phase2/openmic-idle-t236u/`
 - Patched: cap debit to remaining target; `completed` error; raised clamped to target
 - Wallet/Marketplace untouched. Evidence: `phase2/daily-goals-donate/` (+ LS `phase2/daily-goals-t255u/`)
 
-**PENDING AUDIT** — Checker owns PASS (joint with LS UI).
+### Checker REJECT → Pages fix
+- Observe REJECT on gh-pages `c024365` / `index-FnZdyRFa.js` (pre-cap overshoot $8/$5).
+- Cap shipped: main `634b406`/`8a0ad07` · gh-pages **`a3254df`** · assets **`index-C1DrFrz7.js`** (CDN verified `error:"completed"`).
+- **Re-PENDING AUDIT** — please re-observe Live donate near target on https://scrubdup.github.io/dbs-app/
 
 
 ## Design — t255u Home daily app goal UI → **PENDING AUDIT** (2026-10-25)
