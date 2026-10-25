@@ -3359,3 +3359,75 @@ input:focus, select:focus, textarea:focus {
   border-color: transparent !important;
   font-weight: 900;
 }
+
+/* t211u 7-tab squeeze */
+.tabbar.tabbar-reshaped a {
+  font-size: 7.5px;
+  letter-spacing: -0.01em;
+  padding: 5px 0 4px;
+  gap: 1px;
+}
+.tabbar.tabbar-reshaped a svg { width: 17px; height: 17px; }
+.tabbar a.tab-primary { top: -12px; }
+.tabbar a.tab-primary svg {
+  width: 26px; height: 26px;
+  padding: 9px;
+}
+.tabbar a.tab-primary span { font-size: 8px; }
+
+/* t212u — all tabs, fair legible size, horizontal scroll */
+.tabbar.tabbar-reshaped.tabbar-scroll {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: flex-end;
+  overflow-x: auto;
+  overflow-y: visible;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  gap: 0;
+  padding-top: 10px;
+  padding-left: 4px;
+  padding-right: 4px;
+  border-top: 1px solid color-mix(in srgb, var(--blue) 35%, var(--line));
+  background:
+    radial-gradient(ellipse at 50% 0%, var(--blue-dim), transparent 55%),
+    #0e0e13;
+}
+.tabbar.tabbar-reshaped.tabbar-scroll::-webkit-scrollbar { display: none; }
+.tabbar.tabbar-reshaped.tabbar-scroll a {
+  flex: 0 0 auto;
+  min-width: 64px;
+  max-width: 84px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0;
+  padding: 8px 6px 8px;
+  gap: 4px;
+  color: var(--mut);
+}
+.tabbar.tabbar-reshaped.tabbar-scroll a svg {
+  width: 22px;
+  height: 22px;
+}
+.tabbar.tabbar-reshaped.tabbar-scroll a.tab-primary {
+  top: -16px;
+  min-width: 72px;
+}
+.tabbar.tabbar-reshaped.tabbar-scroll a.tab-primary span {
+  font-size: 11px;
+  color: #fff;
+}
+.tabbar.tabbar-reshaped.tabbar-scroll a.tab-primary svg {
+  width: 30px;
+  height: 30px;
+  padding: 11px;
+}
+.tabbar.tabbar-reshaped.tabbar-scroll a .tab-badge {
+  top: -7px;
+  right: -11px;
+  min-width: 17px;
+  height: 17px;
+  font-size: 10px;
+  line-height: 17px;
+}

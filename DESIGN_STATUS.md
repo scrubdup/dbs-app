@@ -102,17 +102,14 @@ Checker PASS 2026-10-25. Brand is black + red + blue (red/black not replaced).
 - Red `--acc` remains primary CTA / LIVE hot / danger.
 - Evidence: `/workspace/dbs-evidence/phase2/brand-blue-t187u/checker/`. **No deploy.**
 
-## Gift stickers + Gift Battle stickers (t198u · PENDING AUDIT)
+## Gift stickers + Gift Battle stickers (t198u · DONE)
 
-Original DBS SVG sticker pack for Live gifts (Rose→Universe) + battle win/crown.
+Checker PASS 2026-10-25. Original DBS SVG sticker pack for Live gifts (Rose→Universe) + battle win/crown.
 
 - Assets: `/public/gifts/<slug>.svg` (12 catalog + battle-win, battle-crown, battle-vs, battle-fire)
-- Helper: `src/gifts-stickers.js` — **`getGiftSticker(slug)`** → `{ src, html, className, emoji }` · also `giftStickerHtml`, battle helpers
-- Alias: `src/gifts/stickers.js` re-exports
-- Live tray/history/overlay lightly wired; Gift Battles champion + win banner show battle stickers
-- Brand: black / red `#ff2b2b` / blue `#2f6bff` · original art only · no TikTok/Kick assets
-- Evidence: `/workspace/dbs-evidence/phase2/gift-stickers-t198u/`
-- **No deploy.** Live Social owns further tray/battle IA wiring if needed.
+- Helper: `src/gifts-stickers.js` — **`getGiftSticker(slug)`** → `{ src, html, className, emoji }`
+- Evidence: `/workspace/dbs-evidence/phase2/gift-stickers-t198u/checker/`
+- **No deploy.**
 
 - t202u more blue (light touch): PENDING AUDIT — evidence phase2/brand-blue-more-t202u/
 ## Card blue triad (t205u · PENDING AUDIT)

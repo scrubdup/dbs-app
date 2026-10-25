@@ -129,8 +129,8 @@ function buildTabbar() {
     const ariaExtra = unread && t.badge === 'messages' ? `, ${unread} unread` : '';
     return `<a href="${t.href}" class="${primary.trim()}" data-path="${pathOnly}" aria-label="${label}${ariaExtra}"><span class="tab-ico">${ICONS[t.icon] || ''}${badge}</span><span>${label}</span></a>`;
   }).join('');
-  el.style.gridTemplateColumns = `repeat(${TABBAR.length}, 1fr)`;
-  el.classList.add('tabbar-reshaped');
+  el.style.gridTemplateColumns = '';
+  el.classList.add('tabbar-reshaped', 'tabbar-scroll');
 }
 
 function refreshTabBadges() {

@@ -15,7 +15,7 @@ Legend: **DONE** = usable demo in SPA · **SHELL** = routed page with copy/UI pl
 | 5 | Creator Rewards, Earnings & Commissions | `#/earnings` | DONE (ledger + commissions — Checker PASS 2026-10-25; evidence phase2/earnings/ + checker/) | Commerce |
 | 6 | Missions | `#/missions` | DONE (Checker PASS 2026-10-25 · phase2/missions/checker/) | Commerce |
 | 7 | Profiles & Messaging (profiles part) | `#/profile` | DONE | Build |
-| 8 | Navigation, Music & Vault | nav + `#/music` `#/vault` | DONE · **t209u+t210u PENDING AUDIT** (tabs: Home · Post · Go Live · Chat · Messages+unread badge · Profile) | Design (vis) / Build |
+| 8 | Navigation, Music & Vault | nav + `#/music` `#/vault` | DONE · **t212u PENDING AUDIT** (all bottom tabs readable + scroll: Home·Music·Videos·Post·Go Live·Chat·Messages·Profile) | Design (vis) / Build |
 | 9 | Videos & Interviews | `#/videos` | DONE (Checker re-audit PASS 2026-10-25 · Mix + channel MVs · media-links/checker/reaudit/) | Media Links |
 | 10 | Pricing & Monetization | `#/pricing` | DONE | Build |
 | 11 | Full Admin Dashboard | `#/admin` | DONE (Add Content upload — Checker PASS 2026-10-25; evidence admin-upload/) | Build |
@@ -66,7 +66,17 @@ Counts are approximate — Checker owns PASS. §§13/15/31 flipped to DONE only 
 
 
 
-## Navigation — t209u+t210u bottom tab reshape (2026-10-25) → **PENDING AUDIT**
+## Navigation — t211u bottom tab (2026-10-25) → **PENDING AUDIT**
+
+**USER t211u** — Restore Music + Videos on bottom (were dropped in t209/t210 squeeze). Chat/Lounge stays in hamburger; Messages keeps unread badge.
+
+### Shipped
+- `TABBAR`: Home · Music · Videos · **Go Live** · Post · Messages(+badge) · Profile
+- Lounge/Chat: drawer only (`#/community`)
+
+---
+
+## Navigation — t209u+t210u bottom tab reshape (2026-10-25) → **superseded by t211u**
 
 **USER t209u** — Reshape bottom icons: add **Post**; make **Go Live** the main (center raised) option → start-stream.  
 **USER t210u** — Add **Chat** + **Messages** with unread number badge on Messages icon.
@@ -98,9 +108,9 @@ Counts are approximate — Checker owns PASS. §§13/15/31 flipped to DONE only 
 
 Evidence: `/workspace/dbs-evidence/phase2/gifts-coins/` (+ `checker/` + `checker-cashrain/`)
 
-## Design — t198u Gift stickers (2026-10-25) → **PENDING AUDIT**
+## Design — t198u Gift stickers (2026-10-25) → **DONE**
 
-Original SVG gift stickers (12 Live catalog + battle-win/crown/vs/fire) under `/public/gifts/`. Helper `getGiftSticker` in `src/gifts-stickers.js`. Light Live tray + Gift Battles win chrome. Evidence: `phase2/gift-stickers-t198u/`. No deploy. Live Social can swap/wire further via helper exports.
+**DONE** (Checker PASS). Original SVG gift stickers (12 Live catalog + battle-win/crown/vs/fire) under `/public/gifts/`. Helper `getGiftSticker` in `src/gifts-stickers.js`. Evidence: `phase2/gift-stickers-t198u/checker/`. No deploy. (Live Social t198–t200 bars remain their PENDING AUDIT.)
 
 ## Phase 1 checklist
 
