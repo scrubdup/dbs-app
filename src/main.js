@@ -129,7 +129,7 @@ function buildTabbar() {
     return `<a href="${t.href}" data-path="${pathOnly}" aria-label="${label}"><span class="tab-ico">${ICONS[t.icon] || ''}</span><span>${label}</span></a>`;
   }).join('');
   el.style.gridTemplateColumns = '';
-  /* t290u: fit-all 7 tabs, no horizontal scroll */
+  /* Fit all bottom navigation tabs, including Dating and Connect, without horizontal scroll. */
   el.classList.remove('tabbar-scroll');
   el.classList.add('tabbar-reshaped', 'tabbar-fit7');
 }
