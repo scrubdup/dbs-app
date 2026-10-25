@@ -47,7 +47,7 @@ export function renderHome() {
     <h2 style="margin:0 0 8px;font-size:15px">Coming Soon</h2>
     <div class="cover-row" style="margin-bottom:16px">${covers}</div>
 
-    <h2 style="margin:0 0 8px;font-size:15px">Explore DBS</h2>
+    <h2 style="margin:0 0 8px;font-size:15px">Explore PIKK</h2>
     <div class="section-swipe" style="margin-bottom:16px">${previews}</div>
 
     <div class="card">
