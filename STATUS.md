@@ -1,12 +1,12 @@
 # DBS App — Section Status
 
 
-## t238u (2026-10-25) — Supervisor verify + house catalog ship
+## t238u (2026-10-25) — Supervisor verify + house catalog ship · **DONE**
 - Zip `assets/design/merch/music` ↔ `public/*`: OK (loading screen, Profile Shop concept, 10 merch, 2 Coming Soon covers).
 - §§1–36 (+37–39) hash routes: all page modules present in `main.js` (no blank route gaps).
 - Today markers: t228u tabbar PASS; **t227u Home Top live DONE** (Checker PASS re-audit · observe `a8303e7` / `index-Cej89PCx.js`); idle house catalog ship separate.
 - Idle: Spotlight + Open Mic rotate DatBoiSkeet MVs/Interviews/BTS (`buildDbsHouseCatalog`) labeled House · not fake live; Live empty teaser.
-- Block Wars still paused. Do not claim Checker PASS for t238u.
+- Block Wars still paused. **t233u+t236u+t238u → DONE** (Checker PASS 2026-10-25).
 
 Last updated: 2026-10-25  
 App root: `/workspace/dbs-app`  
@@ -45,12 +45,12 @@ Legend: **DONE** = usable demo in SPA · **SHELL** = routed page with copy/UI pl
 | 27 | Wallet & Creator Payout Center | `#/wallet` | DONE (Checker PASS 2026-10-25 · phase2/wallet/checker/) | Commerce |
 | 28 | Loyalty Club | `#/loyalty` | DONE (Checker PASS 2026-10-25 · phase2/loyalty/checker/) | Build |
 | 29 | Multi-Guest Livestreams | `#/multiguest` | DONE (Checker PASS 2026-10-25; evidence phase2/multiguest/ + checker/) | Live Social |
-| 30 | Open Mic & Talent Discovery | `#/openmic` | DONE · **t236u+t238u PENDING AUDIT** (idle house catalog · phase2/openmic-idle-t236u/) | Build / Live Social |
+| 30 | Open Mic & Talent Discovery | `#/openmic` | DONE · **t236u+t238u DONE** (Checker PASS 2026-10-25 · idle house catalog · phase2/openmic-idle-t236u/) | Build / Live Social |
 | 31 | Launch readiness | `#/launch` | DONE (Checker PASS 2026-10-25 · content-polish/checker/) | Content Polish |
 | 32 | Share & Earn | `#/share` | DONE (Checker PASS 2026-10-25 · phase2/share/checker/) | Commerce |
 | 33 | Refer & Earn | `#/refer` | DONE (Checker PASS 2026-10-25 · phase2/refer/checker/ · demo claim note) | Commerce |
 | 34 | Coming Soon Releases — Cover Art | `#/music` covers | DONE | Design |
-| 35 | 24/7 Spotlight | `#/spotlight` | DONE · **t233u+t238u PENDING AUDIT** (idle house catalog MV/Interview/BTS · phase2/spotlight-idle-t233u/) | Live Social |
+| 35 | 24/7 Spotlight | `#/spotlight` | DONE · **t233u+t238u DONE** (Checker PASS 2026-10-25 · idle house catalog MV/Interview/BTS · phase2/spotlight-idle-t233u/) | Live Social |
 | 36 | DBS Connect — Random Video Chat | `#/connect` | DONE (Checker PASS Design visual 2026-10-25 · phase2/connect-monkey/checker/; shell · no WebRTC) | Design (visual) / Live Social |
 | 37 | DBS Restream — Free Multi-Platform Go Live + streamer tier campaigns | `#/restream` | DONE (Checker PASS 2026-10-25 · TEST MODE · phase2/restream/checker/) | Live Social |
 | 38 | Hot Feed (Posts + Live + Admin alerts) | `#/hot` / Home / Admin | DONE | Build / Live Social |
@@ -1056,9 +1056,9 @@ Reject → fix → PASS: `.page-head` has no LIVE chrome; Top live first + selec
 - Pref `dbs_home_stage_v2`; legacy `dbs_home_stage` cleared; tabbar untouched (t228u).
 - Evidence: `/workspace/dbs-evidence/phase2/home-top-live-t227u/checker-reaudit/`.
 
-## Live Social — t233u + t236u + t238u idle house catalog → PENDING AUDIT (2026-10-25)
+## Live Social — t233u + t236u + t238u idle house catalog → **DONE** (2026-10-25)
 
-**t233u + t236u + t238u → PENDING AUDIT** (do not self-DONE · Checker owns PASS). Owner: Live Social. Block Wars paused.
+**t233u + t236u + t238u → DONE** (Checker PASS 2026-10-25 · evidence `phase2/spotlight-idle-t233u/checker/hc-notes.txt`). Owner: Live Social. Block Wars paused.
 
 ### Principle (t238u)
 Anytime Spotlight / Open Mic / similar Live stages are **missing** a live act, show **DatBoiSkeet house catalog** (MVs · Interviews · BTS) — never blank / Coming Soon-only. Original YouTube only · labeled `House · …` · not a fake live act.
