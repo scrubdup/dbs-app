@@ -1,7 +1,7 @@
 # DBS App — Section Status
 
 
-## Live Social — t255u Daily goals (Live half) → **PENDING AUDIT** (2026-10-25)
+## Live Social — t255u Daily goals (Live half) → **DONE (Checker PASS 2026-10-25)** (2026-10-25)
 
 **Joint** with Design (Home `#home-app-goal` already on main) + Commerce (coin debit in `donateToGoal` for now).
 
@@ -1091,7 +1091,7 @@ Evidence: `phase2/spotlight-idle-t233u/` + `phase2/openmic-idle-t236u/`
 - **t251u** `#/clippers` + Profile Apply as Clipper Coming Soon chips.
 - Tabbar untouched. Evidence: `phase2/home-sell-coming-soon-t249u/checker/`.
 
-## Commerce — t255u daily-goal donate path → **PENDING AUDIT** (re-ping after Pages) (2026-10-25)
+## Commerce — t255u daily-goal donate path → **DONE (Checker PASS 2026-10-25)** (re-ping after Pages) (2026-10-25)
 
 **USER ADD t255u** — Commerce debit review on Live Social goal land. Do **not** self-DONE.
 
@@ -1106,7 +1106,7 @@ Evidence: `phase2/spotlight-idle-t233u/` + `phase2/openmic-idle-t236u/`
 - **Re-PENDING AUDIT** — please re-observe Live donate near target on https://scrubdup.github.io/dbs-app/
 
 
-## Design — t255u Home daily app goal UI → **PENDING AUDIT** (2026-10-25)
+## Design — t255u Home daily app goal UI → **DONE (Checker PASS 2026-10-25)** (2026-10-25)
 
 **PENDING AUDIT** (Checker owns PASS · joint LS/Commerce). Owner: Design.
 
