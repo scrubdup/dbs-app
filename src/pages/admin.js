@@ -24,6 +24,7 @@ import {
 import { navigate, getRoute } from '../router.js';
 import { esc, shellPage, toast } from '../ui.js';
 import { putBlob, newBlobId, resolveMediaSrc } from '../media-db.js';
+import { readVideoDuration, validatePikkVideoMetadata } from '../pikk-video-policy.js';
 
 const TYPES = [
   { id: 'song', label: 'Song', acceptCover: 'image/*', acceptMedia: 'audio/*,.mp3,.m4a,.wav,.aac' },
@@ -60,7 +61,7 @@ function addContentFormHtml() {
   return `
   <section class="card admin-add" id="adminAdd">
     <h3>Add Content</h3>
-    <p class="muted admin-add-note">TEST MODE · no backend. Metadata → <code>localStorage dbs_v1.catalog</code>. Files → IndexedDB <code>dbs_media_v1</code>. Works on iPhone Safari &amp; desktop. Large files stay on this device only.</p>
+    <p class="muted admin-add-note">PIKKUP preview: video uploads must be 20 minutes or shorter and at most 250 MB. Device-local only, not public hosting. TEST MODE · no backend. Metadata → <code>localStorage dbs_v1.catalog</code>. Files → IndexedDB <code>dbs_media_v1</code>. Works on iPhone Safari &amp; desktop. Large files stay on this device only.</p>
 
     <div class="admin-type-tabs" role="tablist" aria-label="Content type">${tabs}</div>
 
@@ -654,6 +655,16 @@ export function bindAdmin(root) {
     if (!title) {
       toast('Title required');
       return;
+    }
+    if (type === 'video' && mediaF) {
+      try {
+        const duration = await readVideoDuration(mediaF);
+        const error = validatePikkVideoMetadata({ duration, size: mediaF.size, type: mediaF.type });
+        if (error) { toast(error); if (status) status.textContent = error; return; }
+      } catch {
+        const error = 'Could not verify video duration. Upload canceled.';
+        toast(error); if (status) status.textContent = error; return;
+      }
     }
     if (btn) btn.disabled = true;
     if (status) status.textContent = 'Saving… (large files may take a moment on iPhone)';

@@ -1,4 +1,4 @@
-/** Seed / static catalog for DBS demo */
+/** Seed / static catalog for PIKK demo; DatBoiSkeet is the artist identity. */
 
 export const VIDEOS = [
   // Plan MVs + Home featured (Checker PASS baseline)
@@ -527,6 +527,7 @@ export const DRAWER_GROUPS = [
       { href: '#/explore', label: 'Explore' },
       { href: '#/notifications', label: 'Notifications' },
       { href: '#/connect', label: 'Connect' },
+      { href: '#/dating', label: 'Dating & Connections' },
       { href: '#/community', label: 'Community / Lounge' },
     ],
   },
@@ -535,6 +536,7 @@ export const DRAWER_GROUPS = [
     id: 'games',
     label: 'Games',
     links: [
+      { href: '#/games', label: 'PIKK Arcade · 9 Games Coming Soon' },
       { href: '#/blockwars', label: 'Block Wars · Coming Soon' },
     ],
   },
@@ -591,10 +593,10 @@ export const DRAWER_LINKS = DRAWER_GROUPS.flatMap((g) =>
  *  Go Live center (4th). Messages OFF tabbar (header only). Profile via drawer. */
 export const TABBAR = [
   { href: '#/home', label: 'Home', icon: 'home' },
-  { href: '#/posts?compose=1', label: 'Post', icon: 'camera' },
   { href: '#/music', label: 'Music', icon: 'music' },
-  { href: '#/live?go=1', label: 'Go Live', icon: 'live' },
+  { href: '#/live', label: 'Live', icon: 'live' },
+  { href: '#/shop', label: 'Shop', icon: 'merch' },
+  { href: '#/dating', label: 'Dating', icon: 'heart' },
   { href: '#/videos', label: 'Videos', icon: 'videos' },
-  { href: '#/community', label: 'Chat', icon: 'chat' },
-  { href: '#/blockwars', label: 'Game', icon: 'game' },
+  { href: '#/profile', label: 'Profile', icon: 'home' },
 ];

@@ -1,4 +1,4 @@
-/** §36 DBS Connect — Monkey-style match shell + quiet multi-platform go-live (t198u). */
+/** §36 PIKK Connect — Monkey-style match shell + quiet multi-platform go-live (t198u). */
 import { getConnectPrefs, updateConnectPrefs } from '../store.js';
 import {
   listRestreamPlatforms,
@@ -73,7 +73,7 @@ function renderMultiPlatform() {
         <div>
           <h3 style="margin:0 0 6px">Multi-platform go-live</h3>
           <p class="muted" style="margin:0;max-width:40rem;font-size:13px">
-            Link destinations and go live to more than one platform from DBS.
+            Link destinations and go live to more than one platform from PIKK.
             DEMO · TEST MODE · no real RTMP / OAuth relay yet. Platform account policies still apply.
           </p>
         </div>
@@ -85,7 +85,7 @@ function renderMultiPlatform() {
         <a class="btn ghost" href="#/live">Solo Live stage</a>
       </div>
       <p class="muted" style="margin:10px 0 0;font-size:12px">
-        Quietly integrated here under Connect — not a separate branded product page.
+        PIKK Connect combines random video discovery and multi-platform live controls in one place.
       </p>
     </div>`;
 }
@@ -94,11 +94,11 @@ export function renderConnect() {
   const p = getConnectPrefs();
   const ready = p.ageConfirmed && p.rulesAccepted;
   return shellPage(
-    'DBS Connect',
+    'PIKK Connect',
     `<div class="connect-monkey" id="connectMonkey">
       <div class="connect-flag card">
         <p><span class="chip">TEST MODE</span> <span class="chip">Opt-in shell · no WebRTC</span> <span class="chip">18+</span></p>
-        <p class="muted small" style="margin:6px 0 0">Monkey-style dual video discovery — DatBoiSkeet branded. Admin can disable Connect anytime. Launch blocked until age assurance + moderation + WebRTC safety review.</p>
+        <p class="muted small" style="margin:6px 0 0">Monkey-style dual video discovery — PIKK branded. Admin can disable Connect anytime. Launch blocked until age assurance + moderation + WebRTC safety review.</p>
       </div>
 
       <div class="card connect-gates ${ready ? 'ready' : ''}">
@@ -161,7 +161,7 @@ export function renderConnect() {
       ${renderMultiPlatform()}
 
       <div class="card">
-        <p class="muted" style="margin:0 0 8px">DBS Connect <strong>does not replace</strong> Live, Messages, or Spotlight. Meanwhile:</p>
+        <p class="muted" style="margin:0 0 8px">PIKK Connect <strong>does not replace</strong> Live, Messages, or Spotlight. Meanwhile:</p>
         <a class="btn" href="#/live">Live</a> <a class="btn" href="#/messages">Messages</a> <a class="btn" href="#/spotlight">Spotlight</a> <a class="btn ghost" href="#/shorts">Shorts / Clips</a>
       </div>
     </div>`,
