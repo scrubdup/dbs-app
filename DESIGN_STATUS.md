@@ -141,3 +141,13 @@ Checker PASS. Every `.card`/panel gets BW-family subtle blue edge/glow; red prim
 - Evidence: `phase2/home-app-goals-t255u/` (+ LS `phase2/daily-goals-t255u/checker/`).
 - Tabbar untouched.
 
+## t267u — Header Messages pill replaces Sign-in → **PENDING AUDIT**
+
+**PENDING AUDIT** (Checker owns PASS · 2026-10-25). Owner: Design. Scope: header `.top-actions` only.
+
+- `#headerMsg` now `.pill.header-msg` (envelope + **Messages** label) — same visual weight as `#tierPill` Sign in.
+- Red `--acc` unread badge (`#headerMsgBadge`) when count > 0; hidden at 0. Swap via existing `updateChrome`.
+- Observe: `index-BaaAoKyI.js` / `index-oNwa_feG.css` · forever https://scrubdup.github.io/dbs-app/
+- Evidence: `/workspace/dbs-evidence/phase2/header-messages-t267u/`
+- Tabbar / Block Wars untouched.
+

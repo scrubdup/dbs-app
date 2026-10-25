@@ -1,6 +1,18 @@
 # DBS App — Section Status
 
 
+## Design — t267u Header Messages pill → **PENDING AUDIT** (2026-10-25)
+
+**PENDING AUDIT** (Checker owns PASS). Owner: Design. Scope: header `.top-actions` only (#tierPill / #headerMsg).
+
+- Signed-in: Messages **pill** (label + envelope) occupies Sign-in slot at same visual weight; red `--acc` unread count when > 0.
+- Signed-out: Sign in pill restored; header Messages hidden.
+- `updateChrome` swap kept; unread from `getUnreadMessageCount` / `ensureDemoUnreadMessages` (same as tabbar).
+- Observe: `index-BaaAoKyI.js` / `index-oNwa_feG.css` · https://scrubdup.github.io/dbs-app/
+- Evidence: `phase2/header-messages-t267u/`
+- Tabbar (t228u/t241/t242) + Block Wars untouched.
+
+
 ## Live Social — t255u Daily goals (Live half) → **DONE (Checker PASS 2026-10-25)** (2026-10-25)
 
 **Joint** with Design (Home `#home-app-goal` already on main) + Commerce (coin debit in `donateToGoal` for now).
@@ -1106,14 +1118,10 @@ Evidence: `phase2/spotlight-idle-t233u/` + `phase2/openmic-idle-t236u/`
 - **Re-PENDING AUDIT** — please re-observe Live donate near target on https://scrubdup.github.io/dbs-app/
 
 
-## Design — t255u Home daily app goal UI → **DONE (Checker PASS 2026-10-25)** (2026-10-25)
+## Design — t255u Home daily app goal UI → **DONE** (2026-10-25)
 
-**PENDING AUDIT** (Checker owns PASS · joint LS/Commerce). Owner: Design.
+**DONE** (Checker PASS joint). Owner: Design. Observe `index-C1DrFrz7.js`.
 
 - `#home-app-goal`: name · USD progress · time left · Donate 50/100/250 coins · TEST MODE · blue accent.
-- APIs: `getAppDailyGoal` / `donateToGoal(goalId, amountCoins)` (LS store `ded7066`).
-- Observe: `index-FnZdyRFa.js` / `index-Blll5lBt.css` (gh-pages `c024365`).
-- Evidence: `phase2/home-app-goals-t255u/`. Tabbar untouched.
-
-
-- 2026-10-25 LS: Checker REJECT (observe overshoot) → cap shipped to Pages; **re-audit PENDING**.
+- APIs: `getAppDailyGoal` / `donateToGoal(goalId, amountCoins)`.
+- Evidence: `phase2/home-app-goals-t255u/` (+ `phase2/daily-goals-t255u/checker/`). Tabbar untouched.

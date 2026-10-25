@@ -215,7 +215,7 @@ function updateChrome(route) {
   const pill = document.getElementById('tierPill');
   const headerMsg = document.getElementById('headerMsg');
   if (user) {
-    /* t242u — Messages replaces Sign in in the header slot; unread badge mirrors tabbar */
+    /* t267u — Messages pill replaces Sign in in the header slot; unread badge mirrors tabbar */
     if (pill) pill.hidden = true;
     if (headerMsg) headerMsg.hidden = false;
     refreshHeaderMsgBadge();
@@ -230,7 +230,7 @@ function updateChrome(route) {
   }
 }
 
-/** t242u · header Messages unread badge (same source as tabbar) */
+/** t267u · header Messages unread badge (same source as tabbar) */
 function refreshHeaderMsgBadge() {
   const badge = document.getElementById('headerMsgBadge');
   const link = document.getElementById('headerMsg');

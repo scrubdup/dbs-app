@@ -137,17 +137,32 @@ img { max-width: 100%; display: block; }
   border: 1px solid var(--line); background: var(--bg2);
   display: grid; place-items: center; color: var(--tx); cursor: pointer;
 }
-/* t242u — header Messages (replaces Sign in when logged in) */
-a.header-msg.icon-btn {
+/* t267u — header Messages pill occupies Sign-in slot at same visual weight */
+a.header-msg.pill {
   position: relative;
   text-decoration: none;
   color: var(--tx);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  /* same .pill padding/font/radius as #tierPill Sign in */
 }
-a.header-msg.icon-btn svg { width: 22px; height: 22px; display: block; }
+a.header-msg.pill .header-msg-ico {
+  width: 14px;
+  height: 14px;
+  flex: 0 0 auto;
+  display: block;
+}
+a.header-msg.pill .header-msg-label {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .04em;
+  line-height: 1;
+}
 .header-msg-badge {
   position: absolute;
-  top: -4px;
-  right: -4px;
+  top: -6px;
+  right: -6px;
   min-width: 16px;
   height: 16px;
   padding: 0 4px;
