@@ -13,16 +13,17 @@ test('Go Live is the exact center of seven bottom navigation slots', () => {
   assert.match(entries[3][0], /primary: true/);
   assert.ok(entries.some(x => x[2] === 'Dating'));
   assert.ok(entries.some(x => x[2] === 'Connect'));
-  assert.equal(entries[0][2], 'Profile');
-  assert.deepEqual(entries.map(x => x[2]), ['Profile', 'Music', 'Videos', 'Go Live', 'Connect', 'Dating', 'Shop']);
-  assert.ok(!entries.some(x => x[2] === 'Home'));
+  assert.equal(entries[0][2], 'Home');
+  assert.deepEqual(entries.map(x => x[2]), ['Home', 'Music', 'Videos', 'Go Live', 'Connect', 'Dating', 'Shop']);
+  assert.ok(!entries.some(x => x[2] === 'Profile'));
 });
 test('Go Live gets its primary class and scroll-to-stream behavior', () => {
   assert.match(main, /t\.primary \? ' class="tab-primary"'/);
   assert.match(main, /route\.query\.go === '1'/);
 });
 
-test('Header PIKK logo returns to Home while Home is absent from bottom tabs', () => {
+test('Header PIKK logo and bottom Home both return to Home; Profile stays in header', () => {
   const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
   assert.match(html, /href="#\/home" class="logo" aria-label="PIKK Home"/);
+  assert.match(html, /id="headerProfile" href="#\/profile"/);
 });
