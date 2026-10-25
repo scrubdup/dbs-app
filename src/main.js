@@ -177,7 +177,7 @@ function buildDrawer() {
     );
   }).join('');
 
-  el.innerHTML = `<h2>DBS Network</h2>${groupsHtml}`;
+  el.innerHTML = `<h2>PIKK Network</h2>${groupsHtml}`;
 }
 
 function setDrawer(open) {

@@ -487,7 +487,7 @@ export const HOME_SECTIONS = [
   { route: '/shorts', title: 'Shorts', blurb: 'Under Posts · quick clips' },
   { route: '/live', title: 'Live', blurb: 'Go live · TEST MODE demo' },
   { route: '/merch', title: 'Merch', blurb: 'Foreign X-Change · external shop' },
-  { route: '/community', title: 'DBS Lounge', blurb: 'Artist-owned rooms · Phase 2' },
+  { route: '/community', title: 'PIKK Lounge', blurb: 'Artist-owned rooms · Phase 2' },
   { route: '/music', title: 'Vault', blurb: 'Member exclusives · Coming Soon', hash: 'vault' },
   { route: '/marketplace', title: 'Marketplace', blurb: 'Brand ads & sponsored offers' },
   { route: '/missions', title: 'Missions', blurb: 'Clipper promo campaigns' },
