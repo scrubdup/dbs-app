@@ -126,7 +126,8 @@ function buildTabbar() {
     const raw = t.href.replace(/^#/, '');
     const pathOnly = '/' + raw.replace(/^\//, '').split(/[?#]/)[0];
     const label = esc(t.label);
-    return `<a href="${t.href}" data-path="${pathOnly}" aria-label="${label}"><span class="tab-ico">${ICONS[t.icon] || ''}</span><span>${label}</span></a>`;
+    const primaryClass = t.primary ? ' class="tab-primary"' : '';
+    return `<a${primaryClass} href="${t.href}" data-path="${pathOnly}" aria-label="${label}"><span class="tab-ico">${ICONS[t.icon] || ''}</span><span>${label}</span></a>`;
   }).join('');
   el.style.gridTemplateColumns = '';
   /* Fit all bottom navigation tabs, including Dating and Connect, without horizontal scroll. */
