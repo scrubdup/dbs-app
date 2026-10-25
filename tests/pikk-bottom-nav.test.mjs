@@ -13,8 +13,16 @@ test('Go Live is the exact center of seven bottom navigation slots', () => {
   assert.match(entries[3][0], /primary: true/);
   assert.ok(entries.some(x => x[2] === 'Dating'));
   assert.ok(entries.some(x => x[2] === 'Connect'));
+  assert.equal(entries[0][2], 'Profile');
+  assert.equal(entries[6][2], 'Videos');
+  assert.ok(!entries.some(x => x[2] === 'Home'));
 });
 test('Go Live gets its primary class and scroll-to-stream behavior', () => {
   assert.match(main, /t\.primary \? ' class="tab-primary"'/);
   assert.match(main, /route\.query\.go === '1'/);
+});
+
+test('Header PIKK logo returns to Home while Home is absent from bottom tabs', () => {
+  const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
+  assert.match(html, /href="#\/home" class="logo" aria-label="PIKK Home"/);
 });
