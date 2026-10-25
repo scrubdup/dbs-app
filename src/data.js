@@ -592,7 +592,7 @@ export const DRAWER_LINKS = DRAWER_GROUPS.flatMap((g) =>
 /** Bottom nav t290u: exactly 7 — Home · Post · Music · Go Live · Videos · Chat · Game.
  *  Go Live center (4th). Messages OFF tabbar (header only). Profile via drawer. */
 export const TABBAR = [
-  { href: '#/profile', label: 'Profile', icon: 'home' },
+  { href: '#/home', label: 'Home', icon: 'home' },
   { href: '#/music', label: 'Music', icon: 'music' },
   { href: '#/videos', label: 'Videos', icon: 'videos' },
   { href: '#/live?go=1', label: 'Go Live', icon: 'live', primary: true },
