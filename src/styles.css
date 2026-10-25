@@ -3036,31 +3036,31 @@ a.text-link:hover { color: #7aa0ff; }
 }
 
 /* t197u · Live discovery tabs (Twitch/Kick-style) */
+/* t269u · wrap + tighter chips — no horizontal swipe; Clips always on first paint */
 .live-disc-tabs {
   display: flex;
-  flex-wrap: nowrap;
-  gap: 8px;
-  overflow-x: auto;
+  flex-wrap: wrap;
+  gap: 6px 8px;
+  overflow-x: visible;
   padding-bottom: 4px;
   margin: 0 0 10px;
-  -webkit-overflow-scrolling: touch;
 }
-.live-disc-tabs::-webkit-scrollbar { display: none; }
 .live-disc-tab {
   flex: 0 0 auto;
   display: inline-flex;
   align-items: center;
-  min-height: 40px;
-  padding: 8px 14px;
+  min-height: 36px;
+  padding: 6px 12px;
   border-radius: 999px;
   border: 1px solid #3a3a48;
   background: #1a1a24;
   color: var(--mut);
   font-weight: 800;
-  font-size: 13px;
+  font-size: 12px;
   letter-spacing: .02em;
   text-decoration: none;
   transition: background .15s, border-color .15s, color .15s;
+  white-space: nowrap;
 }
 .live-disc-tab:hover {
   color: #fff;
@@ -3493,9 +3493,12 @@ input:focus, select:focus, textarea:focus {
 /* t216u/t217u — Post create: Picture / Short / Video (not tabs) */
 .post-type-picker {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 8px;
   margin-bottom: 12px;
+}
+@media (max-width: 380px) {
+  .post-type-picker { grid-template-columns: repeat(2, 1fr); }
 }
 .post-type-btn {
   display: flex;

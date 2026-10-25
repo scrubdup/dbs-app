@@ -151,3 +151,14 @@ Checker PASS. Every `.card`/panel gets BW-family subtle blue edge/glow; red prim
 - Evidence: `/workspace/dbs-evidence/phase2/header-messages-t267u/`
 - Tabbar / Block Wars untouched.
 
+## t269u / t272u — Posts Text (words-only) → **PENDING AUDIT**
+
+**PENDING AUDIT** (Checker owns PASS · 2026-10-25). Alias **t272u** = same Text post. Owner: Design.
+
+- Composer `#composer` `.post-type-picker`: **Text** alongside Picture · Short · Video.
+- Text = caption only; media field hidden; `createPost({ text, mediaType: 'text' })`.
+- Feed **Text** chip; lead + `data.js` blurb include Text.
+- Observe forever https://scrubdup.github.io/dbs-app/#/posts?compose=1
+- Evidence: `/workspace/dbs-evidence/phase2/posts-text-t269u/`
+- Tabbar / Block Wars untouched. Ships with t267u header Messages pill.
+

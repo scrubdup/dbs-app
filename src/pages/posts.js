@@ -82,7 +82,7 @@ export function renderPosts(route) {
   ).join('');
 
   const composeOpen = route?.query?.compose === '1' || route?.query?.type;
-  const startType = ['picture', 'short', 'video'].includes(route?.query?.type)
+  const startType = ['text', 'picture', 'short', 'video'].includes(route?.query?.type)
     ? route.query.type
     : '';
 
@@ -92,6 +92,11 @@ export function renderPosts(route) {
       <h3>Create</h3>
       <p class="muted" style="margin:0 0 10px">Pick what you’re posting — not separate tabs.</p>
       <div class="post-type-picker" role="group" aria-label="Post type">
+        <button type="button" class="post-type-btn${startType === 'text' ? ' on' : ''}" data-type="text">
+          <span class="post-type-ico" aria-hidden="true">Aa</span>
+          <strong>Text</strong>
+          <span class="muted">Words only</span>
+        </button>
         <button type="button" class="post-type-btn${startType === 'picture' ? ' on' : ''}" data-type="picture">
           <span class="post-type-ico" aria-hidden="true">🖼</span>
           <strong>Picture</strong>
@@ -118,11 +123,11 @@ export function renderPosts(route) {
           <input id="postImg" placeholder="/music/… · YouTube URL · /merch/…" />
         </div>
         <div class="row wrap" id="postPresets" style="margin-bottom:10px">${presets}</div>
-        <p class="muted" style="font-size:12px;margin:0 0 10px">TEST MODE · no real upload — paste a path or YouTube link.</p>
+        <p class="muted" id="postMediaNote" style="font-size:12px;margin:0 0 10px">TEST MODE · no real upload — paste a path or YouTube link.</p>
         <button class="btn primary" id="postSubmit">Post</button>
       </div>
     </div>`
-    : `<div class="card"><p class="muted">Sign in from Profile to post a picture, short, or video.</p>
+    : `<div class="card"><p class="muted">Sign in from Profile to post text, a picture, short, or video.</p>
        <a class="btn primary" href="#/profile">Sign in</a></div>`;
 
   const tabs = `
@@ -157,7 +162,9 @@ export function renderPosts(route) {
             ? '<span class="chip">Video</span>'
             : mt === 'picture' || mt === 'image'
               ? '<span class="chip">Picture</span>'
-              : '';
+              : mt === 'text'
+                ? '<span class="chip">Text</span>'
+                : '';
       const mediaHtml = (() => {
         const src = (p.mediaUrl || p.image || '').trim();
         if (!src) return '';
@@ -219,7 +226,7 @@ export function renderPosts(route) {
     'Posts',
     hotStripHtml() + composer + tabs + (feed || empty),
     {
-      lead: 'Post a Picture, Short, or Video · Shorts live here (not separate tabs) · Hot strip ranks engagement.',
+      lead: 'Post Text, a Picture, Short, or Video · Shorts live here (not separate tabs) · Hot strip ranks engagement.',
     }
   );
 }
@@ -247,7 +254,12 @@ export function bindPosts(root) {
     root.querySelectorAll('.post-type-btn').forEach((b) => b.classList.toggle('on', b.dataset.type === t));
     if (typeInput) typeInput.value = t;
     if (typeChip) typeChip.textContent = t.charAt(0).toUpperCase() + t.slice(1) + ' post';
-    if (mediaLabel) {
+    const mediaField = root.querySelector('#postMediaField');
+    const mediaNote = root.querySelector('#postMediaNote');
+    const isText = t === 'text';
+    if (mediaField) mediaField.hidden = isText;
+    if (mediaNote) mediaNote.hidden = isText;
+    if (mediaLabel && !isText) {
       mediaLabel.textContent =
         t === 'short' ? 'Short clip link (YouTube / demo path)' : t === 'video' ? 'Video link (YouTube / demo path)' : 'Picture link (demo path)';
     }
@@ -276,6 +288,13 @@ export function bindPosts(root) {
       const text = root.querySelector('#postText')?.value;
       const mediaType = typeInput?.value || 'picture';
       const media = (root.querySelector('#postImg')?.value || '').trim();
+      if (mediaType === 'text') {
+        if (!text?.trim()) return toast('Write some words for a Text post');
+        createPost({ text: text.trim(), mediaType: 'text' });
+        toast('Text posted');
+        refresh();
+        return;
+      }
       if (!text?.trim() && !media) return toast('Add a caption or media');
       if ((mediaType === 'short' || mediaType === 'video') && !media) {
         return toast('Add a ' + mediaType + ' link (TEST MODE)');

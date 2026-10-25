@@ -1,6 +1,16 @@
 # DBS App — Section Status
 
 
+## Design — t269u/t272u Posts Text (words-only) → **PENDING AUDIT** (2026-10-25)
+
+**PENDING AUDIT** (Checker owns PASS). Alias **t272u** = t269u Post Text. Owner: Design.
+
+- `#/posts` composer: **Text** type in same picker as Picture · Short · Video.
+- Caption-only; media URL hidden; `createPost({ text, mediaType: 'text' })`; feed **Text** chip.
+- Evidence: `phase2/posts-text-t269u/` · forever https://scrubdup.github.io/dbs-app/#/posts?compose=1
+- Tabbar unchanged. Joint ship with t267u header Messages pill.
+
+
 ## Design — t267u Header Messages pill → **PENDING AUDIT** (2026-10-25)
 
 **PENDING AUDIT** (Checker owns PASS). Owner: Design. Scope: header `.top-actions` only (#tierPill / #headerMsg).

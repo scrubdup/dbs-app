@@ -10,9 +10,9 @@
 
 - **Home:** https://scrubdup.github.io/dbs-app/#/home
 - **Messages:** https://scrubdup.github.io/dbs-app/#/messages
-- **Never expires.** Source: `gh-pages` (t267u header Messages pill · assets **index-BaaAoKyI.js** / **index-oNwa_feG.css**)
+- **Never expires.** Source: `gh-pages` (t267u Messages pill + t269u/t272u Text post · assets TBD on deploy)
 - Base path: `/dbs-app/`
-- **Last shipped:** t267u — header Messages pill replaces Sign-in slot · PENDING AUDIT
+- **Last shipped:** t267u header Messages pill + t269u/t272u Posts Text · PENDING AUDIT
 
 ## Phone link (workers.dev — temporary until claimed)
 
