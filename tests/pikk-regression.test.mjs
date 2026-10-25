@@ -97,5 +97,15 @@ test('featured video premiere and sponsored disclosure are retained', () => {
   assert.ok(source.includes('Featured Premiere'), 'Missing featured video premiere');
   assert.ok(source.includes('v.sponsored === true'), 'Paid videos must be explicitly marked');
   assert.ok(source.includes('Sponsored</span>'), 'Paid video disclosure missing');
-  assert.ok(source.includes('${premiereHtml}${sections}${extra}'), 'Original video sections must remain');
+  assert.ok(source.includes('${premiereHtml}${discoveryHtml}${sections}${extra}'), 'Original video sections must remain');
+});
+
+
+test('PIKKDUP discovery preserves organic video catalog and filters', () => {
+  const source = readFileSync(new URL('../src/pages/shells.js', import.meta.url), 'utf8');
+  assert.ok(source.includes('PIKKDUP · Discover'));
+  assert.ok(source.includes('pikkdup-search'));
+  assert.ok(source.includes('pikkdup-filter'));
+  assert.ok(source.includes('No fabricated view counts'));
+  assert.ok(source.includes('search.addEventListener(\'input\', refresh)'));
 });
