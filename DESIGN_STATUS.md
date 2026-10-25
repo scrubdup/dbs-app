@@ -135,6 +135,8 @@ Checker PASS. Every `.card`/panel gets BW-family subtle blue edge/glow; red prim
 ## t255u JOINT — Home daily app goal UI → **PENDING AUDIT**
 
 **PENDING AUDIT** (Checker owns PASS · joint with Live Social + Commerce). Owner Design (Home card).
+Checker 2026-10-25: Design Home UI OK; joint **REJECT** = store donate overshoot (not Design). Waiting capped store redeploy + re-audit.
+
 
 - `#home-app-goal` on Home: name · USD progress (`raised`/`targetAmount`) · time left · Donate 50/100/250 coins via `donateToGoal(goalId, amountCoins)` · TEST MODE · blue accent.
 - Store: LS `getAppDailyGoal` / `donateToGoal` on main `ded7066` · Pages `c024365` · observe `index-FnZdyRFa.js` / `index-Blll5lBt.css`.
