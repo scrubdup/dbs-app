@@ -20,19 +20,21 @@
 - Evidence: `phase2/live-clips-early-t269u/` · MAIN_SHA `b62b343bb5b8bfdd70a1b86c77856cd7a958b314` · phone shot `live-tabs-390.png`
 - Block Wars / Home / Design header / Post Text compose untouched by this slice.
 
-## Design — t269u/t272u Posts Text (words-only) → **PENDING AUDIT** (2026-10-25)
+## Design — t269u/t272u Posts Text (words-only) → **REJECT** (2026-10-25)
 
 **PENDING AUDIT** (Checker owns PASS). Alias **t272u** = t269u Post Text. Owner: Design.
 
+
+- **Checker REJECT** (observe `index-DO3IwXZt.js`): media field still visible on Text — `.field{display:flex}` beats `[hidden]`. Design fixing; re-PENDING after Pages.
 - `#/posts` composer: **Text** type in same picker as Picture · Short · Video.
 - Caption-only; media URL hidden; `createPost({ text, mediaType: 'text' })`; feed **Text** chip.
 - Evidence: `phase2/posts-text-t269u/` · forever https://scrubdup.github.io/dbs-app/#/posts?compose=1
 - Tabbar unchanged. Joint ship with t267u header Messages pill.
 
 
-## Design — t267u Header Messages pill → **PENDING AUDIT** (2026-10-25)
+## Design — t267u Header Messages pill → **DONE** (Checker PASS 2026-10-25)
 
-**PENDING AUDIT** (Checker owns PASS). Owner: Design. Scope: header `.top-actions` only (#tierPill / #headerMsg).
+**DONE** (Checker PASS · observe `index-DO3IwXZt.js` · also on tip `index-CtrRwU1M.js`). Owner: Design. Scope: header `.top-actions` only (#tierPill / #headerMsg).
 
 - Signed-in: Messages **pill** (label + envelope) occupies Sign-in slot at same visual weight; red `--acc` unread count when > 0.
 - Signed-out: Sign in pill restored; header Messages hidden.
