@@ -1,8 +1,8 @@
 # DBS App — Section Status
 
-## Design — t277u Game tab + Block Wars Coming Soon → **PENDING AUDIT** (2026-10-25)
+## Design — t277u Game tab + Block Wars Coming Soon → **DONE** (Checker PASS 2026-10-25)
 
-**PENDING AUDIT** (Checker owns PASS). Owner: Design.
+**DONE** (Checker PASS · observe `index-CtrRwU1M.js`). Owner: Design.
 
 - Tabbar **Game** + drawer **Block Wars · Coming Soon** → `#/blockwars` (preview only · not playable).
 - Evidence: `phase2/game-tab-blockwars-t277u/` · forever https://scrubdup.github.io/dbs-app/#/blockwars
