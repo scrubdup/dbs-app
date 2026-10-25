@@ -30,6 +30,7 @@ const defaultState = () => ({
   liveGiftLedger: [], // append-only gift sends · Commerce/Earnings reads creatorShare
   liveGbChallengePop: null, // t200u broadcast after paid gift
   threads: {}, // threadId -> { id, peerId, peerName, messages, kind?, muted?, blocked?, reportedAt? }
+  demoUnreadSeeded: false, // t212u · one-shot demo badge seed; never rewind after read
   messagePrefs: { allowDMs: true, allowRequests: true },
   notifications: {
     releases: true,
@@ -172,6 +173,7 @@ function load() {
       liveGiftLedger: Array.isArray(parsed.liveGiftLedger) ? parsed.liveGiftLedger : [],
       liveGbChallengePop: parsed.liveGbChallengePop || null,
       threads: { ...(parsed.threads || {}) },
+      demoUnreadSeeded: !!parsed.demoUnreadSeeded,
       messagePrefs: { ...base.messagePrefs, ...(parsed.messagePrefs || {}) },
       catalog: Array.isArray(parsed.catalog) ? parsed.catalog : [],
       missions: Array.isArray(parsed.missions) ? parsed.missions : [],
@@ -1561,17 +1563,27 @@ export function markThreadRead(threadId) {
   const t0 = state.threads[threadId];
   if (!t0 || !(t0.participants || []).includes(user.id)) return null;
   const t = { ...t0, lastReadAt: Date.now() };
-  state = { ...state, threads: { ...state.threads, [t.id]: t } };
+  state = { ...state, threads: { ...state.threads, [t.id]: t }, demoUnreadSeeded: true };
   save(state);
   return state.threads[t.id];
 }
 
-/** Seed 1–2 inbound demo DMs so the Messages badge shows a number (idempotent). */
+/** Seed demo inbound DMs once so Messages badge can show a number.
+ * Never rewound after the user marks a thread read (t212u Checker REJECT fix).
+ */
 export function ensureDemoUnreadMessages() {
   const user = state.user;
   if (!user) return { seeded: false };
   ensureDemoMessageContacts();
-  if (getUnreadMessageCount() > 0) return { seeded: false, count: getUnreadMessageCount() };
+  // One-shot flag — do not re-seed or rewind lastReadAt after user clears unread
+  if (state.demoUnreadSeeded) {
+    return { seeded: false, count: getUnreadMessageCount(), once: true };
+  }
+  if (getUnreadMessageCount() > 0) {
+    state = { ...state, demoUnreadSeeded: true };
+    save(state);
+    return { seeded: false, count: getUnreadMessageCount() };
+  }
   const peerId = 'maya';
   const peerName = (state.profiles?.maya || {}).username || 'MayaBeats';
   const t0 = getOrCreateThread(peerId, peerName);
@@ -1579,11 +1591,17 @@ export function ensureDemoUnreadMessages() {
   const existing = state.threads[t0.id];
   const hasInbound = (existing.messages || []).some((m) => m.from !== user.id);
   if (hasInbound) {
-    // Force unread by rewinding lastReadAt before inbound
+    // First seed only: mark as unread once, then lock the flag
     const inboundAts = (existing.messages || []).filter((m) => m.from !== user.id).map((m) => m.at || 0);
     const minAt = Math.min(...inboundAts);
+    const alreadyRead = (existing.lastReadAt || 0) >= Math.max(...inboundAts, 0);
+    if (alreadyRead) {
+      state = { ...state, demoUnreadSeeded: true };
+      save(state);
+      return { seeded: false, count: 0 };
+    }
     const t = { ...existing, lastReadAt: Math.max(0, minAt - 1) };
-    state = { ...state, threads: { ...state.threads, [t.id]: t } };
+    state = { ...state, threads: { ...state.threads, [t.id]: t }, demoUnreadSeeded: true };
     save(state);
     return { seeded: true, count: getUnreadMessageCount() };
   }
@@ -1611,7 +1629,7 @@ export function ensureDemoUnreadMessages() {
     lastReadAt: 0,
     request: false,
   };
-  state = { ...state, threads: { ...state.threads, [t.id]: t } };
+  state = { ...state, threads: { ...state.threads, [t.id]: t }, demoUnreadSeeded: true };
   save(state);
   return { seeded: true, count: getUnreadMessageCount() };
 }
