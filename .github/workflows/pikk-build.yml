@@ -1,0 +1,25 @@
+name: PIKK build verification
+on:
+  push:
+    branches: [pikk-rebrand, master]
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: package-lock.json
+      - run: npm ci
+      - run: npm run build
+      - name: Verify PIKK HTML build
+        run: |
+          test -f dist/index.html
+          grep -q 'PIKK' dist/index.html
+          grep -q '/dbs-app/' dist/index.html
