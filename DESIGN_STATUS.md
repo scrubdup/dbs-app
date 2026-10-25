@@ -132,14 +132,12 @@ Checker PASS. Every `.card`/panel gets BW-family subtle blue edge/glow; red prim
 - **t251u** `#/clippers` `#clippers-coming-soon` next to Clipper application; Profile Apply as Clipper Coming Soon chip.
 - Tabbar untouched. Evidence: `phase2/home-sell-coming-soon-t249u/checker/`.
 
-## t255u JOINT — Home daily app goal UI → **PENDING AUDIT**
+## t255u JOINT — Home daily app goal UI → **DONE**
 
-**PENDING AUDIT** (Checker owns PASS · joint with Live Social + Commerce). Owner Design (Home card).
-Checker 2026-10-25: Design Home UI OK; joint **REJECT** = store donate overshoot (not Design). Waiting capped store redeploy + re-audit.
+**DONE** (Checker PASS joint 2026-10-25). Owner Design (Home card). Observe `index-C1DrFrz7.js` (Commerce cap cleared prior REJECT).
 
-
-- `#home-app-goal` on Home: name · USD progress (`raised`/`targetAmount`) · time left · Donate 50/100/250 coins via `donateToGoal(goalId, amountCoins)` · TEST MODE · blue accent.
-- Store: LS `getAppDailyGoal` / `donateToGoal` on main `ded7066` · Pages `c024365` · observe `index-FnZdyRFa.js` / `index-Blll5lBt.css`.
-- Evidence: `phase2/home-app-goals-t255u/` (+ LS `phase2/daily-goals-t255u/`).
+- `#home-app-goal`: name · USD progress · time left · Donate 50/100/250 coins · TEST MODE · blue accent.
+- APIs: `getAppDailyGoal` / `donateToGoal(goalId, amountCoins)`.
+- Evidence: `phase2/home-app-goals-t255u/` (+ LS `phase2/daily-goals-t255u/checker/`).
 - Tabbar untouched.
 
