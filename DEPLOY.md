@@ -10,9 +10,9 @@
 
 - **Home:** https://scrubdup.github.io/dbs-app/#/home
 - **Messages:** https://scrubdup.github.io/dbs-app/#/messages
-- **Never expires.** Source: `gh-pages` branch (`b1acdcd` · t212u unread-badge clear fix; main `a079fa8`)
+- **Never expires.** Source: `gh-pages` branch (`f1740fd` · t212u instant badge refresh; main `94a237d`; assets index-D-TIn6bb.js / index-BTT_WRjN.css)
 - Base path: `/dbs-app/`
-- **Last shipped:** t212u badge-clear fix (Messages unread clears after opening thread; demoUnreadSeeded one-shot) — prior: tabbar Home · Music · Videos · Post · Go Live (center, #/live?go=1) · Chat (#/community) · Messages (#/messages + unread badge) · Profile; .tabbar-scroll horizontal scroll, 11px labels / 22px icons
+- **Last shipped:** t212u instant Messages badge refresh on markThreadRead (dbs:messages-unread event) — prior: t212u badge-clear fix (Messages unread clears after opening thread; demoUnreadSeeded one-shot) — prior: tabbar Home · Music · Videos · Post · Go Live (center, #/live?go=1) · Chat (#/community) · Messages (#/messages + unread badge) · Profile; .tabbar-scroll horizontal scroll, 11px labels / 22px icons
 
 ## Phone link (workers.dev — temporary until claimed)
 

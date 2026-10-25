@@ -15,7 +15,7 @@ Legend: **DONE** = usable demo in SPA · **SHELL** = routed page with copy/UI pl
 | 5 | Creator Rewards, Earnings & Commissions | `#/earnings` | DONE (ledger + commissions — Checker PASS 2026-10-25; evidence phase2/earnings/ + checker/) | Commerce |
 | 6 | Missions | `#/missions` | DONE (Checker PASS 2026-10-25 · phase2/missions/checker/) | Commerce |
 | 7 | Profiles & Messaging (profiles part) | `#/profile` | DONE | Build |
-| 8 | Navigation, Music & Vault | nav + `#/music` `#/vault` | DONE · **t212u PENDING AUDIT** (8-tab scroll · unread badge mark-read fix) · **t215–t217 DONE** (Checker PASS Post Picture/Short/Video picker) | Design (vis) / Build |
+| 8 | Navigation, Music & Vault | nav + `#/music` `#/vault` | DONE · **t212u DONE** (Checker PASS 8-tab + unread badge) · **t215–t217 DONE** (Checker PASS Post Picture/Short/Video picker) | Design (vis) / Build |
 | 9 | Videos & Interviews | `#/videos` | DONE (Checker re-audit PASS 2026-10-25 · Mix + channel MVs · media-links/checker/reaudit/) | Media Links |
 | 10 | Pricing & Monetization | `#/pricing` | DONE | Build |
 | 11 | Full Admin Dashboard | `#/admin` | DONE (Add Content upload — Checker PASS 2026-10-25; evidence admin-upload/) | Build |
@@ -67,14 +67,18 @@ Counts are approximate — Checker owns PASS. §§13/15/31 flipped to DONE only 
 
 
 
-## Navigation — t212u tabbar unread badge REJECT → fixed → **PENDING AUDIT** (2026-10-25)
+## Navigation — t212u tabbar unread badge → **DONE** (2026-10-25)
 
-**Checker REJECT** (t212u): Messages badge showed **2**; opening MayaBeats did **not** clear unread (stayed 2 on inbox + Home). Evidence `phase2/tabbar-t212u/checker/tb-notes.txt`.
+**DONE** (Checker PASS re-audit 2026-10-25). Opening MayaBeats clears badge; stays clear on Home (local + observe `CAGFzpIF`). Caveat: one possible flap on first observe open — second open solid.
 
-**Fix (Build):** `ensureDemoUnreadMessages` one-shot via durable `demoUnreadSeeded` — never rewind `lastReadAt` after read/seed. `markThreadRead` dispatches `dbs:messages-unread` → `main.js` `refreshTabBadges()`. First signed-in visit still seeds 2 MayaBeats DMs.
+**Prior REJECT:** badge stayed **2** after thread open — `ensureDemoUnreadMessages` rewound `lastReadAt` on every tabbar rebuild.
 
-**Status:** REJECT → fixed mark-read + seed idempotency → **PENDING AUDIT** (do not self-DONE; Checker re-PASS).  
-Evidence: `/workspace/dbs-evidence/phase2/tabbar-t212u/FIX-unread.md` · `npm run build` green.
+**Fix:** durable `demoUnreadSeeded`; `markThreadRead` locks flag + `dbs:messages-unread` → tabbar refresh. messages.js untouched.
+
+Evidence: `phase2/tabbar-t212u/FIX-unread.md` + `checker/tb-reaudit-notes.txt`.
+
+## Build — t212u unread badge PASS → DONE (2026-10-25)
+Checker re-audit PASS. STATUS locked DONE (Checker does not edit STATUS).
 
 ## Navigation — t211u bottom tab (2026-10-25) → **PENDING AUDIT**
 
