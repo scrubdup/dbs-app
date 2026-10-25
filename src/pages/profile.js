@@ -197,7 +197,7 @@ export function renderProfile(route) {
     <div class="card">
       <h3>Roles &amp; membership</h3>
       <p class="muted" style="margin:0 0 8px">Clipper campaigns, Live creator tools, brand ads, or Skeet+ / Backstage / Inner Circle for Vault access.</p>
-      <a class="btn block" href="#/clippers">Apply as Clipper</a>
+      <a class="btn block" href="#/clippers">Apply as Clipper <span class="badge-cs badge-cs-inline">Coming Soon</span></a>
       <a class="btn block" href="#/signup" style="margin-top:8px">Other creator roles</a>
       <a class="btn block" href="#/music" style="margin-top:8px">Music &amp; Vault membership</a>
     </div>

@@ -17,7 +17,11 @@ export function renderClippers() {
   const { clipperApps, user } = getState();
   const form = `
     <div class="card">
-      <h3>Clipper application</h3>
+      <div class="home-sell-title-row">
+        <h3 style="margin:0">Clipper application</h3>
+        <span class="badge-cs badge-cs-inline" id="clippers-coming-soon">Coming Soon</span>
+      </div>
+      <p class="chip" style="margin:0 0 8px">Clipper earnings not live yet · TEST MODE</p>
       <p class="muted">No minimum followers. Admin reviews every application. Analytics screenshots can be linked as URLs for this demo.</p>
       <div class="grid-2">
         <div class="field"><label>Name *</label><input id="cName" required /></div>
