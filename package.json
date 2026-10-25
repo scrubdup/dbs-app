@@ -1,9 +1,9 @@
 {
-  "name": "dbs-app",
+  "name": "pikk-app",
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "DatBoiSkeet (DBS) network — music, social, live, merch",
+  "description": "PIKK creator platform — music, social, live, videos, and marketplace",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
