@@ -25,3 +25,13 @@
 - Existing HTML and JavaScript reference absolute `/brand/`, `/loading/`, `/music/` and similar paths. These may resolve incorrectly under GitHub Pages' /dbs-app/ prefix. **BLOCKER: audit/fix before publishing.**
 - No deployment workflow confirmed at common `.github/workflows/*pages*.yml` paths; Pages settings and published build remain unverified. Do not assume the live URL changed.
 - Next gate: correct root-relative assets, verify build, configure publishing, then validate published preview. No merge to master without owner approval.
+
+## Cycle 3 — Build-gated Pages pipeline (2026-10-25)
+- Updated `index.html` static URLs to Vite `%BASE_URL%`, preserving the `/src/main.js` module entry for Vite.
+- Updated catalog media paths in `src/data.js` to `import.meta.env.BASE_URL`; corrected the remaining design image reference in `src/pages/shells.js`.
+- Added `.github/workflows/pikk-build.yml` with `npm ci`, `npm run build`, dist HTML verification, and conditional `gh-pages` publication **only if preceding steps succeed** on a `pikk-rebrand` push.
+- **PASS:** GitHub read-back of workflow YAML and prior changed files.
+- **NOT VERIFIED:** GitHub Actions run status. The connector's commit workflow-run lookup returned no runs; it only indexes PR-triggered runs. The existence of YAML is not evidence that a workflow executed.
+- **NOT VERIFIED:** Published GitHub Pages URL; do not claim site changed until confirmed.
+- **KNOWN GAP:** Old DBS artwork still present in image asset paths; exact approved PIKK logo must replace it before branding can be considered complete.
+- **NEXT:** Verify Actions permission to write `gh-pages`, inspect build logs, validate actual URL, integrate approved logo, then continue master ZIP feature milestones.
