@@ -23,7 +23,7 @@ Legend: **DONE** = usable demo in SPA · **SHELL** = routed page with copy/UI pl
 | 5 | Creator Rewards, Earnings & Commissions | `#/earnings` | DONE (ledger + commissions — Checker PASS 2026-10-25; evidence phase2/earnings/ + checker/) | Commerce |
 | 6 | Missions | `#/missions` | DONE (Checker PASS 2026-10-25 · phase2/missions/checker/) | Commerce |
 | 7 | Profiles & Messaging (profiles part) | `#/profile` | DONE | Build |
-| 8 | Navigation, Music & Vault | nav + `#/music` `#/vault` | DONE · **t212u DONE** · **t215–t217 DONE** · **t228u DONE** · **t241u+t242u PENDING AUDIT** (Post·Go Live flat + camera; header Messages) | Design (vis) / Build |
+| 8 | Navigation, Music & Vault | nav + `#/music` `#/vault` | DONE · **t212u/t215–t217/t228u DONE** · **t241u+t242u DONE** (Checker PASS flat Go Live · Post camera · header Messages) | Design (vis) / Build |
 | 9 | Videos & Interviews | `#/videos` | DONE (Checker re-audit PASS 2026-10-25 · Mix + channel MVs · media-links/checker/reaudit/) | Media Links |
 | 10 | Pricing & Monetization | `#/pricing` | DONE | Build |
 | 11 | Full Admin Dashboard | `#/admin` | DONE (Add Content upload — Checker PASS 2026-10-25; evidence admin-upload/) | Build |
@@ -75,22 +75,19 @@ Counts are approximate — Checker owns PASS. §§13/15/31 flipped to DONE only 
 
 
 
-## Navigation — t241u + t242u tabbar + header Messages → **PENDING AUDIT** (2026-10-25)
+## Navigation — t241u+t242u tabbar + header Messages → **DONE** (2026-10-25)
 
-**PENDING AUDIT** (Build does not self-DONE). Checker owns PASS.
+**DONE** (Checker PASS 2026-10-25 · local + observe `index-D78kGnFr.js` / `index-eRs-bVYG.css`).
 
-### t241u — Bottom tabbar reshape
-- Order: **Home · Post · Go Live · Music · Videos · Chat · Messages · Profile**
-- Go Live **flat** (no `.tab-primary` / raised orb)
-- Post uses **camera** icon (`ICONS.camera`)
-- Routes unchanged: Post `#/posts?compose=1` · Go Live `#/live?go=1`
+- Tabbar: Home · Post (camera) · Go Live (flat, 0 `.tab-primary`) · Music · Videos · Chat · Messages · Profile
+- Post → `#/posts?compose=1` · Go Live → `#/live?go=1` → `#live-go`
+- Messages envelope ≠ Chat bubble; signed-in `#headerMsg` replaces Sign in (+ unread); signed-out Sign in restored
+- Badge not re-seeded this pass (header badge present at 0)
 
-### t242u — Messages icon + header slot
-- Messages icon = **envelope** (not Chat speech bubble)
-- Header: when **signed in**, Messages replaces Sign in (`#headerMsg`) with unread badge; signed out keeps Sign in
-- Bottom tab Messages kept; badge via `getUnreadMessageCount` / `dbs:messages-unread`
+Evidence: `phase2/tabbar-t241u/checker/tb-notes.txt`. feature `2ba4f49` · gh-pages `4902ccd`.
 
-Evidence: `phase2/tabbar-t241u/`. main `2ba4f49` · gh-pages `4902ccd` · observe `index-D78kGnFr.js` / `index-eRs-bVYG.css`.
+## Build — t241u+t242u PASS → DONE (2026-10-25)
+Checker PASS. STATUS locked DONE (Checker does not edit STATUS).
 
 ## Navigation — t212u tabbar unread badge → **DONE** (2026-10-25)
 
