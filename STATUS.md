@@ -15,7 +15,7 @@ Legend: **DONE** = usable demo in SPA · **SHELL** = routed page with copy/UI pl
 | 5 | Creator Rewards, Earnings & Commissions | `#/earnings` | DONE (ledger + commissions — Checker PASS 2026-10-25; evidence phase2/earnings/ + checker/) | Commerce |
 | 6 | Missions | `#/missions` | DONE (Checker PASS 2026-10-25 · phase2/missions/checker/) | Commerce |
 | 7 | Profiles & Messaging (profiles part) | `#/profile` | DONE | Build |
-| 8 | Navigation, Music & Vault | nav + `#/music` `#/vault` | DONE · **t212u DONE** (Checker PASS 8-tab + unread badge) · **t215–t217 DONE** (Checker PASS Post Picture/Short/Video picker) | Design (vis) / Build |
+| 8 | Navigation, Music & Vault | nav + `#/music` `#/vault` | DONE · **t212u DONE** · **t215–t217 DONE** · **t228u PENDING AUDIT** (Go Live between Home & Music, raised primary kept) | Design (vis) / Build |
 | 9 | Videos & Interviews | `#/videos` | DONE (Checker re-audit PASS 2026-10-25 · Mix + channel MVs · media-links/checker/reaudit/) | Media Links |
 | 10 | Pricing & Monetization | `#/pricing` | DONE | Build |
 | 11 | Full Admin Dashboard | `#/admin` | DONE (Add Content upload — Checker PASS 2026-10-25; evidence admin-upload/) | Build |
@@ -79,6 +79,28 @@ Evidence: `phase2/tabbar-t212u/FIX-unread.md` + `checker/tb-reaudit-notes.txt`.
 
 ## Build — t212u unread badge PASS → DONE (2026-10-25)
 Checker re-audit PASS. STATUS locked DONE (Checker does not edit STATUS).
+
+## Navigation — t228u Go Live between Home & Music (2026-10-25) → **PENDING AUDIT**
+
+**USER t228u** — Move **Go Live** between Home and Music. Keep raised primary (red orb) even as 2nd tab — do not demote.
+
+### Before (t212)
+Home · Music · Videos · Post · Go Live · Chat · Messages · Profile
+
+### After (t228u)
+**Home · Go Live · Music · Videos · Post · Chat · Messages · Profile**
+
+### Shipped
+- `src/data.js` `TABBAR` reorder; `primary: true` still on Go Live (`#/live?go=1` → `#live-go`)
+- `src/styles.css`: `.tab-primary` remains class-based (raised `top` + red orb) — works off-center; scroll tabbar ambient glow shifted ~14% toward 2nd-tab slot
+- `src/main.js` unchanged (builds from `t.primary`; Messages badge wiring intact)
+- All 8 tabs + `tabbar-scroll` kept
+- Design t227u home.js untouched; Block Wars paused
+
+Evidence: `phase2/tabbar-t228u/README.md`
+
+**Do not mark DONE** — Checker owns PASS.
+
 
 ## Navigation — t212u bottom tab (2026-10-25) → **DONE** (Checker PASS re-audit)
 

@@ -3296,7 +3296,7 @@ input:focus, select:focus, textarea:focus {
   box-shadow: inset 0 1px 0 color-mix(in srgb, var(--blue) 20%, transparent);
 }
 
-/* t209u tabbar reshape — center Go Live */
+/* t209u tabbar reshape — Go Live raised primary (class-based; t228u off-center OK) */
 .tabbar.tabbar-reshaped {
   border-top: 1px solid color-mix(in srgb, var(--blue) 35%, var(--line));
   background:
@@ -3402,7 +3402,7 @@ input:focus, select:focus, textarea:focus {
   padding-right: 4px;
   border-top: 1px solid color-mix(in srgb, var(--blue) 35%, var(--line));
   background:
-    radial-gradient(ellipse at 50% 0%, var(--blue-dim), transparent 55%),
+    radial-gradient(ellipse at 14% 0%, var(--blue-dim), transparent 55%),
     #0e0e13;
 }
 .tabbar.tabbar-reshaped.tabbar-scroll::-webkit-scrollbar { display: none; }
@@ -3421,6 +3421,7 @@ input:focus, select:focus, textarea:focus {
   width: 22px;
   height: 22px;
 }
+/* t228u — .tab-primary raised orb is class-based (not nth-child); works as 2nd tab */
 .tabbar.tabbar-reshaped.tabbar-scroll a.tab-primary {
   top: -16px;
   min-width: 72px;
