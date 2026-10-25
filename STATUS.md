@@ -1022,13 +1022,16 @@ Checker PASS locked DONE (tabs/Shorts · Connect multi-platform no Restream bran
 ## Design — t202u more blue → DONE (2026-10-25)
 **DONE** (Checker PASS). Light blue bump; primary/LIVE/active/ribbon stay red. Evidence: `phase2/brand-blue-more-t202u/checker/`.
 
-## Design — t227u Home Top live first → **REJECT** (Checker 2026-10-25) — fix in flight
+## Design — t227u Home Top live first → **PENDING AUDIT** (reject fix · re-audit)
 
 **PENDING AUDIT** (do not self-DONE · Checker owns PASS). Owner: Design.
 
-- KEEP Home title; **removed** red ● LIVE pill next to HOME (`#homeLiveBadge` / title `badgeHtml`).
-- Featured Stage first tab **Top live** (`toplive`) before Videos — `#1` via `topLiveForBadge()` + `liveCard` (hoodie on card).
-- Default/auto-cycle/fallback → `toplive`; ~20s refresh updates `#homeTopLiveGrid`.
-- Stage head: `Top live · Videos · Rising · Hot · Songs`.
-- Evidence: `/workspace/dbs-evidence/phase2/home-top-live-t227u/`
+Checker **REJECT** 2026-10-25 (`phase2/home-top-live-t227u/checker/ht-notes.txt`): title LIVE chrome under other selector; default tab drifted to Videos via stale `dbs_home_stage`.
+
+**Reject fix:**
+- CSS hide `.page-head` LIVE / badge-phase / hoodie-pill; Featured Stage spacing so card hoodie ≠ title chrome.
+- `bindHome` hard-strips LIVE chrome from `.page-head`.
+- Pref → `dbs_home_stage_v2`; clear legacy session+local `dbs_home_stage`; default `toplive`; cycle delay **10s**.
+- Tabbar untouched (t228u).
+- Evidence: `/workspace/dbs-evidence/phase2/home-top-live-t227u/` (reject→fix notes in README).
 - `npm run build` green. Commit + push main · Pages deploy (`VITE_BASE=/dbs-app/`).

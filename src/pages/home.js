@@ -27,7 +27,8 @@ const STAGE_TABS = [
 ];
 
 const STAGE_CYCLE_MS = 8000;
-const STAGE_PREF_KEY = 'dbs_home_stage';
+const STAGE_PREF_KEY = 'dbs_home_stage_v2';
+const STAGE_PREF_LEGACY_KEYS = ['dbs_home_stage'];
 
 function fmtViewers(n) {
   const v = Number(n) || 0;
@@ -223,7 +224,17 @@ function activityPicRow(c) {
     </li>`;
 }
 
+function clearLegacyStagePrefs() {
+  for (const key of STAGE_PREF_LEGACY_KEYS) {
+    try { sessionStorage.removeItem(key); } catch (_) {}
+    try { localStorage.removeItem(key); } catch (_) {}
+  }
+  /* Also clear accidental localStorage write of the new key from older experiments */
+  try { localStorage.removeItem(STAGE_PREF_KEY); } catch (_) {}
+}
+
 function readStagePref() {
+  clearLegacyStagePrefs();
   try {
     const v = sessionStorage.getItem(STAGE_PREF_KEY);
     if (STAGE_TABS.some((t) => t.id === v)) return v;
@@ -555,12 +566,35 @@ export function renderHome() {
     </div>
   `;
 
+  /* t227u / reject fix: never pass badge / badgeHtml / badgeHref — HOME title stays clean */
   return shellPage('Home', body, {
     lead: 'Featured stage · Top live · Block Wars preview · Live activity (hot lives · high-engagement posts from creators &amp; community · house updates) · Mix · Coming Soon · creator sell DEMO.',
   });
 }
 
 export function bindHome(root) {
+  /* t227u reject fix: hard-clear any LIVE chrome that landed in the Home page-head */
+  const pageHead = root.querySelector('.page-head');
+  if (pageHead) {
+    pageHead.querySelectorAll('.badge-home-live, .badge-phase, #homeLiveBadge, a.badge-phase, .live-hoodie-pill, .live-hoodie').forEach((el) => {
+      el.remove();
+    });
+    pageHead.querySelectorAll('a, span, button').forEach((el) => {
+      const t = (el.textContent || '').replace(/\s+/g, ' ').trim();
+      if (/^●?\s*LIVE$/i.test(t) || t === 'LIVE') el.remove();
+    });
+    const h1 = pageHead.querySelector('h1');
+    if (h1) {
+      /* Keep only the title text node(s); drop leftover badge children */
+      [...h1.children].forEach((ch) => {
+        const t = (ch.textContent || '').replace(/\s+/g, ' ').trim();
+        if (/LIVE/i.test(t) || ch.classList.contains('badge-phase') || ch.classList.contains('badge-home-live') || ch.classList.contains('live-hoodie-pill')) {
+          ch.remove();
+        }
+      });
+    }
+  }
+
   root.querySelectorAll('[data-idb-src]').forEach(async (el) => {
     const ref = el.getAttribute('data-idb-src');
     if (!ref) return;
@@ -719,15 +753,16 @@ export function bindHome(root) {
     });
   });
 
-  const initial = stage.dataset.active || readStagePref();
-  showStage(initial);
-  // Pause cycle if user/seed already chose a tab (sessionStorage) so screenshots & intent stick
-  let hadPref = false;
-  try { hadPref = !!sessionStorage.getItem(STAGE_PREF_KEY); } catch (_) {}
-  if (hadPref) {
-    paused = true;
-  } else {
-    startCycle();
+  /* Force first paint via v2 pref (defaults toplive; legacy keys cleared in readStagePref) */
+  const preferred = readStagePref() || 'toplive';
+  showStage(preferred);
+  // Delay auto-cycle ≥ one full STAGE_CYCLE_MS so first paint stays Top live for audit proof.
+  // User tap still pauses immediately via tab click handlers.
+  if (!reduceMotion) {
+    setTimeout(() => {
+      if (!document.body.contains(stage) || paused) return;
+      startCycle();
+    }, 10000);
   }
 
   // Clean up when navigating away (router re-renders)

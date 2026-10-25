@@ -2343,6 +2343,22 @@ a.text-link:hover { color: #7aa0ff; }
 }
 
 /* §39 Home featured stage rotation + creator sell promo */
+/* t227u · space Featured Stage away from HOME title so card LIVE hoodie never reads as title chrome */
+#homeFeaturedStage.home-stage,
+.home-stage#homeFeaturedStage {
+  margin-top: 14px;
+}
+.page-head + .home-stage,
+.page-head ~ #homeFeaturedStage {
+  margin-top: 18px;
+}
+.page .page-head {
+  margin-bottom: 4px;
+}
+.page .page-head .lead {
+  margin-bottom: 12px;
+}
+
 .home-stage {
   background:
     radial-gradient(ellipse at 100% 0%, rgba(47, 107, 255, 0.10), transparent 45%),
@@ -2961,6 +2977,15 @@ a.text-link:hover { color: #7aa0ff; }
 }
 
 /* t173u · Home title LIVE pill (highest-viewed live) */
+/* t227u reject fix: never show LIVE chrome in the page-head next to HOME */
+.page-head .badge-home-live,
+.page-head a.badge-phase,
+.page-head .badge-phase,
+.page-head #homeLiveBadge,
+.page-head .live-hoodie,
+.page-head .live-hoodie-pill {
+  display: none !important;
+}
 .badge-home-live {
   display: inline-flex;
   align-items: center;

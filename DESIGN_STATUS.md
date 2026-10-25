@@ -116,11 +116,10 @@ Checker PASS 2026-10-25. Original DBS SVG sticker pack for Live gifts (Rose→Un
 ## Card blue triad (t205u · DONE)
 Checker PASS. Every `.card`/panel gets BW-family subtle blue edge/glow; red primary kept. Evidence: `/workspace/dbs-evidence/phase2/card-blue-t205u/checker/`.
 
-## Home Top live first (t227u · PENDING AUDIT)
+## Home Top live first (t227u · PENDING AUDIT · reject fix)
 
-**PENDING AUDIT** 2026-10-25. Move highest-viewed live off HOME title into Featured Stage.
+**PENDING AUDIT** (re-audit after Checker REJECT). Title LIVE chrome hard-cleared; pref `dbs_home_stage_v2`; cycle delay 10s; Top live first.
 
-- Removed title LIVE pill; added **Top live** as first stage tab (`toplive`).
-- Files: `src/pages/home.js`, `src/styles.css` (toplive panel).
-- Evidence: `/workspace/dbs-evidence/phase2/home-top-live-t227u/`.
-- Commit + push main · Pages deploy authorized by Supervisor.
+- Files: `src/pages/home.js`, `src/styles.css`.
+- Evidence: `/workspace/dbs-evidence/phase2/home-top-live-t227u/` (reject→fix notes).
+- Tabbar untouched.
