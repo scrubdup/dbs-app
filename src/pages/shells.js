@@ -1,5 +1,5 @@
 import { getState, setState, setNotifPrefs } from '../store.js';
-import { VIDEOS, MEMBERSHIPS } from '../data.js';
+import { VIDEOS, MEMBERSHIPS, COMING_SOON, MERCH, HOME_SECTIONS } from '../data.js';
 import { esc, shellPage, toast } from '../ui.js';
 
 function phase(n) {
@@ -52,7 +52,7 @@ export function renderExplore() {
     </div>
     <div class="card">
       <h3>Trending Across PIKK</h3>
-      <p class="muted">High-engagement public posts surface here (spam filtered). Shell until engagement pipeline ships.</p>
+      <p class="muted">High-engagement public posts surface here (spam filtered). Engagement ranking requires the future backend.</p>
       <div class="section-swipe">
         <a class="preview-card" href="#/posts"><strong>Posts</strong><span class="muted">Discover feed</span></a>
         <a class="preview-card" href="#/music"><strong>Music</strong><span class="muted">Coming Soon</span></a>
@@ -68,7 +68,18 @@ export function bindExplore(root) {
   root.querySelector('#exploreGo')?.addEventListener('click', () => {
     const q = root.querySelector('#exploreQ')?.value?.trim() || '';
     const out = root.querySelector('#exploreOut');
-    if (out) out.textContent = q ? `Demo search for “${q}” — full index in Phase 2.` : 'Enter a query.';
+    if (!out) return;
+    if (!q) { out.textContent = 'Enter a query.'; return; }
+    const entries = [
+      ...VIDEOS.map(v => ({ title: v.title, type: 'Video', href: '#/videos' })),
+      ...COMING_SOON.map(v => ({ title: v.title, type: 'Music', href: '#/music' })),
+      ...MERCH.map(v => ({ title: v.name, type: 'Merch', href: '#/merch' })),
+      ...HOME_SECTIONS.map(v => ({ title: v.title, type: 'Section', href: '#' + v.route })),
+    ];
+    const matches = entries.filter(v => (v.title + ' ' + v.type).toLowerCase().includes(q.toLowerCase())).slice(0, 20);
+    out.innerHTML = matches.length
+      ? matches.map(v => `<a class="preview-card" style="display:block;margin-top:8px" href="${esc(v.href)}"><strong>${esc(v.title)}</strong> · ${esc(v.type)}</a>`).join('')
+      : 'No matching items in the local catalog. Creator and post search require the future backend.';
   });
 }
 
