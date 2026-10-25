@@ -19,6 +19,8 @@ jobs:
           cache: 'npm'
       - name: Install dependencies
         run: npm ci
+      - name: Guard advanced app features before publishing
+        run: npm test
       - name: Build complete app from main-derived branch
         run: npm run build
       - name: Verify build output and correct project base
