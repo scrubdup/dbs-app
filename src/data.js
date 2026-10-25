@@ -1,4 +1,4 @@
-/** Seed / static catalog for DBS demo */
+/** Seed / static catalog for PIKK demo; DatBoiSkeet is the artist identity. */
 
 export const VIDEOS = [
   // Plan MVs + Home featured (Checker PASS baseline)
