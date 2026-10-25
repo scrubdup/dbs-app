@@ -10,7 +10,7 @@ import {
   notifyLiveOpen,
   notifyLiveClosed,
 } from './player.js';
-import { getState, ensureDemoPosts, markSplash, shouldShowSplash, getMembership, getUnreadMessageCount, ensureDemoUnreadMessages } from './store.js';
+import { getState, ensureDemoPosts, markSplash, shouldShowSplash, getUnreadMessageCount, ensureDemoUnreadMessages } from './store.js';
 import { startRouter, onRoute, getRoute } from './router.js';
 import { ICONS, esc } from './ui.js';
 import { asset, rewriteAssetUrls } from './asset.js';
@@ -141,6 +141,11 @@ function refreshTabBadges() {
   el.querySelectorAll('a').forEach((a) => {
     a.classList.toggle('on', a.getAttribute('data-path') === route.path);
   });
+  try {
+    refreshHeaderMsgBadge();
+  } catch (_) {
+    /* header may not be mounted */
+  }
 }
 
 function buildDrawer() {
@@ -208,15 +213,43 @@ function updateChrome(route) {
   });
   const user = getState().user;
   const pill = document.getElementById('tierPill');
+  const headerMsg = document.getElementById('headerMsg');
   if (user) {
-    const mem = getMembership();
-    const tier =
-      mem === 'inner' ? 'Inner' : mem === 'backstage' ? 'Backstage' : mem === 'skeet+' ? 'Skeet+' : user.username;
-    pill.textContent = tier;
-    pill.classList.add('on');
+    /* t242u — Messages replaces Sign in in the header slot; unread badge mirrors tabbar */
+    if (pill) pill.hidden = true;
+    if (headerMsg) headerMsg.hidden = false;
+    refreshHeaderMsgBadge();
   } else {
-    pill.textContent = 'Sign in';
-    pill.classList.remove('on');
+    if (pill) {
+      pill.hidden = false;
+      pill.textContent = 'Sign in';
+      pill.classList.remove('on');
+      pill.setAttribute('href', '#/profile');
+    }
+    if (headerMsg) headerMsg.hidden = true;
+  }
+}
+
+/** t242u · header Messages unread badge (same source as tabbar) */
+function refreshHeaderMsgBadge() {
+  const badge = document.getElementById('headerMsgBadge');
+  const link = document.getElementById('headerMsg');
+  if (!badge || !link || link.hidden) return;
+  let unread = 0;
+  try {
+    unread = getUnreadMessageCount();
+  } catch (_) {
+    unread = 0;
+  }
+  if (unread > 0) {
+    const n = unread > 99 ? '99+' : String(unread);
+    badge.textContent = n;
+    badge.hidden = false;
+    link.setAttribute('aria-label', `Messages, ${unread} unread`);
+  } else {
+    badge.textContent = '';
+    badge.hidden = true;
+    link.setAttribute('aria-label', 'Messages');
   }
 }
 

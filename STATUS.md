@@ -23,7 +23,7 @@ Legend: **DONE** = usable demo in SPA · **SHELL** = routed page with copy/UI pl
 | 5 | Creator Rewards, Earnings & Commissions | `#/earnings` | DONE (ledger + commissions — Checker PASS 2026-10-25; evidence phase2/earnings/ + checker/) | Commerce |
 | 6 | Missions | `#/missions` | DONE (Checker PASS 2026-10-25 · phase2/missions/checker/) | Commerce |
 | 7 | Profiles & Messaging (profiles part) | `#/profile` | DONE | Build |
-| 8 | Navigation, Music & Vault | nav + `#/music` `#/vault` | DONE · **t212u DONE** · **t215–t217 DONE** · **t228u DONE** (Checker PASS Go Live 2nd + primary) | Design (vis) / Build |
+| 8 | Navigation, Music & Vault | nav + `#/music` `#/vault` | DONE · **t212u DONE** · **t215–t217 DONE** · **t228u DONE** · **t241u+t242u PENDING AUDIT** (Post·Go Live flat + camera; header Messages) | Design (vis) / Build |
 | 9 | Videos & Interviews | `#/videos` | DONE (Checker re-audit PASS 2026-10-25 · Mix + channel MVs · media-links/checker/reaudit/) | Media Links |
 | 10 | Pricing & Monetization | `#/pricing` | DONE | Build |
 | 11 | Full Admin Dashboard | `#/admin` | DONE (Add Content upload — Checker PASS 2026-10-25; evidence admin-upload/) | Build |
@@ -74,6 +74,23 @@ Counts are approximate — Checker owns PASS. §§13/15/31 flipped to DONE only 
 
 
 
+
+## Navigation — t241u + t242u tabbar + header Messages → **PENDING AUDIT** (2026-10-25)
+
+**PENDING AUDIT** (Build does not self-DONE). Checker owns PASS.
+
+### t241u — Bottom tabbar reshape
+- Order: **Home · Post · Go Live · Music · Videos · Chat · Messages · Profile**
+- Go Live **flat** (no `.tab-primary` / raised orb)
+- Post uses **camera** icon (`ICONS.camera`)
+- Routes unchanged: Post `#/posts?compose=1` · Go Live `#/live?go=1`
+
+### t242u — Messages icon + header slot
+- Messages icon = **envelope** (not Chat speech bubble)
+- Header: when **signed in**, Messages replaces Sign in (`#headerMsg`) with unread badge; signed out keeps Sign in
+- Bottom tab Messages kept; badge via `getUnreadMessageCount` / `dbs:messages-unread`
+
+Evidence: `phase2/tabbar-t241u/`. Bundles this ship: see README after deploy.
 
 ## Navigation — t212u tabbar unread badge → **DONE** (2026-10-25)
 

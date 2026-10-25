@@ -578,13 +578,13 @@ export const DRAWER_LINKS = DRAWER_GROUPS.flatMap((g) =>
   g.href ? [{ href: g.href, label: g.label }] : (g.links || [])
 );
 
-/** Bottom nav t228u: Go Live after Home (raised primary kept); scroll if needed */
+/** Bottom nav t241u: Post · Go Live flat after Home; Post = camera; t242u Messages icon */
 export const TABBAR = [
   { href: '#/home', label: 'Home', icon: 'home' },
-  { href: '#/live?go=1', label: 'Go Live', icon: 'live', primary: true },
+  { href: '#/posts?compose=1', label: 'Post', icon: 'camera' },
+  { href: '#/live?go=1', label: 'Go Live', icon: 'live' },
   { href: '#/music', label: 'Music', icon: 'music' },
   { href: '#/videos', label: 'Videos', icon: 'videos' },
-  { href: '#/posts?compose=1', label: 'Post', icon: 'posts' },
   { href: '#/community', label: 'Chat', icon: 'chat' },
   { href: '#/messages', label: 'Messages', icon: 'msg', badge: 'messages' },
   { href: '#/profile', label: 'Profile', icon: 'profile' },
