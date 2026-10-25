@@ -54,12 +54,17 @@ test('same-route navigation refreshes listeners without changing the hash', () =
 
 test('preserve the seven approved navigation tabs and their order', () => {
   assert.deepEqual(TABBAR.map(({ label }) => label), [
-    'Home', 'Music', 'Live', 'Shop', 'Dating', 'Videos', 'Profile',
+    'Home', 'Music', 'Videos', 'Go Live', 'Connect', 'Dating', 'Shop',
   ]);
   assert.deepEqual(TABBAR.map(({ href }) => href), [
-    '#/home', '#/music', '#/live', '#/shop',
-    '#/dating', '#/videos', '#/profile',
+    '#/home', '#/music', '#/videos', '#/live?go=1',
+    '#/connect', '#/dating', '#/shop',
   ]);
+  assert.equal(TABBAR[3].primary, true, 'Go Live remains the center action');
+  const header = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
+  assert.match(header, /id="headerProfile" href="#\/profile"/);
+  assert.match(header, /id="headerMsg" href="#\/messages"/);
+  assert.match(header, /id="notifBtn" href="#\/notifications"/);
 });
 
 test('preserve developed route modules instead of the older skeleton', () => {
