@@ -14,7 +14,7 @@ test('Go Live is the exact center of seven bottom navigation slots', () => {
   assert.ok(entries.some(x => x[2] === 'Dating'));
   assert.ok(entries.some(x => x[2] === 'Connect'));
   assert.equal(entries[0][2], 'Profile');
-  assert.equal(entries[6][2], 'Videos');
+  assert.deepEqual(entries.map(x => x[2]), ['Profile', 'Music', 'Videos', 'Go Live', 'Connect', 'Dating', 'Shop']);
   assert.ok(!entries.some(x => x[2] === 'Home'));
 });
 test('Go Live gets its primary class and scroll-to-stream behavior', () => {
