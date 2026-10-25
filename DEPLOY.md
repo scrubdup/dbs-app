@@ -10,9 +10,9 @@
 
 - **Home:** https://scrubdup.github.io/dbs-app/#/home
 - **Messages:** https://scrubdup.github.io/dbs-app/#/messages
-- **Never expires.** Source: `gh-pages` (pending push · t255u donate **cap-to-remaining**; assets **index-C1DrFrz7.js** / **index-Blll5lBt.css**)
+- **Never expires.** Source: `gh-pages` (`a3254df` · t255u donate **cap-to-remaining**; main `c5a35cf`; assets **index-C1DrFrz7.js** / **index-Blll5lBt.css**)
 - Base path: `/dbs-app/`
-- **Last shipped:** t255u — Live daily goals + Commerce **cap-to-remaining** `donateToGoal` · re-PENDING AUDIT after Pages push
+- **Last shipped:** t255u — Live daily goals + Commerce **cap-to-remaining** `donateToGoal` · re-PENDING AUDIT (Pages `a3254df`)
 
 ## Phone link (workers.dev — temporary until claimed)
 
