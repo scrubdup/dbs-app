@@ -10,7 +10,7 @@
 
 - **Home:** https://scrubdup.github.io/dbs-app/#/home
 - **Messages:** https://scrubdup.github.io/dbs-app/#/messages
-- **Never expires.** Source: `gh-pages` branch (t209u+t210u: Post + Go Live center + Chat + Messages unread badge)
+- **Never expires.** Source: `gh-pages` branch (`810f4ec` · t209u+t210u: Post + Go Live center + Chat + Messages unread badge)
 - Base path: `/dbs-app/`
 - **Last shipped:** t209u+t210u — tabbar Home · Post · Go Live (#/live?go=1) · Chat (#/community) · Messages (#/messages + unread badge) · Profile
 
