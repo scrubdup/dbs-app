@@ -1,5 +1,15 @@
 # DBS App — Section Status
 
+## Live Social — t269u Clips early on Live discovery → **PENDING AUDIT** (2026-10-25)
+
+**PENDING AUDIT** (Checker owns PASS). Owner: Live Social. Scope: Live discovery tabs only (`renderLiveDiscoveryTabs` + `.live-disc-tabs`).
+
+- Order: **Following · Clips · Channels · Categories** (Clips after Following — always on first paint).
+- Label shorten: Live channels → **Channels**. Clips still `#/shorts` (not buried).
+- CSS: `flex-wrap: wrap` + no `overflow-x` scroll — all chips fully readable on ~390px; no horizontal swipe.
+- Observe: **pending Design redeploy** (piggyback Design t269u Post Text Pages · `VITE_BASE=/dbs-app/`).
+- Evidence: `phase2/live-clips-early-t269u/`
+- Block Wars / Home / Design header / Post Text compose untouched by this slice.
 
 ## Design — t269u/t272u Posts Text (words-only) → **PENDING AUDIT** (2026-10-25)
 
@@ -51,7 +61,7 @@ Legend: **DONE** = usable demo in SPA · **SHELL** = routed page with copy/UI pl
 | --- | --- | --- | --- | --- |
 | 1 | DBS Posts — Social Network | `#/posts` | DONE | Build |
 | 2 | DBS Clippers — Application & Earning | `#/clippers` | DONE | Build |
-| 3 | DBS Live — Creator Livestreaming | `#/live` · `#/shorts` | DONE (core) · t180u/t185u DONE · **t198u+t199u+t200u DONE** (Checker PASS 2026-10-25 · Request Spotlight conditional PASS) (tabs/Shorts · Connect multi-platform · GB day · bars · Request Spotlight · paid-gift Challenge pop · phase2/t198u-connect-gb-stickers/) · **t255u DONE** (daily host goals · phase2/daily-goals-t255u/) | Live Social / Commerce |
+| 3 | DBS Live — Creator Livestreaming | `#/live` · `#/shorts` | DONE (core) · t180u/t185u DONE · **t198u+t199u+t200u DONE** (Checker PASS 2026-10-25 · Request Spotlight conditional PASS) (tabs/Shorts · Connect multi-platform · GB day · bars · Request Spotlight · paid-gift Challenge pop · phase2/t198u-connect-gb-stickers/) · **t255u DONE** (daily host goals · phase2/daily-goals-t255u/) · **t269u PENDING AUDIT** (Clips early · no swipe · phase2/live-clips-early-t269u/) | Live Social / Commerce |
 | 4 | DBS Marketplace — Advertising | `#/marketplace` | DONE (Checker PASS 2026-10-25 · phase2/marketplace/checker/) | Commerce |
 | 5 | Creator Rewards, Earnings & Commissions | `#/earnings` | DONE (ledger + commissions — Checker PASS 2026-10-25; evidence phase2/earnings/ + checker/) | Commerce |
 | 6 | Missions | `#/missions` | DONE (Checker PASS 2026-10-25 · phase2/missions/checker/) | Commerce |

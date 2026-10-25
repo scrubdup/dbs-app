@@ -10,7 +10,7 @@
 
 - **Home:** https://scrubdup.github.io/dbs-app/#/home
 - **Messages:** https://scrubdup.github.io/dbs-app/#/messages
-- **Never expires.** Source: `gh-pages` (`d2bb06c` · t267u+t269u/t272u · **index-DO3IwXZt.js** / **index-DBwP17qe.css**)
+- **Never expires.** Source: `gh-pages` (`adf7780` · t267u+t269u/t272u · **index-DO3IwXZt.js** / **index-DBwP17qe.css**)
 - Base path: `/dbs-app/`
 - **Last shipped:** t267u header Messages pill + t269u/t272u Posts Text · PENDING AUDIT
 

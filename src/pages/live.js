@@ -89,11 +89,12 @@ function renderLiveCategoryChips(active = 'live') {
 
 /** t197u · Twitch/Kick-style discovery tabs */
 function renderLiveDiscoveryTabs(active = 'channels') {
+  /* t269u · Clips early (after Following) so ~390px phones see it without swipe */
   const tabs = [
     { id: 'following', href: '#/live?tab=following', label: 'Following' },
-    { id: 'channels', href: '#/live?tab=channels', label: 'Live channels' },
-    { id: 'categories', href: '#/live?tab=categories', label: 'Categories' },
     { id: 'clips', href: '#/shorts', label: 'Clips' },
+    { id: 'channels', href: '#/live?tab=channels', label: 'Channels' },
+    { id: 'categories', href: '#/live?tab=categories', label: 'Categories' },
   ];
   const btns = tabs
     .map((t) => {
@@ -850,7 +851,7 @@ export function renderLive() {
   `;
 
   return shellPage('DBS Live', body, {
-    lead: 'Following · Live channels · Categories · Clips → Shorts · Request Spotlight · TEST MODE.',
+    lead: 'Following · Clips · Channels · Categories → Shorts · Request Spotlight · TEST MODE.',
     badge: active ? 'LIVE' : undefined,
   });
 }
