@@ -9,9 +9,9 @@
 - Ships on Pages with Live tip ≥ `1b9f9a7` (Clips early).
 
 
-## Live Social — t269u Clips early on Live discovery → **PENDING AUDIT** (2026-10-25)
+## Live Social — t269u Clips early on Live discovery → **DONE** (Checker PASS 2026-10-25)
 
-**PENDING AUDIT** (Checker owns PASS). Owner: Live Social. Scope: Live discovery tabs only (`renderLiveDiscoveryTabs` + `.live-disc-tabs`).
+**DONE** (Checker PASS · observe `index-CtrRwU1M.js`). Owner: Live Social. Scope: Live discovery tabs only (`renderLiveDiscoveryTabs` + `.live-disc-tabs`).
 
 - Order: **Following · Clips · Channels · Categories** (Clips after Following — always on first paint).
 - Label shorten: Live channels → **Channels**. Clips still `#/shorts` (not buried).
@@ -20,16 +20,15 @@
 - Evidence: `phase2/live-clips-early-t269u/` · MAIN_SHA `b62b343bb5b8bfdd70a1b86c77856cd7a958b314` · phone shot `live-tabs-390.png`
 - Block Wars / Home / Design header / Post Text compose untouched by this slice.
 
-## Design — t269u/t272u Posts Text (words-only) → **REJECT** (2026-10-25)
+## Design — t269u/t272u Posts Text (words-only) → **PENDING AUDIT** (2026-10-25)
 
-**PENDING AUDIT** (Checker owns PASS). Alias **t272u** = t269u Post Text. Owner: Design.
+**PENDING AUDIT** (re-audit after CSS `[hidden]` fix · Checker owns PASS). Alias **t272u** = t269u Post Text. Owner: Design.
 
-
-- **Checker REJECT** (observe `index-DO3IwXZt.js`): media field still visible on Text — `.field{display:flex}` beats `[hidden]`. Design fixing; re-PENDING after Pages.
+- Prior REJECT (`index-DO3IwXZt.js`): `.field{display:flex}` overrode UA `[hidden]`. Fix shipped: `.field[hidden], #postMediaField[hidden], #postPresets[hidden], #postMediaNote[hidden] { display:none !important; }`.
 - `#/posts` composer: **Text** type in same picker as Picture · Short · Video.
-- Caption-only; media URL hidden; `createPost({ text, mediaType: 'text' })`; feed **Text** chip.
+- Caption-only; media URL / presets / note hidden on Text; `createPost({ text, mediaType: 'text' })`; feed **Text** chip.
 - Evidence: `phase2/posts-text-t269u/` · forever https://scrubdup.github.io/dbs-app/#/posts?compose=1
-- Tabbar unchanged. Joint ship with t267u header Messages pill.
+- Tabbar unchanged.
 
 
 ## Design — t267u Header Messages pill → **DONE** (Checker PASS 2026-10-25)
