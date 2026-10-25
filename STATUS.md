@@ -1072,5 +1072,19 @@ Evidence: `phase2/spotlight-idle-t233u/` + `phase2/openmic-idle-t236u/`
 `npm run build` green · Pages deploy `VITE_BASE=/dbs-app/`
 
 
-- **t249u** Home Creators sell card **Coming Soon** chip (inline next to title; TEST MODE chip + Start selling demo kept) — **DONE (Checker PASS 2026-10-25)** (Checker owns PASS) 
-- **t251u** Clippers **Coming Soon** chip on #/clippers application card + Profile "Apply as Clipper" button — **DONE (Checker PASS 2026-10-25)** (Checker owns PASS)
+## Design — t249u + t251u Coming Soon → **DONE** (2026-10-25)
+
+**DONE** (Checker PASS). Observe `index-C5Y6AIbd.js` / `index-BlXaFuvo.css` (gh-pages `2353416`). Owner: Design.
+
+- **t249u** Home Creators sell: `#home-sell-coming-soon` next to title; TEST MODE + Start selling kept.
+- **t251u** `#/clippers` + Profile Apply as Clipper Coming Soon chips.
+- Tabbar untouched. Evidence: `phase2/home-sell-coming-soon-t249u/checker/`.
+
+## Commerce — t255u daily-goal donate path → **PENDING AUDIT** (2026-10-25)
+
+**PENDING AUDIT** (do not self-DONE · Checker owns PASS). Soft-hold.
+
+- **Live Social** owns append-only `goals` CRUD + `donateToGoal(goalId, amountCoins)` land (scope `app|live`; `name` / `targetAmount`+`raised` USD / `endsAt` 24h; CTAs 50/100/250 coins → raised += coins×$0.02 @ 100=$2).
+- **Commerce** did **not** write competing goals state or `donateToGoal` (avoid fork). Post-land: review coin debit only (`dbs_v1.coins`, insufficient, 24h). Wallet/Marketplace untouched this pass.
+- UI: Live Social + Design (Home app goals + Live host goals).
+- Evidence stub: `/workspace/dbs-evidence/phase2/daily-goals-donate/`

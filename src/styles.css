@@ -3532,3 +3532,8 @@ input:focus, select:focus, textarea:focus {
 /* t249u Home sell card Coming Soon */
 .home-sell-title-row { display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin:0 0 8px; }
 .badge-cs.badge-cs-inline { position: static; top:auto; left:auto; flex:0 0 auto; }
+
+/* t255u Home daily app goal */
+.home-goal-head { display:flex; justify-content:space-between; align-items:center; gap:8px; margin:4px 0 8px; }
+.home-goal-bar { height:10px; border-radius:999px; background:rgba(255,255,255,.08); overflow:hidden; border:1px solid color-mix(in srgb, var(--blue) 30%, transparent); }
+.home-goal-fill { height:100%; background:linear-gradient(90deg, var(--blue), color-mix(in srgb, var(--blue) 60%, #8fd3ff)); transition:width .4s ease; }

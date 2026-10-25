@@ -6773,3 +6773,36 @@ export function getMostPlayedSongToday() {
     status: 'Coming Soon',
   };
 }
+
+/* t255u: LS will own — remove when LS lands.
+ * Temporary minimal stubs matching the agreed LS API so Home app-goal UI builds.
+ * Shape: { id, scope:'app'|'live', hostId?, name, targetAmount (USD), raised (USD), endsAt, createdAt }
+ * TEST MODE only — no real payments, no coin debit (Commerce owns that). */
+const T255U_STUB_COINS_PER_USD = 100; // t255u stub assumption; LS defines real rate
+export function getAppDailyGoal() {
+  const now = Date.now();
+  const goals = Array.isArray(state.goals) ? state.goals : [];
+  let g = goals.find((x) => x.scope === 'app' && x.endsAt > now);
+  if (!g) {
+    g = {
+      id: 'goal_app_' + now.toString(36),
+      scope: 'app',
+      name: 'DBS community day',
+      targetAmount: 500,
+      raised: 185,
+      endsAt: now + 18 * 3600 * 1000,
+      createdAt: now,
+    };
+    setState({ goals: [...goals.filter((x) => x.endsAt > now), g] });
+  }
+  return g;
+}
+export function donateToGoal(goalId, amountCoins) {
+  const goals = Array.isArray(state.goals) ? state.goals : [];
+  const g = goals.find((x) => x.id === goalId);
+  if (!g || !(amountCoins > 0)) return { ok: false, testMode: true };
+  const usd = amountCoins / T255U_STUB_COINS_PER_USD;
+  const next = { ...g, raised: Math.round((g.raised + usd) * 100) / 100 };
+  setState({ goals: goals.map((x) => (x.id === goalId ? next : x)) });
+  return { ok: true, testMode: true, goal: next };
+}

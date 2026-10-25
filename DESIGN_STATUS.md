@@ -131,3 +131,8 @@ Checker PASS. Every `.card`/panel gets BW-family subtle blue edge/glow; red prim
 - **t249u** Home Creators sell: `#home-sell-coming-soon` inline next to title; TEST MODE chip + Start selling demo kept; blue accent kept.
 - **t251u** `#/clippers` `#clippers-coming-soon` next to Clipper application; Profile Apply as Clipper Coming Soon chip.
 - Tabbar untouched. Evidence: `phase2/home-sell-coming-soon-t249u/checker/`.
+
+## t255u JOINT — Home daily app goal UI — READY / waiting on LS (PARTIAL)
+- Home card `#home-app-goal` above sell promo: name, USD progress bar (raised/targetAmount), time left (30s + visibility refresh), Donate 50/100/250 coins chips → `donateToGoal(goalId, amountCoins)` with TEST MODE toast.
+- Uses LS API `getAppDailyGoal` / `donateToGoal`; temporary stubs in `src/store.js` marked `/* t255u: LS will own — remove when LS lands */`.
+- No gh-pages deploy until joint ship with LS. Not DONE.

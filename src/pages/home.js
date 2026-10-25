@@ -1,7 +1,7 @@
 import { VIDEOS, COMING_SOON, HOME_SECTIONS, YOUTUBE_MIXES } from '../data.js';
 import { notifyVideoPlaying, notifyVideoIdle, bindPageYoutubeEmbeds, bindYoutubeInterrupt, destroyPageYtPlayer } from '../player.js';
-import { listCatalog, getState, listHotLives, listRisingStreamers, getHotPosts, getMostPlayedSongToday } from '../store.js';
-import { esc, shellPage, ytEmbedSrc } from '../ui.js';
+import { listCatalog, getState, listHotLives, listRisingStreamers, getHotPosts, getMostPlayedSongToday, getAppDailyGoal, donateToGoal } from '../store.js';
+import { esc, shellPage, ytEmbedSrc, toast } from '../ui.js';
 import { resolveMediaSrc } from '../media-db.js';
 
 const SECTION_ICONS = {
@@ -249,6 +249,28 @@ function writeStagePref(id) {
 }
 
 /** §17 featured video + §20 dashboard + §34 covers + §39 stage rotation on Home */
+
+/* t255u Home daily app goal (Design UI; store API owned by LS) */
+function fmtUsd(n) { return '$' + Number(n || 0).toLocaleString(undefined, { maximumFractionDigits: 2 }); }
+function goalTimeLeft(endsAt) {
+  const ms = Math.max(0, endsAt - Date.now());
+  const h = Math.floor(ms / 3600000), m = Math.floor((ms % 3600000) / 60000);
+  return ms <= 0 ? 'Ended' : `${h}h ${m}m left`;
+}
+function appGoalInner(g) {
+  if (!g) return '<p class="muted" style="margin:0">No daily app goal right now.</p>';
+  const pct = Math.min(100, Math.round((g.raised / (g.targetAmount || 1)) * 100));
+  return `
+    <div class="home-goal-head"><strong class="home-goal-name">${esc(g.name)}</strong>
+      <span class="chip home-goal-time" id="homeGoalTimeLeft">${goalTimeLeft(g.endsAt)}</span></div>
+    <div class="home-goal-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pct}">
+      <div class="home-goal-fill" style="width:${pct}%"></div></div>
+    <p class="muted home-goal-amounts" style="margin:6px 0 10px">${fmtUsd(g.raised)} raised of ${fmtUsd(g.targetAmount)} · ${pct}%</p>
+    <div class="row wrap" style="gap:8px">
+      ${[50, 100, 250].map((c) => `<button type="button" class="btn ghost home-goal-donate" data-goal-id="${esc(g.id)}" data-coins="${c}">Donate ${c} coins</button>`).join('')}
+    </div>`;
+}
+
 export function renderHome() {
   const previews = HOME_SECTIONS.map(
     (s) => `
@@ -529,10 +551,19 @@ export function renderHome() {
       <p class="chip" style="margin-top:10px">TEST MODE · no payment processing</p>
     </div>`;
 
+  const appGoalCard = `
+    <div class="card home-sell-promo home-app-goal" id="home-app-goal">
+      <p class="kicker">Daily app goal · 24h</p>
+      <div id="homeAppGoalBody">${appGoalInner(getAppDailyGoal())}</div>
+      <p class="chip" style="margin-top:10px">TEST MODE · no real payments</p>
+    </div>`;
+
   const body = `
     ${stageBlock}
 
     ${bwPreview}
+
+    ${appGoalCard}
 
     ${sellPromo}
 
@@ -576,6 +607,22 @@ export function renderHome() {
 }
 
 export function bindHome(root) {
+  /* t255u app goal: donate chips + countdown refresh */
+  const goalBox = root.querySelector('#homeAppGoalBody');
+  if (goalBox) {
+    const redraw = () => { if (document.body.contains(goalBox)) goalBox.innerHTML = appGoalInner(getAppDailyGoal()); else { clearInterval(goalTimer); document.removeEventListener('visibilitychange', goalVis); } };
+    const goalVis = () => { if (document.visibilityState === 'visible') redraw(); };
+    const goalTimer = setInterval(redraw, 30000);
+    document.addEventListener('visibilitychange', goalVis);
+    goalBox.addEventListener('click', (e) => {
+      const b = e.target.closest('.home-goal-donate');
+      if (!b) return;
+      const r = donateToGoal(b.dataset.goalId, Number(b.dataset.coins));
+      toast(r && r.ok ? `TEST MODE · ${b.dataset.coins} coins donated (no real payment)` : 'TEST MODE · donate unavailable');
+      redraw();
+    });
+  }
+
   /* t227u reject fix: hard-clear any LIVE chrome that landed in the Home page-head */
   const pageHead = root.querySelector('.page-head');
   if (pageHead) {
