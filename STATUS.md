@@ -1,6 +1,17 @@
 # DBS App — Section Status
 
 
+## Live Social — t255u Daily goals (Live half) → **PENDING AUDIT** (2026-10-25)
+
+**Joint** with Design (Home `#home-app-goal` already on main) + Commerce (coin debit in `donateToGoal` for now).
+
+- Store: `getAppDailyGoal` / `setAppDailyGoal` / `getLiveDailyGoal` / `setLiveDailyGoal` / `listLiveDailyGoals` / `donateToGoal(goalId, amountCoins)` — raised USD += coins/50 (100=$2); demo app goal seed
+- Live: go-live optional goal fields; `#liveDailyGoal` progress + 50/100/250 coin donate; host edit = new 24h
+- Design temp store stubs removed (wrong 100:1 rate)
+- Tabbar / gifts / Request Spotlight / song packs / house catalog untouched
+- Evidence: `phase2/daily-goals-t255u/` · observe `#/live` (+ go=1) · Home goal card
+- **Do not DONE** until Checker PASS (joint)
+
 ## t238u (2026-10-25) — Supervisor verify + house catalog ship · **DONE**
 - Zip `assets/design/merch/music` ↔ `public/*`: OK (loading screen, Profile Shop concept, 10 merch, 2 Coming Soon covers).
 - §§1–36 (+37–39) hash routes: all page modules present in `main.js` (no blank route gaps).

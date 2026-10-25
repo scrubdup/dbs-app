@@ -131,6 +131,12 @@ const defaultState = () => ({
   engagementAlerts: [], // { id, kind:'live'|'post', refId, title, username, score, viewers?, gifts?, at, handledAt?, handledNote? }
   postShares: {}, // postId -> share count (demo)
   splashSeenAt: 0,
+  // t255u · Daily goals (app-wide + per-host Live) · Design/Commerce consume same APIs
+  dailyGoals: {
+    app: null, // Goal | null
+    liveByHost: {}, // hostId -> Goal
+    history: [], // optional rolled goals (cap 40)
+  },
 });
 
 function load() {
@@ -304,6 +310,16 @@ function load() {
       postShares:
         parsed.postShares && typeof parsed.postShares === 'object' ? parsed.postShares : {},
       creatorSellApps: Array.isArray(parsed.creatorSellApps) ? parsed.creatorSellApps : [],
+      dailyGoals: {
+        ...base.dailyGoals,
+        ...(parsed.dailyGoals || {}),
+        app: parsed.dailyGoals?.app ?? null,
+        liveByHost:
+          parsed.dailyGoals?.liveByHost && typeof parsed.dailyGoals.liveByHost === 'object'
+            ? parsed.dailyGoals.liveByHost
+            : {},
+        history: Array.isArray(parsed.dailyGoals?.history) ? parsed.dailyGoals.history : [],
+      },
     };
   } catch {
     return defaultState();
@@ -1464,7 +1480,274 @@ export function sendGift(opts) {
   return sendLiveGift(opts);
 }
 
+/* ── t255u · Daily goals (app + live) · HARD LOCK: donateToGoal(goalId, amountCoins) ── */
+const DAY_MS = 24 * 60 * 60 * 1000;
+/** 100 coins = $2 → USD = coins / 50 */
+const COINS_PER_USD = 50;
 
+function normalizeDailyGoals(raw) {
+  return {
+    app: raw?.app && typeof raw.app === 'object' ? raw.app : null,
+    liveByHost:
+      raw?.liveByHost && typeof raw.liveByHost === 'object' ? { ...raw.liveByHost } : {},
+    history: Array.isArray(raw?.history) ? raw.history : [],
+  };
+}
+
+function goalIsActive(g, now = Date.now()) {
+  if (!g || typeof g !== 'object') return false;
+  const ends = Number(g.endsAt) || 0;
+  return ends > now;
+}
+
+function cloneGoal(g) {
+  return g ? { ...g } : null;
+}
+
+function makeGoalId(scope) {
+  return (
+    'goal_' +
+    scope +
+    '_' +
+    Date.now().toString(36) +
+    '_' +
+    Math.random().toString(36).slice(2, 6)
+  );
+}
+
+function archiveGoal(bucket, goal) {
+  if (!goal) return bucket;
+  const history = [{ ...goal, archivedAt: Date.now() }, ...(bucket.history || [])].slice(0, 40);
+  return { ...bucket, history };
+}
+
+function seedDemoAppGoalObj(now = Date.now()) {
+  return {
+    id: makeGoalId('app'),
+    scope: 'app',
+    name: 'DBS daily community goal',
+    targetAmount: 50,
+    raised: 0,
+    endsAt: now + DAY_MS,
+    createdAt: now,
+  };
+}
+
+function persistDailyGoals(bucket) {
+  state = { ...state, dailyGoals: bucket };
+  save(state);
+  return bucket;
+}
+
+/**
+ * Current non-expired app-wide daily goal.
+ * Seeds a demo app goal when none is active so Design Home is never empty.
+ */
+export function getAppDailyGoal(now = Date.now()) {
+  let bucket = normalizeDailyGoals(state.dailyGoals);
+  let changed = false;
+  if (bucket.app && !goalIsActive(bucket.app, now)) {
+    bucket = { ...archiveGoal(bucket, bucket.app), app: null };
+    changed = true;
+  }
+  if (!goalIsActive(bucket.app, now)) {
+    bucket = { ...bucket, app: seedDemoAppGoalObj(now) };
+    changed = true;
+  }
+  if (changed) persistDailyGoals(bucket);
+  return cloneGoal(bucket.app);
+}
+
+/** Admin/demo: create or replace app goal with a fresh 24h window. */
+export function setAppDailyGoal({ name, targetAmount } = {}) {
+  const n = String(name || '').trim().slice(0, 80);
+  const target = Number(targetAmount);
+  if (!n) return { error: 'bad_name' };
+  if (!Number.isFinite(target) || target <= 0) return { error: 'bad_amount' };
+  const now = Date.now();
+  let bucket = normalizeDailyGoals(state.dailyGoals);
+  if (bucket.app) bucket = archiveGoal(bucket, bucket.app);
+  const goal = {
+    id: makeGoalId('app'),
+    scope: 'app',
+    name: n,
+    targetAmount: round2(target),
+    raised: 0,
+    endsAt: now + DAY_MS,
+    createdAt: now,
+  };
+  bucket = { ...bucket, app: goal };
+  persistDailyGoals(bucket);
+  return { ok: true, goal: cloneGoal(goal) };
+}
+
+/**
+ * Active live-scope goal for a host (default: current live host or signed-in user).
+ * Expired goals are cleared from the active slot.
+ */
+export function getLiveDailyGoal(hostId, now = Date.now()) {
+  const hid =
+    hostId ||
+    state.live?.hostId ||
+    state.user?.id ||
+    null;
+  if (!hid) return null;
+  let bucket = normalizeDailyGoals(state.dailyGoals);
+  const cur = bucket.liveByHost[hid] || null;
+  if (cur && !goalIsActive(cur, now)) {
+    const liveByHost = { ...bucket.liveByHost };
+    delete liveByHost[hid];
+    bucket = { ...archiveGoal(bucket, cur), liveByHost };
+    persistDailyGoals(bucket);
+    return null;
+  }
+  return cloneGoal(goalIsActive(cur, now) ? cur : null);
+}
+
+/** Signed-in host sets/replaces their 24h Live goal (edit = new 24h window). */
+export function setLiveDailyGoal({ name, targetAmount } = {}) {
+  const user = state.user;
+  if (!user) return { error: 'signin' };
+  const n = String(name || '').trim().slice(0, 80);
+  const target = Number(targetAmount);
+  if (!n) return { error: 'bad_name' };
+  if (!Number.isFinite(target) || target <= 0) return { error: 'bad_amount' };
+  const now = Date.now();
+  let bucket = normalizeDailyGoals(state.dailyGoals);
+  const prev = bucket.liveByHost[user.id];
+  if (prev) bucket = archiveGoal(bucket, prev);
+  const goal = {
+    id: makeGoalId('live'),
+    scope: 'live',
+    hostId: user.id,
+    hostName: user.username,
+    name: n,
+    targetAmount: round2(target),
+    raised: 0,
+    endsAt: now + DAY_MS,
+    createdAt: now,
+  };
+  bucket = {
+    ...bucket,
+    liveByHost: { ...bucket.liveByHost, [user.id]: goal },
+  };
+  persistDailyGoals(bucket);
+  return { ok: true, goal: cloneGoal(goal) };
+}
+
+/** Active live-scope goals (non-expired) for Design Home / listings. */
+export function listLiveDailyGoals(now = Date.now()) {
+  let bucket = normalizeDailyGoals(state.dailyGoals);
+  const liveByHost = { ...bucket.liveByHost };
+  let changed = false;
+  const out = [];
+  for (const [hid, g] of Object.entries(liveByHost)) {
+    if (goalIsActive(g, now)) {
+      out.push(cloneGoal(g));
+    } else if (g) {
+      bucket = archiveGoal(bucket, g);
+      delete liveByHost[hid];
+      changed = true;
+    }
+  }
+  if (changed) {
+    bucket = { ...bucket, liveByHost };
+    persistDailyGoals(bucket);
+  }
+  return out.sort((a, b) => (b.raised || 0) - (a.raised || 0) || (a.name || '').localeCompare(b.name || ''));
+}
+
+/** Debug / optional: all active goals (app + live). */
+export function listDailyGoals(now = Date.now()) {
+  const app = getAppDailyGoal(now);
+  const live = listLiveDailyGoals(now);
+  return [...(app ? [app] : []), ...live];
+}
+
+/**
+ * HARD LOCK — donateToGoal(goalId, amountCoins).
+ * Second arg is COINS. raised/targetAmount stay USD; add amountCoins/50 to raised.
+ * 100 coins = $2. Returns { ok, goal, coins, donated } or error.
+ */
+export function donateToGoal(goalId, amountCoins) {
+  const user = state.user;
+  if (!user) return { error: 'signin' };
+  const coinsAmt = Math.floor(Number(amountCoins));
+  if (!Number.isFinite(coinsAmt) || coinsAmt <= 0) return { error: 'invalid_amount' };
+  const id = String(goalId || '');
+  if (!id) return { error: 'unknown_goal' };
+
+  const now = Date.now();
+  let bucket = normalizeDailyGoals(state.dailyGoals);
+
+  // Resolve goal location
+  let scope = null;
+  let hostKey = null;
+  let goal = null;
+  if (bucket.app && bucket.app.id === id) {
+    scope = 'app';
+    goal = bucket.app;
+  } else {
+    for (const [hid, g] of Object.entries(bucket.liveByHost)) {
+      if (g && g.id === id) {
+        scope = 'live';
+        hostKey = hid;
+        goal = g;
+        break;
+      }
+    }
+  }
+  if (!goal) return { error: 'unknown_goal' };
+  if (!goalIsActive(goal, now)) return { error: 'expired' };
+
+  const coins = normalizeCoins(state.coins);
+  if (coins.balance < coinsAmt) {
+    return { error: 'insufficient', need: coinsAmt, balance: coins.balance };
+  }
+
+  const donatedUsd = round2(coinsAmt / COINS_PER_USD);
+  const nextRaised = round2((Number(goal.raised) || 0) + donatedUsd);
+  const target = Number(goal.targetAmount) || 0;
+  const completedAt =
+    goal.completedAt ||
+    (target > 0 && nextRaised >= target ? now : undefined);
+  const nextGoal = {
+    ...goal,
+    raised: nextRaised,
+    ...(completedAt ? { completedAt } : {}),
+  };
+
+  const coinHist = {
+    at: now,
+    amount: -coinsAmt,
+    note: `Goal donate · ${goal.name} · $${donatedUsd.toFixed(2)} · TEST MODE`,
+    kind: 'goal',
+    goalId: goal.id,
+    usd: donatedUsd,
+  };
+  const nextCoins = {
+    balance: coins.balance - coinsAmt,
+    history: [coinHist, ...coins.history].slice(0, 200),
+  };
+
+  if (scope === 'app') {
+    bucket = { ...bucket, app: nextGoal };
+  } else {
+    bucket = {
+      ...bucket,
+      liveByHost: { ...bucket.liveByHost, [hostKey]: nextGoal },
+    };
+  }
+
+  state = { ...state, dailyGoals: bucket, coins: nextCoins };
+  save(state);
+  return {
+    ok: true,
+    goal: cloneGoal(nextGoal),
+    coins: nextCoins,
+    donated: { coins: coinsAmt, usd: donatedUsd },
+  };
+}
 
 /** §4 Marketplace — brand applications */
 export function submitBrandApp(form) {
@@ -6772,37 +7055,4 @@ export function getMostPlayedSongToday() {
     day,
     status: 'Coming Soon',
   };
-}
-
-/* t255u: LS will own — remove when LS lands.
- * Temporary minimal stubs matching the agreed LS API so Home app-goal UI builds.
- * Shape: { id, scope:'app'|'live', hostId?, name, targetAmount (USD), raised (USD), endsAt, createdAt }
- * TEST MODE only — no real payments, no coin debit (Commerce owns that). */
-const T255U_STUB_COINS_PER_USD = 100; // t255u stub assumption; LS defines real rate
-export function getAppDailyGoal() {
-  const now = Date.now();
-  const goals = Array.isArray(state.goals) ? state.goals : [];
-  let g = goals.find((x) => x.scope === 'app' && x.endsAt > now);
-  if (!g) {
-    g = {
-      id: 'goal_app_' + now.toString(36),
-      scope: 'app',
-      name: 'DBS community day',
-      targetAmount: 500,
-      raised: 185,
-      endsAt: now + 18 * 3600 * 1000,
-      createdAt: now,
-    };
-    setState({ goals: [...goals.filter((x) => x.endsAt > now), g] });
-  }
-  return g;
-}
-export function donateToGoal(goalId, amountCoins) {
-  const goals = Array.isArray(state.goals) ? state.goals : [];
-  const g = goals.find((x) => x.id === goalId);
-  if (!g || !(amountCoins > 0)) return { ok: false, testMode: true };
-  const usd = amountCoins / T255U_STUB_COINS_PER_USD;
-  const next = { ...g, raised: Math.round((g.raised + usd) * 100) / 100 };
-  setState({ goals: goals.map((x) => (x.id === goalId ? next : x)) });
-  return { ok: true, testMode: true, goal: next };
 }

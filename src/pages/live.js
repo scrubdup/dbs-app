@@ -35,6 +35,9 @@ import {
   listLiveGiftHistory,
   sendLiveGift,
   getSpotlightHouseTrack,
+  getLiveDailyGoal,
+  setLiveDailyGoal,
+  donateToGoal,
 } from '../store.js';
 import { esc, toast, shellPage, timeAgo, ytEmbedSrc } from '../ui.js';
 import { navigate, getRoute } from '../router.js';
@@ -526,6 +529,95 @@ function renderStage(live) {
   `;
 }
 
+
+/** t255u · host daily goal progress (USD raised/target; donate in coins). */
+function goalPct(g) {
+  const t = Number(g?.targetAmount) || 0;
+  if (t <= 0) return 0;
+  return Math.min(100, Math.round((Number(g.raised) || 0) / t * 100));
+}
+
+function goalResetsLabel(endsAt) {
+  const ms = Math.max(0, Number(endsAt) - Date.now());
+  if (ms <= 0) return 'Ended · 24h window over';
+  const h = Math.floor(ms / 3600000);
+  const m = Math.floor((ms % 3600000) / 60000);
+  if (h >= 1) return `Resets in ${h}h ${m}m`;
+  return `Resets in ${m}m`;
+}
+
+function renderLiveDailyGoalCard(live, user) {
+  if (!live || live.endedAt) return '';
+  const hostId = live.hostId;
+  const goal = getLiveDailyGoal(hostId);
+  const isHost = !!(user && hostId && user.id === hostId);
+  const coinsBal = getCoinBalance();
+
+  if (!goal) {
+    if (!isHost) {
+      return `
+      <div class="card live-daily-goal" id="liveDailyGoal">
+        <h3 style="margin:0 0 6px">Host daily goal</h3>
+        <p class="muted" style="margin:0;font-size:12px">No goal set for this Live yet · TEST MODE</p>
+      </div>`;
+    }
+    return `
+    <div class="card live-daily-goal" id="liveDailyGoal">
+      <h3 style="margin:0 0 6px">Set today's Live goal</h3>
+      <p class="muted" style="margin:0 0 10px;font-size:12px">Name + amount · 24h window · viewers can donate with coins · TEST MODE</p>
+      <div class="field"><label>Goal name</label>
+        <input id="liveGoalName" maxlength="80" placeholder="e.g. New merch drop fund" /></div>
+      <div class="field"><label>Goal amount ($)</label>
+        <input id="liveGoalAmt" type="number" min="1" step="1" placeholder="50" /></div>
+      <button type="button" class="btn primary" id="liveGoalSave">Start 24h goal</button>
+      <p class="chip" style="margin-top:10px">TEST MODE · demo coins only</p>
+    </div>`;
+  }
+
+  const pct = goalPct(goal);
+  const done = !!(goal.completedAt || pct >= 100);
+  const farClose = pct >= 100 ? 'Complete' : pct >= 70 ? 'Close' : pct >= 30 ? 'On the way' : 'Far';
+  const donateBtns = [50, 100, 250]
+    .map(
+      (c) =>
+        `<button type="button" class="btn ghost live-goal-donate" data-goal-id="${esc(goal.id)}" data-coins="${c}" title="≈ $${(c / 50).toFixed(0)}">Donate ${c} coins</button>`
+    )
+    .join('');
+
+  const hostEdit = isHost
+    ? `<details class="live-goal-edit" style="margin-top:10px">
+        <summary class="muted" style="cursor:pointer;font-size:12px">Edit goal (new 24h window)</summary>
+        <div class="field" style="margin-top:8px"><label>Goal name</label>
+          <input id="liveGoalName" maxlength="80" value="${esc(goal.name)}" /></div>
+        <div class="field"><label>Goal amount ($)</label>
+          <input id="liveGoalAmt" type="number" min="1" step="1" value="${esc(String(goal.targetAmount))}" /></div>
+        <button type="button" class="btn" id="liveGoalSave">Save · reset 24h</button>
+      </details>`
+    : '';
+
+  return `
+    <div class="card live-daily-goal" id="liveDailyGoal">
+      <div class="live-goal-head">
+        <h3 style="margin:0">Daily goal · ${esc(goal.name)}</h3>
+        <span class="chip${done ? ' chip-ok' : ''}">${done ? 'Goal met' : esc(farClose)}</span>
+      </div>
+      <p class="muted" style="margin:4px 0 8px;font-size:12px">${esc(goalResetsLabel(goal.endsAt))} · @${esc(goal.hostName || live.hostName)} · TEST MODE</p>
+      <div class="live-goal-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pct}" aria-label="Goal progress">
+        <div class="live-goal-fill" style="width:${pct}%"></div>
+      </div>
+      <p class="live-goal-amounts" style="margin:8px 0 10px">
+        <strong>${fmtMoney(goal.raised)}</strong> / ${fmtMoney(goal.targetAmount)}
+        <span class="muted"> · ${pct}%</span>
+        <span class="chip" style="margin-left:8px">Coins ${esc(fmtCoins(coinsBal))}</span>
+      </p>
+      <div class="row wrap live-goal-donate-row" style="gap:8px">
+        ${donateBtns}
+      </div>
+      <p class="muted" style="margin:8px 0 0;font-size:11px">50 / 100 / 250 coins ≈ $1 / $2 / $5 · 100 coins = $2 · TEST MODE</p>
+      ${hostEdit}
+    </div>`;
+}
+
 function renderGoLiveForm(user) {
   if (!user) {
     return `
@@ -543,8 +635,14 @@ function renderGoLiveForm(user) {
       <div class="field"><label>Stream title</label>
         <input id="liveTitle" maxlength="80" placeholder="e.g. Listening session · Long Story Short" value="DBS Live · ${esc(user.username)}" />
       </div>
+      <div class="field"><label>Today's goal name <span class="muted">(optional)</span></label>
+        <input id="liveGoalNameGo" maxlength="80" placeholder="e.g. Studio session fund" />
+      </div>
+      <div class="field"><label>Goal amount ($) <span class="muted">(optional)</span></label>
+        <input id="liveGoalAmtGo" type="number" min="1" step="1" placeholder="50" />
+      </div>
       <button class="btn primary block" id="liveStart">Start stream</button>
-      <p class="chip" style="margin-top:10px">No real media · tips/song reqs use demo wallet · gifts use demo coins</p>
+      <p class="chip" style="margin-top:10px">No real media · tips/song reqs use demo wallet · gifts use demo coins · optional 24h goal</p>
     </div>`;
 }
 
@@ -745,6 +843,7 @@ export function renderLive() {
     ${active ? renderGbChallengePop(user) : ''}
     ${active ? renderPendingBattleBanner(user) : ''}
     ${showStage ? renderStage(live) : ''}
+    ${active ? renderLiveDailyGoalCard(live, user) : ''}
     ${active ? renderLiveGifts(live, user) : ''}
     ${active ? renderSongRequests(live, user) : ''}
     ${tabPanel}
@@ -963,6 +1062,14 @@ export function bindLive(root) {
     const res = startLiveDemo(title);
     if (res?.error === 'signin') return toast('Sign in first');
     if (res?.error === 'already_live') return toast('Already live');
+    const gName = root.querySelector('#liveGoalNameGo')?.value?.trim();
+    const gAmt = Number(root.querySelector('#liveGoalAmtGo')?.value);
+    if (gName && gAmt > 0) {
+      const gRes = setLiveDailyGoal({ name: gName, targetAmount: gAmt });
+      if (gRes?.error === 'signin') toast('Sign in to set goal');
+      else if (gRes?.error) toast('Goal not set · ' + gRes.error);
+      else toast(`Live goal set · $${gAmt} · 24h · TEST MODE`);
+    }
     notifyLiveOpen();
     toast('You are live · TEST MODE');
     refresh();
@@ -1023,5 +1130,39 @@ export function bindLive(root) {
 
   mountLiveGiftTray(root);
   mountSongRequestForm(root);
+  mountLiveDailyGoal(root);
+}
+
+function mountLiveDailyGoal(root) {
+  root.querySelector('#liveGoalSave')?.addEventListener('click', () => {
+    const name = root.querySelector('#liveGoalName')?.value?.trim();
+    const targetAmount = Number(root.querySelector('#liveGoalAmt')?.value);
+    const res = setLiveDailyGoal({ name, targetAmount });
+    if (res?.error === 'signin') return toast('Sign in first');
+    if (res?.error === 'bad_name') return toast('Enter a goal name');
+    if (res?.error === 'bad_amount') return toast('Enter a goal amount ($)');
+    if (res?.error) return toast(String(res.error));
+    toast(`Goal live · $${res.goal.targetAmount} · 24h window · TEST MODE`);
+    refresh();
+  });
+
+  root.querySelectorAll('.live-goal-donate').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const goalId = btn.dataset.goalId;
+      const coins = Number(btn.dataset.coins);
+      const res = donateToGoal(goalId, coins);
+      if (res?.error === 'signin') return toast('Sign in first');
+      if (res?.error === 'insufficient') {
+        return toast(`Need ${fmtCoins(res.need)} coins — buy a pack in Gifts · TEST MODE`);
+      }
+      if (res?.error === 'expired') return toast('Goal ended · 24h window over');
+      if (res?.error === 'unknown_goal') return toast('Goal not found');
+      if (res?.error === 'invalid_amount') return toast('Pick a donate amount');
+      if (res?.error) return toast(String(res.error));
+      const usd = res.donated?.usd ?? coins / 50;
+      toast(`Donated ${fmtCoins(coins)} coins ($${Number(usd).toFixed(2)}) · TEST MODE`);
+      refresh();
+    });
+  });
 }
 

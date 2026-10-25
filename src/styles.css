@@ -3537,3 +3537,29 @@ input:focus, select:focus, textarea:focus {
 .home-goal-head { display:flex; justify-content:space-between; align-items:center; gap:8px; margin:4px 0 8px; }
 .home-goal-bar { height:10px; border-radius:999px; background:rgba(255,255,255,.08); overflow:hidden; border:1px solid color-mix(in srgb, var(--blue) 30%, transparent); }
 .home-goal-fill { height:100%; background:linear-gradient(90deg, var(--blue), color-mix(in srgb, var(--blue) 60%, #8fd3ff)); transition:width .4s ease; }
+
+/* t255u · Live host daily goal */
+.live-daily-goal .live-goal-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.live-goal-bar {
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.08);
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--blue) 35%, transparent);
+}
+.live-goal-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--blue), color-mix(in srgb, var(--blue) 55%, #fff));
+  transition: width .35s ease;
+}
+.live-goal-amounts { font-size: 14px; }
+.live-goal-donate-row .btn { font-size: 12px; }
+.live-goal-edit summary { list-style: none; }
+.live-goal-edit summary::-webkit-details-marker { display: none; }
