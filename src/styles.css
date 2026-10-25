@@ -3765,3 +3765,8 @@ input:focus, select:focus, textarea:focus {
 .live-goal-donate-row .btn { font-size: 12px; }
 .live-goal-edit summary { list-style: none; }
 .live-goal-edit summary::-webkit-details-marker { display: none; }
+
+/* Header notifications shortcut beside Messages */
+.header-notifications{display:inline-flex;align-items:center;gap:5px;text-decoration:none;white-space:nowrap}
+.header-notifications svg{width:16px;height:16px;flex:none}
+@media(max-width:420px){.header-notifications{padding-inline:7px;gap:3px}.header-notifications-label{font-size:10px}}
