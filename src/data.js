@@ -594,9 +594,9 @@ export const DRAWER_LINKS = DRAWER_GROUPS.flatMap((g) =>
 export const TABBAR = [
   { href: '#/profile', label: 'Profile', icon: 'home' },
   { href: '#/music', label: 'Music', icon: 'music' },
-  { href: '#/dating', label: 'Dating', icon: 'heart' },
+  { href: '#/videos', label: 'Videos', icon: 'videos' },
   { href: '#/live?go=1', label: 'Go Live', icon: 'live', primary: true },
   { href: '#/connect', label: 'Connect', icon: 'live' },
+  { href: '#/dating', label: 'Dating', icon: 'heart' },
   { href: '#/shop', label: 'Shop', icon: 'merch' },
-  { href: '#/videos', label: 'Videos', icon: 'videos' },
 ];
