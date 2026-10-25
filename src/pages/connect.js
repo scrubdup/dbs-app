@@ -96,7 +96,16 @@ export function renderConnect() {
   return shellPage(
     'PIKK Connect',
     `<div class="connect-monkey" id="connectMonkey">
-      <div class="connect-flag card">
+      <section class="card" aria-label="PIKK Connect experiences">
+        <h2 style="margin:0 0 8px">Choose your connection</h2>
+        <p class="muted small">One PIKK account, two separate experiences. Neither starts your camera automatically.</p>
+        <div class="row wrap" style="gap:10px">
+          <a class="btn primary" href="#/dating">♥ Dating · Swipe &amp; Match</a>
+          <a class="btn ghost" href="#connect-random-chat">◉ Random Chat · 18+ TEST MODE</a>
+        </div>
+        <p class="muted small" style="margin:8px 0 0">Dating requires mutual interest. Random Chat is for spontaneous conversations, not automatic dating matches.</p>
+      </section>
+      <div id="connect-random-chat" class="connect-flag card">
         <p><span class="chip">TEST MODE</span> <span class="chip">Opt-in shell · no WebRTC</span> <span class="chip">18+</span></p>
         <p class="muted small" style="margin:6px 0 0">Monkey-style dual video discovery — PIKK branded. Admin can disable Connect anytime. Launch blocked until age assurance + moderation + WebRTC safety review.</p>
       </div>
