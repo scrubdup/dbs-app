@@ -39,6 +39,8 @@ import { renderSpotlight, bindSpotlight } from './pages/spotlight.js';
 import { renderConnect, bindConnect } from './pages/connect.js';
 import { renderShorts, bindShorts } from './pages/shorts.js';
 import { renderBlockWars, bindBlockWars } from './pages/blockwars.js';
+import { renderGames } from './pages/games.js';
+import { renderDating } from './pages/dating.js';
 import {
   renderVideos,
   bindVideos,
@@ -106,6 +108,8 @@ const ROUTES = {
   '/clips': { render: renderShorts, bind: bindShorts },
   '/connect': { render: renderConnect, bind: bindConnect },
   '/blockwars': { render: renderBlockWars, bind: bindBlockWars },
+  '/games': { render: renderGames },
+  '/dating': { render: renderDating },
 };
 
 function buildTabbar() {
