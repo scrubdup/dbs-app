@@ -216,7 +216,7 @@ export function renderMessages() {
 export function renderShop() {
   return shellPage(
     'Profile Shop',
-    `<div class="shop-concept"><img src="/design/DBS_Profile_Shop_Concept.png" alt="Profile Shop concept" /></div>
+    `<div class="shop-concept"><img src="${import.meta.env.BASE_URL}design/DBS_Profile_Shop_Concept.png" alt="Profile Shop concept" /></div>
      <div class="card">
        <p class="muted">Digital cosmetics only (frames, effects, banners, name styles, badges). Separate from Foreign X-Change physical merch.</p>
        <p class="muted">Intro pricing targets $2.99–$14.99 · bundles $14.99–$24.99. Live preview before purchase.</p>
