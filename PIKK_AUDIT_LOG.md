@@ -35,3 +35,10 @@
 - **NOT VERIFIED:** Published GitHub Pages URL; do not claim site changed until confirmed.
 - **KNOWN GAP:** Old DBS artwork still present in image asset paths; exact approved PIKK logo must replace it before branding can be considered complete.
 - **NEXT:** Verify Actions permission to write `gh-pages`, inspect build logs, validate actual URL, integrate approved logo, then continue master ZIP feature milestones.
+
+## Cycle 4 — resume functional development (2026-10-25)
+- Confirmed prior Grok baseline from STATUS.md: 12 demo sections, 23 shells, 1 TODO. Existing app preserved.
+- Converted Explore search from a fake placeholder to local working catalog search across official video titles, Coming Soon music, merch, and navigation sections. Results link to existing pages; unmatched queries explain the backend limitation.
+- **PASS:** GitHub source readback confirms imports, match/filter logic and results links. **NOT VERIFIED:** actual Vite build, browser behavior, or live publication.
+- Repo renamed to scrubdup/pikk-app; Vite base set to /pikk-app/. Published gh-pages HTML and manifest paths were updated separately, but deployment and browser checks remain outstanding.
+- Next: validate build, finish old DBS artwork replacement, continue real feature development. No fake backend claims.
