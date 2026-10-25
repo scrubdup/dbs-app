@@ -1,8 +1,8 @@
 # DBS App — Section Status
 
-## Design — t290u / t291u Header Messages always + 7-tab bar → **PENDING AUDIT** (2026-10-25)
+## Design — t290u / t291u Header Messages always + 7-tab bar → **DONE** (Checker PASS 2026-10-25)
 
-**PENDING AUDIT**. Owner: Design. Alias **t291u** = header half (Messages replaces Sign in forever).
+**DONE** (Checker PASS · observe `index-tM6mWAjU.js` / `index-CX-L09lP.css` · gh-pages `2b373fb`).
 
 - Header: `#tierPill` Sign in **removed** from top-actions; `#headerMsg` Messages pill **always** visible (signed-out + signed-in). Red unread when count > 0; hide at 0. Sign in only on `#/profile`. Tapping Messages signed-out → `#/messages` (prompt there).
 - Tabbar exactly **7**, no swipe-off ~390px: **Home · Post · Music · Go Live · Videos · Chat · Game** — Go Live 4th/center, flat. Messages OFF tabbar; Profile via drawer only.
