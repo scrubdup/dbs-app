@@ -36,7 +36,8 @@ import { renderLoyalty, bindLoyalty } from './pages/loyalty.js';
 import { renderOpenMic, bindOpenMic } from './pages/openmic.js';
 import { renderShop, bindShop } from './pages/shop.js';
 import { renderSpotlight, bindSpotlight } from './pages/spotlight.js';
-import { renderRestream, bindRestream } from './pages/restream.js';
+import { renderConnect, bindConnect } from './pages/connect.js';
+import { renderShorts, bindShorts } from './pages/shorts.js';
 import {
   renderVideos,
   bindVideos,
@@ -54,8 +55,6 @@ import {
   bindShare,
   renderRefer,
   bindRefer,
-  renderConnect,
-  bindConnect,
   renderNotFound,
 } from './pages/shells.js';
 
@@ -92,17 +91,31 @@ const ROUTES = {
   '/share': { render: renderShare, bind: bindShare },
   '/refer': { render: renderRefer, bind: bindRefer },
   '/spotlight': { render: renderSpotlight, bind: bindSpotlight },
-  '/restream': { render: renderRestream, bind: bindRestream },
+  '/restream': {
+    render: () => {
+      // t198u · no Restream brand — deep-link folds into Connect multi-platform
+      queueMicrotask(() => {
+        location.hash = '/connect#connect-multistream';
+      });
+      return renderConnect();
+    },
+    bind: bindConnect,
+  },
+  '/shorts': { render: renderShorts, bind: bindShorts },
+  '/clips': { render: renderShorts, bind: bindShorts },
   '/connect': { render: renderConnect, bind: bindConnect },
 };
 
 function buildTabbar() {
   const el = document.getElementById('tabbar');
-  el.innerHTML = TABBAR.map(
-    (t) =>
-      `<a href="${t.href}" data-path="${t.href.replace('#', '')}">${ICONS[t.icon] || ''}<span>${esc(t.label)}</span></a>`
-  ).join('');
+  el.innerHTML = TABBAR.map((t) => {
+    const raw = t.href.replace(/^#/, '');
+    const pathOnly = '/' + raw.replace(/^\//, '').split(/[?#]/)[0];
+    const primary = t.primary ? ' tab-primary' : '';
+    return `<a href="${t.href}" class="${primary.trim()}" data-path="${pathOnly}" aria-label="${esc(t.label)}">${ICONS[t.icon] || ''}<span>${esc(t.label)}</span></a>`;
+  }).join('');
   el.style.gridTemplateColumns = `repeat(${TABBAR.length}, 1fr)`;
+  el.classList.add('tabbar-reshaped');
 }
 
 function buildDrawer() {
@@ -198,6 +211,19 @@ function render(route) {
   // Creator sell apply deep-link (#/pricing?focus=sell → #creator-sell)
   if (route.path === '/pricing' && (location.hash.includes('focus=sell') || location.hash.includes('creator-sell'))) {
     setTimeout(() => document.getElementById('creator-sell')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+  }
+  // Gift coins deep-link (#/wallet#wallet-coins or ?section=coins)
+  if (
+    route.path === '/wallet' &&
+    (route.elementId === 'wallet-coins' ||
+      route.query.section === 'coins' ||
+      location.hash.includes('wallet-coins'))
+  ) {
+    setTimeout(() => document.getElementById('wallet-coins')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+  }
+  // t209u · bottom Go Live → start-stream card
+  if (route.path === '/live' && (route.query.go === '1' || route.elementId === 'live-go' || location.hash.includes('go=1'))) {
+    setTimeout(() => document.getElementById('live-go')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
   }
 }
 

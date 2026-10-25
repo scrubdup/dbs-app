@@ -480,8 +480,10 @@ export const POST_IMAGE_PRESETS = [
 ];
 
 export const HOME_SECTIONS = [
+  { route: '/explore', title: 'Explore', blurb: 'Discover DatBoiSkeet · creators · drops' },
   { route: '/music', title: 'Music', blurb: 'Long Story Short · Ladies Only · Vault' },
   { route: '/videos', title: 'Videos', blurb: 'Official DatBoiSkeet MVs' },
+  { route: '/shorts', title: 'Shorts / Clips', blurb: 'Quick clips · not full lives' },
   { route: '/posts', title: 'Posts', blurb: 'Drops, photos & fan talk' },
   { route: '/live', title: 'Live', blurb: 'Go live · TEST MODE demo' },
   { route: '/merch', title: 'Merch', blurb: 'Foreign X-Change · external shop' },
@@ -500,8 +502,8 @@ export const DRAWER_GROUPS = [
     label: 'Watch',
     links: [
       { href: '#/videos', label: 'Videos' },
+      { href: '#/shorts', label: 'Shorts / Clips' },
       { href: '#/live', label: 'Live' },
-      { href: '#/restream', label: 'Restream' },
       { href: '#/openmic', label: 'Open Mic / Talent Discovery (24/7)' },
       { href: '#/spotlight', label: 'Spotlight (24/7)' },
       { href: '#/multiguest', label: 'Multi-Guest Live' },
@@ -575,11 +577,11 @@ export const DRAWER_LINKS = DRAWER_GROUPS.flatMap((g) =>
   g.href ? [{ href: g.href, label: g.label }] : (g.links || [])
 );
 
-/** Bottom nav per plan §8: Home | Music | Videos | Live | Profile */
+/** Bottom nav t209u: Home | Post | Go Live (center) | Music | Profile */
 export const TABBAR = [
   { href: '#/home', label: 'Home', icon: 'home' },
+  { href: '#/posts', label: 'Post', icon: 'posts' },
+  { href: '#/live?go=1', label: 'Go Live', icon: 'live', primary: true },
   { href: '#/music', label: 'Music', icon: 'music' },
-  { href: '#/videos', label: 'Videos', icon: 'posts' },
-  { href: '#/live', label: 'Live', icon: 'live' },
   { href: '#/profile', label: 'Profile', icon: 'profile' },
 ];

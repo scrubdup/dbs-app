@@ -28,6 +28,7 @@ const defaultState = () => ({
   // t185u · Live gifts coins (separate from USD fan wallet)
   coins: { balance: 0, history: [] }, // { at, amount, note, kind?: 'buy'|'gift'|'adjust' }
   liveGiftLedger: [], // append-only gift sends · Commerce/Earnings reads creatorShare
+  liveGbChallengePop: null, // t200u broadcast after paid gift
   threads: {}, // threadId -> { id, peerId, peerName, messages, kind?, muted?, blocked?, reportedAt? }
   messagePrefs: { allowDMs: true, allowRequests: true },
   notifications: {
@@ -169,6 +170,7 @@ function load() {
         history: Array.isArray(parsed.coins?.history) ? parsed.coins.history : [],
       },
       liveGiftLedger: Array.isArray(parsed.liveGiftLedger) ? parsed.liveGiftLedger : [],
+      liveGbChallengePop: parsed.liveGbChallengePop || null,
       threads: { ...(parsed.threads || {}) },
       messagePrefs: { ...base.messagePrefs, ...(parsed.messagePrefs || {}) },
       catalog: Array.isArray(parsed.catalog) ? parsed.catalog : [],
@@ -1241,6 +1243,41 @@ export function listLiveGiftHistory(liveId) {
     }));
 }
 
+/** t199u · Top gifters for local calendar day (by USD paid, then coins). Cap 10. */
+export function listTopGiftersToday(limit = 10, now = Date.now()) {
+  const cap = Math.min(Math.max(1, Number(limit) || 10), 10);
+  const start = new Date(now);
+  start.setHours(0, 0, 0, 0);
+  const startMs = start.getTime();
+  const end = new Date(now);
+  end.setHours(23, 59, 59, 999);
+  const endMs = end.getTime();
+  const byUser = {};
+  for (const g of giftLedgerBucket()) {
+    const at = Number(g.at || 0);
+    if (at < startMs || at > endMs) continue;
+    const uid = g.fromUserId || g.fromUser || 'anon';
+    const row = byUser[uid] || {
+      userId: uid,
+      username: g.fromUser || uid,
+      usd: 0,
+      coins: 0,
+      gifts: 0,
+      lastSlug: g.giftSlug || 'rose',
+    };
+    row.usd = +(row.usd + Number(g.usd || 0)).toFixed(2);
+    row.coins += Number(g.coins || 0);
+    row.gifts += 1;
+    row.username = g.fromUser || row.username;
+    row.lastSlug = g.giftSlug || row.lastSlug;
+    byUser[uid] = row;
+  }
+  return Object.values(byUser)
+    .sort((a, b) => b.usd - a.usd || b.coins - a.coins || a.username.localeCompare(b.username))
+    .slice(0, cap);
+}
+
+
 /** Creator-facing gift earnings (includes 80/20 split). Optional userId filter unused in single-demo wallet. */
 export function listCreatorGiftEarnings(userId) {
   const cw = normalizeCreatorWallet(state.creatorWallet);
@@ -1375,12 +1412,26 @@ export function sendLiveGift({ liveId, slug } = {}) {
     earnings: [earning, ...(cw.earnings || [])],
   };
 
+  const liveGbChallengePop = {
+    id: 'gbpop_' + at.toString(36),
+    liveId: live.id,
+    fromUserId: user.id,
+    fromUser: user.username,
+    giftSlug: gift.slug,
+    giftName: gift.name,
+    coins: gift.coins,
+    usd,
+    at,
+    expiresAt: at + 60_000,
+  };
+
   state = {
     ...state,
     coins: nextCoins,
     live: nextLive,
     liveGiftLedger,
     creatorWallet,
+    liveGbChallengePop,
   };
   save(state);
   return {
@@ -1391,6 +1442,7 @@ export function sendLiveGift({ liveId, slug } = {}) {
     live: nextLive,
     earning,
     creatorWallet,
+    challengePop: liveGbChallengePop,
   };
 }
 
@@ -1398,6 +1450,8 @@ export function sendLiveGift({ liveId, slug } = {}) {
 export function sendGift(opts) {
   return sendLiveGift(opts);
 }
+
+
 
 /** §4 Marketplace — brand applications */
 export function submitBrandApp(form) {
@@ -2184,7 +2238,18 @@ export function exploreSuggestedAccounts() {
 
 /** §23 Live Gift Battles — voluntary gifts, not wagers (TEST MODE) */
 const GB_DURATION_MS = 60_000;
-const GB_CHAMPION_MS = 3 * 60 * 60 * 1000; // 3h spotlight window
+/** t198u · winner recognition lasts until end of local calendar day (not 3h). */
+const GB_DAILY_WINNERS_CAP = 10;
+function gbEndOfLocalDay(now = Date.now()) {
+  const d = new Date(now);
+  d.setHours(23, 59, 59, 999);
+  return d.getTime();
+}
+function gbStartOfLocalDay(now = Date.now()) {
+  const d = new Date(now);
+  d.setHours(0, 0, 0, 0);
+  return d.getTime();
+}
 const GB_DEMO_FANS = [
   { id: 'fan_maya', name: 'MayaBeats', bio: 'Demo fan · mutual' },
   { id: 'fan_jay', name: 'FanJay', bio: 'Demo fan · sandbox opponent' },
@@ -2231,7 +2296,7 @@ function finalizeBattleIfNeeded(battle, now = Date.now()) {
     winnerName,
     scoreA: a,
     scoreB: b,
-    championUntil: winnerId ? now + GB_CHAMPION_MS : null,
+    championUntil: winnerId ? gbEndOfLocalDay(now) : null,
   };
   return ended;
 }
@@ -2378,6 +2443,48 @@ export function clearActiveGiftBattle() {
   return { ok: true };
 }
 
+/** t200u · broadcast Gift Battle challenge prompt after a paid gift (TEST MODE SPA). */
+export function getLiveGbChallengePop(now = Date.now()) {
+  const pop = state.liveGbChallengePop;
+  if (!pop) return null;
+  if (pop.expiresAt && now > pop.expiresAt) {
+    state = { ...state, liveGbChallengePop: null };
+    save(state);
+    return null;
+  }
+  // Must still be on same active live
+  if (!state.live || state.live.endedAt || (pop.liveId && pop.liveId !== state.live.id)) {
+    return null;
+  }
+  return { ...pop };
+}
+
+export function dismissLiveGbChallengePop(id) {
+  const pop = state.liveGbChallengePop;
+  if (!pop) return { ok: true };
+  if (id && pop.id !== id) return { error: 'mismatch' };
+  state = { ...state, liveGbChallengePop: null };
+  save(state);
+  return { ok: true };
+}
+
+/** Start a pending Gift Battle challenging the paid gifter from the pop. */
+export function challengeGifterFromPop() {
+  const pop = getLiveGbChallengePop();
+  if (!pop) return { error: 'no_pop' };
+  const res = startGiftBattle({
+    opponentId: pop.fromUserId,
+    opponentName: pop.fromUser,
+    mode: 'live',
+  });
+  if (res?.battle) {
+    state = { ...state, liveGbChallengePop: null };
+    save(state);
+  }
+  return res;
+}
+
+
 /**
  * Record a voluntary gift/tip toward one side of the battle.
  * side: 'challenger' | 'opponent'
@@ -2458,7 +2565,7 @@ export function listBattleHistory(limit = 20) {
   return (gbBucket().history || []).slice(0, limit);
 }
 
-/** Current 3h champion spotlight (most recent winner still within window). */
+/** Current day champion spotlight (most recent winner still within calendar-day window). */
 export function getChampion(now = Date.now()) {
   const gb = gbBucket();
   const active = gb.active;
@@ -2503,6 +2610,58 @@ export function listTopBattleWinners(limit = 15) {
   return Object.values(wins)
     .sort((a, b) => b.wins - a.wins || b.points - a.points || a.username.localeCompare(b.username))
     .slice(0, limit);
+}
+
+/**
+ * t198u · Up to 10 unique Gift Battle winners for the local calendar day
+ * (most recent first). Recognition window = rest of day.
+ */
+export function listDailyBattleWinners(limit = GB_DAILY_WINNERS_CAP, now = Date.now()) {
+  const cap = Math.min(Math.max(1, Number(limit) || GB_DAILY_WINNERS_CAP), GB_DAILY_WINNERS_CAP);
+  const start = gbStartOfLocalDay(now);
+  const end = gbEndOfLocalDay(now);
+  const seen = new Set();
+  const out = [];
+  const push = (row) => {
+    if (!row?.userId || !row?.username) return;
+    if (seen.has(row.userId)) return;
+    const at = Number(row.endedAt || 0);
+    if (at < start || at > end) return;
+    // Still recognized today (championUntil may be end-of-day)
+    if (row.championUntil && now > row.championUntil) return;
+    seen.add(row.userId);
+    out.push({
+      userId: row.userId,
+      username: row.username,
+      score: Number(row.score || 0),
+      endedAt: at,
+      championUntil: row.championUntil || end,
+      battleId: row.battleId || row.id || null,
+      mode: row.mode || 'demo',
+    });
+  };
+  for (const c of gbBucket().champions || []) {
+    push(c);
+    if (out.length >= cap) return out;
+  }
+  for (const h of gbBucket().history || []) {
+    if (h.result !== 'win' || !h.winnerId) continue;
+    push({
+      userId: h.winnerId,
+      username: h.winnerName,
+      score: h.winnerId === h.challenger?.id ? h.scoreA : h.scoreB,
+      endedAt: h.endedAt,
+      championUntil: h.championUntil || end,
+      battleId: h.id,
+      mode: h.mode,
+    });
+    if (out.length >= cap) break;
+  }
+  return out;
+}
+
+export function getGiftBattleDayWindow(now = Date.now()) {
+  return { start: gbStartOfLocalDay(now), end: gbEndOfLocalDay(now), cap: GB_DAILY_WINNERS_CAP };
 }
 
 /** §29 Multi-Guest Livestreams — fake stage, invite/join, gift split disclosure (TEST MODE) */

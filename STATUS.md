@@ -10,12 +10,12 @@ Legend: **DONE** = usable demo in SPA · **SHELL** = routed page with copy/UI pl
 | --- | --- | --- | --- | --- |
 | 1 | DBS Posts — Social Network | `#/posts` | DONE | Build |
 | 2 | DBS Clippers — Application & Earning | `#/clippers` | DONE | Build |
-| 3 | DBS Live — Creator Livestreaming | `#/live` | DONE (core PASS) · **t180u song requests PASS** (evidence phase2/live-song-requests-t180u/checker/) · **t185u gifts catalog in flight** | Live Social |
+| 3 | DBS Live — Creator Livestreaming | `#/live` · `#/shorts` | DONE (core) · t180u/t185u DONE · **t198u+t199u+t200u PENDING AUDIT** (tabs/Shorts · Connect multi-platform · GB day · bars · Request Spotlight · paid-gift Challenge pop · phase2/t198u-connect-gb-stickers/) | Live Social / Commerce |
 | 4 | DBS Marketplace — Advertising | `#/marketplace` | DONE (Checker PASS 2026-10-25 · phase2/marketplace/checker/) | Commerce |
 | 5 | Creator Rewards, Earnings & Commissions | `#/earnings` | DONE (ledger + commissions — Checker PASS 2026-10-25; evidence phase2/earnings/ + checker/) | Commerce |
 | 6 | Missions | `#/missions` | DONE (Checker PASS 2026-10-25 · phase2/missions/checker/) | Commerce |
 | 7 | Profiles & Messaging (profiles part) | `#/profile` | DONE | Build |
-| 8 | Navigation, Music & Vault | nav + `#/music` `#/vault` | DONE (Music covers + Vault Join demo — Checker PASS 2026-10-25; evidence phase1/vault/) | Design (vis) / Build |
+| 8 | Navigation, Music & Vault | nav + `#/music` `#/vault` | DONE · **t209u PENDING AUDIT** (bottom tab reshape: Home · Post · Go Live center → `#/live?go=1` · Music · Profile) | Design (vis) / Build |
 | 9 | Videos & Interviews | `#/videos` | DONE (Checker re-audit PASS 2026-10-25 · Mix + channel MVs · media-links/checker/reaudit/) | Media Links |
 | 10 | Pricing & Monetization | `#/pricing` | DONE | Build |
 | 11 | Full Admin Dashboard | `#/admin` | DONE (Add Content upload — Checker PASS 2026-10-25; evidence admin-upload/) | Build |
@@ -56,7 +56,7 @@ Counts below are approximate; **PENDING AUDIT** / **PARTIAL** are not DONE. Chec
 | Status | Count |
 | --- | --- |
 | DONE | 39 |
-| PENDING AUDIT | 2 |
+| PENDING AUDIT | 4 |
 | PARTIAL | 0 |
 | SHELL | 0 |
 | TODO | 0 |
@@ -65,18 +65,41 @@ Counts below are approximate; **PENDING AUDIT** / **PARTIAL** are not DONE. Chec
 Counts are approximate — Checker owns PASS. §§13/15/31 flipped to DONE only after Checker PASS (2026-10-25).
 
 
-## Commerce — t185u LIVE Gifts + Coins (2026-10-25) → **PENDING AUDIT**
 
-**USER ADD / package t185u · docs/gifts/** — Commerce Wallet/Earnings display on Live Social store APIs.
+## Navigation — t209u bottom tab reshape (2026-10-25) → **PENDING AUDIT**
+
+**USER t209u** — Reshape bottom icons: add **Post**; make **Go Live** the main (center raised) option that goes straight to start-stream.
+
+### Shipped
+- `TABBAR`: Home · Post (`#/posts`) · **Go Live** (`#/live?go=1`, `primary`) · Music · Profile
+- Center tab: raised red/blue gradient orb (`.tab-primary`)
+- `#live-go` on go-live form; router deep-link scrolls to Start stream
+- Videos removed from tabbar (still in drawer / Explore)
+- Build: `index-BFYqBUIm.js` / `index-243mcr1G.css`
+
+### Checker
+- Confirm 5 tabs, center Go Live scrolls to `#live-go` / Start stream, Post opens `#/posts`
+
+## Commerce — t185u LIVE Gifts + Coins (2026-10-25) → **DONE**
+
+**USER ADD / package t185u · docs/gifts/** — Commerce Wallet/Earnings display on Live Social store APIs. **DONE** (Checker Cash Rain 80/20 PASS cleared PARTIAL · joint with LS tray).
 
 ### Shipped (Commerce)
 - `#/wallet` **Gift coins** card: balance (`dbs_v1.coins`), packs 100/$2 … 10k/$200 via `buyCoins`, TEST MODE, no processor
-- Creator gift earnings card + `#/earnings?cat=gifts` note: **80/20 NET** (listed USD = net, fees $0); viewers never see split on Live
+- Creator gift earnings card + `#/earnings?cat=gifts`: **80/20 NET** (listed USD = net, fees $0); viewers never see split on Live
 - Reuses locked APIs: `getCoinBalance`, `buyCoins`, `listCoinPacks`, `listLiveGiftCatalog`, `sendLiveGift`, `listLiveGiftHistory`, `listCreatorGiftEarnings` (+ `purchaseCoinPack` alias)
-- Coins **separate** from USD `wallet`. No Millionaire. No 85/15. Home untouched. No deploy.
+- Coins **separate** from USD `wallet`. No Millionaire. No 85/15. Deep-link `#/wallet#wallet-coins` OK. No deploy.
 
-Evidence: `/workspace/dbs-evidence/phase2/gifts-coins/`  
-**Do not self-DONE** — Checker owns PASS. Live Social owns gift tray.
+### Checker
+- Commerce slice PASS (packs / coins≠USD / 80/20 copy) · `phase2/gifts-coins/checker/`
+- Cash Rain 80/20 re-check **PASS** (creator **$2.40** / DBS **$0.60** on $3 net; Roses $0.08/$0.02) · `phase2/gifts-coins/checker-cashrain/`
+- Joint with Live Social tray PASS · `phase2/live-gifts-t185u/checker/`
+
+Evidence: `/workspace/dbs-evidence/phase2/gifts-coins/` (+ `checker/` + `checker-cashrain/`)
+
+## Design — t198u Gift stickers (2026-10-25) → **PENDING AUDIT**
+
+Original SVG gift stickers (12 Live catalog + battle-win/crown/vs/fire) under `/public/gifts/`. Helper `getGiftSticker` in `src/gifts-stickers.js`. Light Live tray + Gift Battles win chrome. Evidence: `phase2/gift-stickers-t198u/`. No deploy. Live Social can swap/wire further via helper exports.
 
 ## Phase 1 checklist
 
@@ -840,27 +863,100 @@ Evidence: `/workspace/dbs-evidence/phase2/live-song-requests-t180u/` + `.../chec
 
 **PASS** (Checker). Packs $10/$25/$45 Save $5; queue Play/Skip; Gift Battles not promoted from Live. Evidence: `phase2/live-song-requests-t180u/checker/`.
 
-**t185u gifts** held until Live Social PENDING AUDIT.
+**t185u gifts** → DONE (Live Social tray PASS + Commerce Cash Rain re-check PASS).
 
-## Design — Brand triad blue t187u → PENDING AUDIT (2026-10-25)
+## Design — Brand triad blue t187u → DONE (2026-10-25)
 
-**Brand triad (black / red / blue) → PENDING AUDIT** (do not self-DONE). Owner: Design.
+**Brand triad (black / red / blue) → DONE** (Checker PASS). Owner: Design.
 
-- Added `--blue` `#2f6bff` (+ aliases/helpers); refined `--sk` → brand blue.
-- Kept `--acc` red for primary CTA / LIVE hot / danger.
-- Blue on links, default focus, secondary CTAs, info chips, Connect pulse, cool LIVE chrome, light stage/splash gradients.
-- Evidence: `/workspace/dbs-evidence/phase2/brand-blue-t187u/`. `npm run build` green. **No deploy.**
+- `--blue` `#2f6bff`; `--sk` → brand blue; `--acc` red kept for primary CTA / LIVE hot / danger.
+- Blue on links, focus, secondary CTAs, info chips, Connect pulse, cool LIVE chrome, stage/splash gradients.
+- Evidence: `/workspace/dbs-evidence/phase2/brand-blue-t187u/checker/`. **No deploy.**
 
-## Commerce — t185u gift coins → SLICE PASS / PARTIAL (2026-10-25)
+## Commerce — t185u gift coins → **DONE** (2026-10-25)
 
-**SLICE PASS (PARTIAL)** — Checker. Owner: Commerce. Full Live gifts held for Live Social tray.
+**DONE** (Checker Cash Rain 80/20 PASS · joint with LS tray). Owner: Commerce.
 - `#/wallet` coin packs + creator gift earnings 80/20 NET (split hidden from viewers)
-- Evidence: `phase2/gifts-coins/`
-- Live gift tray: Live Social (separate)
+- Evidence: `phase2/gifts-coins/` + `checker/` + `checker-cashrain/`
 
-## Design — t187u brand blue triad → PENDING AUDIT (2026-10-25)
+## Design — t187u brand blue triad → DONE (2026-10-25)
 
-**PENDING AUDIT** (do not self-DONE). Owner: Design.
+**DONE** (Checker PASS). Owner: Design.
 - `--blue` #2f6bff; black + red kept
-- Evidence: `phase2/brand-blue-t187u/`
+- Evidence: `phase2/brand-blue-t187u/checker/`
 
+## Live Social — USER ADD t185u Live gifts → DONE (2026-10-25)
+
+**USER ADD t185u → DONE** (Checker PASS). Owner: Live Social.
+
+### Shipped
+- Approved Live gift catalog on `#/live` (12 gifts · coins @ 100=$2) · confirm at Money Gun+ (≥750)
+- `dbs_v1.coins` + `liveGiftLedger` · locked helpers: `LIVE_GIFT_CATALOG`, `COIN_PACKAGES`, `getCoinBalance`, `buyCoins`, `listLiveGiftCatalog`, `sendLiveGift`, `listLiveGiftHistory`, `listCreatorGiftEarnings` (+ aliases `getGiftCatalog` / `sendGift` / `listCoinPacks`)
+- Creator **80%** / DBS **20%** of NET · TEST MODE listed USD as net (`fees:0`) · viewers never see split
+- CSS overlay stubs (queued) · buy-coins packs · Tip $1 kept · **t180u song requests kept**
+- Gift Battles not promoted from Live · `#/giftbattles` page dormant OK
+- Spec: `docs/gifts/` · Commerce owns Wallet/Earnings UI against these exports
+
+Evidence: `/workspace/dbs-evidence/phase2/live-gifts-t185u/` + `.../checker/`  
+`npm run build` green. **No deploy.**
+
+## Checker — t185u Live gifts tray PASS (2026-10-25)
+
+**PASS** (Checker). 12 gifts Rose→Universe; Money Gun+ confirm; history name+coins only; overlay present; song requests + Tip + chips kept; no Gift Battles promo. Commerce Cash Rain 80/20 re-check also PASS. Evidence: `phase2/live-gifts-t185u/checker/`.
+
+## Design — t187u brand blue triad → PASS (2026-10-25)
+
+**PASS** (Checker). Evidence `phase2/brand-blue-t187u/checker/`.
+
+## Checker — t185u Live gifts JOINT PASS → **DONE** (2026-10-25)
+
+**PASS** Live Social tray + Commerce Cash Rain 80/20 (Cash Rain creator $2.40 / DBS $0.60; viewers never see split). Package **DONE**. Evidence `phase2/live-gifts-t185u/checker/` + `phase2/gifts-coins/checker/` + `checker-cashrain/`.
+
+## Live Social — USER ADD t197u Live tabs + Shorts → SUPERSEDED by t198u (2026-10-25)
+
+**USER ADD t197u → SUPERSEDED** by t198u (Restream brand dropped · tabs/Shorts kept). See t198u+t199u+t200u PENDING AUDIT below.
+
+### Shipped
+1. **Restream** `#/restream` — shell lead + hero subtitle **“Free multi-platform go-live”** (DBS so creators don’t pay Restream.io).
+2. **Live discovery tabs** on `#/live` (Twitch/Kick-style): **Following** · **Live channels** · **Categories** · **Clips** (Clips → `#/shorts`).
+3. Open Mic (24/7) + Spotlight (24/7) kept as **category chips** (always under tabs) + Categories panel cards.
+4. **Shorts / Clips** own Watch section — route `#/shorts` (alias `#/clips`) · vertical DEMO feed from Music Videos catalog · drawer Watch peer of Videos/Live.
+5. Active-live stage (gifts · song requests · tips) preserved when a live is active. Gift Battles still not promoted. Splash / BW / Messages / Shop untouched.
+
+Evidence: `/workspace/dbs-evidence/phase2/live-tabs-shorts-t197u/`  
+`npm run build` green. **No deploy.**
+
+## Live Social — USER ADD t198u + t199u + t200u → PENDING AUDIT (2026-10-25)
+
+**USER ADD t198u / t199u / t200u → PENDING AUDIT** (do not self-DONE · Checker owns PASS). Owner: Live Social.
+
+### t198u
+- Live discovery tabs (Following · Live channels · Categories · Clips→`#/shorts`) + Open Mic/Spotlight chips kept
+- Shorts / Clips Watch peer (`#/shorts` · `#/clips`) · vertical DEMO feed
+- **Restream brand removed** from drawer + Live CTAs · multi-platform go-live quietly under **Connect** (`#/connect#connect-multistream`) · `#/restream` redirects there
+- Gift Battles: **60s** battles · winners recognized for **rest of calendar day** · up to **10** daily names
+- Stickers: Design pack `gifts-stickers.js` + `/public/gifts/*.svg` (shim `gift-stickers.js`)
+
+### t199u — Live overlay bars (active live)
+- **Top Gifters** sticky strip (top 10 by gifts paid today)
+- **Gift Battle** winners 1–10 sticky strip (day · stickers)
+- **Request Spotlight** — payer name while a paid song request is **Playing** (exact product name; clears when skipped/ended/next)
+
+### t200u — Paid gift → Challenge pop
+- On `sendLiveGift` success → broadcast `liveGbChallengePop` on Live for everyone (TEST MODE SPA)
+- Other viewers **Challenge** that gifter → pending battle · accept/decline · 60s
+- Ties into daily winners bar + Design stickers
+
+Evidence: `/workspace/dbs-evidence/phase2/t198u-connect-gb-stickers/`  
+(t197u Restream subtitle piece **superseded** — see cross-link in that folder if present)  
+`npm run build` green. **No deploy.**
+
+- t202u more blue (light touch): PENDING AUDIT — evidence phase2/brand-blue-more-t202u/
+
+## Live Social — t197–t200 Live overlays → PENDING AUDIT (2026-10-25)
+
+**PENDING AUDIT**. Shorts, Live tabs, hide Restream brand, GB day winners/Top Gifters/Request Spotlight, paid-gift challenge pop, stickers wired. Evidence `phase2/t198u-connect-gb-stickers/`. Pages observe deploy in flight (t202u).
+## Design — t205u card blue on every box → PENDING AUDIT (2026-10-25)
+**PENDING AUDIT** (do not self-DONE). Owner: Design.
+- Global `.card` + panels + drawer-children + home-sell-promo: BW-family subtle blue accent; red CTAs/LIVE kept.
+- Evidence: `phase2/card-blue-t205u/`

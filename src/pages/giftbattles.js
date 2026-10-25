@@ -14,9 +14,12 @@ import {
   listBattleHistory,
   getChampion,
   listTopBattleWinners,
+  listDailyBattleWinners,
+  getGiftBattleDayWindow,
 } from '../store.js';
 import { esc, toast, shellPage, timeAgo } from '../ui.js';
 import { navigate } from '../router.js';
+import { getGiftSticker, giftStickerHtml } from '../gifts-stickers.js';
 
 let countdownTimer = null;
 
@@ -64,7 +67,7 @@ function renderRules() {
         <li>Gifts &amp; tips are <strong>voluntary fan support</strong> to the creator — <strong>not wagers</strong>.</li>
         <li>Battle winners get <strong>recognition only</strong>. They do <em>not</em> receive the opponent's money, stakes, or cash prizes.</li>
         <li>No entry fee, minimum spend, or pay-to-enter. Equal scores = tie.</li>
-        <li>Champion name stays in the spotlight for <strong>3 hours</strong> (mock window) or until replaced.</li>
+        <li>Battle winners are recognized for the <strong>rest of the calendar day</strong> · up to <strong>10</strong> names on the daily board.</li>
       </ul>
       <p class="muted" style="margin:10px 0 0">TEST MODE · no real payments · no gambling.</p>
     </div>`;
@@ -75,18 +78,22 @@ function renderChampion(champ) {
     return `
       <div class="card">
         <h3>Champion Spotlight</h3>
-        <p class="muted" style="margin:0">No active champion. Win a battle to claim the 3-hour banner.</p>
+        <p class="muted" style="margin:0">No active champion today. Win a battle to claim the rest-of-day banner.</p>
       </div>`;
   }
   const left = Math.max(0, (champ.championUntil || 0) - Date.now());
   const hrs = Math.floor(left / 3600000);
   const mins = Math.floor((left % 3600000) / 60000);
+  const crown = getGiftSticker('battle-crown', { className: 'gift-sticker gift-sticker--battle' }).html;
   return `
     <div class="card gb-champion" role="status">
-      <div class="chip">Challenge Winner</div>
+      <div class="row wrap" style="gap:8px;align-items:center">
+        <span class="gb-sticker-slot" aria-hidden="true">${crown}</span>
+        <div class="chip">Challenge Winner · rest of day</div>
+      </div>
       <h3 class="gb-champion-name">${esc(champ.username)}</h3>
       <p class="muted" style="margin:0">
-        Score ${esc(fmtMoney(champ.score))} · spotlight ~${hrs}h ${mins}m left
+        Score ${esc(fmtMoney(champ.score))} · ~${hrs}h ${mins}m left today
         · ${esc(champ.mode || 'demo')}
       </p>
     </div>`;
@@ -188,9 +195,15 @@ function renderEnded(battle) {
     headline = 'Declined';
     sub = 'Challenge was declined';
   }
+  const winSticker = battle.result === 'win'
+    ? getGiftSticker('battle-win', { className: 'gift-sticker gift-sticker--battle' }).html
+    : '';
   return `
     <div class="card gb-battle gb-ended" data-gb-status="ended">
-      <div class="chip">${battle.result === 'win' ? 'Winner' : battle.result === 'tie' ? 'Tie' : 'Ended'}</div>
+      <div class="row wrap" style="gap:8px;align-items:center">
+        ${winSticker ? `<span class="gb-sticker-slot" aria-hidden="true">${winSticker}</span>` : ''}
+        <div class="chip">${battle.result === 'win' ? 'Winner' : battle.result === 'tie' ? 'Tie' : 'Ended'}</div>
+      </div>
       <h3 class="gb-winner-banner">${esc(headline)}</h3>
       <p class="muted">${esc(sub)}</p>
       <p class="gb-score-text" style="margin:12px 0">
@@ -235,6 +248,27 @@ function renderChallengeForm(liveActive, prefs) {
         <button type="button" class="btn ghost" id="gbTopUp">Add $10 demo wallet</button>
       </div>
       <p class="muted" style="margin:10px 0 0">Wallet: <strong id="gbWalletBal">${esc(fmtMoney(getState().wallet?.balance || 0))}</strong> · TEST MODE</p>
+    </div>`;
+}
+
+function renderDailyWinnersBoard() {
+  const day = listDailyBattleWinners(10);
+  const cells = day.length
+    ? day
+        .map((w, i) => {
+          const st = giftStickerHtml('battle-win', { className: 'gift-sticker gift-sticker--xs' });
+          return `<li class="gb-day-row">${st}<span class="chip">#${i + 1}</span><strong>${esc(w.username)}</strong></li>`;
+        })
+        .join('')
+    : '<li class="muted">No winners yet today · win a 60s battle</li>';
+  return `
+    <div class="card gb-day-board" id="gbDayWinners">
+      <div class="row wrap" style="justify-content:space-between;gap:8px">
+        <h3 style="margin:0">Today&apos;s winners</h3>
+        <span class="chip">${day.length}/10 · end of day</span>
+      </div>
+      <p class="muted" style="margin:6px 0 8px;font-size:12px">Sticker board · recognition only · TEST MODE</p>
+      <ol class="gb-list gb-day-list">${cells}</ol>
     </div>`;
 }
 
@@ -307,6 +341,7 @@ export function renderGiftBattles() {
   const body = `
     ${renderRules()}
     ${renderChampion(champ)}
+    ${renderDailyWinnersBoard()}
     ${renderLiveGate(liveActive, live)}
     ${battleBlock}
     ${renderHistoryAndTops()}

@@ -1,14 +1,24 @@
 const listeners = new Set();
 
 export function getRoute() {
-  const hash = location.hash.replace(/^#/, '') || '/home';
-  const path = hash.startsWith('/') ? hash : '/' + hash;
+  // location.hash is like "#/wallet" or "#/wallet#wallet-coins" or "#/earnings?cat=gifts"
+  const rawHash = (location.hash || '').replace(/^#/, '') || '/home';
+  // Second "#" is an element id (e.g. #/wallet#wallet-coins) — not part of the route
+  let elementId = '';
+  let routePart = rawHash;
+  const fragAt = rawHash.indexOf('#');
+  if (fragAt >= 0) {
+    elementId = rawHash.slice(fragAt + 1).split('?')[0];
+    routePart = rawHash.slice(0, fragAt);
+  }
+  const path = routePart.startsWith('/') ? routePart : '/' + routePart;
   const [pathname, query = ''] = path.split('?');
   const parts = pathname.split('/').filter(Boolean);
   return {
     path: '/' + (parts[0] || 'home'),
     parts,
     query: Object.fromEntries(new URLSearchParams(query)),
+    elementId,
     raw: path,
   };
 }

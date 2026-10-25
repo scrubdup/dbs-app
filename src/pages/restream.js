@@ -60,10 +60,11 @@ function renderHero() {
     <div class="card rs-hero">
       <div class="row wrap" style="justify-content:space-between;gap:10px;align-items:flex-start">
         <div>
-          <h3 style="margin:0 0 6px">Stream Everywhere · free inside DBS</h3>
+          <h3 style="margin:0 0 4px">DBS Restream</h3>
+          <p class="rs-free-sub" style="margin:0 0 8px;font-weight:800;color:#fff;letter-spacing:.01em">Free multi-platform go-live</p>
           <p class="muted" style="margin:0;max-width:42rem">
             Go live to YouTube, TikTok, Twitch, Facebook, Instagram, Kick, and Custom RTMP
-            <strong>without a paid Restream subscription</strong>. Platform account policies still apply.
+            <strong>inside DBS — so you don’t pay Restream.io</strong>. Platform account policies still apply.
             DEMO · TEST MODE · no real RTMP / OAuth relay yet.
           </p>
         </div>
@@ -382,7 +383,7 @@ export function renderRestream() {
   `;
 
   return shellPage('DBS Restream', body, {
-    lead: 'Free multi-platform Go Live · campaign tiers · OBS ingest demo · TEST MODE',
+    lead: 'Free multi-platform go-live · avoid paying Restream.io · campaign tiers · OBS ingest demo · TEST MODE',
     badge: session ? 'LIVE' : undefined,
   });
 }

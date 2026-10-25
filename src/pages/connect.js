@@ -1,8 +1,93 @@
-/** §36 DBS Connect — Monkey-style match shell. No WebRTC, matching, camera, or random video. */
+/** §36 DBS Connect — Monkey-style match shell + quiet multi-platform go-live (t198u). */
 import { getConnectPrefs, updateConnectPrefs } from '../store.js';
-import { toast, shellPage } from '../ui.js';
+import {
+  listRestreamPlatforms,
+  connectRestreamPlatform,
+  disconnectRestreamPlatform,
+  toggleRestreamSelected,
+  getRestream,
+  getActiveRestreamSession,
+  startRestreamGoLive,
+  endRestreamGoLive,
+  getRestreamDestinationCap,
+} from '../store.js';
+import { toast, shellPage, esc } from '../ui.js';
+import { navigate } from '../router.js';
 
 const BLOCK_MSG = 'Not available — WebRTC + age assurance required before launch';
+
+function refreshConnect() {
+  navigate('#/connect');
+}
+
+/** t198u · unlabeled multi-platform destinations (store still uses restream_* keys). */
+function renderMultiPlatform() {
+  const platforms = listRestreamPlatforms();
+  const rs = getRestream();
+  const selected = rs.selected || [];
+  const session = getActiveRestreamSession();
+  const cap = getRestreamDestinationCap();
+  const live = !!session;
+
+  const cards = platforms
+    .map((p) => {
+      const on = selected.includes(p.id);
+      const status = p.connected
+        ? `<span class="chip">Linked${p.handle ? ' · ' + esc(p.handle) : ''}</span>`
+        : `<span class="chip muted-chip">Not linked</span>`;
+      return `
+      <div class="connect-mp-plat ${p.connected ? 'on' : ''}" data-plat="${esc(p.id)}">
+        <div class="row wrap" style="justify-content:space-between;gap:8px;align-items:center">
+          <div>
+            <strong>${esc(p.label)}</strong>
+            <div class="muted" style="font-size:12px">${esc(p.hint || '')}</div>
+          </div>
+          ${status}
+        </div>
+        <div class="row wrap" style="gap:6px;margin-top:8px;align-items:center">
+          ${
+            p.connected
+              ? `<button type="button" class="btn ghost connect-mp-disconnect" data-id="${esc(p.id)}">Unlink</button>
+                 <label class="connect-mp-select">
+                   <input type="checkbox" class="connect-mp-dest" data-id="${esc(p.id)}" ${on ? 'checked' : ''} ${live ? 'disabled' : ''} />
+                   Include
+                 </label>`
+              : `<button type="button" class="btn primary connect-mp-connect" data-id="${esc(p.id)}">Link</button>`
+          }
+        </div>
+      </div>`;
+    })
+    .join('');
+
+  const selectedCount = selected.length;
+  const goLiveBtn = live
+    ? `<button type="button" class="btn danger" id="connectMpEnd">End multi-platform session</button>
+       <span class="chip">LIVE · ${esc(String(session?.destinations?.length || selectedCount))} dest · TEST MODE</span>`
+    : `<button type="button" class="btn primary" id="connectMpGoLive" ${selectedCount ? '' : 'disabled'}>Go live to selected</button>
+       <span class="chip">${selectedCount}/${cap} selected · cap ${cap}</span>`;
+
+  return `
+    <div class="card connect-multistream" id="connect-multistream">
+      <div class="row wrap" style="justify-content:space-between;gap:8px;align-items:flex-start">
+        <div>
+          <h3 style="margin:0 0 6px">Multi-platform go-live</h3>
+          <p class="muted" style="margin:0;max-width:40rem;font-size:13px">
+            Link destinations and go live to more than one platform from DBS.
+            DEMO · TEST MODE · no real RTMP / OAuth relay yet. Platform account policies still apply.
+          </p>
+        </div>
+        <span class="chip">TEST MODE</span>
+      </div>
+      <div class="connect-mp-grid" style="margin-top:12px">${cards}</div>
+      <div class="row wrap" style="margin-top:12px;gap:8px;align-items:center">
+        ${goLiveBtn}
+        <a class="btn ghost" href="#/live">Solo Live stage</a>
+      </div>
+      <p class="muted" style="margin:10px 0 0;font-size:12px">
+        Quietly integrated here under Connect — not a separate branded product page.
+      </p>
+    </div>`;
+}
 
 export function renderConnect() {
   const p = getConnectPrefs();
@@ -72,13 +157,53 @@ export function renderConnect() {
         <p class="muted small" style="margin-top:10px">Controls are mockups until launch. Prefs save on this device.</p>
       </div>
 
+      ${renderMultiPlatform()}
+
       <div class="card">
         <p class="muted" style="margin:0 0 8px">DBS Connect <strong>does not replace</strong> Live, Messages, or Spotlight. Meanwhile:</p>
-        <a class="btn" href="#/live">Live</a> <a class="btn" href="#/messages">Messages</a> <a class="btn" href="#/spotlight">Spotlight</a>
+        <a class="btn" href="#/live">Live</a> <a class="btn" href="#/messages">Messages</a> <a class="btn" href="#/spotlight">Spotlight</a> <a class="btn ghost" href="#/shorts">Shorts / Clips</a>
       </div>
     </div>`,
-    { lead: 'Monkey-style 1:1 video discovery — shell preview only.', badge: 'Shell · no WebRTC' }
+    { lead: '1:1 discovery shell · multi-platform go-live · TEST MODE', badge: 'Shell · no WebRTC' }
   );
+}
+
+function bindMultiPlatform(root) {
+  root.querySelectorAll('.connect-mp-connect').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.id;
+      const res = connectRestreamPlatform(id, '');
+      if (res?.error) return toast(String(res.error));
+      toast(`Linked ${id} · TEST MODE`);
+      refreshConnect();
+    });
+  });
+  root.querySelectorAll('.connect-mp-disconnect').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      disconnectRestreamPlatform(btn.dataset.id);
+      toast('Unlinked · TEST MODE');
+      refreshConnect();
+    });
+  });
+  root.querySelectorAll('.connect-mp-dest').forEach((inp) => {
+    inp.addEventListener('change', () => {
+      toggleRestreamSelected(inp.dataset.id);
+      refreshConnect();
+    });
+  });
+  root.querySelector('#connectMpGoLive')?.addEventListener('click', () => {
+    const res = startRestreamGoLive();
+    if (res?.error === 'signin') return toast('Sign in first');
+    if (res?.error === 'none_selected') return toast('Select at least one destination');
+    if (res?.error) return toast(String(res.error));
+    toast('Multi-platform session started · TEST MODE');
+    refreshConnect();
+  });
+  root.querySelector('#connectMpEnd')?.addEventListener('click', () => {
+    endRestreamGoLive();
+    toast('Session ended');
+    refreshConnect();
+  });
 }
 
 export function bindConnect(root = document, rerender) {
@@ -111,7 +236,6 @@ export function bindConnect(root = document, rerender) {
       startBtn.disabled = true;
       startBtn.textContent = 'Matching…';
     }
-    // Brief pulse, then honesty panel — still no WebRTC / getUserMedia
     window.setTimeout(() => {
       them?.classList.remove('matching');
       if (pulse) pulse.hidden = true;
@@ -124,4 +248,14 @@ export function bindConnect(root = document, rerender) {
       toast(BLOCK_MSG);
     }, 900);
   });
+
+  bindMultiPlatform(root);
+
+  // Deep-link scroll: #/connect#connect-multistream
+  const hash = (location.hash || '').split('#')[2] || '';
+  if (hash === 'connect-multistream') {
+    requestAnimationFrame(() => {
+      root.querySelector('#connect-multistream')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }
 }

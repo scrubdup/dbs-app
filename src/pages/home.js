@@ -5,6 +5,9 @@ import { esc, shellPage, ytEmbedSrc } from '../ui.js';
 import { resolveMediaSrc } from '../media-db.js';
 
 const SECTION_ICONS = {
+  Explore: '🧭',
+  'Shorts / Clips': '▶',
+
   Music: '🎵',
   Videos: '🎬',
   Posts: '📸',
@@ -493,12 +496,14 @@ export function renderHome() {
   const sellPromo = `
     <div class="card home-sell-promo" id="home-creator-sell-promo">
       <p class="kicker">Creators · sell on DBS</p>
-      <h3 style="margin:0 0 8px">Upload music &amp; list merch</h3>
-      <p style="margin:0 0 8px">Artists and producers can sell music and merch on DBS. We keep a fair, creator-friendly cut — and merch runs on <strong>your</strong> payments (DBS is not the merchant of record).</p>
+      <h3 style="margin:0 0 8px">Upload music, videos, beats &amp; list merch</h3>
+      <p style="margin:0 0 8px">Artists and producers can sell <strong>music, videos, beats,</strong> and merch on DBS. We keep a fair, creator-friendly cut — and merch runs on <strong>your</strong> payments (DBS is not the merchant of record).</p>
       <p class="muted" style="margin:0 0 12px;font-size:12px">Rules, fees, and the apply form live on Pricing — tap below. No fee numbers on Home.</p>
       <div class="row wrap" style="gap:8px;margin-top:4px">
         <a class="btn primary" href="#/pricing?focus=sell">Start selling · rules &amp; fees</a>
         <a class="btn ghost" href="#/music">Music</a>
+        <a class="btn ghost" href="#/videos">Videos</a>
+        <a class="btn ghost" href="#/music">Beats</a>
         <a class="btn ghost" href="#/merch">Merch</a>
       </div>
       <p class="chip" style="margin-top:10px">TEST MODE · no payment processing</p>

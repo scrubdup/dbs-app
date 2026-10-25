@@ -9,14 +9,14 @@
 ## Permanent forever URL (GitHub Pages)
 
 - **Home:** https://scrubdup.github.io/dbs-app/#/home
-- **Never expires.** Source: `gh-pages` branch (`e5b2bec` · blue triad + today’s ships)
+- **Never expires.** Source: `gh-pages` branch (`dc4c370` · t207u Explore in Home swipe + t208u sticky player blue)
 - Base path: `/dbs-app/`
 
 ## Phone link (workers.dev — temporary until claimed)
 
 - **Home:** https://dbs-app.abundant-passionfruit.workers.dev/#/home
 - **Live:** https://dbs-app.abundant-passionfruit.workers.dev/#/live
-- **Version ID:** `bc0806d9-32f9-46af-822b-5eda22691b9a` (2026-10-25 t187u/t188u)
+- **Version ID:** `bc0806d9-32f9-46af-822b-5eda22691b9a` (t187u; t192u redeploy FAILED — CF auth error 10000 on temporary account, still serving t187u build)
 - Prior suave-marimba preview **expired** — do not use
 - Build root base: `VITE_BASE=/ npm run build`
 - Redeploy temporary:  

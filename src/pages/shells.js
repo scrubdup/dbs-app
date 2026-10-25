@@ -201,7 +201,7 @@ export function renderPricing() {
       <ul class="list-plain">
         <li><span>Typical digital store<br/><span class="muted" style="font-size:12px">Platform cut ~30%</span></span><strong>Creator ~70%</strong></li>
         <li><span>Major streaming / storefront<br/><span class="muted" style="font-size:12px">Effective cut ~30–50%+</span></span><strong>Creator ~50–70%</strong></li>
-        <li><span><strong>DBS music sales (demo)</strong><br/><span class="muted" style="font-size:12px">Platform cut <strong>10%</strong></span></span><strong style="color:var(--acc)">Creator 90%</strong></li>
+        <li><span><strong>DBS music / videos / beats (demo)</strong><br/><span class="muted" style="font-size:12px">Platform cut <strong>10%</strong></span></span><strong style="color:var(--acc)">Creator 90%</strong></li>
       </ul>
       <p class="chip chip-partial" style="margin-top:10px">DEMO rates · illustrative only</p>
     </div>
@@ -238,8 +238,11 @@ export function renderPricing() {
         <label for="csSells">What do you sell?</label>
         <select id="csSells">
           <option value="music">Music</option>
+          <option value="videos">Videos</option>
+          <option value="beats">Beats</option>
           <option value="merch">Merch</option>
-          <option value="both" selected>Both</option>
+          <option value="music-videos-beats">Music · videos · beats</option>
+          <option value="all" selected>All (music, videos, beats, merch)</option>
         </select>
       </div>
       <label class="row" style="gap:8px;align-items:flex-start;margin:8px 0 12px;cursor:pointer">
@@ -260,7 +263,7 @@ export function renderPricing() {
        </ul>
        <p class="chip">TEST MODE · no charges</p>
      </div>`,
-    { lead: 'Sell music · rules &amp; fees · apply form · memberships &amp; gifts — admin-adjustable.' }
+    { lead: 'Sell music, videos, beats &amp; merch · rules &amp; fees · apply form · memberships &amp; gifts — admin-adjustable.' }
   );
 }
 

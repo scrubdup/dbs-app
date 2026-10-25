@@ -94,12 +94,26 @@ Checker PASS. Channel sidebar + room panes + DEMO member strip. Evidence: `/work
 ## §36 Connect Monkey visual redesign (2026-10-25 t165u) · DONE
 Checker PASS. Dual You|Them tiles, Find match / Next / End, matching pulse → BLOCK_MSG (no WebRTC). Evidence: `/workspace/dbs-evidence/phase2/connect-monkey/checker/`. Prefs API unchanged. Live IA still Live Social.
 
-## Brand triad — black / red / blue (t187u · PENDING AUDIT)
+## Brand triad — black / red / blue (t187u · DONE)
 
-User ask: add **blue** so the brand is black + red + blue (do not replace red/black).
+Checker PASS 2026-10-25. Brand is black + red + blue (red/black not replaced).
 
-- Tokens: `--blue` / `--acc-blue` `#2f6bff`; `--blue-dim` / `--blue-glow`; `--sk` aliased to `--blue` (was icy cyan).
+- Tokens: `--blue` / `--acc-blue` `#2f6bff`; `--blue-dim` / `--blue-glow`; `--sk` → `--blue`.
 - Red `--acc` remains primary CTA / LIVE hot / danger.
-- Blue woven into links, default focus rings, secondary/outline buttons, info chips, Connect matching pulse, LIVE cool chrome (watching / hoodie wash), home-stage + splash glows, red→blue gradients.
-- Evidence: `/workspace/dbs-evidence/phase2/brand-blue-t187u/`. `npm run build` green. **No deploy.**
-- Status: **PENDING AUDIT** — Checker owns PASS (Design does not self-DONE).
+- Evidence: `/workspace/dbs-evidence/phase2/brand-blue-t187u/checker/`. **No deploy.**
+
+## Gift stickers + Gift Battle stickers (t198u · PENDING AUDIT)
+
+Original DBS SVG sticker pack for Live gifts (Rose→Universe) + battle win/crown.
+
+- Assets: `/public/gifts/<slug>.svg` (12 catalog + battle-win, battle-crown, battle-vs, battle-fire)
+- Helper: `src/gifts-stickers.js` — **`getGiftSticker(slug)`** → `{ src, html, className, emoji }` · also `giftStickerHtml`, battle helpers
+- Alias: `src/gifts/stickers.js` re-exports
+- Live tray/history/overlay lightly wired; Gift Battles champion + win banner show battle stickers
+- Brand: black / red `#ff2b2b` / blue `#2f6bff` · original art only · no TikTok/Kick assets
+- Evidence: `/workspace/dbs-evidence/phase2/gift-stickers-t198u/`
+- **No deploy.** Live Social owns further tray/battle IA wiring if needed.
+
+- t202u more blue (light touch): PENDING AUDIT — evidence phase2/brand-blue-more-t202u/
+## Card blue triad (t205u · PENDING AUDIT)
+Every `.card`/panel gets BW-family subtle blue edge/glow; red primary kept. Evidence: `/workspace/dbs-evidence/phase2/card-blue-t205u/`.
