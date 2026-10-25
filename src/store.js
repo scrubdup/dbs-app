@@ -1667,7 +1667,8 @@ export function listDailyGoals(now = Date.now()) {
 /**
  * HARD LOCK — donateToGoal(goalId, amountCoins).
  * Second arg is COINS. raised/targetAmount stay USD; add amountCoins/50 to raised.
- * 100 coins = $2. Returns { ok, goal, coins, donated } or error.
+ * 100 coins = $2. Caps debit to remaining USD (no over-charge past target); completed → error.
+ * Returns { ok, goal, coins, donated } or { error: signin|invalid_amount|unknown_goal|expired|insufficient|completed }.
  */
 export function donateToGoal(goalId, amountCoins) {
   const user = state.user;
@@ -1700,33 +1701,45 @@ export function donateToGoal(goalId, amountCoins) {
   if (!goal) return { error: 'unknown_goal' };
   if (!goalIsActive(goal, now)) return { error: 'expired' };
 
-  const coins = normalizeCoins(state.coins);
-  if (coins.balance < coinsAmt) {
-    return { error: 'insufficient', need: coinsAmt, balance: coins.balance };
+  const target = Number(goal.targetAmount) || 0;
+  const already = Number(goal.raised) || 0;
+  if (goal.completedAt || (target > 0 && already >= target)) {
+    return { error: 'completed', goal: cloneGoal(goal) };
   }
 
-  const donatedUsd = round2(coinsAmt / COINS_PER_USD);
-  const nextRaised = round2((Number(goal.raised) || 0) + donatedUsd);
-  const target = Number(goal.targetAmount) || 0;
-  const completedAt =
-    goal.completedAt ||
-    (target > 0 && nextRaised >= target ? now : undefined);
+  // Cap debit to remaining USD → coins (ceil) so we don't over-charge past target
+  let applyCoins = coinsAmt;
+  if (target > 0) {
+    const remainingUsd = Math.max(0, round2(target - already));
+    const maxCoins = Math.ceil(remainingUsd * COINS_PER_USD);
+    if (maxCoins <= 0) return { error: 'completed', goal: cloneGoal(goal) };
+    if (applyCoins > maxCoins) applyCoins = maxCoins;
+  }
+
+  const coins = normalizeCoins(state.coins);
+  if (coins.balance < applyCoins) {
+    return { error: 'insufficient', need: applyCoins, balance: coins.balance };
+  }
+
+  const donatedUsd = round2(applyCoins / COINS_PER_USD);
+  const nextRaised = round2(already + donatedUsd);
+  const completedAt = target > 0 && nextRaised >= target ? now : goal.completedAt;
   const nextGoal = {
     ...goal,
-    raised: nextRaised,
+    raised: target > 0 ? Math.min(nextRaised, round2(target)) : nextRaised,
     ...(completedAt ? { completedAt } : {}),
   };
 
   const coinHist = {
     at: now,
-    amount: -coinsAmt,
+    amount: -applyCoins,
     note: `Goal donate · ${goal.name} · $${donatedUsd.toFixed(2)} · TEST MODE`,
     kind: 'goal',
     goalId: goal.id,
     usd: donatedUsd,
   };
   const nextCoins = {
-    balance: coins.balance - coinsAmt,
+    balance: coins.balance - applyCoins,
     history: [coinHist, ...coins.history].slice(0, 200),
   };
 
@@ -1745,7 +1758,7 @@ export function donateToGoal(goalId, amountCoins) {
     ok: true,
     goal: cloneGoal(nextGoal),
     coins: nextCoins,
-    donated: { coins: coinsAmt, usd: donatedUsd },
+    donated: { coins: applyCoins, usd: donatedUsd, requested: coinsAmt },
   };
 }
 

@@ -1093,9 +1093,24 @@ Evidence: `phase2/spotlight-idle-t233u/` + `phase2/openmic-idle-t236u/`
 
 ## Commerce — t255u daily-goal donate path → **PENDING AUDIT** (2026-10-25)
 
-**PENDING AUDIT** (do not self-DONE · Checker owns PASS). Soft-hold.
+**USER ADD t255u** — Commerce debit review on Live Social goal land. Do **not** self-DONE.
 
-- **Live Social** owns append-only `goals` CRUD + `donateToGoal(goalId, amountCoins)` land (scope `app|live`; `name` / `targetAmount`+`raised` USD / `endsAt` 24h; CTAs 50/100/250 coins → raised += coins×$0.02 @ 100=$2).
-- **Commerce** did **not** write competing goals state or `donateToGoal` (avoid fork). Post-land: review coin debit only (`dbs_v1.coins`, insufficient, 24h). Wallet/Marketplace untouched this pass.
-- UI: Live Social + Design (Home app goals + Live host goals).
-- Evidence stub: `/workspace/dbs-evidence/phase2/daily-goals-donate/`
+### Commerce review (after LS land)
+- Reused LS `donateToGoal(goalId, amountCoins)` · coin debit @ 100=$2 · raised USD
+- Patched: cap debit to remaining target; `completed` error; raised clamped to target
+- Wallet/Marketplace untouched. Evidence: `phase2/daily-goals-donate/` (+ LS `phase2/daily-goals-t255u/`)
+
+**PENDING AUDIT** — Checker owns PASS (joint with LS UI).
+
+
+## Design — t255u Home daily app goal UI → **PENDING AUDIT** (2026-10-25)
+
+**PENDING AUDIT** (Checker owns PASS · joint LS/Commerce). Owner: Design.
+
+- `#home-app-goal`: name · USD progress · time left · Donate 50/100/250 coins · TEST MODE · blue accent.
+- APIs: `getAppDailyGoal` / `donateToGoal(goalId, amountCoins)` (LS store `ded7066`).
+- Observe: `index-FnZdyRFa.js` / `index-Blll5lBt.css` (gh-pages `c024365`).
+- Evidence: `phase2/home-app-goals-t255u/`. Tabbar untouched.
+
+
+- 2026-10-25 LS: Checker REJECT (observe overshoot) → cap shipped to Pages; **re-audit PENDING**.
