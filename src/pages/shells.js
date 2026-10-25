@@ -27,10 +27,10 @@ export function renderVideos() {
 
 export function renderLive() {
   return shellPage(
-    'DBS Live',
+    'PIKK Live',
     `<div class="card">
       <h3>No creators live</h3>
-      <p class="muted">Approved creators can livestream with chat, gifts, tips, and replays. Every stream shows DBS branding and Follow DatBoiSkeet.</p>
+      <p class="muted">Approved creators can livestream with chat, gifts, tips, and replays. Every stream shows PIKK branding and Follow DatBoiSkeet.</p>
       <p class="muted">Splits: gifts 80/20 · tips 90/10 (eligible net).</p>
       <button class="btn primary" disabled>Go live · Phase 3</button>
     </div>
@@ -45,13 +45,13 @@ export function renderExplore() {
   return shellPage(
     'Explore',
     `<div class="card">
-      <div class="field"><label>Search DBS</label>
+      <div class="field"><label>Search PIKK</label>
         <input id="exploreQ" placeholder="Creators, songs, posts, lives…" /></div>
       <button class="btn primary" id="exploreGo">Search</button>
       <p class="muted" id="exploreOut" style="margin-top:10px"></p>
     </div>
     <div class="card">
-      <h3>Trending Across DBS</h3>
+      <h3>Trending Across PIKK</h3>
       <p class="muted">High-engagement public posts surface here (spam filtered). Shell until engagement pipeline ships.</p>
       <div class="section-swipe">
         <a class="preview-card" href="#/posts"><strong>Posts</strong><span class="muted">Discover feed</span></a>
@@ -85,7 +85,7 @@ export function renderMarketplace() {
 export function renderEarnings() {
   return shellPage(
     'Creator Earnings',
-    `<div class="card"><p class="muted">Clipping, referrals, merch affiliates, subscriptions, gifts, tips — with transparent DBS commissions.</p>
+    `<div class="card"><p class="muted">Clipping, referrals, merch affiliates, subscriptions, gifts, tips — with transparent PIKK commissions.</p>
      <ul class="list-plain">
        <li><span>Live gifts</span><span>80% creator</span></li>
        <li><span>Tips</span><span>90% creator</span></li>
@@ -100,7 +100,7 @@ export function renderEarnings() {
 export function renderMissions() {
   return shellPage(
     'Missions',
-    `<div class="card"><p class="muted">Admin-created campaigns promoting songs, videos, lives, and the DBS app. Budgets, deadlines, rankings, fraud checks.</p>
+    `<div class="card"><p class="muted">Admin-created campaigns promoting songs, videos, lives, and the PIKK app. Budgets, deadlines, rankings, fraud checks.</p>
      <p class="muted">Optional 20% management fee on third-party-funded campaigns.</p>
      <button class="btn" disabled>No active missions</button></div>`,
     { lead: 'Promotional campaigns for Clippers & creators.', ...phase(2) }
@@ -168,10 +168,10 @@ export function renderGuidelines() {
 
 export function renderCommunity() {
   return shellPage(
-    'DBS Lounge',
+    'PIKK Lounge',
     `<div class="card"><p class="muted">Premium music-first community — not a Discord clone.</p>
       <ul class="list-plain">
-        <li><span>DBS Lounge</span><span class="chip">Hub</span></li>
+        <li><span>PIKK Lounge</span><span class="chip">Hub</span></li>
         <li><span>The Conversation</span><span class="chip">Public</span></li>
         <li><span>Listening Rooms</span><span class="chip">Parties</span></li>
         <li><span>Backstage Rooms</span><span class="chip">Members</span></li>
@@ -222,7 +222,7 @@ export function renderShop() {
        <p class="muted">Intro pricing targets $2.99–$14.99 · bundles $14.99–$24.99. Live preview before purchase.</p>
        <button class="btn primary" disabled>Browse items · coming soon</button>
      </div>`,
-    { lead: 'Original DBS digital cosmetics.', ...phase(2) }
+    { lead: 'Original PIKK digital cosmetics.', ...phase(2) }
   );
 }
 
@@ -262,7 +262,7 @@ export function bindNotifications(root) {
 export function renderFanClubs() {
   return shellPage(
     'Fan Clubs',
-    `<div class="card"><p class="muted">Approved creators host clubs inside DBS Lounge with optional paid rooms. Keep DBS branding prominent.</p>
+    `<div class="card"><p class="muted">Approved creators host clubs inside PIKK Lounge with optional paid rooms. Keep PIKK branding prominent.</p>
      <button class="btn" disabled>Create club · Phase 3</button></div>`,
     { lead: 'Creator communities.', ...phase(3) }
   );
@@ -347,7 +347,7 @@ export function renderLaunch() {
 export function renderShare() {
   return shellPage(
     'Share & Earn',
-    `<div class="card"><p class="muted">24-hour social promo: post official DBS ads with tracked links, keep live 24h, verify for badges / Skeet+ trials. Never ask for social passwords.</p>
+    `<div class="card"><p class="muted">24-hour social promo: post official PIKK ads with tracked links, keep live 24h, verify for badges / Skeet+ trials. Never ask for social passwords.</p>
      <button class="btn" disabled>Start challenge · Phase 2</button></div>`,
     { lead: 'Optional social promotion rewards.', ...phase(2) }
   );
@@ -389,7 +389,7 @@ export function renderSpotlight() {
 
 export function renderConnect() {
   return shellPage(
-    'DBS Connect',
+    'PIKK Connect',
     `<div class="card">
       <p class="muted"><strong>18+ only.</strong> Opt-in random 1:1 video chat. Explicit consent, Next/End/Mute/Camera/Report/Block. Not a replacement for Live, Spotlight, or Messages.</p>
       <p class="muted">Do not launch without age assurance, moderation, and WebRTC safety.</p>
