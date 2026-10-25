@@ -10,12 +10,12 @@ Legend: **DONE** = usable demo in SPA · **SHELL** = routed page with copy/UI pl
 | --- | --- | --- | --- | --- |
 | 1 | DBS Posts — Social Network | `#/posts` | DONE | Build |
 | 2 | DBS Clippers — Application & Earning | `#/clippers` | DONE | Build |
-| 3 | DBS Live — Creator Livestreaming | `#/live` · `#/shorts` | DONE (core) · t180u/t185u DONE · **t198u+t199u+t200u DONE** (tabs/Shorts · Connect multi-platform · GB day · bars · Request Spotlight · paid-gift Challenge pop · phase2/t198u-connect-gb-stickers/) | Live Social / Commerce |
+| 3 | DBS Live — Creator Livestreaming | `#/live` · `#/shorts` | DONE (core) · t180u/t185u DONE · **t198u+t199u+t200u DONE** (Checker PASS 2026-10-25 · Request Spotlight conditional PASS) (tabs/Shorts · Connect multi-platform · GB day · bars · Request Spotlight · paid-gift Challenge pop · phase2/t198u-connect-gb-stickers/) | Live Social / Commerce |
 | 4 | DBS Marketplace — Advertising | `#/marketplace` | DONE (Checker PASS 2026-10-25 · phase2/marketplace/checker/) | Commerce |
 | 5 | Creator Rewards, Earnings & Commissions | `#/earnings` | DONE (ledger + commissions — Checker PASS 2026-10-25; evidence phase2/earnings/ + checker/) | Commerce |
 | 6 | Missions | `#/missions` | DONE (Checker PASS 2026-10-25 · phase2/missions/checker/) | Commerce |
 | 7 | Profiles & Messaging (profiles part) | `#/profile` | DONE | Build |
-| 8 | Navigation, Music & Vault | nav + `#/music` `#/vault` | DONE · **t212u PENDING AUDIT** (all bottom tabs readable + scroll: Home·Music·Videos·Post·Go Live·Chat·Messages·Profile) | Design (vis) / Build |
+| 8 | Navigation, Music & Vault | nav + `#/music` `#/vault` | DONE · **t212u PENDING AUDIT** (8-tab scroll · unread badge mark-read fix) · **t215–t217 DONE** (Checker PASS Post Picture/Short/Video picker) | Design (vis) / Build |
 | 9 | Videos & Interviews | `#/videos` | DONE (Checker re-audit PASS 2026-10-25 · Mix + channel MVs · media-links/checker/reaudit/) | Media Links |
 | 10 | Pricing & Monetization | `#/pricing` | DONE | Build |
 | 11 | Full Admin Dashboard | `#/admin` | DONE (Add Content upload — Checker PASS 2026-10-25; evidence admin-upload/) | Build |
@@ -66,6 +66,16 @@ Counts are approximate — Checker owns PASS. §§13/15/31 flipped to DONE only 
 
 
 
+
+## Navigation — t212u tabbar unread badge REJECT → fixed → **PENDING AUDIT** (2026-10-25)
+
+**Checker REJECT** (t212u): Messages badge showed **2**; opening MayaBeats did **not** clear unread (stayed 2 on inbox + Home). Evidence `phase2/tabbar-t212u/checker/tb-notes.txt`.
+
+**Fix (Build):** `ensureDemoUnreadMessages` one-shot via durable `demoUnreadSeeded` — never rewind `lastReadAt` after read/seed. `markThreadRead` dispatches `dbs:messages-unread` → `main.js` `refreshTabBadges()`. First signed-in visit still seeds 2 MayaBeats DMs.
+
+**Status:** REJECT → fixed mark-read + seed idempotency → **PENDING AUDIT** (do not self-DONE; Checker re-PASS).  
+Evidence: `/workspace/dbs-evidence/phase2/tabbar-t212u/FIX-unread.md` · `npm run build` green.
+
 ## Navigation — t211u bottom tab (2026-10-25) → **PENDING AUDIT**
 
 **USER t211u** — Restore Music + Videos on bottom (were dropped in t209/t210 squeeze). Chat/Lounge stays in hamburger; Messages keeps unread badge.
@@ -92,9 +102,9 @@ Counts are approximate — Checker owns PASS. §§13/15/31 flipped to DONE only 
 - 6 tabs; Go Live → `#live-go`; Chat → Lounge; Messages badge shows number when signed in; opens clear unread
 
 
-## Posts — t215u/t216u/t217u create picker (2026-10-25) → **PENDING AUDIT**
+## Posts — t215u/t216u/t217u create picker (2026-10-25) → **DONE**
 
-**USER** Shorts under Posts; tapping Post offers **Picture · Short · Video** (not separate tabs).
+**DONE** (Checker PASS 2026-10-25 · local). Shorts under Posts; tapping Post offers **Picture · Short · Video** (not separate tabs).
 
 ### Shipped
 - Bottom **Post** → `#/posts?compose=1` opens create card with 3 type buttons
@@ -103,7 +113,11 @@ Counts are approximate — Checker owns PASS. §§13/15/31 flipped to DONE only 
 - No Discover/Following/Shorts tab split for media types
 
 ### Checker
-- Tap Post → Picture/Short/Video choices (not tabs); posting each type works in TEST MODE
+- **PASS** (local) — Picture·Short·Video type buttons on one compose card; all three post in TEST MODE. Evidence `phase2/posts-create-t215u/checker/pc-notes.txt`.
+- Observe still stale (`BA5dlMb6`) — Supervisor redeploy (non-blocking for STATUS DONE).
+
+## Build — t215–t217 Post create PASS → DONE (2026-10-25)
+Checker PASS. STATUS flipped (Checker does not edit STATUS). Observe redeploy = Supervisor.
 
 ## Commerce — t185u LIVE Gifts + Coins (2026-10-25) → **DONE**
 

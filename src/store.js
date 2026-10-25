@@ -1565,6 +1565,14 @@ export function markThreadRead(threadId) {
   const t = { ...t0, lastReadAt: Date.now() };
   state = { ...state, threads: { ...state.threads, [t.id]: t }, demoUnreadSeeded: true };
   save(state);
+  // t212u · refresh Messages tab badge without waiting for next buildTabbar
+  try {
+    if (typeof window !== 'undefined' && window.dispatchEvent) {
+      window.dispatchEvent(new CustomEvent('dbs:messages-unread', { detail: { count: getUnreadMessageCount() } }));
+    }
+  } catch (_) {
+    /* non-DOM (tests) */
+  }
   return state.threads[t.id];
 }
 
@@ -1591,15 +1599,17 @@ export function ensureDemoUnreadMessages() {
   const existing = state.threads[t0.id];
   const hasInbound = (existing.messages || []).some((m) => m.from !== user.id);
   if (hasInbound) {
-    // First seed only: mark as unread once, then lock the flag
+    // Never rewind after any user read (lastReadAt > 0) or full catch-up
     const inboundAts = (existing.messages || []).filter((m) => m.from !== user.id).map((m) => m.at || 0);
-    const minAt = Math.min(...inboundAts);
-    const alreadyRead = (existing.lastReadAt || 0) >= Math.max(...inboundAts, 0);
-    if (alreadyRead) {
+    const lastRead = existing.lastReadAt || 0;
+    const alreadyRead = lastRead >= Math.max(...inboundAts, 0);
+    if (alreadyRead || lastRead > 0) {
       state = { ...state, demoUnreadSeeded: true };
       save(state);
-      return { seeded: false, count: 0 };
+      return { seeded: false, count: getUnreadMessageCount() };
     }
+    // First seed only: force unread once, then lock the flag
+    const minAt = Math.min(...inboundAts);
     const t = { ...existing, lastReadAt: Math.max(0, minAt - 1) };
     state = { ...state, threads: { ...state.threads, [t.id]: t }, demoUnreadSeeded: true };
     save(state);

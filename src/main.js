@@ -303,6 +303,17 @@ function wireMusicInterruptBridge() {
   });
 }
 
+/** t212u · Messages unread badge: store markThreadRead → refresh tabbar */
+function wireMessagesUnreadBadge() {
+  window.addEventListener('dbs:messages-unread', () => {
+    try {
+      refreshTabBadges();
+    } catch (_) {
+      /* tabbar may not be mounted yet */
+    }
+  });
+}
+
 function boot() {
   ensureDemoPosts();
   rewriteAssetUrls(document);
@@ -310,6 +321,7 @@ function boot() {
   buildDrawer();
   initDbsPlayer();
   wireMusicInterruptBridge();
+  wireMessagesUnreadBadge();
 
   document.getElementById('menuBtn').addEventListener('click', () => setDrawer(true));
   document.getElementById('scrim').addEventListener('click', () => setDrawer(false));
