@@ -10,7 +10,7 @@
 - Design temp store stubs removed (wrong 100:1 rate)
 - Tabbar / gifts / Request Spotlight / song packs / house catalog untouched
 - Evidence: `phase2/daily-goals-t255u/` · observe `#/live` (+ go=1) · Home goal card
-- **Do not DONE** until Checker PASS (joint)
+- **DONE** (Checker PASS re-audit 2026-10-25 · observe `index-C1DrFrz7.js` / gh-pages `a3254df` · prior overshoot REJECT cleared)
 
 ## t238u (2026-10-25) — Supervisor verify + house catalog ship · **DONE**
 - Zip `assets/design/merch/music` ↔ `public/*`: OK (loading screen, Profile Shop concept, 10 merch, 2 Coming Soon covers).
@@ -29,7 +29,7 @@ Legend: **DONE** = usable demo in SPA · **SHELL** = routed page with copy/UI pl
 | --- | --- | --- | --- | --- |
 | 1 | DBS Posts — Social Network | `#/posts` | DONE | Build |
 | 2 | DBS Clippers — Application & Earning | `#/clippers` | DONE | Build |
-| 3 | DBS Live — Creator Livestreaming | `#/live` · `#/shorts` | DONE (core) · t180u/t185u DONE · **t198u+t199u+t200u DONE** (Checker PASS 2026-10-25 · Request Spotlight conditional PASS) (tabs/Shorts · Connect multi-platform · GB day · bars · Request Spotlight · paid-gift Challenge pop · phase2/t198u-connect-gb-stickers/) | Live Social / Commerce |
+| 3 | DBS Live — Creator Livestreaming | `#/live` · `#/shorts` | DONE (core) · t180u/t185u DONE · **t198u+t199u+t200u DONE** (Checker PASS 2026-10-25 · Request Spotlight conditional PASS) (tabs/Shorts · Connect multi-platform · GB day · bars · Request Spotlight · paid-gift Challenge pop · phase2/t198u-connect-gb-stickers/) · **t255u DONE** (daily host goals · phase2/daily-goals-t255u/) | Live Social / Commerce |
 | 4 | DBS Marketplace — Advertising | `#/marketplace` | DONE (Checker PASS 2026-10-25 · phase2/marketplace/checker/) | Commerce |
 | 5 | Creator Rewards, Earnings & Commissions | `#/earnings` | DONE (ledger + commissions — Checker PASS 2026-10-25; evidence phase2/earnings/ + checker/) | Commerce |
 | 6 | Missions | `#/missions` | DONE (Checker PASS 2026-10-25 · phase2/missions/checker/) | Commerce |
