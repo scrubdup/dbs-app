@@ -90,3 +90,12 @@ test('preserve the real DatBoiSkeet music catalog', () => {
     assert.ok(VIDEOS.some(({ title: actual }) => actual === title), `Missing ${title}`);
   }
 });
+
+
+test('featured video premiere and sponsored disclosure are retained', () => {
+  const source = readFileSync(new URL('../src/pages/shells.js', import.meta.url), 'utf8');
+  assert.ok(source.includes('Featured Premiere'), 'Missing featured video premiere');
+  assert.ok(source.includes('v.sponsored === true'), 'Paid videos must be explicitly marked');
+  assert.ok(source.includes('Sponsored</span>'), 'Paid video disclosure missing');
+  assert.ok(source.includes('${premiereHtml}${sections}${extra}'), 'Original video sections must remain');
+});
