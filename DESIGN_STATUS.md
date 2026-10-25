@@ -179,4 +179,5 @@ Prior REJECT cleared: `.field[hidden], #postMediaField[hidden], #postPresets[hid
 - Header: `#tierPill` Sign in **removed**; `#headerMsg` Messages pill **always** in that slot (signed-out + signed-in). Red unread badge when count > 0. Sign in only on `#/profile`.
 - Tabbar exactly 7 (no scroll): **Home · Post · Music · Go Live · Videos · Chat · Game** — Go Live 4th/center, flat. Messages OFF tabbar; Profile via drawer.
 - Evidence: `/workspace/dbs-evidence/phase2/tabbar-header-t290u/`
+- Observe: `index-tM6mWAjU.js` / `index-CX-L09lP.css` · gh-pages `2b373fb` · main `674645f`
 - Forever: https://scrubdup.github.io/dbs-app/
