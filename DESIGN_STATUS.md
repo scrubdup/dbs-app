@@ -124,5 +124,10 @@ Checker PASS. Every `.card`/panel gets BW-family subtle blue edge/glow; red prim
 - Evidence: `/workspace/dbs-evidence/phase2/home-top-live-t227u/checker-reaudit/`.
 - Tabbar untouched (t228u).
 
-- **t249u** Home Creators sell card **Coming Soon** chip (inline next to title; TEST MODE chip + Start selling demo kept) — **PENDING AUDIT** (Checker owns PASS) 
-- **t251u** Clippers **Coming Soon** chip on #/clippers application card + Profile "Apply as Clipper" button — **PENDING AUDIT** (Checker owns PASS)
+## Coming Soon · Home sell + Clippers (t249u + t251u · DONE)
+
+**DONE** (Checker PASS 2026-10-25). Observe `index-C5Y6AIbd.js` / `index-BlXaFuvo.css` (gh-pages `2353416`).
+
+- **t249u** Home Creators sell: `#home-sell-coming-soon` inline next to title; TEST MODE chip + Start selling demo kept; blue accent kept.
+- **t251u** `#/clippers` `#clippers-coming-soon` next to Clipper application; Profile Apply as Clipper Coming Soon chip.
+- Tabbar untouched. Evidence: `phase2/home-sell-coming-soon-t249u/checker/`.
