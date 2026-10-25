@@ -17,6 +17,7 @@ function videoCard(v) {
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
       </div>
       <span class="chip">${esc(v.category || 'Music Videos')}</span>
+      ${v.sponsored === true ? '<span class="chip" aria-label="Sponsored video">Sponsored</span>' : ''}
       <h3 style="margin:8px 0 4px">${esc(v.title)}</h3>
       <p class="muted" style="margin:0 0 8px">${esc(v.artist || 'DatBoiSkeet')}</p>
       <div class="row wrap">
@@ -33,6 +34,15 @@ export function renderVideos() {
     const cat = v.category || 'Music Videos';
     (grouped[cat] ||= []).push(v);
   });
+  // Featured placement is editorial unless a verified paid placement explicitly sets sponsored: true.
+  const premiere = VIDEOS.find((v) => v.featured && v.embed && v.youtube)
+    || VIDEOS.find((v) => v.embed && v.youtube);
+  const premiereHtml = premiere
+    ? `<section aria-label="Featured video premiere">
+        <h2 style="margin:16px 0 8px">Featured Premiere</h2>
+        ${videoCard(premiere)}
+      </section>`
+    : '';
   const sections = order
     .filter((cat) => grouped[cat]?.length)
     .map((cat) => {
@@ -97,7 +107,7 @@ export function renderVideos() {
         <a class="btn ghost" href="https://www.youtube.com/playlist?list=PLC6_HdjaVaQERro-n6XWI2ECIC4crgf4t" target="_blank" rel="noopener">Music Videos playlist</a>
       </div>
     </div>
-    ${sections}${extra}
+    ${premiereHtml}${sections}${extra}
     ${adminHtml ? `<h3 style="margin:16px 0 8px">From Admin</h3>${adminHtml}` : ''}
     ${coming}`,
     { lead: 'Official MVs · Mixes · Interviews · admin uploads.' }
