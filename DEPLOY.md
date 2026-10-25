@@ -10,9 +10,9 @@
 
 - **Home:** https://scrubdup.github.io/dbs-app/#/home
 - **Messages:** https://scrubdup.github.io/dbs-app/#/messages
-- **Never expires.** Source: `gh-pages` branch (`f1740fd` · t212u instant badge refresh; main `94a237d`; assets index-D-TIn6bb.js / index-BTT_WRjN.css)
+- **Never expires.** Source: `gh-pages` branch (`8143d8c` · t228u Go Live tab order; includes t227u Top live · main `8e8164c` / t227u `aab4a48`; assets index-D23-pzCG.js / index-CRvgdFY0.css)
 - Base path: `/dbs-app/`
-- **Last shipped:** t212u instant Messages badge refresh on markThreadRead (dbs:messages-unread event) — prior: t212u badge-clear fix (Messages unread clears after opening thread; demoUnreadSeeded one-shot) — prior: tabbar Home · Music · Videos · Post · Go Live (center, #/live?go=1) · Chat (#/community) · Messages (#/messages + unread badge) · Profile; .tabbar-scroll horizontal scroll, 11px labels / 22px icons
+- **Last shipped:** t228u Go Live between Home and Music (includes **t227u** Top live first in Featured Stage; HOME title LIVE pill removed) — prior: t212u instant Messages badge refresh
 
 ## Phone link (workers.dev — temporary until claimed)
 
@@ -28,4 +28,4 @@
 
 - **Repo:** https://github.com/scrubdup/dbs-app
 - Rebuild Pages: `VITE_BASE=/dbs-app/ npm run build` → push `dist/` to `gh-pages` (or use Actions workflow on main)
-- Includes: brand black/red/blue (`--blue: #2f6bff`), t180u song packs, splash 3s, sticky player fix, drawer IA, Home LIVE pill, BW crop, t185u gifts catalog (in-flight OK)
+- Includes: brand black/red/blue (`--blue: #2f6bff`), t227u Top live stage tab (no HOME title LIVE pill), t180u song packs, splash 3s, sticky player, drawer IA, BW crop, t185u gifts
