@@ -156,7 +156,7 @@ function renderFollowingPanel(user) {
   if (!user) {
     body = `
       <p class="muted">Sign in to see lives from accounts you follow.</p>
-      <a class="btn primary" href="#/profile">Sign in</a>
+      <a class="btn primary" href="#/profile">Demo profile</a>
       <p class="chip" style="margin-top:10px">TEST MODE · Following is local demo graph</p>`;
   } else if (!lives.length) {
     body = `
@@ -354,13 +354,13 @@ function renderLiveGifts(live, user) {
         <a class="btn ghost" href="#/wallet" style="font-size:12px">Wallet</a>
       </div>
       <details class="lg-buy-details" style="margin-top:10px">
-        <summary class="muted" style="cursor:pointer;font-size:13px">Buy coins · TEST MODE local credit</summary>
+        <summary class="muted" style="cursor:pointer;font-size:13px">Add demo coins · no payment</summary>
         <div class="row wrap lg-buy-row" style="gap:6px;margin-top:8px">${packBtns}</div>
-        <p class="muted" style="margin:8px 0 0;font-size:12px">100 coins = $2 · demo only · not a real charge</p>
+        <p class="muted" style="margin:8px 0 0;font-size:12px">Demo coin values only. No charge, cash value, or withdrawal.</p>
       </details>`
     : `
       <div class="card" style="margin-top:8px;padding:12px">
-        <p class="muted" style="margin:0">Sign in to send gifts during this Live.</p>
+        <p class="muted" style="margin:0">Create a local demo profile to try gifts during this Live. No real account required.</p>
         <a class="btn primary" href="#/profile" style="margin-top:8px">Sign in</a>
       </div>`;
 
@@ -368,10 +368,10 @@ function renderLiveGifts(live, user) {
     <div class="card live-gifts" id="liveGifts">
       <div class="row wrap" style="justify-content:space-between;gap:8px;align-items:baseline">
         <h3 style="margin:0">Gifts</h3>
-        <span class="chip">TEST MODE · coins · catalog USD as net</span>
+        <span class="chip">TEST MODE · simulated gifts · no real payouts</span>
       </div>
       <p class="muted" style="margin:6px 0 12px;font-size:12px">
-        Original DBS catalog · send during Live · expensive gifts (Money Gun+) ask to confirm ·
+        PIKK prototype gift catalog · send during Live · expensive gifts (Money Gun+) ask to confirm ·
         viewers see names &amp; coins only
       </p>
       <div class="live-gift-overlay" id="liveGiftOverlay" aria-live="polite" aria-atomic="true"></div>
