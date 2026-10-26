@@ -60,11 +60,11 @@ function renderHero() {
     <div class="card rs-hero">
       <div class="row wrap" style="justify-content:space-between;gap:10px;align-items:flex-start">
         <div>
-          <h3 style="margin:0 0 4px">DBS Restream</h3>
+          <h3 style="margin:0 0 4px">PIKK Restream</h3>
           <p class="rs-free-sub" style="margin:0 0 8px;font-weight:800;color:#fff;letter-spacing:.01em">Free multi-platform go-live</p>
           <p class="muted" style="margin:0;max-width:42rem">
             Go live to YouTube, TikTok, Twitch, Facebook, Instagram, Kick, and Custom RTMP
-            <strong>inside DBS — so you don’t pay Restream.io</strong>. Platform account policies still apply.
+            <strong>inside PIKK — so you don’t pay Restream.io</strong>. Platform account policies still apply.
             DEMO · TEST MODE · no real RTMP / OAuth relay yet.
           </p>
         </div>
@@ -237,9 +237,9 @@ function renderObs(ingest) {
   if (!ingest) return '';
   return `
     <div class="card rs-obs">
-      <h3>OBS / encoder · DBS ingest</h3>
+      <h3>OBS / encoder · PIKK ingest</h3>
       <p class="muted" style="margin:0 0 10px">
-        Point OBS at this demo RTMP URL + stream key. <strong>No Restream fee inside DBS.</strong>
+        Point OBS at this demo RTMP URL + stream key. <strong>No Restream fee inside PIKK.</strong>
         Stream Everywhere disclose: platforms own the outbound stream; v1 relays metadata only.
       </p>
       <label class="field"><span>RTMP URL</span>
@@ -382,7 +382,7 @@ export function renderRestream() {
     ${renderHistory(hist)}
   `;
 
-  return shellPage('DBS Restream', body, {
+  return shellPage('PIKK Restream', body, {
     lead: 'Free multi-platform go-live · avoid paying Restream.io · campaign tiers · OBS ingest demo · TEST MODE',
     badge: session ? 'LIVE' : undefined,
   });
