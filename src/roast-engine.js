@@ -20,17 +20,17 @@ export function castRematchVote(match, yes) {
 export function tickRoastMatch(match) {
   if (!['round','vote','break','rematch'].includes(match.phase)) return match;
   if (match.seconds > 1) return { ...match, seconds: match.seconds - 1 };
-  if (match.phase === 'round') return { ...match, phase: 'vote', seconds: VOTE_SECONDS, votes: [0, 0] };
+  if (match.phase === 'round') return { ...match, phase: 'vote', seconds: VOTE_SECONDS, votes: [0, 0], voted: false };
   if (match.phase === 'vote') {
     const winner = match.votes[0] === match.votes[1] ? null : match.votes[0] > match.votes[1] ? 0 : 1;
     const scores = [...match.scores]; if (winner !== null) scores[winner] += 1;
     const roundWinners = [...match.roundWinners, winner];
     if (match.round >= BASE_ROUNDS && scores[0] !== scores[1]) {
-      return { ...match, scores, roundWinners, winner: scores[0] > scores[1] ? 0 : 1, phase: 'rematch', seconds: REMATCH_SECONDS };
+      return { ...match, scores, roundWinners, winner: scores[0] > scores[1] ? 0 : 1, phase: 'rematch', seconds: REMATCH_SECONDS, rematchVoted: false };
     }
     // A tied result after the scheduled rounds triggers another deciding round.
     return { ...match, scores, roundWinners, phase: 'break', seconds: BREAK_SECONDS, tieBreaker: match.round >= BASE_ROUNDS };
   }
-  if (match.phase === 'break') return { ...match, phase: 'round', round: match.round + 1, seconds: ROUND_SECONDS, votes: [0, 0] };
+  if (match.phase === 'break') return { ...match, phase: 'round', round: match.round + 1, seconds: ROUND_SECONDS, votes: [0, 0], voted: false };
   return { ...match, phase: 'finished', seconds: 0 };
 }
