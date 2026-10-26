@@ -3770,3 +3770,37 @@ input:focus, select:focus, textarea:focus {
 .header-notifications{display:inline-flex;align-items:center;gap:5px;text-decoration:none;white-space:nowrap}
 .header-notifications svg{width:16px;height:16px;flex:none}
 @media(max-width:420px){.header-notifications{padding-inline:7px;gap:3px}.header-notifications-label{font-size:10px}}
+
+
+/* PIKK bottom navigation: seven tabs must remain visible on narrow iPhones.
+   Override legacy five-column mobile rules and prevent clipping Shop. */
+#tabbar.tabbar.tabbar-reshaped.tabbar-fit7 {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  width: 100%;
+  box-sizing: border-box;
+  overflow: visible;
+  padding-inline: max(2px, env(safe-area-inset-left)) max(2px, env(safe-area-inset-right));
+}
+#tabbar.tabbar.tabbar-reshaped.tabbar-fit7 > a {
+  display: flex;
+  min-width: 0;
+  width: 100%;
+  max-width: none;
+  overflow: visible;
+  box-sizing: border-box;
+  font-size: clamp(7px, 2.15vw, 10px);
+  padding-inline: 0;
+  text-align: center;
+}
+#tabbar.tabbar.tabbar-reshaped.tabbar-fit7 > a > span:last-child {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  overflow: visible;
+  white-space: nowrap;
+  text-overflow: clip;
+}
+#tabbar.tabbar.tabbar-reshaped.tabbar-fit7 > a .tab-ico {
+  flex-shrink: 0;
+}
