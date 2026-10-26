@@ -268,6 +268,12 @@ function appGoalInner(g) {
     <p class="muted home-goal-amounts" style="margin:6px 0 10px">${fmtUsd(g.raised)} raised of ${fmtUsd(g.targetAmount)} · ${pct}%</p>
     <div class="row wrap" style="gap:8px">
       ${[50, 100, 250].map((c) => `<button type="button" class="btn ghost home-goal-donate" data-goal-id="${esc(g.id)}" data-coins="${c}">Donate ${c} coins</button>`).join('')}
+      <form class="home-goal-custom-form" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;align-items:end">
+        <label style="flex:1;min-width:125px">Custom coins
+          <input class="home-goal-custom-coins" type="number" inputmode="numeric" min="1" max="1000000" step="1" required placeholder="Enter coins" style="width:100%" />
+        </label>
+        <button type="submit" class="btn primary">Donate custom</button>
+      </form>
     </div>`;
 }
 
@@ -614,6 +620,16 @@ export function bindHome(root) {
     const goalVis = () => { if (document.visibilityState === 'visible') redraw(); };
     const goalTimer = setInterval(redraw, 30000);
     document.addEventListener('visibilitychange', goalVis);
+    goalBox.addEventListener('submit', (e) => {
+      if (!e.target.matches('.home-goal-custom-form')) return;
+      e.preventDefault();
+      const amount = Number(e.target.querySelector('.home-goal-custom-coins')?.value);
+      if (!Number.isSafeInteger(amount) || amount < 1 || amount > 1000000) return toast('Enter 1–1,000,000 whole coins');
+      const goalId = getAppDailyGoal()?.id;
+      const result = donateToGoal(goalId, amount);
+      toast(result?.ok ? 'Custom donation sent · TEST MODE' : result?.error === 'insufficient' ? 'Not enough demo coins' : result?.error === 'signin' ? 'Sign in first' : 'Donation unavailable · TEST MODE');
+      redraw();
+    });
     goalBox.addEventListener('click', (e) => {
       const b = e.target.closest('.home-goal-donate');
       if (!b) return;
