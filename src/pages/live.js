@@ -765,7 +765,7 @@ function renderGbChallengePop(user) {
           <div>
             <div class="chip">Gift Battle</div>
             <h3 style="margin:4px 0">@${esc(pop.fromUser)} sent ${esc(pop.giftName)}</h3>
-            <p class="muted" style="margin:0;font-size:12px">${esc(String(pop.coins))} coins · paid · Challenge this gifter · 60s battle</p>
+            <p class="muted" style="margin:0;font-size:12px">${esc(String(pop.coins))} demo coins · no real payment · Challenge this gifter · 60s battle</p>
           </div>
         </div>
         ${actions}
