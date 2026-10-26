@@ -54,13 +54,13 @@ test('same-route navigation refreshes listeners without changing the hash', () =
 
 test('preserve the seven approved navigation tabs and their order', () => {
   assert.deepEqual(TABBAR.map(({ label }) => label), [
-    'Home', 'Music', 'Videos', 'Go Live', 'Connect', 'Dating', 'Shop',
+    'Home', 'Music', 'Videos', 'Create', 'Connect', 'Dating', 'Shop',
   ]);
   assert.deepEqual(TABBAR.map(({ href }) => href), [
-    '#/home', '#/music', '#/videos', '#/live?go=1',
+    '#/home', '#/music', '#/videos', '#/create',
     '#/connect', '#/dating', '#/shop',
   ]);
-  assert.equal(TABBAR[3].primary, true, 'Go Live remains the center action');
+  assert.equal(TABBAR[3].primary, true, 'Create remains the center action');
   const header = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
   assert.match(header, /id="headerProfile" href="#\/profile"/);
   assert.match(header, /id="headerMsg" href="#\/messages"/);
