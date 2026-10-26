@@ -2652,8 +2652,17 @@ export function exploreSuggestedAccounts() {
 
 /** §23 Live Gift Battles — voluntary gifts, not wagers (TEST MODE) */
 const GB_DURATION_MS = 60_000;
-/** t198u · winner recognition lasts until end of local calendar day (not 3h). */
+/** The featured winner appears for three hours; the daily history board remains visible until midnight. */
+export const GB_CHAMPION_SPOTLIGHT_MS = 3 * 60 * 60 * 1000;
 const GB_DAILY_WINNERS_CAP = 10;
+function gbSpotlightUntil(row) {
+  const endedAt = Number(row?.endedAt);
+  if (!Number.isFinite(endedAt) || endedAt <= 0) return 0;
+  const limit = endedAt + GB_CHAMPION_SPOTLIGHT_MS;
+  const stored = Number(row.championUntil);
+  // Old demo battles stored end-of-day expiration. Clamp at read time without altering history.
+  return Number.isFinite(stored) && stored > 0 ? Math.min(stored, limit) : limit;
+}
 function gbEndOfLocalDay(now = Date.now()) {
   const d = new Date(now);
   d.setHours(23, 59, 59, 999);
@@ -2710,7 +2719,7 @@ function finalizeBattleIfNeeded(battle, now = Date.now()) {
     winnerName,
     scoreA: a,
     scoreB: b,
-    championUntil: winnerId ? gbEndOfLocalDay(now) : null,
+    championUntil: winnerId ? now + GB_CHAMPION_SPOTLIGHT_MS : null,
   };
   return ended;
 }
@@ -2979,29 +2988,29 @@ export function listBattleHistory(limit = 20) {
   return (gbBucket().history || []).slice(0, limit);
 }
 
-/** Current day champion spotlight (most recent winner still within calendar-day window). */
+/** Most recent winner still inside the approved three-hour spotlight window. */
 export function getChampion(now = Date.now()) {
   const gb = gbBucket();
   const active = gb.active;
-  if (
-    active &&
-    active.status === 'ended' &&
-    active.winnerId &&
-    active.championUntil &&
-    now < active.championUntil
-  ) {
-    return {
+  const candidates = [
+    ...(active?.status === 'ended' && active.winnerId ? [{
       battleId: active.id,
       userId: active.winnerId,
       username: active.winnerName,
-      score: active.winnerId === active.challenger.id ? active.scoreA : active.scoreB,
+      score: active.winnerId === active.challenger?.id ? active.scoreA : active.scoreB,
       endedAt: active.endedAt,
       championUntil: active.championUntil,
       mode: active.mode,
-    };
+    }] : []),
+    ...(gb.champions || []),
+  ];
+  for (const row of candidates) {
+    const until = gbSpotlightUntil(row);
+    if (until && now >= Number(row.endedAt) && now < until) {
+      return { ...row, championUntil: until };
+    }
   }
-  const list = gb.champions || [];
-  return list.find((c) => c.championUntil && now < c.championUntil) || null;
+  return null;
 }
 
 /** Top winners by win count (local demo). */
@@ -3028,7 +3037,7 @@ export function listTopBattleWinners(limit = 15) {
 
 /**
  * t198u · Up to 10 unique Gift Battle winners for the local calendar day
- * (most recent first). Recognition window = rest of day.
+ * (most recent first). This is a daily results history, separate from the 3-hour champion spotlight.
  */
 export function listDailyBattleWinners(limit = GB_DAILY_WINNERS_CAP, now = Date.now()) {
   const cap = Math.min(Math.max(1, Number(limit) || GB_DAILY_WINNERS_CAP), GB_DAILY_WINNERS_CAP);
@@ -3041,8 +3050,7 @@ export function listDailyBattleWinners(limit = GB_DAILY_WINNERS_CAP, now = Date.
     if (seen.has(row.userId)) return;
     const at = Number(row.endedAt || 0);
     if (at < start || at > end) return;
-    // Still recognized today (championUntil may be end-of-day)
-    if (row.championUntil && now > row.championUntil) return;
+    // Daily results remain visible even after the featured 3-hour spotlight expires.
     seen.add(row.userId);
     out.push({
       userId: row.userId,
