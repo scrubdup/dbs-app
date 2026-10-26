@@ -597,6 +597,6 @@ export const TABBAR = [
   { href: '#/connect', label: 'Connect', icon: 'live' },
   { href: '#/create', label: 'Create', icon: 'live', primary: true },
   { href: '#/dating', label: 'Dating', icon: 'heart' },
-  { href: '#/games', label: 'Games', icon: 'games' },
+  { href: '#/games', label: 'Games', icon: 'game' },
   { href: '#/shop', label: 'Shop', icon: 'merch' },
 ];
