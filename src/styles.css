@@ -3770,3 +3770,40 @@ input:focus, select:focus, textarea:focus {
 .header-notifications{display:inline-flex;align-items:center;gap:5px;text-decoration:none;white-space:nowrap}
 .header-notifications svg{width:16px;height:16px;flex:none}
 @media(max-width:420px){.header-notifications{padding-inline:7px;gap:3px}.header-notifications-label{font-size:10px}}
+
+
+/* PIKK mobile navigation visibility safeguard.
+   Always reserve seven equal columns; never clip Shop off the right edge. */
+#tabbar.tabbar.tabbar-reshaped.tabbar-fit7 {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  width: 100%;
+  box-sizing: border-box;
+  overflow: visible;
+}
+#tabbar.tabbar.tabbar-reshaped.tabbar-fit7 > a {
+  display: flex;
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
+  justify-self: stretch;
+  overflow: visible;
+  font-size: clamp(7px, 2.25vw, 10px);
+}
+#tabbar.tabbar.tabbar-reshaped.tabbar-fit7 > a > span:last-child {
+  display: block;
+  max-width: 100%;
+  white-space: nowrap;
+  text-overflow: clip;
+}
+@media (max-width: 360px) {
+  #tabbar.tabbar.tabbar-reshaped.tabbar-fit7 > a {
+    font-size: 7px;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  #tabbar.tabbar.tabbar-reshaped.tabbar-fit7 > a svg {
+    width: 17px;
+    height: 17px;
+  }
+}
