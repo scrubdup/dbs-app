@@ -35,6 +35,7 @@ import { renderFanClubs, bindFanClubs } from './pages/fanclubs.js';
 import { renderLoyalty, bindLoyalty } from './pages/loyalty.js';
 import { renderOpenMic, bindOpenMic } from './pages/openmic.js';
 import { renderShop, bindShop } from './pages/shop.js';
+import { renderPikkShop, bindPikkShop } from './pages/pikk-shop.js';
 import { renderSpotlight, bindSpotlight } from './pages/spotlight.js';
 import { renderConnect, bindConnect } from './pages/connect.js';
 import { renderShorts, bindShorts } from './pages/shorts.js';
@@ -81,7 +82,8 @@ const ROUTES = {
   '/community': { render: renderCommunity, bind: bindCommunity },
   '/signup': { render: renderSignup },
   '/messages': { render: renderMessages, bind: bindMessages },
-  '/shop': { render: renderShop, bind: bindShop },
+  '/shop': { render: renderPikkShop, bind: bindPikkShop },
+  '/profile-shop': { render: renderShop, bind: bindShop },
   '/giftbattles': { render: renderGiftBattles, bind: bindGiftBattles },
   '/notifications': { render: renderNotifications, bind: bindNotifications },
   '/fanclubs': { render: renderFanClubs, bind: bindFanClubs },
