@@ -3606,6 +3606,7 @@ export function getMission(id) {
 }
 
 export function createMission(form = {}) {
+  if (!isAdmin()) return { error: 'forbidden' }; // local demo role, not production authorization
   const title = String(form.title || '').trim().slice(0, 120);
   if (!title) return { error: 'required' };
   const promoteType = PROMOTE_TYPES.includes(form.promoteType) ? form.promoteType : 'app';
@@ -3637,6 +3638,7 @@ export function createMission(form = {}) {
 }
 
 export function setMissionStatus(missionId, status) {
+  if (!isAdmin()) return { error: 'forbidden' }; // local demo role, not production authorization
   if (!MISSION_STATUSES.includes(status)) return { error: 'bad_status' };
   let found = null;
   const missions = (state.missions || []).map((raw) => {
@@ -3770,6 +3772,8 @@ export function getMissionRankings(missionId) {
 
 export function seedDemoMissions({ force = false } = {}) {
   const existing = state.missions || [];
+  // Initial sample load is available to guests; replacing saved campaigns is admin-only.
+  if (existing.length && force && !isAdmin()) return { error: 'forbidden' };
   if (existing.length && !force) {
     return { skipped: true, missions: listMissions() };
   }
@@ -3830,7 +3834,7 @@ export function seedDemoMissions({ force = false } = {}) {
     },
     {
       id: 'msn_demo_app',
-      title: 'Download DBS · invite 3 friends',
+      title: 'Download PIKK · invite 3 friends',
       promoteType: 'app',
       budget: 1200,
       deadline: now + 30 * day,
