@@ -176,6 +176,8 @@ function ensureCreateMenu() {
     trigger?.setAttribute('aria-expanded', 'false');
     if (restoreFocus) trigger?.focus();
   };
+  // A route change must never leave the Create dialog covering the destination.
+  window.addEventListener('hashchange', () => closeMenu());
   panel.addEventListener('click', (e) => {
     if (e.target === panel || e.target.closest('[data-create-close]')) closeMenu(true);
     else if (e.target.closest('.pikk-create-options a')) closeMenu();
