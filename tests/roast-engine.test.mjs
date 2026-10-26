@@ -1,15 +1,13 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { createRoastMatch, tickRoastMatch, castRoastVote, castRematchVote, ROUND_SECONDS, BREAK_SECONDS } from '../src/roast-engine.js';
+import { createRoastMatch, tickRoastMatch, castRoastVote, castRematchVote, ROUND_SECONDS } from '../src/roast-engine.js';
 const advance = (match, ticks) => { for (let i = 0; i < ticks; i++) match = tickRoastMatch(match); return match; };
-test('automated round leads to voting then exactly six-second break', () => {
+test('automated round leads to voting then immediate next round', () => {
   let m = advance(createRoastMatch(), ROUND_SECONDS);
   assert.equal(m.phase, 'vote');
   m = castRoastVote(m, 0);
   m = advance(m, 10);
-  assert.equal(m.phase, 'break');
-  assert.equal(m.seconds, BREAK_SECONDS);
-  m = advance(m, BREAK_SECONDS);
+  assert.equal(m.phase, 'round');
   assert.equal(m.phase, 'round');
   assert.equal(m.round, 2);
   assert.equal(m.voted, false);
@@ -20,11 +18,10 @@ test('tied scheduled match triggers a final tiebreaker', () => {
     m = advance(m, ROUND_SECONDS);
     if (i < 2) m = castRoastVote(m, i);
     m = advance(m, 10);
-    if (i < 2) m = advance(m, BREAK_SECONDS);
+    
   }
-  assert.equal(m.phase, 'break');
+  assert.equal(m.phase, 'round');
   assert.equal(m.tieBreaker, true);
-  m = advance(m, BREAK_SECONDS);
   assert.equal(m.round, 4);
   m = advance(m, ROUND_SECONDS);
   m = castRoastVote(m, 1);
