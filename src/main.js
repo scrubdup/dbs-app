@@ -305,6 +305,10 @@ function refreshHeaderMsgBadge() {
 }
 
 function render(route) {
+  // Route changes (including browser Back, header links and notifications) must
+  // dismiss the Create dialog, not leave an invisible navigation blocker.
+  const createMenu = document.getElementById('pikkCreateMenu');
+  if (createMenu && !createMenu.hidden) createMenu.hidden = true;
   const app = document.getElementById('app');
   const entry = ROUTES[route.path];
   const html = entry ? entry.render(route) : renderNotFound(route.path);
