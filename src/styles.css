@@ -3859,3 +3859,13 @@ input:focus, select:focus, textarea:focus {
     height: 20px;
   }
 }
+
+/* Center Create action and mobile-first content composer sheet. */
+.pikk-create-overlay[hidden]{display:none!important}
+.pikk-create-overlay{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.72);display:flex;align-items:flex-end;justify-content:center;padding:12px 12px max(24px,env(safe-area-inset-bottom))}
+.pikk-create-sheet{width:min(100%,480px);background:#15141f;border:1px solid #39456b;border-radius:22px;padding:18px;box-shadow:0 0 32px #0d2a58}
+.pikk-create-head{display:flex;justify-content:space-between;align-items:center;font-size:20px;margin-bottom:12px}
+.pikk-create-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.pikk-create-options a{display:flex;flex-direction:column;gap:5px;padding:16px 10px;border-radius:13px;border:1px solid #36405d;background:#211d2a;color:#fff;text-decoration:none;font-size:14px;font-weight:800}
+.pikk-create-options a small{color:#aaaec1;font-size:11px;font-weight:500}
+.tabbar.tabbar-reshaped.tabbar-fit7 a.tab-primary .tab-ico svg{width:26px;height:26px}
