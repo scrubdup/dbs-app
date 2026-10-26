@@ -590,14 +590,13 @@ export const DRAWER_LINKS = DRAWER_GROUPS.flatMap((g) =>
   g.href ? [{ href: g.href, label: g.label }] : (g.links || [])
 );
 
-/** Bottom nav t290u: exactly 7 — Home · Post · Music · Go Live · Videos · Chat · Game.
- *  Go Live center (4th). Messages OFF tabbar (header only). Profile via drawer. */
+/** Approved seven-slot PIKK navigation. Logo in header is the Home shortcut. */
 export const TABBAR = [
-  { href: '#/home', label: 'Home', icon: 'home' },
   { href: '#/music', label: 'Music', icon: 'music' },
   { href: '#/videos', label: 'Videos', icon: 'videos' },
-  { href: '#/create', label: 'Create', icon: 'live', primary: true },
   { href: '#/connect', label: 'Connect', icon: 'live' },
+  { href: '#/create', label: 'Create', icon: 'live', primary: true },
   { href: '#/dating', label: 'Dating', icon: 'heart' },
+  { href: '#/games', label: 'Games', icon: 'game' },
   { href: '#/shop', label: 'Shop', icon: 'merch' },
 ];

@@ -13,7 +13,7 @@ test('Create is the exact center of seven bottom navigation slots', () => {
   assert.equal(entries[3][2], 'Create');
   assert.equal(entries[3][1], '#/create');
   assert.match(entries[3][0], /primary: true/);
-  assert.deepEqual(entries.map(x => x[2]), ['Home', 'Music', 'Videos', 'Create', 'Connect', 'Dating', 'Shop']);
+  assert.deepEqual(entries.map(x => x[2]), ['Music', 'Videos', 'Connect', 'Create', 'Dating', 'Games', 'Shop']);
   assert.ok(!entries.some(x => x[2] === 'Profile'));
 });
 
@@ -30,8 +30,24 @@ test('Create opens all six existing destinations without pretending uploads are 
   assert.match(main, /e\.key === 'Escape'/);
 });
 
-test('Header PIKK logo and bottom Home both return to Home; Profile stays in header', () => {
+test('Header PIKK logo returns to Home without a Home tab; Profile stays in header', () => {
   const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
   assert.match(html, /href="#\/home" class="logo" aria-label="PIKK Home"/);
   assert.match(html, /id="headerProfile" href="#\/profile"/);
+});
+
+test('Approved layout keeps official brand and top player while hiding only header ribbon', () => {
+  const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
+  const styles = readFileSync(new URL('../src/styles.css', import.meta.url), 'utf8');
+  const music = readFileSync(new URL('../src/pages/music.js', import.meta.url), 'utf8');
+  assert.match(html, /href="#\/home" class="logo" aria-label="PIKK Home"/);
+  assert.match(html, /class="logo-img" src="%BASE_URL%brand\/pikk-official-approved\.jpg"/);
+  assert.match(html, /id="dbs-sticky-player"/);
+  assert.match(html, /id="spPlay"/);
+  assert.match(html, /id="spQueueBtn"/);
+  assert.match(html, /TEST MODE: no cards charged/);
+  assert.doesNotMatch(html, /id="testRibbon"/);
+  assert.match(styles, /\.tabbar a\.tab-primary/);
+  assert.match(music, /Play in PIKK · Apple Music/);
+  assert.match(music, /platformButtons\(r\.links\)/);
 });
