@@ -131,15 +131,8 @@ function buildTabbar() {
     const pathOnly = '/' + raw.replace(/^\//, '').split(/[?#]/)[0];
     const label = esc(t.label);
     const primaryClass = t.primary ? ' class="tab-primary"' : '';
-    return `<a${primaryClass} href="${t.href}" data-path="${pathOnly}" aria-label="${label}"${t.href === '#/create' ? ' aria-haspopup="dialog" aria-controls="pikkCreateMenu" aria-expanded="false"' : ''}><span class="tab-ico">${t.href === '#/create' ? '<svg viewBox="0 0 32 32" width="26" height="26" aria-hidden="true"><path d="M9 5 L25 16 L9 27 Z" fill="currentColor"/><path d="M24 5v11m0 0-4-4m4 4 4-4" stroke="white" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>' : (ICONS[t.icon] || '')}</span><span>${label}</span></a>`;
+    return `<a${primaryClass} href="${t.href}" data-path="${pathOnly}" aria-label="${label}"><span class="tab-ico">${ICONS[t.icon] || ""}</span><span>${label}</span></a>`;
   }).join('');
-  el.querySelector('a[href="#/create"]')?.addEventListener('click', (event) => {
-    event.preventDefault();
-    const panel = ensureCreateMenu();
-    panel.hidden = !panel.hidden;
-    event.currentTarget.setAttribute('aria-expanded', String(!panel.hidden));
-    if (!panel.hidden) panel.querySelector('[data-create-close]')?.focus();
-  });
   el.style.gridTemplateColumns = '';
   /* Fit all bottom navigation tabs, including Dating and Connect, without horizontal scroll. */
   el.classList.remove('tabbar-scroll');
@@ -168,9 +161,9 @@ function ensureCreateMenu() {
   document.body.appendChild(panel);
   const closeMenu = (restoreFocus = false) => {
     panel.hidden = true;
-    const trigger = document.querySelector('#tabbar a[href="#/create"]');
+    const trigger = document.querySelector('#sideNav a[href="#/create"]');
     trigger?.setAttribute('aria-expanded', 'false');
-    if (restoreFocus) trigger?.focus();
+    if (restoreFocus) document.getElementById('menuBtn')?.focus();
   };
   panel.addEventListener('click', (e) => {
     if (e.target === panel || e.target.closest('[data-create-close]')) closeMenu(true);
@@ -213,7 +206,8 @@ function buildDrawer() {
   const groupsHtml = DRAWER_GROUPS.map((g) => {
     if (g.href) {
       const on = g.href === activePath || g.href === activeHash ? ' on' : '';
-      return `<a class="drawer-direct${on}" href="${g.href}">${esc(g.label)}</a>`;
+      const dialogAttrs = g.href === '#/create' ? ' aria-haspopup="dialog" aria-controls="pikkCreateMenu" aria-expanded="false"' : '';
+      return `<a class="drawer-direct${on}" href="${g.href}"${dialogAttrs}>${esc(g.label)}</a>`;
     }
     const links = g.links || [];
     const hasActive = links.some((l) => l.href === activePath || l.href === activeHash);
@@ -308,7 +302,10 @@ function render(route) {
   // Route changes (including browser Back, header links and notifications) must
   // dismiss the Create dialog, not leave an invisible navigation blocker.
   const createMenu = document.getElementById('pikkCreateMenu');
-  if (createMenu && !createMenu.hidden) createMenu.hidden = true;
+  if (createMenu && !createMenu.hidden) {
+    createMenu.hidden = true;
+    document.querySelector?.('#sideNav a[href="#/create"]')?.setAttribute('aria-expanded', 'false');
+  }
   const app = document.getElementById('app');
   const entry = ROUTES[route.path];
   const html = entry ? entry.render(route) : renderNotFound(route.path);
@@ -425,6 +422,16 @@ function boot() {
         const b = g.querySelector('.drawer-cat');
         if (b) b.setAttribute('aria-expanded', open ? 'true' : 'false');
       });
+      return;
+    }
+    const createLink = e.target.closest('a[href="#/create"]');
+    if (createLink) {
+      e.preventDefault();
+      setDrawer(false);
+      const panel = ensureCreateMenu();
+      panel.hidden = false;
+      createLink.setAttribute('aria-expanded', 'true');
+      panel.querySelector('[data-create-close]')?.focus();
       return;
     }
     if (e.target.closest('a')) setDrawer(false);
