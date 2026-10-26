@@ -15,7 +15,7 @@
   <link rel="manifest" href="%BASE_URL%manifest.webmanifest" />
   <meta property="og:title" content="PIKK" />
   <meta property="og:description" content="PIKK — videos, music, live, dating, shopping, games, and creators." />
-  <meta property="og:image" content="/og-image.png" />
+  <meta property="og:image" content="https://scrubdup.github.io/pikk-app/og-image.png" />
 </head>
 <body>
   <!-- §19 Splash t178u: official logo 3s + tuning-fork chime (legacy PNG kept under /loading/) -->
@@ -28,7 +28,7 @@
       <source src="%BASE_URL%loading/dbs-tuning-fork.wav" type="audio/wav" />
     </audio>
   </div>
-  <div class="demo-ribbon" id="testRibbon">TEST MODE · NO REAL CHARGES · LOCAL DEMO</div>
+  <!-- TEST MODE remains enforced; disclosure stays in footer, not the top header. -->
   <!-- §17 Sticky top player — YouTube embeds / Stream Everywhere open links (no rehost) -->
   <div class="sticky-player" id="dbs-sticky-player" data-also="stickyPlayer" aria-label="PIKK music player">
     <div class="sp-row">
@@ -47,7 +47,7 @@
         <span class="sp-pn-sub" id="spPlayNextSub">Most played today</span>
       </button>
       <button type="button" class="sp-btn sp-queue" id="spQueueBtn" aria-label="Queue" title="His tracks">☰</button>
-      <a class="sp-btn sp-open" id="spOpen" href="https://open.spotify.com/artist/0Po64h8VleQOR97okM68zh" target="_blank" rel="noopener" title="Open on official platform">↗</a>
+      <a class="sp-btn sp-open" id="spOpen" href="https://music.apple.com/us/artist/datboiskeet/1270542870" target="_blank" rel="noopener" title="Open on official platform">↗</a>
       <span class="sp-badge" id="spBadge">TEST · YT EMBED</span>
       <span class="sp-source" id="spSource">YouTube</span>
     </div>
@@ -87,10 +87,18 @@
   <main id="app"></main>
   <footer class="foot">
     <p class="muted" style="font-size:12px;margin:0 0 4px">PIKK Network · music-first · TEST MODE demo</p>
+    <p class="muted" style="font-size:12px;margin:4px 0"><a id="pikk-refresh-link" href="?refresh=latest#/home" aria-label="Check for latest PIKK updates">Check for latest updates</a></p>
     <p>TEST MODE: no cards charged. Catalog and merch links are demo placeholders.</p>
     <p class="credit">Built by <a href="https://cox-creations-studio.pages.dev/" target="_blank" rel="noopener">Cox Creations Studio</a></p>
     <p class="credit"><a href="https://cursor.com/canvas/store-4b630a92-1dd3-4b0e-b141-42c424845f21/c81bf315-76c4-4599-bb5d-4bec1a35a001" target="_blank" rel="noopener">Open with Grok Bot team</a> · progress board</p>
   </footer>
+  <script type="module">
+    import { freshPikkUrl } from './src/refresh-url.js';
+    document.getElementById('pikk-refresh-link')?.addEventListener('click', function (event) {
+      event.preventDefault();
+      window.location.assign(freshPikkUrl(window.location.href));
+    });
+  </script>
   <!-- bottom mini-player removed — §17 sticky top player -->
   <nav class="tabbar" id="tabbar" aria-label="Primary"></nav>
   <div class="toast" id="toast" role="status"></div>

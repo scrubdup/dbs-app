@@ -139,7 +139,7 @@ export function renderConnect() {
             </div>
             <div class="connect-tile-label">
               <span class="chip">Them</span>
-              <span class="muted small" id="connectThemStatus">Waiting for match…</span>
+              <span class="muted small" id="connectThemStatus">No matching service · TEST MODE</span>
             </div>
           </div>
         </div>
@@ -147,8 +147,8 @@ export function renderConnect() {
         <div class="connect-actions">
           ${
             ready
-              ? `<button class="btn primary connect-btn-start" id="connect-start">Find match</button>`
-              : `<button class="btn primary connect-btn-start" disabled>Find match · complete 18+ &amp; rules</button>`
+              ? `<button class="btn primary connect-btn-start" id="connect-start">View launch requirements</button>`
+              : `<button class="btn primary connect-btn-start" disabled>Unavailable · review 18+ &amp; rules</button>`
           }
           <button class="btn primary connect-btn-next" disabled aria-label="Next (disabled)">Next</button>
           <button class="btn connect-btn-end" disabled aria-label="End (disabled)">End</button>
@@ -162,7 +162,7 @@ export function renderConnect() {
 
         <div id="connect-blocked" class="connect-panel" hidden>
           <strong>${BLOCK_MSG}</strong>
-          <p class="muted small">TEST MODE — no match was created, no camera was requested, no WebRTC.</p>
+          <p class="muted small">TEST MODE — this is a preview, not a real matching request. No match was created, no camera was requested, and no WebRTC connection was attempted.</p>
         </div>
         <p class="muted small" style="margin-top:10px">Controls are mockups until launch. Prefs save on this device.</p>
       </div>
@@ -233,30 +233,12 @@ export function bindConnect(root = document, rerender) {
     updateConnectPrefs({ rulesAccepted: e.target.checked });
     redraw();
   });
+  // Fail closed: this prototype has no verified age assurance or WebRTC matching.
+  // Never animate a fake match, request media, or imply that another person exists.
   root.querySelector('#connect-start')?.addEventListener('click', () => {
-    const them = root.querySelector('#connectThem');
-    const pulse = root.querySelector('#connectPulse');
-    const status = root.querySelector('#connectThemStatus');
     const blocked = root.querySelector('#connect-blocked');
-    const startBtn = root.querySelector('#connect-start');
-    them?.classList.add('matching');
-    if (pulse) pulse.hidden = false;
-    if (status) status.textContent = 'Matching…';
-    if (startBtn) {
-      startBtn.disabled = true;
-      startBtn.textContent = 'Matching…';
-    }
-    window.setTimeout(() => {
-      them?.classList.remove('matching');
-      if (pulse) pulse.hidden = true;
-      if (status) status.textContent = 'No match · TEST MODE';
-      if (startBtn) {
-        startBtn.disabled = false;
-        startBtn.textContent = 'Find match';
-      }
-      blocked?.removeAttribute('hidden');
-      toast(BLOCK_MSG);
-    }, 900);
+    blocked?.removeAttribute('hidden');
+    toast(BLOCK_MSG);
   });
 
   bindMultiPlatform(root);

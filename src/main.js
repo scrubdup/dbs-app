@@ -14,6 +14,7 @@ import { getState, ensureDemoPosts, markSplash, shouldShowSplash, getUnreadMessa
 import { startRouter, onRoute, getRoute } from './router.js';
 import { ICONS, esc } from './ui.js';
 import { asset, rewriteAssetUrls } from './asset.js';
+import { markActiveTab } from './tabbar-state.js';
 
 import { renderHome, bindHome } from './pages/home.js';
 import { renderAdmin, bindAdmin } from './pages/admin.js';
@@ -210,9 +211,7 @@ function refreshTabBadges() {
   if (!el) return;
   buildTabbar();
   const route = getRoute();
-  el.querySelectorAll('a').forEach((a) => {
-    a.classList.toggle('on', a.getAttribute('data-path') === route.path);
-  });
+  markActiveTab(el, route.path);
   try {
     refreshHeaderMsgBadge();
   } catch (_) {
@@ -264,9 +263,7 @@ function setDrawer(open) {
 function updateChrome(route) {
   const path = route.path;
   buildTabbar();
-  document.querySelectorAll('#tabbar a').forEach((a) => {
-    a.classList.toggle('on', a.getAttribute('data-path') === path);
-  });
+  markActiveTab(document.getElementById('tabbar'), path);
   document.querySelectorAll('#sideNav a').forEach((a) => {
     const href = a.getAttribute('href') || '';
     a.classList.toggle('on', href === '#' + path || href === '#' + route.raw);
