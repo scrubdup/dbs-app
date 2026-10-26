@@ -6,6 +6,13 @@ import {
   advanceSpotlight, advanceSpotlightHouseTrack, skipSpotlight, endSpotlightSet,
 } from '../src/store.js';
 
+// Node has no browser storage; store.save() uses this local demo persistence API.
+globalThis.localStorage ??= {
+  getItem: () => null,
+  setItem: () => {},
+  removeItem: () => {},
+};
+
 const stage = () => ({
   id: 'stage-one', userId: 'artist', username: 'Artist', type: 'song',
   title: 'Demo Song', playCount: 1, awaitingPlayAnother: false,
