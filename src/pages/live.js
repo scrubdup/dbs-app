@@ -709,7 +709,7 @@ function renderLiveOverlayBars(live) {
     ? winners
         .map((w, i) => {
           const st = giftStickerHtml('battle-win', { className: 'gift-sticker gift-sticker--xs' });
-          return `<div class="live-obar-cell" title="${esc(w.username)} · rest of day">
+          return `<div class="live-obar-cell" title="${esc(w.username)} · daily battle results">
             <span class="live-obar-rank">${i + 1}</span>
             ${st}
             <span class="live-obar-name">${esc(w.username)}</span>
@@ -847,7 +847,7 @@ function renderDailyGbWinners() {
   return `
     <div class="card live-gb-day" id="liveGbDayWinners">
       <h3 style="margin:0 0 6px">Gift Battle winners today</h3>
-      <p class="muted" style="margin:0 0 8px;font-size:12px">Up to 10 · until end of day · TEST MODE</p>
+      <p class="muted" style="margin:0 0 8px;font-size:12px">Up to 10 daily results · featured winner spotlight lasts 3 hours · TEST MODE</p>
       <ul class="live-gb-day-list">${rows}</ul>
     </div>`;
 }
