@@ -64,7 +64,7 @@ function appleEmbedUrl(link) {
   try {
     const url = new URL(link);
     if (url.protocol !== 'https:' || url.hostname !== 'music.apple.com') return '';
-    if (!/^\\/[a-z]{2}(?:-[a-z]{2})?\\/(?:song|album)\\//i.test(url.pathname)) return '';
+    if (!/^\/[a-z]{2}(?:-[a-z]{2})?\/(?:song|album)\//i.test(url.pathname)) return '';
     return 'https://embed.music.apple.com' + url.pathname + url.search;
   } catch (_) { return ''; }
 }
