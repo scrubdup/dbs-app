@@ -57,8 +57,8 @@ test('preserve the seven approved navigation tabs and their order', () => {
     'Music', 'Videos', 'Connect', 'Create', 'Dating', 'Games', 'Shop',
   ]);
   assert.deepEqual(TABBAR.map(({ href }) => href), [
-    '#/home', '#/music', '#/videos', '#/create',
-    '#/connect', '#/dating', '#/shop',
+    '#/music', '#/videos', '#/connect', '#/create',
+    '#/dating', '#/games', '#/shop',
   ]);
   assert.equal(TABBAR[3].primary, true, 'Create remains the center action');
   const header = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
