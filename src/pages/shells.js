@@ -27,7 +27,7 @@ function videoCard(v) {
 }
 
 export function renderVideos() {
-  const order = ['Music Videos', 'Mixes', 'Interviews'];
+  const order = ['Music Videos', 'Mixes'];
   const grouped = {};
   VIDEOS.forEach((v) => {
     const cat = v.category || 'Music Videos';
@@ -40,9 +40,11 @@ export function renderVideos() {
       return `<h3 style="margin:16px 0 8px">${esc(cat)}</h3>${cards}`;
     })
     .join('');
+  // Preserve verified interview media under general browsing without restoring an Interviews row.
+  const archivedVideos = grouped.Interviews || [];
   // any unexpected categories
   const extra = Object.keys(grouped)
-    .filter((c) => !order.includes(c))
+    .filter((c) => !order.includes(c) && c !== 'Interviews')
     .map((cat) => `<h3 style="margin:16px 0 8px">${esc(cat)}</h3>${grouped[cat].map(videoCard).join('')}`)
     .join('');
 
@@ -89,18 +91,25 @@ export function renderVideos() {
     .join('');
 
   return shellPage(
-    'Videos & Interviews',
-    `<div class="card"><p class="muted" style="margin:0">Official DatBoiSkeet music videos, mixes, and interviews — YouTube embeds from the original source. No rehosted files.</p>
+    'PIKK Videos',
+    `<div class="card"><p class="muted" style="margin:0">Official DatBoiSkeet videos and mixes — YouTube embeds from the original source. No rehosted files.</p>
       <div class="row wrap" style="margin-top:8px;gap:8px">
         <a class="btn" href="https://www.youtube.com/channel/UCA2GGwQ-cOUW0ZqmWaGzEBA" target="_blank" rel="noopener">Official YouTube channel</a>
         <a class="btn ghost" href="https://www.youtube.com/@DatBoiSkeet1" target="_blank" rel="noopener">@DatBoiSkeet1</a>
         <a class="btn ghost" href="https://www.youtube.com/playlist?list=PLC6_HdjaVaQERro-n6XWI2ECIC4crgf4t" target="_blank" rel="noopener">Music Videos playlist</a>
       </div>
     </div>
-    ${sections}${extra}
+    ${sections}
+    <section class="card" id="videosCreatorUploadsComingSoon" aria-label="Artist and producer uploads coming soon">
+      <h3>Coming Soon — Artist &amp; Producer Uploads</h3>
+      <p>Artists and producers will be able to upload original music, beats, and videos to PIKK.</p>
+      <p class="muted">Prototype preview only. Creator uploading, moderation, storage, and playback are not live yet.</p>
+    </section>
+    ${extra}
+    ${archivedVideos.length ? `<h3 style="margin:16px 0 8px">More Videos</h3>${archivedVideos.map(videoCard).join('')}` : ''}
     ${adminHtml ? `<h3 style="margin:16px 0 8px">From Admin</h3>${adminHtml}` : ''}
     ${coming}`,
-    { lead: 'Official MVs · Mixes · Interviews · admin uploads.' }
+    { lead: 'Official music videos · Mixes · artist and producer uploads coming soon.' }
   );
 }
 
