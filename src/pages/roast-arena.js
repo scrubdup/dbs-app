@@ -8,7 +8,7 @@ function drawDemo() {
   const root = document.getElementById('roast-demo');
   if (!root || !demo) { if (timer) clearInterval(timer); timer = null; return; }
   const phase = demo.phase;
-  const label = phase === 'round' ? `Round ${demo.round}${demo.tieBreaker ? ' · Final tiebreaker' : ''}` : phase === 'vote' ? 'Vote for the round winner' : phase === 'break' ? 'Break · Next round soon' : phase === 'rematch' ? 'Run It Back?' : 'Match finished';
+  const label = phase === 'round' ? `Round ${demo.round}${demo.tieBreaker ? ' · Final tiebreaker' : ''}` : phase === 'vote' ? 'Vote for the round winner' : phase === 'rematch' ? 'Run It Back?' : 'Match finished';
   root.innerHTML = `<h3>${label}</h3><p><strong>${String(Math.floor(demo.seconds / 60)).padStart(2, '0')}:${String(demo.seconds % 60).padStart(2, '0')}</strong></p><p>Contestant A: ${demo.scores[0]} rounds · Contestant B: ${demo.scores[1]} rounds</p>${phase === 'vote' ? '<button type="button" data-roast-vote="0">Vote A</button> <button type="button" data-roast-vote="1">Vote B</button>' : ''}${phase === 'rematch' ? `<p>Winner: Contestant ${demo.winner === 0 ? 'A' : 'B'}</p><button type="button" data-roast-rematch="yes">Run It Back? Yes</button> <button type="button" data-roast-rematch="no">No</button>` : ''}<p class="muted">Local interactive simulation only. Votes are not shared between viewers. No live video or gifts are connected.</p>`;
 }
 export function bindRoastArena() {
@@ -51,9 +51,9 @@ export function renderRoastArena() {
         <li>The system starts a visible countdown and displays the current round and time remaining to everyone.</li>
         <li>When the round ends, both microphones pause and viewers see <strong>Vote: Contestant A</strong> or <strong>Vote: Contestant B</strong> buttons.</li>
         <li>Each eligible viewer gets one vote per round within the timed voting window; the system locks voting when time expires.</li>
-        <li>Results display the round winner, cumulative score and a separate gifts leaderboard. The system displays a <strong>6-second break</strong> between rounds before starting the next round. If the final match vote is tied, an automatic <strong>tiebreaker final round</strong> begins after the break. At the end of a decided match, viewers can vote <strong>Rematch: Yes</strong> or <strong>Rematch: No</strong>; a rematch proceeds only if both contestants agree.</li>
+        <li>Results display the round winner, cumulative score and a separate gifts leaderboard. The <strong>10-second audience voting window is the only break</strong> between rounds. The next round starts immediately after voting closes. If the final match vote is tied, an automatic <strong>tiebreaker final round</strong> begins after voting closes. At the end of a decided match, viewers can vote <strong>Rematch: Yes</strong> or <strong>Rematch: No</strong>; a rematch proceeds only if both contestants agree.</li>
       </ol>
-      <p class="muted">Voting windows, tiebreakers, rematch polls and 6-second inter-round breaks are planned behavior, not yet a working real-time match.</p>
+      <p class="muted">Voting windows, tiebreakers, rematch polls with no additional inter-round break are planned behavior, not yet a working real-time match.</p>
     </div>
     <div class="card">
       <h3>Discovery</h3>
