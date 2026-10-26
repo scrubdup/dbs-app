@@ -3841,3 +3841,21 @@ input:focus, select:focus, textarea:focus {
     height: 18px;
   }
 }
+
+/* Make seven bottom navigation labels easier to read on iPhone without hiding Shop. */
+@media (max-width: 767px) {
+  html body #tabbar.tabbar.tabbar-reshaped.tabbar-fit7 > a {
+    font-size: clamp(9px, 2.45vw, 11px);
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+  }
+  html body #tabbar.tabbar.tabbar-reshaped.tabbar-fit7 > a > span:last-child {
+    font-size: inherit;
+    line-height: 1.2;
+  }
+  html body #tabbar.tabbar.tabbar-reshaped.tabbar-fit7 > a .tab-ico svg {
+    width: 20px;
+    height: 20px;
+  }
+}
