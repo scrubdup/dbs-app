@@ -5,19 +5,19 @@ const data = readFileSync(new URL('../src/data.js', import.meta.url), 'utf8');
 const main = readFileSync(new URL('../src/main.js', import.meta.url), 'utf8');
 const posts = readFileSync(new URL('../src/pages/posts.js', import.meta.url), 'utf8');
 
-test('Create is the exact center of seven bottom navigation slots', () => {
+test('Go Live is the exact center of seven bottom navigation slots', () => {
   const match = data.match(/export const TABBAR = \[([\s\S]*?)\];/);
   assert.ok(match);
   const entries = [...match[1].matchAll(/\{ href: '([^']+)', label: '([^']+)'[^}]*\}/g)];
   assert.equal(entries.length, 7);
-  assert.equal(entries[3][2], 'Create');
-  assert.equal(entries[3][1], '#/create');
+  assert.equal(entries[3][2], 'Go Live');
+  assert.equal(entries[3][1], '#/live?go=1');
   assert.match(entries[3][0], /primary: true/);
-  assert.deepEqual(entries.map(x => x[2]), ['Home', 'Music', 'Videos', 'Create', 'Connect', 'Dating', 'Shop']);
+  assert.deepEqual(entries.map(x => x[2]), ['Home', 'Music', 'Videos', 'Go Live', 'Connect', 'Dating', 'Shop']);
   assert.ok(!entries.some(x => x[2] === 'Profile'));
 });
 
-test('Create opens all six existing destinations without pretending uploads are live', () => {
+test('Create remains in the drawer with all six demo destinations', () => {
   assert.match(main, /t\.primary \? ' class="tab-primary"'/);
   assert.match(main, /href="#\/live\?go=1"/);
   assert.match(main, /route\.query\.go === '1'/);
@@ -26,7 +26,10 @@ test('Create opens all six existing destinations without pretending uploads are 
   }
   assert.match(posts, /route\.query\.type/);
   assert.match(main, /TEST MODE/);
+  assert.match(data, /id: 'create', label: 'Create post \/ video', href: '#\/create'/);
   assert.match(main, /aria-haspopup="dialog"/);
+  assert.match(main, /createLink = e\.target\.closest\('a\[href="#\/create"\]'\)/);
+  assert.match(main, /setDrawer\(false\);\s*const panel = ensureCreateMenu\(\)/);
   assert.match(main, /e\.key === 'Escape'/);
 });
 
