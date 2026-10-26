@@ -14,7 +14,7 @@ test('Roast Arena separates vote and gift winners and discloses prelaunch status
   assert.match(arena, /Gifts cannot change the audience vote winner/);
   assert.match(arena, /Coming Soon/);
   assert.match(arena, /explicitly opt in/);
-  assert.match(arena, /mute, remove and report/);
+  assert.match(arena, /mute and removal actions/);
 });
 
 test('Roast rounds are automated with timed audience voting and no host', () => {
