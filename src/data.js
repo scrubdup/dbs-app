@@ -499,6 +499,7 @@ export const DRAWER_GROUPS = [
   { id: 'home', label: 'Home', href: '#/home' },
   /* t298u — Profile / Sign in pinned near top (not only under Account accordion) */
   { id: 'profile', label: 'Profile / Sign in', href: '#/profile' },
+  { id: 'create', label: 'Create post / video', href: '#/create' },
   {
     id: 'watch',
     label: 'Watch',
@@ -590,13 +591,13 @@ export const DRAWER_LINKS = DRAWER_GROUPS.flatMap((g) =>
   g.href ? [{ href: g.href, label: g.label }] : (g.links || [])
 );
 
-/** Bottom nav t290u: exactly 7 — Home · Post · Music · Go Live · Videos · Chat · Game.
- *  Go Live center (4th). Messages OFF tabbar (header only). Profile via drawer. */
+/** Approved bottom nav: Home · Music · Videos · Go Live · Connect · Dating · Shop.
+ *  Go Live is the center action; Create remains available from the drawer. */
 export const TABBAR = [
   { href: '#/home', label: 'Home', icon: 'home' },
   { href: '#/music', label: 'Music', icon: 'music' },
   { href: '#/videos', label: 'Videos', icon: 'videos' },
-  { href: '#/create', label: 'Create', icon: 'live', primary: true },
+  { href: '#/live?go=1', label: 'Go Live', icon: 'live', primary: true },
   { href: '#/connect', label: 'Connect', icon: 'live' },
   { href: '#/dating', label: 'Dating', icon: 'heart' },
   { href: '#/shop', label: 'Shop', icon: 'merch' },

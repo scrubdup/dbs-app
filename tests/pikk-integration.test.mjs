@@ -7,7 +7,7 @@ import { renderGames } from '../src/pages/games.js';
 test('PIKK tabbar has seven unique, navigable destinations', () => {
   assert.equal(TABBAR.length, 7);
   assert.equal(new Set(TABBAR.map(tab => tab.href)).size, 7);
-  for (const href of ['#/home', '#/music', '#/videos', '#/create', '#/connect', '#/dating', '#/shop']) {
+  for (const href of ['#/home', '#/music', '#/videos', '#/live?go=1', '#/connect', '#/dating', '#/shop']) {
     assert.ok(TABBAR.some(tab => tab.href === href), href);
   }
 });
