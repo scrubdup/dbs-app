@@ -54,7 +54,7 @@ test('same-route navigation refreshes listeners without changing the hash', () =
 
 test('preserve the seven approved navigation tabs and their order', () => {
   assert.deepEqual(TABBAR.map(({ label }) => label), [
-    'Home', 'Music', 'Videos', 'Create', 'Connect', 'Dating', 'Shop',
+    'Music', 'Videos', 'Connect', 'Create', 'Dating', 'Games', 'Shop',
   ]);
   assert.deepEqual(TABBAR.map(({ href }) => href), [
     '#/home', '#/music', '#/videos', '#/create',
