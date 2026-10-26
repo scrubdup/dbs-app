@@ -825,6 +825,7 @@ export function renderLive() {
   const active = live && !live.endedAt;
   const showStage = !!live;
   const tab = getLiveDiscTab();
+  const category = getRoute().query?.category || '';
 
   const channelsPanel = `
     <div class="live-disc-panel" data-panel="channels">

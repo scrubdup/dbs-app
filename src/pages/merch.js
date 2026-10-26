@@ -28,7 +28,7 @@ export function renderMerch() {
       <h2 style="margin:0 0 8px">Foreign X-Change</h2>
       <p class="muted">All orders, sizes, shipping, and payment happen on
         <a class="fx-link" href="https://foreignx-change.com" target="_blank" rel="noopener">foreignx-change.com</a>
-        — not inside DBS. Product links open the shop homepage until verified per-item URLs are provided.</p>
+        — not inside PIKK. Product links open the shop homepage until verified per-item URLs are provided.</p>
       <a class="btn primary" href="https://foreignx-change.com" target="_blank" rel="noopener">Visit Foreign X-Change</a>
       <p class="merch-note" style="margin-top:10px">Hats $30 · Tees $65 · Jackets $200 · prices exclude shipping</p>
     </div>

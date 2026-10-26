@@ -486,7 +486,7 @@ export const HOME_SECTIONS = [
   { route: '/posts', title: 'Posts', blurb: 'Text · Picture · Short · Video' },
   { route: '/shorts', title: 'Shorts', blurb: 'Under Posts · quick clips' },
   { route: '/live', title: 'Live', blurb: 'Go live · TEST MODE demo' },
-  { route: '/merch', title: 'Merch', blurb: 'Foreign X-Change · external shop' },
+  { route: '/shop', title: 'PIKK Shop', blurb: 'Foreign X-Change merch · external checkout' },
   { route: '/community', title: 'DBS Lounge', blurb: 'Artist-owned rooms · Phase 2' },
   { route: '/music', title: 'Vault', blurb: 'Member exclusives · Coming Soon', hash: 'vault' },
   { route: '/marketplace', title: 'Marketplace', blurb: 'Brand ads & sponsored offers' },
@@ -546,7 +546,8 @@ export const DRAWER_GROUPS = [
     links: [
       { href: '#/merch', label: 'Foreign X-Change Merch' },
       { href: '#/marketplace', label: 'Marketplace' },
-      { href: '#/shop', label: 'Profile Shop' },
+      { href: '#/shop', label: 'PIKK Shop' },
+      { href: '#/profile-shop', label: 'Profile Shop · cosmetics' },
     ],
   },
   {

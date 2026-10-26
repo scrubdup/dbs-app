@@ -159,7 +159,7 @@ export function renderProfile(route) {
       <div class="row wrap">
         <a class="btn" href="#/posts">New post</a>
         <a class="btn" href="#/profile/${esc(user.id)}">Public view</a>
-        <a class="btn" href="#/shop">Profile Shop</a>
+        <a class="btn" href="#/profile-shop">Profile Shop</a>
         <a class="btn" href="#/messages">Messages</a>
         <button class="btn ghost" id="signoutBtn">Sign out</button>
       </div>
