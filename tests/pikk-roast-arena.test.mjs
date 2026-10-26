@@ -7,7 +7,7 @@ const arena = readFileSync(new URL('../src/pages/roast-arena.js', import.meta.ur
 test('Roast Arena is discoverable from Live and registered in routing', () => {
   assert.match(live, /Comedy & Roast Battles/);
   assert.match(live, /#\/roast-arena/);
-  assert.match(main, /'\/roast-arena': \{ render: renderRoastArena \}/);
+  assert.ok(main.includes("'/roast-arena': { render: renderRoastArena, bind: bindRoastArena }"));
 });
 test('Roast Arena separates vote and gift winners and discloses prelaunch status', () => {
   assert.match(arena, /separate results/);
