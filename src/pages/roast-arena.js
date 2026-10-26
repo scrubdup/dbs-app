@@ -1,6 +1,35 @@
+import { createRoastMatch, tickRoastMatch, castRoastVote, castRematchVote } from '../roast-engine.js';
 import { shellPage } from '../ui.js';
 
 /** Roast Arena discovery and rules; live competition backend is not yet connected. */
+let demo = null;
+let timer = null;
+function drawDemo() {
+  const root = document.getElementById('roast-demo');
+  if (!root || !demo) { if (timer) clearInterval(timer); timer = null; return; }
+  const phase = demo.phase;
+  const label = phase === 'round' ? `Round ${demo.round}${demo.tieBreaker ? ' · Final tiebreaker' : ''}` : phase === 'vote' ? 'Vote for the round winner' : phase === 'break' ? 'Break · Next round soon' : phase === 'rematch' ? 'Run It Back?' : 'Match finished';
+  root.innerHTML = `<h3>${label}</h3><p><strong>${String(Math.floor(demo.seconds / 60)).padStart(2, '0')}:${String(demo.seconds % 60).padStart(2, '0')}</strong></p><p>Contestant A: ${demo.scores[0]} rounds · Contestant B: ${demo.scores[1]} rounds</p>${phase === 'vote' ? '<button type="button" data-roast-vote="0">Vote A</button> <button type="button" data-roast-vote="1">Vote B</button>' : ''}${phase === 'rematch' ? `<p>Winner: Contestant ${demo.winner === 0 ? 'A' : 'B'}</p><button type="button" data-roast-rematch="yes">Run It Back? Yes</button> <button type="button" data-roast-rematch="no">No</button>` : ''}<p class="muted">Local interactive simulation only. Votes are not shared between viewers. No live video or gifts are connected.</p>`;
+}
+export function bindRoastArena() {
+  if (timer) clearInterval(timer);
+  timer = null;
+  demo = null;
+  const start = document.getElementById('roast-start');
+  if (!start) return;
+  start.addEventListener('click', () => {
+    demo = createRoastMatch();
+    drawDemo();
+    if (timer) clearInterval(timer);
+    timer = setInterval(() => { demo = tickRoastMatch(demo); drawDemo(); if (demo.phase === 'finished') { clearInterval(timer); timer = null; } }, 1000);
+  });
+  document.getElementById('roast-demo').addEventListener('click', (event) => {
+    const vote = event.target.closest('[data-roast-vote]');
+    const rematch = event.target.closest('[data-roast-rematch]');
+    if (vote && demo && demo.phase === 'vote' && !demo.voted) { demo = { ...castRoastVote(demo, Number(vote.dataset.roastVote)), voted: true }; drawDemo(); }
+    if (rematch && demo && demo.phase === 'rematch' && !demo.rematchVoted) { demo = { ...castRematchVote(demo, rematch.dataset.roastRematch === 'yes'), rematchVoted: true }; drawDemo(); }
+  });
+}
 export function renderRoastArena() {
   return shellPage('PIKK Roast Arena', `
     <div class="card">
