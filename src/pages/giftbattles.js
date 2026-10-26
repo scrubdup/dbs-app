@@ -67,7 +67,7 @@ function renderRules() {
         <li>Gifts &amp; tips are <strong>voluntary fan support</strong> to the creator — <strong>not wagers</strong>.</li>
         <li>Battle winners get <strong>recognition only</strong>. They do <em>not</em> receive the opponent's money, stakes, or cash prizes.</li>
         <li>No entry fee, minimum spend, or pay-to-enter. Equal scores = tie.</li>
-        <li>Battle winners are recognized for the <strong>rest of the calendar day</strong> · up to <strong>10</strong> names on the daily board.</li>
+        <li>The featured battle winner is highlighted for <strong>3 hours</strong>. Up to <strong>10</strong> winners remain in the daily results board until midnight.</li>
       </ul>
       <p class="muted" style="margin:10px 0 0">TEST MODE · no real payments · no gambling.</p>
     </div>`;
@@ -78,7 +78,7 @@ function renderChampion(champ) {
     return `
       <div class="card">
         <h3>Champion Spotlight</h3>
-        <p class="muted" style="margin:0">No active champion today. Win a battle to claim the rest-of-day banner.</p>
+        <p class="muted" style="margin:0">No featured champion right now. Win a battle to earn a 3-hour spotlight.</p>
       </div>`;
   }
   const left = Math.max(0, (champ.championUntil || 0) - Date.now());
@@ -89,11 +89,11 @@ function renderChampion(champ) {
     <div class="card gb-champion" role="status">
       <div class="row wrap" style="gap:8px;align-items:center">
         <span class="gb-sticker-slot" aria-hidden="true">${crown}</span>
-        <div class="chip">Challenge Winner · rest of day</div>
+        <div class="chip">Challenge Winner · 3-hour spotlight</div>
       </div>
       <h3 class="gb-champion-name">${esc(champ.username)}</h3>
       <p class="muted" style="margin:0">
-        Score ${esc(fmtMoney(champ.score))} · ~${hrs}h ${mins}m left today
+        Score ${esc(fmtMoney(champ.score))} · ~${hrs}h ${mins}m left in spotlight
         · ${esc(champ.mode || 'demo')}
       </p>
     </div>`;
@@ -267,7 +267,7 @@ function renderDailyWinnersBoard() {
         <h3 style="margin:0">Today&apos;s winners</h3>
         <span class="chip">${day.length}/10 · end of day</span>
       </div>
-      <p class="muted" style="margin:6px 0 8px;font-size:12px">Sticker board · recognition only · TEST MODE</p>
+      <p class="muted" style="margin:6px 0 8px;font-size:12px">Daily results · recognition only · TEST MODE</p>
       <ol class="gb-list gb-day-list">${cells}</ol>
     </div>`;
 }
