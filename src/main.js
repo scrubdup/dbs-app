@@ -156,12 +156,16 @@ function ensureCreateMenu() {
   panel.innerHTML = `<div class="pikk-create-sheet" role="dialog" aria-modal="true" aria-label="Create on PIKK">
     <div class="pikk-create-head"><strong>Create on PIKK</strong><button type="button" class="btn ghost" data-create-close aria-label="Close create menu">✕</button></div>
     <div class="pikk-create-options">
-      <a href="#/posts?type=video">▶ Video Post <small>Demo now · video uploads later</small></a>
-      <a href="#/posts?type=short">▣ Shorts / Reels <small>Short-form post demo</small></a>
-      <a href="#/live?go=1">● Go Live <small>Livestream controls · test mode</small></a>
-      <a href="#/posts?type=picture">▧ Post Photo <small>Picture post demo</small></a>
-      <a href="#/posts?type=text">✎ Create Post <small>Text and updates</small></a>
-      <a href="#/music">♫ Music <small>Music upload coming later</small></a>
+      <a href="#/posts?type=picture">▧ Post Picture <small>Photo or album · TEST MODE</small></a>
+      <a href="#/posts?type=short">▣ Create Reel <small>Short-form video · TEST MODE</small></a>
+      <a href="#/posts?type=short">▶ Upload Short <small>Vertical clip · TEST MODE</small></a>
+      <a href="#/posts?type=picture">◌ Post Story <small>Story publishing not yet available</small></a>
+      <a href="#/music">◉ Upload Beat <small>Producer uploads coming later</small></a>
+      <a href="#/music">♫ Upload Song <small>Music uploads coming later</small></a>
+      <a href="#/live?go=1">● Go Live <small>Livestream controls · TEST MODE</small></a>
+      <a href="#/posts?type=video">▸ Upload Video <small>Long video · TEST MODE</small></a>
+      <a href="#/shop">▤ Sell Something <small>Shop listing tools · TEST MODE</small></a>
+      <a href="#/posts?type=text">✎ Write Post <small>Text and updates</small></a>
     </div>
     <p class="muted" style="font-size:11px;margin:10px 0 0">TEST MODE · uploads depend on available prototype tools</p>
   </div>`;
