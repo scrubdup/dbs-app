@@ -1525,7 +1525,7 @@ function seedDemoAppGoalObj(now = Date.now()) {
   return {
     id: makeGoalId('app'),
     scope: 'app',
-    name: 'DBS daily community goal',
+    name: 'PIKK daily community goal',
     targetAmount: 50,
     raised: 0,
     endsAt: now + DAY_MS,
@@ -1555,6 +1555,11 @@ export function getAppDailyGoal(now = Date.now()) {
     changed = true;
   }
   if (changed) persistDailyGoals(bucket);
+  // Migrate legacy seeded branding without resetting progress or its 24h timer.
+  if (bucket.app && bucket.app.name === 'DBS daily community goal') {
+    bucket = { ...bucket, app: { ...bucket.app, name: 'PIKK daily community goal' } };
+    persistDailyGoals(bucket);
+  }
   return cloneGoal(bucket.app);
 }
 

@@ -629,6 +629,10 @@ function renderLiveDailyGoalCard(live, user) {
       <div class="row wrap live-goal-donate-row" style="gap:8px">
         ${donateBtns}
       </div>
+      <form class="live-goal-custom-form" data-goal-id="${esc(goal.id)}" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;align-items:end">
+        <label style="flex:1;min-width:125px">Custom coins<input type="number" class="live-goal-custom-coins" inputmode="numeric" min="1" max="1000000" step="1" required placeholder="Enter coins" style="width:100%" /></label>
+        <button class="btn primary" type="submit">Donate custom</button>
+      </form>
       <p class="muted" style="margin:8px 0 0;font-size:11px">50 / 100 / 250 coins ≈ $1 / $2 / $5 · 100 coins = $2 · TEST MODE</p>
       ${hostEdit}
     </div>`;
@@ -1187,6 +1191,20 @@ function mountLiveDailyGoal(root) {
     if (res?.error) return toast(String(res.error));
     toast(`Goal live · $${res.goal.targetAmount} · 24h window · TEST MODE`);
     refresh();
+  });
+
+  root.querySelectorAll('.live-goal-custom-form').forEach((form) => {
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const coins = Number(form.querySelector('.live-goal-custom-coins')?.value);
+      if (!Number.isSafeInteger(coins) || coins < 1 || coins > 1000000) return toast('Enter 1–1,000,000 whole coins');
+      const result = donateToGoal(form.dataset.goalId, coins);
+      if (result?.error === 'signin') return toast('Sign in first');
+      if (result?.error === 'insufficient') return toast('Not enough demo coins');
+      if (result?.error) return toast('Donation unavailable · TEST MODE');
+      toast('Custom donation sent · TEST MODE');
+      refresh();
+    });
   });
 
   root.querySelectorAll('.live-goal-donate').forEach((btn) => {
