@@ -12,7 +12,7 @@ import {
   getRestreamDestinationCap,
 } from '../store.js';
 import { toast, shellPage, esc } from '../ui.js';
-import { navigate } from '../router.js';
+import { navigate, getRoute } from '../router.js';
 
 const BLOCK_MSG = 'Not available — WebRTC + age assurance required before launch';
 
@@ -261,11 +261,12 @@ export function bindConnect(root = document, rerender) {
 
   bindMultiPlatform(root);
 
-  // Deep-link scroll: #/connect#connect-multistream
-  const hash = (location.hash || '').split('#')[2] || '';
-  if (hash === 'connect-multistream') {
+  // Both Connect entry points must honor the router's in-page anchor.
+  // Whitelist known sections so arbitrary hash fragments are never used as selectors.
+  const anchor = getRoute().elementId;
+  if (anchor === 'connect-random-chat' || anchor === 'connect-multistream') {
     requestAnimationFrame(() => {
-      root.querySelector('#connect-multistream')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      root.querySelector(`#${anchor}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   }
 }
