@@ -13,7 +13,18 @@ export function renderRoastArena() {
     <div class="card">
       <h3>Battle formats</h3>
       <div class="row wrap"><span class="chip">1 vs. 1</span><span class="chip">Tag Team</span><span class="chip">Open Mic</span><span class="chip">Tournament</span></div>
-      <p class="muted">Planned controls: host and moderator, split-screen contestants, round timer, audience voting, gifts and requests to battle.</p>
+      <p class="muted">Automated format: split-screen contestants, on-screen rules, automatic round countdown, timed voting buttons for viewers, gifts and requests to battle. No host is required.</p>
+    </div>
+    <div class="card">
+      <h3>How an automated round works</h3>
+      <ol>
+        <li>Both contestants opt in and see the rules before the round begins.</li>
+        <li>The system starts a visible countdown and displays the current round and time remaining to everyone.</li>
+        <li>When the round ends, both microphones pause and viewers see <strong>Vote: Contestant A</strong> or <strong>Vote: Contestant B</strong> buttons.</li>
+        <li>Each eligible viewer gets one vote per round within the timed voting window; the system locks voting when time expires.</li>
+        <li>Results display the round winner, cumulative score and a separate gifts leaderboard. The system automatically starts the next round or ends the match.</li>
+      </ol>
+      <p class="muted">This is the approved automated competition design, not yet a working real-time match.</p>
     </div>
     <div class="card">
       <h3>Discovery</h3>
@@ -22,7 +33,7 @@ export function renderRoastArena() {
     </div>
     <div class="card">
       <h3>Consent & safety</h3>
-      <p>Everyone competing must explicitly opt in to being roasted. Hosts and moderators must be able to mute, remove and report participants for threats, hate speech, harassment or sharing private information.</p>
+      <p>Everyone competing must explicitly opt in to being roasted. Automated safety controls must enforce the rules, provide mute and removal actions, and let participants and viewers report threats, hate speech, harassment or sharing private information. Escalation to human review remains available for serious reports.</p>
       <p class="muted">18+ eligibility, reporting, moderation and consent controls must be implemented and tested before live competition launches.</p>
     </div>
   `, { lead: 'Live comedy competitions · audience votes and gifts tracked separately' });
