@@ -288,7 +288,7 @@ function revenueShellHtml(overview) {
   const cats = (r.byCategory || [])
     .map(
       (c) =>
-        `<li><span>${esc(c.label || c.category)} ×${c.count}</span><span class="muted">gross ${money(c.gross)} · creator ${money(c.creatorShare)} · DBS ${money(c.dbsShare)}</span></li>`
+        `<li><span>${esc(c.label || c.category)} ×${c.count}</span><span class="muted">gross ${money(c.gross)} · creator ${money(c.creatorShare)} · PIKK ${money(c.dbsShare)}</span></li>`
     )
     .join('');
   return `<section class="card admin-revenue" id="adminRevenue">
@@ -301,7 +301,7 @@ function revenueShellHtml(overview) {
       <div><strong>${money(r.gross)}</strong><span>Gross</span></div>
       <div><strong>${money(r.fees)}</strong><span>Fees</span></div>
       <div><strong>${money(r.creatorShare)}</strong><span>Creator net</span></div>
-      <div><strong>${money(r.dbsShare)}</strong><span>DBS net</span></div>
+      <div><strong>${money(r.dbsShare)}</strong><span>PIKK net</span></div>
     </div>
     <p class="muted">Creator available ${money(r.creatorAvailable)} · holds ${money(r.creatorHolds)} · fan wallet ${money(r.fanWalletBalance)} · catalog ${r.catalogPublished || 0}/${r.catalogTotal || 0} published · earning lines ${r.earnCount || 0}</p>
     ${cats ? `<ul class="list-plain">${cats}</ul>` : '<p class="muted">No creator earnings in store yet — open Wallet / Earnings (Commerce) to seed demos.</p>'}
@@ -523,7 +523,7 @@ export function bindAdmin(root) {
 
   root.querySelectorAll('.admin-ea-comment').forEach((btn) => {
     btn.addEventListener('click', () => {
-      const res = adminQuickComment(btn.dataset.ref, '🔥 DBS team — keep it up! (TEST MODE)');
+      const res = adminQuickComment(btn.dataset.ref, '🔥 PIKK team — keep it up! (TEST MODE)');
       if (res?.error) return toast(res.error === 'admin' ? 'Admin required' : 'Comment failed');
       if (btn.dataset.alert) markEngagementAlertHandled(btn.dataset.alert, 'commented');
       toast('Comment posted · TEST MODE');
