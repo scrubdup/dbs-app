@@ -314,15 +314,19 @@ function renderLiveGifts(live, user) {
   if (!live || live.endedAt) return '';
   const coinsBal = getCoinBalance();
   const catalog = listLiveGiftCatalog();
+  // Prototype-only: show gift affordability without invoking payment processing.
+
   const history = listLiveGiftHistory(live.id).slice(0, 12);
   const giftCards = catalog
     .map((g) => {
       const confirm = g.coins >= LIVE_GIFT_CONFIRM_COINS;
+      const affordable = coinsBal >= g.coins;
       return `
       <button type="button" class="lg-gift" data-slug="${esc(g.slug)}" data-coins="${g.coins}" data-confirm="${confirm ? '1' : '0'}" title="${esc(g.animation)}">
         <span class="lg-gift-emoji">${giftStickerHtml(g.slug)}</span>
         <span class="lg-gift-name">${esc(g.name)}</span>
         <span class="lg-gift-price">${esc(fmtCoins(g.coins))} · ${fmtMoney(g.usd)}</span>
+        ${affordable ? '<span class="chip">Ready</span>' : '<span class="chip">Need demo coins</span>'}
         ${confirm ? '<span class="chip lg-confirm-chip">Confirm</span>' : ''}
       </button>`;
     })
