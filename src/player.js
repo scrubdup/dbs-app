@@ -361,10 +361,10 @@ export function playNextMostPlayed() {
   if (!playable) {
     const openBtn = document.getElementById('spOpen');
     const href =
-      item.links?.spotify ||
       item.links?.apple ||
+      item.links?.spotify ||
       item.links?.youtubeMusic ||
-      STREAMING_ARTIST.spotify;
+      STREAMING_ARTIST.apple;
     if (openBtn && href) openBtn.href = href;
     toast(
       meta.demo || meta.status === 'Coming Soon'
@@ -576,11 +576,11 @@ function syncUi() {
   }
   if (openBtn && track) {
     const href =
-      track.links?.spotify ||
       track.links?.apple ||
+      track.links?.spotify ||
       track.links?.youtubeMusic ||
       track.youtube ||
-      STREAMING_ARTIST.spotify;
+      STREAMING_ARTIST.apple;
     openBtn.href = href;
     openBtn.title = 'Open on official platform';
   }
@@ -763,7 +763,7 @@ function bindUi() {
   });
   document.getElementById('spOpen')?.addEventListener('click', (e) => {
     // let default navigate; toast honesty
-    toast('Opening official platform (not in-app Spotify)');
+    toast('Opening official music platform (external playback)');
   });
   // Most played today → Play next (never pauseGlobalMusic / notifyVideo*)
   document.getElementById('spPlayNextMost')?.addEventListener('click', () => {
