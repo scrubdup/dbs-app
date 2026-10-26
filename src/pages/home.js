@@ -12,7 +12,7 @@ const SECTION_ICONS = {
   Videos: '🎬',
   Posts: '📸',
   Live: '🔴',
-  'DBS Lounge': '💬',
+  'PIKK Lounge': '💬',
   Vault: '🔐',
   Marketplace: '🛍️',
   Missions: '🎯',
@@ -384,7 +384,7 @@ export function renderHome() {
   const activityPicRows = activityPics.map(activityPicRow).join('');
   const houseKickers = `
         <li class="la-row la-kicker"><span class="la-main la-kicker-main"><span class="la-body"><strong>Ladies Only</strong><span class="la-preview">Art live on Music · playback when it drops</span></span></span><span class="chip">Music</span></li>
-        <li class="la-row la-kicker"><a class="la-main" href="#/restream"><span class="la-body"><strong>DBS Restream</strong><span class="la-preview">Stream to YouTube, TikTok, Twitch &amp; more — free inside DBS</span></span></a><span class="chip">Restream</span></li>`;
+        <li class="la-row la-kicker"><a class="la-main" href="#/restream"><span class="la-body"><strong>PIKK Restream</strong><span class="la-preview">Stream to YouTube, TikTok, Twitch &amp; more — free inside PIKK</span></span></a><span class="chip">Restream</span></li>`;
   const activityEmpty =
     !mostPlayedRow && !activityLiveRows && !activityPostRows && !activityPicRows && !liveSessionRow
       ? `<li class="la-row"><span class="la-main la-kicker-main"><span class="la-body"><span class="la-preview muted">No hot activity yet — engage on Posts / go Live to spike the feed.</span></span></span><span class="chip">TEST</span></li>`
@@ -471,7 +471,7 @@ export function renderHome() {
         <a class="home-song-card home-song-promo" href="#/pricing?focus=sell">
           <div class="home-song-promo-icon" aria-hidden="true">♪</div>
           <div>
-            <strong>Sell your music on DBS</strong>
+            <strong>Sell your music on PIKK</strong>
             <div class="muted" style="font-size:12px">Artists &amp; producers · creator-friendly · DEMO</div>
           </div>
         </a>
@@ -529,17 +529,17 @@ export function renderHome() {
           <span class="bw-preview-play-label">Watch preview</span>
         </button>
       </div>
-      <div class="bw-preview-foot muted">~12s fighter slideshow · Coming soon on DBS</div>
+      <div class="bw-preview-foot muted">~12s fighter slideshow · Coming soon on PIKK</div>
     </div>`;
 
   const sellPromo = `
     <div class="card home-sell-promo" id="home-creator-sell-promo">
-      <p class="kicker">Creators · sell on DBS</p>
+      <p class="kicker">Creators · sell on PIKK</p>
       <div class="home-sell-title-row">
         <h3 style="margin:0">Upload music, videos, beats &amp; list merch</h3>
         <span class="badge-cs badge-cs-inline" id="home-sell-coming-soon">Coming Soon</span>
       </div>
-      <p style="margin:0 0 8px">Artists and producers can sell <strong>music, videos, beats,</strong> and merch on DBS. We keep a fair, creator-friendly cut — and merch runs on <strong>your</strong> payments (DBS is not the merchant of record).</p>
+      <p style="margin:0 0 8px">Artists and producers can sell <strong>music, videos, beats,</strong> and merch on PIKK. We keep a fair, creator-friendly cut — and merch runs on <strong>your</strong> payments (PIKK is not the merchant of record).</p>
       <p class="muted" style="margin:0 0 12px;font-size:12px">Rules, fees, and the apply form live on Pricing — tap below. No fee numbers on Home.</p>
       <div class="row wrap" style="gap:8px;margin-top:4px">
         <a class="btn primary" href="#/pricing?focus=sell">Start selling · rules &amp; fees</a>
@@ -574,7 +574,7 @@ export function renderHome() {
     <div class="cover-row" style="margin-bottom:18px">${covers}${adminPicHtml}</div>
 
     <p class="kicker">DatBoiSkeet Network</p>
-    <h2 style="margin:0 0 8px;font-size:15px;text-transform:uppercase;letter-spacing:.04em">Explore DBS</h2>
+    <h2 style="margin:0 0 8px;font-size:15px;text-transform:uppercase;letter-spacing:.04em">Explore PIKK</h2>
     <div class="section-swipe" style="margin-bottom:18px">${previews}</div>
 
     <div class="card live-activity" id="home-live-activity">
