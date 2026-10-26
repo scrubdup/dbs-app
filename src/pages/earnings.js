@@ -68,7 +68,7 @@ export function renderEarnings() {
       ? `<div class="card" style="margin:0 0 12px;background:#12121a">
       <div class="row wrap">
         <span class="chip">t185u · catalog gifts</span>
-        <span class="chip">80% creator / 20% DBS · NET</span>
+        <span class="chip">80% creator / 20% PIKK · NET</span>
         <span class="chip">TEST MODE · listed USD = net</span>
       </div>
       <p class="muted" style="margin:8px 0 0;font-size:13px">Coin gifts from Live use <code>sendLiveGift</code> → creator earnings here. Viewers on Live / gift tray never see this split. ${coinGiftLines.length ? `${coinGiftLines.length} gift line(s) on device.` : 'Send a catalog gift on an active Live to populate.'}</p>
@@ -114,7 +114,7 @@ export function renderEarnings() {
             <th style="padding:6px 4px">Fees</th>
             <th style="padding:6px 4px">Net</th>
             <th style="padding:6px 4px">You</th>
-            <th style="padding:6px 4px">DBS</th>
+            <th style="padding:6px 4px">PIKK</th>
           </tr>
         </thead>
         <tbody>
@@ -146,11 +146,11 @@ export function renderEarnings() {
             ${e.payoutId ? '<span class="chip">In payout</span>' : '<span class="chip">Open</span>'}
             ${e.source === 'seed' ? '<span class="chip">Demo seed</span>' : ''}
             <br/><span class="muted" style="font-size:12px">${esc(e.note || '')} · ${timeAgo(e.at)}</span>
-            <br/><span class="muted" style="font-size:11px">gross ${fmtMoney(e.gross)} → fees ${fmtMoney(e.fees)} → net ${fmtMoney(e.net)} · creator ${e.creatorPct}% / DBS ${e.dbsPct}%</span>
+            <br/><span class="muted" style="font-size:11px">gross ${fmtMoney(e.gross)} → fees ${fmtMoney(e.fees)} → net ${fmtMoney(e.net)} · creator ${e.creatorPct}% / PIKK ${e.dbsPct}%</span>
           </span>
           <span style="text-align:right;font-size:13px;white-space:nowrap">
             <strong>${fmtMoney(e.creatorShare)}</strong><br/>
-            <span class="muted">DBS ${fmtMoney(e.dbsShare)}</span>
+            <span class="muted">PIKK ${fmtMoney(e.dbsShare)}</span>
           </span>
         </li>`
           )
@@ -166,7 +166,7 @@ export function renderEarnings() {
         <span class="chip">TEST MODE · not real money</span>
         <span class="chip">Analytics &amp; ledger · payouts on Wallet</span>
       </div>
-      <p class="muted" style="margin:10px 0 0;font-size:13px">Transparent breakdown of clipping, referrals, merch affiliates, subscriptions, gifts, and tips — with DBS commission splits. Request payouts on <a href="#/wallet">Wallet</a>.</p>
+      <p class="muted" style="margin:10px 0 0;font-size:13px">Transparent breakdown of clipping, referrals, merch affiliates, subscriptions, gifts, and tips — with PIKK commission splits. Request payouts on <a href="#/wallet">Wallet</a>.</p>
     </div>
 
     <div class="card">
@@ -185,7 +185,7 @@ export function renderEarnings() {
           <div style="font-size:22px;font-weight:800">${fmtMoney(round2(life.creatorShare))}</div>
         </div>
         <div>
-          <p class="muted" style="margin:0;font-size:12px">Lifetime DBS share</p>
+          <p class="muted" style="margin:0;font-size:12px">Lifetime PIKK share</p>
           <div style="font-size:22px;font-weight:800">${fmtMoney(round2(life.dbsShare))}</div>
         </div>
       </div>
@@ -210,7 +210,7 @@ export function renderEarnings() {
             <tr class="muted" style="text-align:left">
               <th style="padding:6px 4px">Category</th>
               <th style="padding:6px 4px">Creator %</th>
-              <th style="padding:6px 4px">DBS %</th>
+              <th style="padding:6px 4px">PIKK %</th>
             </tr>
           </thead>
           <tbody>${rateRows}</tbody>

@@ -112,11 +112,11 @@ export function renderProfile(route) {
       'Profile',
       `
       <div class="card">
-        <p class="kicker">DBS account</p>
+        <p class="kicker">PIKK account</p>
         <h3>Sign in · local demo</h3>
         <p class="muted">Free fan account for this browser — follow @DatBoiSkeet, post, and apply for roles. TEST MODE: no password, email, or backend auth yet.</p>
         <div class="field"><label>Username</label>
-          <input id="signinName" placeholder="Your DBS name" maxlength="24" /></div>
+          <input id="signinName" placeholder="Your PIKK name" maxlength="24" /></div>
         <button class="btn primary block" id="signinBtn">Sign in</button>
         <p class="chip" style="margin-top:10px">TEST MODE · demo user only</p>
       </div>
@@ -132,7 +132,7 @@ export function renderProfile(route) {
         <a class="btn" href="#/clippers">Clippers apply</a>
         <a class="btn ghost" href="#/guidelines">Guidelines</a>
       </div>`,
-      { lead: 'Free DBS fan profile · follow · posts · role apps · TEST MODE.' }
+      { lead: 'Free PIKK fan profile · follow · posts · role apps · TEST MODE.' }
     );
   }
 

@@ -499,7 +499,7 @@ function renderStage(live) {
     <div class="card live-stage">
       <div class="live-stage-frame" role="img" aria-label="Fake stream stage · TEST MODE">
         <div class="live-stage-brand">
-          <img src="/brand/logo-dbs-v3@2x.webp" alt="DBS" />
+          <img src="/brand/pikk-official-approved.jpg" alt="PIKK" />
           <div>
             <div class="live-stage-title">${esc(live.title)}</div>
             <div class="muted" style="font-size:12px">@${esc(live.hostName)} · Follow DatBoiSkeet</div>
@@ -649,7 +649,7 @@ function renderGoLiveForm(user) {
       <h3>Go live · TEST MODE</h3>
       <p class="muted">Fake stream UI with title, viewer stub, chat, tips, gifts (coins), and paid song requests. Persisted in localStorage (<code>dbs_v1.live</code> + <code>coins</code> + <code>liveGiftLedger</code> + <code>liveSongRequests</code>).</p>
       <div class="field"><label>Stream title</label>
-        <input id="liveTitle" maxlength="80" placeholder="e.g. Listening session · Long Story Short" value="DBS Live · ${esc(user.username)}" />
+        <input id="liveTitle" maxlength="80" placeholder="e.g. Listening session · Long Story Short" value="PIKK Live · ${esc(user.username)}" />
       </div>
       <div class="field"><label>Today's goal name <span class="muted">(optional)</span></label>
         <input id="liveGoalNameGo" maxlength="80" placeholder="e.g. Studio session fund" />
@@ -892,7 +892,7 @@ export function renderLive() {
     ${tabPanel}
   `;
 
-  return shellPage('DBS Live', body, {
+  return shellPage('PIKK Live', body, {
     lead: 'Following · Clips · Channels · Categories → Shorts · Request Spotlight · TEST MODE.',
     badge: active ? 'LIVE' : undefined,
   });
@@ -1119,7 +1119,7 @@ export function bindLive(root) {
   });
 
   root.querySelector('#liveRestart')?.addEventListener('click', () => {
-    const title = 'DBS Live · ' + (getState().user?.username || 'Demo');
+    const title = 'PIKK Live · ' + (getState().user?.username || 'Demo');
     const res = startLiveDemo(title);
     if (res?.error) return toast(String(res.error));
     notifyLiveOpen();

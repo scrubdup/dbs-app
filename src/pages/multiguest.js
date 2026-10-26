@@ -77,7 +77,7 @@ function renderIntro() {
         <a class="btn ghost" href="#/music">Music / Coming Soon</a>
         <a class="btn ghost" href="#/giftbattles">Gift Battles</a>
       </div>
-      <p class="muted" style="margin:10px 0 0">TEST MODE · DBS branding required on every collab stage.</p>
+      <p class="muted" style="margin:10px 0 0">TEST MODE · PIKK branding required on every collab stage.</p>
     </div>`;
 }
 
@@ -97,7 +97,7 @@ function renderTile({ role, name, sub, muted, empty, followId }) {
         ? `<button class="btn ghost mg-follow" data-follow="${esc(followId)}" data-on="1">Following</button>`
         : `<button class="btn ghost mg-follow" data-follow="${esc(followId)}" data-on="0">Follow</button>`
       : followId === 'dbs'
-        ? `<a class="btn ghost" href="#/profile">Follow DBS</a>`
+        ? `<a class="btn ghost" href="#/profile">Follow PIKK</a>`
         : '';
   return `
     <div class="mg-tile ${role === 'host' ? 'mg-tile-host' : ''} ${muted ? 'mg-muted' : ''}">
@@ -147,7 +147,7 @@ function renderStage(session) {
       <div class="row wrap" style="justify-content:space-between;gap:8px;align-items:center">
         <div>
           <div class="row wrap" style="gap:8px;align-items:center">
-            <img class="mg-brand-logo" src="/brand/logo-dbs-v3@2x.webp" alt="DBS" />
+            <img class="mg-brand-logo" src="/brand/pikk-official-approved.jpg" alt="PIKK" />
             <div>
               <strong>${esc(session.title)}</strong>
               <div class="muted" style="font-size:12px">@${esc(session.hostName)} · Multi-Guest · Follow DatBoiSkeet</div>
@@ -163,7 +163,7 @@ function renderStage(session) {
       <p class="muted mg-stage-note">TEST MODE · placeholder tiles · no camera / bandwidth stream</p>
       <div class="mg-grid" role="list">${slots.join('')}</div>
       <div class="row wrap" style="gap:8px;margin-top:12px">
-        <a class="btn ghost" href="#/music">DBS Music</a>
+        <a class="btn ghost" href="#/music">PIKK Music</a>
         <a class="btn ghost" href="#/live">Solo Live</a>
         <button class="btn ghost danger" id="mgEnd">End session</button>
       </div>
@@ -345,7 +345,7 @@ function renderStartForm(user) {
       <p class="muted">You host as <strong>@${esc(user.username)}</strong>. Invite demo contacts next — no real stream.</p>
       <div class="field" style="margin-top:10px">
         <span>Session title</span>
-        <input id="mgTitle" maxlength="80" placeholder="e.g. Friday collab freestyle" value="DBS Multi-Guest Demo" />
+        <input id="mgTitle" maxlength="80" placeholder="e.g. Friday collab freestyle" value="PIKK Multi-Guest Demo" />
       </div>
       <button class="btn primary" id="mgStart" style="margin-top:12px">Start as host</button>
     </div>`;

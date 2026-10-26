@@ -188,8 +188,8 @@ export function renderPricing() {
     'Pricing',
     `<div class="card">
       <p class="kicker">Creators &amp; producers</p>
-      <h2 style="margin:0 0 8px">Upload &amp; sell your music on DBS</h2>
-      <p>Artists and producers can upload tracks and sell them directly on the DBS Network. Our demo platform cut is <strong>lower than typical stores</strong> — creators keep <strong>much more</strong> of each sale.</p>
+      <h2 style="margin:0 0 8px">Upload &amp; sell your music on PIKK</h2>
+      <p>Artists and producers can upload tracks and sell them directly on the PIKK Network. Our demo platform cut is <strong>lower than typical stores</strong> — creators keep <strong>much more</strong> of each sale.</p>
       <p class="muted" style="margin:8px 0 0">TEST MODE only — no real charges, no live contracts. Numbers below are illustrative DEMO rates for the SPA.</p>
       <p class="chip" style="margin-top:10px">TEST MODE · no charges</p>
     </div>
@@ -201,7 +201,7 @@ export function renderPricing() {
       <ul class="list-plain">
         <li><span>Typical digital store<br/><span class="muted" style="font-size:12px">Platform cut ~30%</span></span><strong>Creator ~70%</strong></li>
         <li><span>Major streaming / storefront<br/><span class="muted" style="font-size:12px">Effective cut ~30–50%+</span></span><strong>Creator ~50–70%</strong></li>
-        <li><span><strong>DBS music / videos / beats (demo)</strong><br/><span class="muted" style="font-size:12px">Platform cut <strong>10%</strong></span></span><strong style="color:var(--acc)">Creator 90%</strong></li>
+        <li><span><strong>PIKK music / videos / beats (demo)</strong><br/><span class="muted" style="font-size:12px">Platform cut <strong>10%</strong></span></span><strong style="color:var(--acc)">Creator 90%</strong></li>
       </ul>
       <p class="chip chip-partial" style="margin-top:10px">DEMO rates · illustrative only</p>
     </div>
@@ -209,19 +209,19 @@ export function renderPricing() {
     <div class="card">
       <p class="kicker">Creator merch</p>
       <h3 style="margin:0 0 8px">Your storefront · your payments</h3>
-      <p>Creators may add a merch section on their profile or shop area, but <strong>must use their own payment methods</strong> (Stripe, PayPal, or other external checkout). DBS lists and links — it is <strong>not</strong> the merchant of record for creator merch.</p>
+      <p>Creators may add a merch section on their profile or shop area, but <strong>must use their own payment methods</strong> (Stripe, PayPal, or other external checkout). PIKK lists and links — it is <strong>not</strong> the merchant of record for creator merch.</p>
       <ul class="list-plain" style="margin-top:10px">
         <li><span>Payment processing</span><span class="chip">Creator’s Stripe / PayPal</span></li>
-        <li><span>Merchant of record</span><span class="chip">Not DBS</span></li>
+        <li><span>Merchant of record</span><span class="chip">Not PIKK</span></li>
         <li><span>Foreign X-Change official merch</span><span><a href="#/merch" style="color:var(--sk)">External shop →</a></span></li>
       </ul>
-      <p class="chip" style="margin-top:10px">TEST MODE · no merch charges inside DBS</p>
+      <p class="chip" style="margin-top:10px">TEST MODE · no merch charges inside PIKK</p>
     </div>
 
     <div class="card">
       <p class="kicker">Buyer ↔ seller</p>
       <h3 style="margin:0 0 8px">Transactions are final between parties</h3>
-      <p>Buyer↔seller music and creator-merch transactions are <strong>not reversed or disputed through DBS</strong>. Chargebacks, refunds, and product disputes stay between the buyer and the seller (or their payment provider). Disputes do <strong>not</strong> fall on DBS as merchant of record for those sales.</p>
+      <p>Buyer↔seller music and creator-merch transactions are <strong>not reversed or disputed through PIKK</strong>. Chargebacks, refunds, and product disputes stay between the buyer and the seller (or their payment provider). Disputes do <strong>not</strong> fall on PIKK as merchant of record for those sales.</p>
       <p class="muted" style="margin:8px 0 0">This is demo legal-style notice for the SPA. Final Terms ship before public launch. Membership billing rules remain separate (see Community Guidelines).</p>
       <p class="chip" style="margin-top:10px">TEST MODE · disclosure copy · not live MoR</p>
     </div>
@@ -319,15 +319,15 @@ export function renderGuidelines() {
   return shellPage(
     'Community Guidelines',
     `<div class="card">
-      <p class="kicker">DBS Network</p>
+      <p class="kicker">PIKK Network</p>
       <h2 style="margin:0 0 8px">Respect the house</h2>
-      <p>All users follow DatBoiSkeet Community Guidelines when posting, commenting, chatting, livestreaming, or joining DBS Lounge rooms. This is a premium, music-first entertainment network — keep it safe for fans, creators, and the artist.</p>
+      <p>All users follow DatBoiSkeet Community Guidelines when posting, commenting, chatting, livestreaming, or joining PIKK Lounge rooms. This is a premium, music-first entertainment network — keep it safe for fans, creators, and the artist.</p>
       <p class="muted" style="margin:8px 0 0">Enforcement UI in this demo is illustrative. Warnings, suspensions, and appeals will run through Admin review before public launch.</p>
     </div>
 
     <div class="card">
       <h3>Violations</h3>
-      <p class="muted" style="margin:0 0 8px">Actions that break DBS rules include:</p>
+      <p class="muted" style="margin:0 0 8px">Actions that break PIKK rules include:</p>
       <ul class="list-plain">
         <li><span>Harassment, bullying, or threats</span><span class="chip">Ban-risk</span></li>
         <li><span>Hate speech or targeted abuse</span><span class="chip">Ban-risk</span></li>
@@ -352,7 +352,7 @@ export function renderGuidelines() {
 
     <div class="card">
       <h3>Subscriptions while suspended</h3>
-      <p>DBS does <strong>not</strong> keep charging for paid access you cannot use. Eligible direct-billed recurring charges pause while access is blocked. Where an app store cannot pause billing, cancellation and appropriate credit/refund handling apply. <strong>Cancellation is never obstructed.</strong></p>
+      <p>PIKK does <strong>not</strong> keep charging for paid access you cannot use. Eligible direct-billed recurring charges pause while access is blocked. Where an app store cannot pause billing, cancellation and appropriate credit/refund handling apply. <strong>Cancellation is never obstructed.</strong></p>
       <p class="muted" style="margin:8px 0 0">Billing disclosures belong in Terms + these Guidelines before launch. This page is demo copy only — no real charges in TEST MODE.</p>
     </div>
 
@@ -370,7 +370,7 @@ const LOUNGE_CHANNELS = [
     id: 'dbs-lounge',
     cat: 'NETWORK',
     hash: '#dbs-lounge',
-    name: 'DBS Lounge',
+    name: 'PIKK Lounge',
     blurb: 'Main hub · official announcements & network news',
     chip: 'Hub',
   },
@@ -418,7 +418,7 @@ const LOUNGE_CHANNELS = [
 
 const LOUNGE_DEMO_MSGS = {
   'dbs-lounge': [
-    { who: 'DBS · System', text: 'Welcome to DBS Lounge — DatBoiSkeet’s channel-style community hub.', tag: 'DEMO' },
+    { who: 'PIKK · System', text: 'Welcome to PIKK Lounge — DatBoiSkeet’s channel-style community hub.', tag: 'DEMO' },
     { who: 'TEST MODE', text: 'Live chat isn’t connected yet. These rows are placeholders so the room pane feels real.', tag: 'DEMO' },
   ],
   conversation: [
@@ -469,7 +469,7 @@ function loungeChannelPane(ch) {
     <div class="lounge-honesty">
       <span class="chip">Phase 2</span>
       <span class="chip">TEST MODE</span>
-      <p>Live chat, presence, and real member lists aren’t online yet — this is Discord-inspired chrome for DBS Lounge only.</p>
+      <p>Live chat, presence, and real member lists aren’t online yet — this is Discord-inspired chrome for PIKK Lounge only.</p>
     </div>
     <div class="lounge-msgs" aria-label="Demo messages">${msgHtml}</div>
     <div class="lounge-compose">
@@ -512,18 +512,18 @@ export function renderCommunity() {
   ).join('');
 
   return shellPage(
-    'DBS Lounge',
+    'PIKK Lounge',
     `<div class="card lounge-intro">
       <p class="kicker">Artist-owned network</p>
       <h2 style="margin:0 0 8px">Channel-style Lounge</h2>
-      <p>DBS Lounge is DatBoiSkeet’s premium community — Discord-type channel UX (sidebar + room panes) under silver/dark DBS branding. Announcements, listening parties, and fan conversations in one place.</p>
+      <p>PIKK Lounge is DatBoiSkeet’s premium community — Discord-type channel UX (sidebar + room panes) under silver/dark PIKK branding. Announcements, listening parties, and fan conversations in one place.</p>
       <p class="muted" style="margin:8px 0 0">Not affiliated with Discord. Channels below are the same rooms as before; live chat unlocks in Phase 2.</p>
     </div>
 
     <div class="lounge-discord" id="loungeDiscord">
       <aside class="lounge-channels" aria-label="Lounge channels">
         <div class="lounge-server">
-          <div class="lounge-server-mark" aria-hidden="true">DBS</div>
+          <div class="lounge-server-mark" aria-hidden="true">PIKK</div>
           <div>
             <strong>DatBoiSkeet</strong>
             <p class="muted" style="margin:0;font-size:11px">Lounge · silver/dark</p>
@@ -570,7 +570,7 @@ export function renderSignup() {
   return shellPage(
     'Signup & Creator Apps',
     `<div class="card">
-      <p class="kicker">Join DBS</p>
+      <p class="kicker">Join PIKK</p>
       <h2 style="margin:0 0 8px">Fan account first</h2>
       <p>Everyone creates a DatBoiSkeet account to participate — follow, comment, save, join Lounge rooms, buy memberships, message the team, or apply to earn. Visitors can browse public promo pages; signing up unlocks the network.</p>
       <p class="muted" style="margin:8px 0 12px"><strong>Basic fan signup is free</strong> — no manual approval. This demo uses local Profile sign-in (TEST MODE · no real email/auth yet).</p>
@@ -582,7 +582,7 @@ export function renderSignup() {
       <h3>Apply for a role</h3>
       <p class="muted" style="margin:0 0 10px">From Profile → Become a Creator, request one or more roles. Each has its own application — no automatic access to earning tools.</p>
       <ul class="list-plain">
-        <li><span><strong>Creator / Streamer</strong><br/><span class="muted" style="font-size:12px">Profile, socials, livestream plan · DBS branding &amp; moderation</span></span><a href="#/live">Live</a></li>
+        <li><span><strong>Creator / Streamer</strong><br/><span class="muted" style="font-size:12px">Profile, socials, livestream plan · PIKK branding &amp; moderation</span></span><a href="#/live">Live</a></li>
         <li><span><strong>Clipper</strong><br/><span class="muted" style="font-size:12px">Work samples &amp; analytics · paid promo campaigns</span></span><a href="#/clippers">Apply</a></li>
         <li><span><strong>Brand / Advertiser</strong><br/><span class="muted" style="font-size:12px">Business identity, campaigns &amp; disclosures</span></span><a href="#/marketplace">Marketplace</a></li>
         <li><span><strong>Affiliate / Promoter</strong><br/><span class="muted" style="font-size:12px">Referral &amp; campaign promotion plan</span></span><a href="#/refer">Refer</a></li>
@@ -687,7 +687,7 @@ export function renderLaunch() {
     { label: 'Background audio pause/resume', status: 'PARTIAL', note: '§17 sticky top YT player + pauseDbsPlayer hooks' },
     { label: 'Account recovery / optional 2FA', status: 'TODO', note: 'Local demo sign-in only' },
     { label: 'Loyalty analytics consent', status: 'SHELL', note: 'Privacy/consent controls before launch' },
-    { label: 'DBS Connect safety (age + WebRTC)', status: 'Blocked', note: 'Must not launch without assurance' },
+    { label: 'PIKK Connect safety (age + WebRTC)', status: 'Blocked', note: 'Must not launch without assurance' },
   ];
   const rows = checks
     .map(
@@ -706,7 +706,7 @@ export function renderLaunch() {
 
     <div class="card">
       <h3>Fan onboarding</h3>
-      <p class="muted" style="margin:0">Show new fans how to discover DatBoiSkeet music &amp; MVs, follow the official profile, post respectfully, listen via Music/Vault Coming Soon covers, shop Foreign X-Change externally, and join DBS Lounge when rooms go live. Keep TEST MODE honesty until real auth ships.</p>
+      <p class="muted" style="margin:0">Show new fans how to discover DatBoiSkeet music &amp; MVs, follow the official profile, post respectfully, listen via Music/Vault Coming Soon covers, shop Foreign X-Change externally, and join PIKK Lounge when rooms go live. Keep TEST MODE honesty until real auth ships.</p>
     </div>
 
     <div class="card">
@@ -730,7 +730,7 @@ export {
 /** §35 24/7 Spotlight moved to pages/spotlight.js */
 export { renderSpotlight, bindSpotlight } from './spotlight.js';
 
-/** §36 DBS Connect moved to pages/connect.js */
+/** §36 PIKK Connect moved to pages/connect.js */
 export { renderConnect, bindConnect } from './connect.js';
 
 export function renderPhases() {
@@ -836,7 +836,7 @@ export function renderPhases() {
       <p class="kicker">Plan §12</p>
       <h2 style="margin:0 0 8px">Roadmap · what shipped vs remaining</h2>
       <p class="muted" style="margin:0">Phase 1–3 from the DatBoiSkeet developer plan. Chips mirror STATUS.md — <strong>DONE</strong> needs Checker PASS; <strong>PARTIAL</strong> and <strong>PENDING AUDIT</strong> are not launch-complete.</p>
-      <p class="muted" style="margin:10px 0 0">Still open: <a href="#/home">§17 sticky player</a> (YT embed · no DBS-hosted audio yet) · <a href="#/shop">§22 Profile Shop</a> (awaiting Checker) · identity/payout verification &amp; fraud controls before activating real money features.</p>
+      <p class="muted" style="margin:10px 0 0">Still open: <a href="#/home">§17 sticky player</a> (YT embed · no PIKK-hosted audio yet) · <a href="#/shop">§22 Profile Shop</a> (awaiting Checker) · identity/payout verification &amp; fraud controls before activating real money features.</p>
     </div>
 
     ${phaseCards}

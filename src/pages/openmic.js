@@ -95,7 +95,7 @@ export function renderOpenMic() {
                 </div>
                 ${statusChip('approved')}
               </div>
-              <p style="margin:8px 0 0">${esc(a.profileNote || 'Featured in DBS Open Mic showcase.')}</p>
+              <p style="margin:8px 0 0">${esc(a.profileNote || 'Featured in PIKK Open Mic showcase.')}</p>
               <p class="muted" style="font-size:11px;margin:8px 0 0">Not a paid ranking · discovery showcase</p>
             </article>`
           )
@@ -148,7 +148,7 @@ export function renderOpenMic() {
     <div class="card">
       <p class="kicker">§30 · 24/7 Live category · Talent Discovery</p>
       <h2 style="margin:0 0 6px">Open Mic &amp; Talent Discovery</h2>
-      <p class="muted" style="margin:0 0 10px"><strong>24/7 Live category</strong> (like Spotlight) — not Social. Opt-in showcase for rappers, singers, DJs, producers. Submit music + profile, certify rights, apply for approval. Approved artists appear in the DBS discovery showcase — <strong>not a paid ranking</strong>.</p>
+      <p class="muted" style="margin:0 0 10px"><strong>24/7 Live category</strong> (like Spotlight) — not Social. Opt-in showcase for rappers, singers, DJs, producers. Submit music + profile, certify rights, apply for approval. Approved artists appear in the PIKK discovery showcase — <strong>not a paid ranking</strong>.</p>
       <nav class="live-cat-chips" aria-label="Live categories" style="margin:0 0 12px">
         <a class="live-cat-chip" href="#/live">Live</a>
         <a class="live-cat-chip on" href="#/openmic" aria-current="page">Open Mic / Talent Discovery (24/7)</a>
@@ -182,7 +182,7 @@ export function renderOpenMic() {
         <textarea id="omNote" maxlength="240" rows="2" placeholder="Who you are · what you want to share" style="width:100%;margin:4px 0 10px;background:#0e0e14;border:1px solid var(--line);border-radius:12px;padding:10px;color:inherit;resize:vertical"></textarea>
         <label class="row" style="gap:8px;align-items:flex-start;margin:0 0 12px;cursor:pointer">
           <input type="checkbox" id="omRights" required style="margin-top:3px" />
-          <span style="font-size:13px">I certify I have the rights to submit this material and understand DBS may moderate / feature approved work under promotional terms (demo).</span>
+          <span style="font-size:13px">I certify I have the rights to submit this material and understand PIKK may moderate / feature approved work under promotional terms (demo).</span>
         </label>
         <button class="btn primary" type="submit">Submit application</button>
         ${!user ? `<button class="btn" type="button" id="omSignIn">Sign in demo</button>` : ''}
