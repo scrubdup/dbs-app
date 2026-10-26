@@ -33,7 +33,7 @@ test('top red TEST MODE ribbon removed, while demo disclosure remains visible', 
 });
 
 test('Create action still opens its existing dialog', () => {
-  assert.match(main, /aria-controls=\\"pikkCreateMenu\\"/);
+  assert.ok(main.includes('aria-controls="pikkCreateMenu"'));
   assert.match(main, /function ensureCreateMenu\(\)/);
   assert.match(main, /href="#\/create"/);
 });
