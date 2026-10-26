@@ -131,12 +131,62 @@ function buildTabbar() {
     const pathOnly = '/' + raw.replace(/^\//, '').split(/[?#]/)[0];
     const label = esc(t.label);
     const primaryClass = t.primary ? ' class="tab-primary"' : '';
-    return `<a${primaryClass} href="${t.href}" data-path="${pathOnly}" aria-label="${label}"><span class="tab-ico">${ICONS[t.icon] || ''}</span><span>${label}</span></a>`;
+    return `<a${primaryClass} href="${t.href}" data-path="${pathOnly}" aria-label="${label}"${t.href === '#/create' ? ' aria-haspopup="dialog" aria-controls="pikkCreateMenu" aria-expanded="false"' : ''}><span class="tab-ico">${t.href === '#/create' ? '<svg viewBox="0 0 32 32" width="26" height="26" aria-hidden="true"><path d="M9 5 L25 16 L9 27 Z" fill="currentColor"/><path d="M24 5v11m0 0-4-4m4 4 4-4" stroke="white" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>' : (ICONS[t.icon] || '')}</span><span>${label}</span></a>`;
   }).join('');
+  el.querySelector('a[href="#/create"]')?.addEventListener('click', (event) => {
+    event.preventDefault();
+    const panel = ensureCreateMenu();
+    panel.hidden = !panel.hidden;
+    event.currentTarget.setAttribute('aria-expanded', String(!panel.hidden));
+    if (!panel.hidden) panel.querySelector('[data-create-close]')?.focus();
+  });
   el.style.gridTemplateColumns = '';
   /* Fit all bottom navigation tabs, including Dating and Connect, without horizontal scroll. */
   el.classList.remove('tabbar-scroll');
   el.classList.add('tabbar-reshaped', 'tabbar-fit7');
+}
+
+function ensureCreateMenu() {
+  let panel = document.getElementById('pikkCreateMenu');
+  if (panel) return panel;
+  panel = document.createElement('div');
+  panel.id = 'pikkCreateMenu';
+  panel.className = 'pikk-create-overlay';
+  panel.hidden = true;
+  panel.innerHTML = `<div class="pikk-create-sheet" role="dialog" aria-modal="true" aria-label="Create on PIKK">
+    <div class="pikk-create-head"><strong>Create on PIKK</strong><button type="button" class="btn ghost" data-create-close aria-label="Close create menu">✕</button></div>
+    <div class="pikk-create-options">
+      <a href="#/posts?type=video">▶ Video Post <small>Demo now · video uploads later</small></a>
+      <a href="#/posts?type=short">▣ Shorts / Reels <small>Short-form post demo</small></a>
+      <a href="#/live?go=1">● Go Live <small>Livestream controls · test mode</small></a>
+      <a href="#/posts?type=picture">▧ Post Photo <small>Picture post demo</small></a>
+      <a href="#/posts?type=text">✎ Create Post <small>Text and updates</small></a>
+      <a href="#/music">♫ Music <small>Music upload coming later</small></a>
+    </div>
+    <p class="muted" style="font-size:11px;margin:10px 0 0">TEST MODE · uploads depend on available prototype tools</p>
+  </div>`;
+  document.body.appendChild(panel);
+  const closeMenu = (restoreFocus = false) => {
+    panel.hidden = true;
+    const trigger = document.querySelector('#tabbar a[href="#/create"]');
+    trigger?.setAttribute('aria-expanded', 'false');
+    if (restoreFocus) trigger?.focus();
+  };
+  panel.addEventListener('click', (e) => {
+    if (e.target === panel || e.target.closest('[data-create-close]')) closeMenu(true);
+    else if (e.target.closest('.pikk-create-options a')) closeMenu();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (panel.hidden) return;
+    if (e.key === 'Escape') { e.preventDefault(); closeMenu(true); }
+    if (e.key === 'Tab') {
+      const focusable = [...panel.querySelectorAll('a[href], button:not([disabled])')];
+      const first = focusable[0], last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last?.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first?.focus(); }
+    }
+  });
+  return panel;
 }
 
 function refreshTabBadges() {
