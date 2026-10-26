@@ -3859,3 +3859,11 @@ input:focus, select:focus, textarea:focus {
     height: 20px;
   }
 }
+
+/* Compact header actions: keep Profile, Messages, Notifications and menu visible on narrow phones. */
+.top-actions{gap:4px;min-width:0}
+.top-actions .header-profile.pill,.top-actions .header-msg.pill,.top-actions .header-notifications.pill{padding:6px 7px;font-size:10px;letter-spacing:0;gap:3px;white-space:nowrap}
+.top-actions .header-profile svg,.top-actions .header-msg svg,.top-actions .header-notifications svg{width:14px;height:14px;flex-shrink:0}
+.top-actions #menuBtn{width:32px;height:32px;min-width:32px}
+@media(max-width:430px){.top{gap:5px}.top-actions{gap:3px}.top-actions .header-profile.pill,.top-actions .header-msg.pill,.top-actions .header-notifications.pill{padding:6px 5px;font-size:9px}.top-actions .header-notifications-label{display:none}.top-actions .header-notifications.pill{min-width:28px;justify-content:center}}
+@media(max-width:355px){.top-actions .header-profile-label,.top-actions .header-msg-label{display:none}.top-actions .header-profile.pill,.top-actions .header-msg.pill{min-width:28px;justify-content:center}}
