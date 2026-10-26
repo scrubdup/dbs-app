@@ -1,3 +1,4 @@
+import { authReadiness, resolveAuthState } from '../auth/readiness.js';
 import { getState, setState, setNotifPrefs, listCatalog, submitCreatorSellApp } from '../store.js';
 import { resolveMediaSrc } from '../media-db.js';
 import { VIDEOS, VIDEO_COMING_SOON, MEMBERSHIPS } from '../data.js';
@@ -567,13 +568,17 @@ export function bindCommunity(root = document) {
 }
 
 export function renderSignup() {
+  const auth = authReadiness();
+  const identity = resolveAuthState({ demoUser: getState().user });
   return shellPage(
     'Signup & Creator Apps',
     `<div class="card">
-      <p class="kicker">Join DBS</p>
+      <p class="kicker">Join PIKK</p>
+      <span class="chip">Account system: ${auth.productionAuthAvailable ? 'Ready' : 'PRE-LAUNCH · TEST MODE'}</span>
+      <p class="muted">Current identity: ${identity === 'demo' ? 'Local demo profile (not verified)' : 'Guest (not signed in)'}. Real accounts are not yet enabled.</p>
       <h2 style="margin:0 0 8px">Fan account first</h2>
-      <p>Everyone creates a DatBoiSkeet account to participate — follow, comment, save, join Lounge rooms, buy memberships, message the team, or apply to earn. Visitors can browse public promo pages; signing up unlocks the network.</p>
-      <p class="muted" style="margin:8px 0 12px"><strong>Basic fan signup is free</strong> — no manual approval. This demo uses local Profile sign-in (TEST MODE · no real email/auth yet).</p>
+      <p>Everyone will create a PIKK account to participate — follow, comment, save, join Lounge rooms, buy memberships, message the team, or apply to earn. Visitors can browse public promo pages; signing up unlocks the network.</p>
+      <p class="muted" style="margin:8px 0 12px"><strong>Basic fan signup is free</strong> — no manual approval. This demo uses local Profile sign-in (TEST MODE · no real email/auth yet). Do not enter a real password; local demo profiles are not secure accounts.</p>
       <a class="btn primary" href="#/profile">Sign in / create demo user</a>
       <a class="btn ghost" href="#/guidelines" style="margin-left:8px">Read Guidelines</a>
     </div>
@@ -582,7 +587,7 @@ export function renderSignup() {
       <h3>Apply for a role</h3>
       <p class="muted" style="margin:0 0 10px">From Profile → Become a Creator, request one or more roles. Each has its own application — no automatic access to earning tools.</p>
       <ul class="list-plain">
-        <li><span><strong>Creator / Streamer</strong><br/><span class="muted" style="font-size:12px">Profile, socials, livestream plan · DBS branding &amp; moderation</span></span><a href="#/live">Live</a></li>
+        <li><span><strong>Creator / Streamer</strong><br/><span class="muted" style="font-size:12px">Profile, socials, livestream plan · PIKK branding &amp; moderation</span></span><a href="#/live">Live</a></li>
         <li><span><strong>Clipper</strong><br/><span class="muted" style="font-size:12px">Work samples &amp; analytics · paid promo campaigns</span></span><a href="#/clippers">Apply</a></li>
         <li><span><strong>Brand / Advertiser</strong><br/><span class="muted" style="font-size:12px">Business identity, campaigns &amp; disclosures</span></span><a href="#/marketplace">Marketplace</a></li>
         <li><span><strong>Affiliate / Promoter</strong><br/><span class="muted" style="font-size:12px">Referral &amp; campaign promotion plan</span></span><a href="#/refer">Refer</a></li>
