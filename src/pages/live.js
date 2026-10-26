@@ -215,11 +215,12 @@ const LIVE_DISCOVERY_CATEGORIES = [
   ['Education', 'Tutorials, learning and study sessions', '📚'],
   ['News & Commentary', 'Current events and opinions', '📰'],
   ['Comedy & Entertainment', 'Comedy, variety and entertainment', '🎭'],
+  ['Comedy & Roast Battles', '1v1, tag team, open mic and tournaments', '🎤'],
 ];
 
 function renderCategoriesPanel() {
   const cards = LIVE_DISCOVERY_CATEGORIES.map(([name, description, emoji]) => `
-    <a class="live-cat-card" href="#/live?tab=channels&category=${encodeURIComponent(name)}" aria-label="${esc(name)}: browse channels">
+    <a class="live-cat-card" href="${name === 'Comedy & Roast Battles' ? '#/roast-arena' : `#/live?tab=channels&category=${encodeURIComponent(name)}`}" aria-label="${esc(name)}: browse channels">
       <span style="font-size:26px" aria-hidden="true">${emoji}</span>
       <strong>${esc(name)}</strong>
       <p class="muted" style="margin:6px 0 0;font-size:12px">${esc(description)}</p>
