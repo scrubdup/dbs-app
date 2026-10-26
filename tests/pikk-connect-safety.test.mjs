@@ -7,7 +7,22 @@ import { renderDating } from '../src/pages/dating.js';
 const source = readFileSync(new URL('../src/pages/connect.js', import.meta.url), 'utf8');
 
 test('random chat remains a clearly blocked preview without fake matching', () => {
-  const html = renderConnect();
+  // The existing restream demo lazily persists defaults while rendering.
+  // Supply a browser storage stub without touching real user data.
+  const priorStorage = globalThis.localStorage;
+  const entries = new Map();
+  globalThis.localStorage = {
+    getItem: (key) => entries.get(key) ?? null,
+    setItem: (key, value) => entries.set(key, String(value)),
+    removeItem: (key) => entries.delete(key),
+  };
+  let html;
+  try {
+    html = renderConnect();
+  } finally {
+    if (priorStorage === undefined) delete globalThis.localStorage;
+    else globalThis.localStorage = priorStorage;
+  }
   assert.match(html, /No matching service · TEST MODE/);
   assert.match(html, /Unavailable · review 18\+ &amp; rules/);
   assert.match(html, /No match was created, no camera was requested/);
