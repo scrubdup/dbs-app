@@ -100,7 +100,7 @@ export function renderWallet() {
           </span>
           <span style="text-align:right;font-size:13px">
             <strong>${fmtMoney(e.creatorShare)}</strong><br/>
-            <span class="muted">DBS ${fmtMoney(e.dbsShare)}</span>
+            <span class="muted">PIKK ${fmtMoney(e.dbsShare)}</span>
           </span>
         </li>`
           )
@@ -119,7 +119,7 @@ export function renderWallet() {
             <th style="padding:6px 4px">Fees</th>
             <th style="padding:6px 4px">Net</th>
             <th style="padding:6px 4px">You</th>
-            <th style="padding:6px 4px">DBS</th>
+            <th style="padding:6px 4px">PIKK</th>
           </tr>
         </thead>
         <tbody>
@@ -266,13 +266,13 @@ export function renderWallet() {
 
     <div class="card" id="wallet-gift-earnings">
       <h3>Live gift earnings · creator view</h3>
-      <p class="muted" style="margin:0 0 10px;font-size:13px">80% creator / 20% DBS on NET catalog gifts. Not shown on Live / gift tray.</p>
+      <p class="muted" style="margin:0 0 10px;font-size:13px">80% creator / 20% PIKK on NET catalog gifts. Not shown on Live / gift tray.</p>
       ${giftEarnHtml}
     </div>
 
     <div class="card">
       <h3>Earnings breakdown</h3>
-      <p class="muted" style="margin:0 0 10px">Gifts, tips, subscriptions, referrals, Clippers, sponsorships, merch/affiliate — gross → fees → net → creator% / DBS%.</p>
+      <p class="muted" style="margin:0 0 10px">Gifts, tips, subscriptions, referrals, Clippers, sponsorships, merch/affiliate — gross → fees → net → creator% / PIKK%.</p>
       ${breakdown}
       ${ledger ? `<h4 style="margin:16px 0 8px;font-size:14px">Ledger (recent)</h4>${ledger}` : ''}
     </div>
