@@ -36,7 +36,7 @@ try {
 } catch (_) {}
 
 function refresh() {
-  navigate('#/shop');
+  navigate('#/profile-shop');
 }
 
 function itemById(id) {
@@ -224,7 +224,7 @@ export function renderShop() {
   `;
 
   return shellPage('Profile Shop', body, {
-    lead: 'Original DBS digital cosmetics · live preview · CONCEPT / TEST MODE.',
+    lead: 'PIKK digital cosmetics · live preview · CONCEPT / TEST MODE.',
     badge: 'Phase 2 · CONCEPT',
   });
 }
