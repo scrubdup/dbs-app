@@ -590,14 +590,15 @@ export const DRAWER_LINKS = DRAWER_GROUPS.flatMap((g) =>
   g.href ? [{ href: g.href, label: g.label }] : (g.links || [])
 );
 
-/** Bottom nav t290u: exactly 7 — Home · Post · Music · Go Live · Videos · Chat · Game.
- *  Go Live center (4th). Messages OFF tabbar (header only). Profile via drawer. */
+/** Approved bottom navigation: seven tabs in this exact order.
+ * Home remains accessible through the official PIKK header logo.
+ * Create remains the raised center action; messages stay in the header. */
 export const TABBAR = [
-  { href: '#/home', label: 'Home', icon: 'home' },
   { href: '#/music', label: 'Music', icon: 'music' },
   { href: '#/videos', label: 'Videos', icon: 'videos' },
+  { href: '#/connect', label: 'Connect', icon: 'profile' },
   { href: '#/create', label: 'Create', icon: 'live', primary: true },
-  { href: '#/connect', label: 'Connect', icon: 'live' },
   { href: '#/dating', label: 'Dating', icon: 'heart' },
+  { href: '#/games', label: 'Games', icon: 'game' },
   { href: '#/shop', label: 'Shop', icon: 'merch' },
 ];
