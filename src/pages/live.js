@@ -777,7 +777,32 @@ function renderGbChallengePop(user) {
 function renderPendingBattleBanner(user) {
   tickGiftBattle();
   const battle = getActiveGiftBattle();
-  if (!battle || battle.status !== 'pending' || !user) return '';
+  if (!battle || !user) return '';
+  if (battle.status === 'active' || battle.status === 'ended') {
+    const a = Math.max(0, Number(battle.scoreA) || 0);
+    const b = Math.max(0, Number(battle.scoreB) || 0);
+    const total = a + b;
+    const remaining = battle.status === 'active' ? Math.max(0, Math.ceil((Number(battle.endsAt) - Date.now()) / 1000)) : 0;
+    const winner = battle.winnerName ? '@' + esc(battle.winnerName) : 'Tie';
+    return `
+      <section class="card live-battle-scoreboard" aria-label="Live Gift Battle scoreboard">
+        <div class="row wrap" style="justify-content:space-between;align-items:center">
+          <strong>⚔️ PIKK Live Battle</strong>
+          <span class="chip" id="liveBattleTimer" data-ends-at="${Number(battle.endsAt) || 0}">${battle.status === 'active' ? remaining + 's left' : 'Finished'}</span>
+        </div>
+        <div class="row" style="justify-content:space-between;gap:12px;margin:12px 0">
+          <div><strong>@${esc(battle.challenger?.name || 'Challenger')}</strong><div>${fmtCount(a)} demo points</div></div>
+          <strong>VS</strong>
+          <div style="text-align:right"><strong>@${esc(battle.opponent?.name || 'Opponent')}</strong><div>${fmtCount(b)} demo points</div></div>
+        </div>
+        <div class="live-battle-score-track" role="progressbar" aria-label="Challenger share of battle points" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${total ? Math.round(a / total * 100) : 50}" style="height:10px;background:var(--blue);border-radius:10px;overflow:hidden">
+          <div style="width:${total ? Math.round(a / total * 100) : 50}%;height:100%;background:var(--acc)"></div>
+        </div>
+        ${battle.status === 'ended' ? `<p class="live-battle-winner" style="font-weight:800;margin-top:10px">🏆 ${winner} · Battle complete</p>` : '<p class="muted" style="margin-top:10px">Scores update with demo gifts · no real money</p>'}
+        <a href="#/giftbattles" class="btn ghost" style="margin-top:8px">Battle details</a>
+      </section>`;
+  }
+  if (battle.status !== 'pending') return '';
   const isOpp = battle.opponent?.id === user.id;
   const isChallenger = battle.challenger?.id === user.id;
   if (!isOpp && !isChallenger) {
