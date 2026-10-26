@@ -26,3 +26,11 @@ test('Roast rounds are automated with timed audience voting and no host', () => 
   assert.match(arena, /locks voting when time expires/);
   assert.doesNotMatch(arena, /host and moderator/);
 });
+
+test('Roast Arena documents breaks, tie resolution and rematch voting', () => {
+  assert.match(arena, /6-second break/);
+  assert.match(arena, /tiebreaker final round/);
+  assert.match(arena, /Rematch: Yes/);
+  assert.match(arena, /Rematch: No/);
+  assert.match(arena, /both contestants agree/);
+});
