@@ -29,7 +29,7 @@ test('sticky music player external destination prioritizes Apple Music', () => {
 test('most-played external fallback prioritizes Apple Music', () => {
   orderInBlock('if (!playable) {', 'if (openBtn && href)', [
     'item.links?.apple', 'item.links?.youtubeMusic', 'item.links?.spotify',
-    'item.links?.youtube', 'STREAMING_ARTIST.apple',
+    'item.links?.youtube ||', 'STREAMING_ARTIST.apple',
   ]);
 });
 
