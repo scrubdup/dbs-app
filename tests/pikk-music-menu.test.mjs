@@ -18,7 +18,7 @@ test('owner-approved Music menu has exactly five options on verified Music route
 
 test('Music tab opens its dialog; existing Create tab remains independent', () => {
   assert.match(main, /toggleMusicMenu\(event\.currentTarget\)/);
-  assert.match(main, /aria-controls=\\"pikkMusicMenu\\"/);
+  assert.match(main, /aria-controls="pikkMusicMenu"/);
   assert.match(main, /ensureCreateMenu\(\)/);
   assert.match(main, /closeMusicMenu\(\)/);
   assert.match(menu, /pikk-create-overlay/);
@@ -26,8 +26,8 @@ test('Music tab opens its dialog; existing Create tab remains independent', () =
 });
 
 test('Music menu is keyboard accessible and dismisses on route changes', () => {
-  assert.match(menu, /aria-modal=\\"true\\"/);
-  assert.match(menu, /aria-labelledby=\\"pikkMusicMenuTitle\\"/);
+  assert.match(menu, /aria-modal="true"/);
+  assert.match(menu, /aria-labelledby="pikkMusicMenuTitle"/);
   assert.match(menu, /addEventListener\('hashchange'/);
   assert.match(menu, /event\.key === 'Escape'/);
   assert.match(menu, /event\.key !== 'Tab'/);
