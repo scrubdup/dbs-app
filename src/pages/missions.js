@@ -9,6 +9,7 @@ import {
   bumpMissionScore,
   getMissionRankings,
   signInLocal,
+  isAdmin,
 } from '../store.js';
 import { esc, toast, shellPage, timeAgo } from '../ui.js';
 import { navigate } from '../router.js';
@@ -22,7 +23,7 @@ const PROMOTE_LABELS = {
   album: 'Album',
   video: 'Video',
   live: 'Livestream',
-  app: 'DBS App',
+  app: 'PIKK App',
   interview: 'Interview',
 };
 
@@ -58,6 +59,7 @@ function ensureSignedIn() {
 
 export function renderMissions() {
   const { user } = getState();
+  const canManage = isAdmin(); // demo role only, never server authorization
   const missions = listMissions().sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
   const active = missions.filter((m) => m.status === 'active' || m.status === 'paused');
   const archive = missions.filter((m) => m.status === 'ended' || m.status === 'draft');
@@ -66,7 +68,6 @@ export function renderMissions() {
     missions.length === 0
       ? `<div class="card">
           <p class="muted" style="margin:0 0 12px">No missions yet. Load demo campaigns or create one as demo admin.</p>
-          <button class="btn primary" id="msnSeed">Load demo missions</button>
         </div>`
       : '';
 
@@ -74,7 +75,7 @@ export function renderMissions() {
     const feeChip =
       m.fundSource === 'third_party'
         ? `<span class="chip">20% management fee · disclosed</span>`
-        : `<span class="chip">DBS-funded · marketing expense</span>`;
+        : `<span class="chip">PIKK-funded · marketing expense</span>`;
     const rankings = getMissionRankings(m.id);
     const joined = user && (m.participants || []).some((p) => p.userId === user.id);
     const mySubmissions = (m.submissions || []).filter((s) => user && s.userId === user.id);
@@ -121,8 +122,8 @@ export function renderMissions() {
                    <button class="btn" data-bump="${esc(m.id)}">+5 demo points</button>`
                 : `<button class="btn primary" data-join="${esc(m.id)}">Join mission</button>`
             }
-            <button class="btn ghost" data-status="${esc(m.id)}" data-next="paused">Pause</button>
-            <button class="btn ghost" data-status="${esc(m.id)}" data-next="ended">End mission</button>
+            ${canManage ? `<button class="btn ghost" data-status="${esc(m.id)}" data-next="paused">Pause</button>
+            <button class="btn ghost" data-status="${esc(m.id)}" data-next="ended">End mission</button>` : ''}
           </div>
           ${
             joined
@@ -135,10 +136,10 @@ export function renderMissions() {
               : ''
           }`
         : m.status === 'paused'
-          ? `<div class="row wrap" style="margin-top:10px;gap:8px">
+          ? (canManage ? `<div class="row wrap" style="margin-top:10px;gap:8px">
               <button class="btn primary" data-status="${esc(m.id)}" data-next="active">Resume</button>
               <button class="btn ghost" data-status="${esc(m.id)}" data-next="ended">End mission</button>
-            </div>`
+            </div>` : '<span class="chip">Paused</span>')
           : `<div class="row wrap" style="margin-top:10px"><span class="chip">Archive · ${esc(m.status)}</span></div>`;
 
     return `<article class="card" data-mission="${esc(m.id)}">
@@ -153,7 +154,7 @@ export function renderMissions() {
       <h3 style="margin:10px 0 4px">${esc(m.title)}</h3>
       <p class="muted" style="margin:0 0 6px;font-size:13px">${esc(m.reward || '')}</p>
       <p class="muted" style="margin:0;font-size:12px">
-        Fund: <strong>${m.fundSource === 'third_party' ? 'Third-party' : 'DBS'}</strong>
+        Fund: <strong>${m.fundSource === 'third_party' ? 'Third-party' : 'PIKK'}</strong>
         ${m.fundSource === 'third_party' ? ' · 20% management fee (disclosed)' : ' · not a creator commission — marketing expense'}
         · ${(m.participants || []).length} joined · ${(m.submissions || []).length} submissions
         ${joined ? ` · your proofs: ${mySubmissions.length}` : ''}
@@ -197,12 +198,12 @@ export function renderMissions() {
         <span class="chip">Signed in as ${esc(user?.username || 'guest')}</span>
       </div>
       <p class="muted" style="margin:10px 0 0;font-size:13px">
-        Admin-created missions promoting songs, albums, interviews, videos, livestreams, and the DBS app.
+        Admin-created missions promoting songs, albums, interviews, videos, livestreams, and the PIKK app.
         Budgets, deadlines, creator participation, rankings, and verified payouts (demo).
-        Third-party-funded campaigns disclose a <strong>20% management fee</strong>; DBS-funded campaigns are a marketing expense (not a commission).
+        Third-party-funded campaigns disclose a <strong>20% management fee</strong>; PIKK-funded campaigns are a marketing expense (not a commission).
       </p>
       <div class="row wrap" style="margin-top:12px;gap:8px">
-        <button class="btn" id="msnSeed">${missions.length ? 'Reload demo missions' : 'Load demo missions'}</button>
+        ${!missions.length || canManage ? `<button class="btn" id="msnSeed">${missions.length ? 'Reload demo missions' : 'Load demo missions'}</button>` : ''}
         ${!user ? `<button class="btn primary" id="msnSignIn">Sign in · demo</button>` : ''}
       </div>
     </div>
@@ -210,7 +211,8 @@ export function renderMissions() {
     ${empty}
     ${listHtml}
 
-    <div class="card">
+    ${!canManage ? '<div class="card muted">Mission creation and management are limited to demo admins. This is not production authorization.</div>' : ''}
+    <div class="card" ${canManage ? '' : 'hidden'}>
       <h3>Create mission · demo admin</h3>
       <p class="muted" style="margin:0 0 10px;font-size:13px">Stored in <code>dbs_v1.missions</code>. No real charges or fraud API.</p>
       <form id="msnCreate" style="display:grid;gap:10px;max-width:520px">
@@ -229,7 +231,7 @@ export function renderMissions() {
           <div class="field"><label>Deadline</label><input name="deadline" id="msnDeadline" type="date" value="${deadlineInputValue(14)}" /></div>
           <div class="field"><label>Fund source</label>
             <select name="fundSource" id="msnFund">
-              <option value="dbs">DBS-funded (marketing expense)</option>
+              <option value="dbs">PIKK-funded (marketing expense)</option>
               <option value="third_party">Third-party (20% mgmt fee)</option>
             </select>
           </div>
@@ -250,7 +252,8 @@ export function renderMissions() {
 export function bindMissions(root) {
   root.querySelector('#msnSeed')?.addEventListener('click', () => {
     const force = listMissions().length > 0;
-    const res = seedDemoMissions({ force: true });
+    const res = seedDemoMissions({ force });
+    if (res.error === 'forbidden') return toast('Demo admin required to reload missions');
     toast(force ? 'Demo missions reloaded' : `Loaded ${res.seeded || 0} demo missions`);
     refresh();
   });
@@ -277,6 +280,7 @@ export function bindMissions(root) {
       reward,
       status: 'active',
     });
+    if (mission.error === 'forbidden') return toast('Demo admin required');
     if (mission.error) return toast('Title required');
     toast(`Mission created · ${mission.title}`);
     refresh();
@@ -312,6 +316,7 @@ export function bindMissions(root) {
       const id = btn.getAttribute('data-status');
       const next = btn.getAttribute('data-next');
       const res = setMissionStatus(id, next);
+      if (res.error === 'forbidden') return toast('Demo admin required');
       if (res.error) return toast('Status update failed');
       toast(`Mission → ${next}`);
       refresh();
