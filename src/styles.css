@@ -3807,3 +3807,37 @@ input:focus, select:focus, textarea:focus {
     height: 17px;
   }
 }
+
+/* iPhone bottom navigation: keep all seven destinations, including Shop, visible.
+   Override older flex and narrow-screen rules without hiding or scrolling tabs. */
+@media (max-width: 767px) {
+  html body #tabbar.tabbar.tabbar-reshaped.tabbar-fit7 {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100;
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 0;
+    width: 100%;
+    max-width: 100vw;
+    overflow: visible;
+    visibility: visible;
+    padding-bottom: max(env(safe-area-inset-bottom), 8px);
+  }
+  html body #tabbar.tabbar.tabbar-reshaped.tabbar-fit7 > a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 0;
+    max-width: 100%;
+    padding: 7px 0 5px;
+    font-size: clamp(7px, 1.8vw, 9px);
+    white-space: nowrap;
+  }
+  html body #tabbar.tabbar.tabbar-reshaped.tabbar-fit7 > a .tab-ico svg {
+    width: 18px;
+    height: 18px;
+  }
+}
