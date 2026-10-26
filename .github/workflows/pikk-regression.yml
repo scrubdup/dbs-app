@@ -4,7 +4,7 @@ on:
   push:
     branches: [main, pikk-build-regression-guards]
   pull_request:
-    branches: [main, pikk-restoration-from-main]
+    branches: [main, pikk-restoration-from-main, integration/pikk-seven-updates-20261026]
 
 permissions:
   contents: read
