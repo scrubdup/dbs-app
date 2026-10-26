@@ -40,7 +40,7 @@ import { renderConnect, bindConnect } from './pages/connect.js';
 import { renderShorts, bindShorts } from './pages/shorts.js';
 import { renderBlockWars, bindBlockWars } from './pages/blockwars.js';
 import { renderGames } from './pages/games.js';
-import { renderDating } from './pages/dating.js';
+import { renderDating, bindDating } from './pages/dating.js';
 import { renderRoastArena, bindRoastArena } from './pages/roast-arena.js';
 import {
   renderVideos,
@@ -110,7 +110,7 @@ const ROUTES = {
   '/connect': { render: renderConnect, bind: bindConnect },
   '/blockwars': { render: renderBlockWars, bind: bindBlockWars },
   '/games': { render: renderGames },
-  '/dating': { render: renderDating },
+  '/dating': { render: renderDating, bind: bindDating },
   '/roast-arena': { render: renderRoastArena, bind: bindRoastArena },
 };
 
