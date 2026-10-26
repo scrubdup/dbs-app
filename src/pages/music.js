@@ -26,8 +26,8 @@ function refresh(hash) {
 }
 
 const PLATFORM_LABELS = {
-  spotify: 'Spotify',
   apple: 'Apple Music',
+  spotify: 'Spotify',
   youtubeMusic: 'YouTube Music',
   youtube: 'YouTube',
   tidal: 'Tidal',
@@ -254,11 +254,11 @@ export function renderMusic() {
 
     <div class="card" id="stream-everywhere">
       <h2>Featured · Stream Everywhere</h2>
-      <p class="muted">Official DatBoiSkeet releases — opens Spotify, Apple Music, YouTube Music, or YouTube in a new tab. External streams are not rehosted in-app. Separate from Vault &amp; purchases.</p>
+      <p class="muted">Official DatBoiSkeet releases — Apple Music is the primary listening destination. Other verified platforms are optional. Full Apple Music playback may require a subscription. External streams are not rehosted in-app. Separate from Vault &amp; purchases.</p>
       <div class="stream-artist row wrap" style="gap:8px;margin:10px 0 14px">
         <span class="chip">Artist</span>
-        <a class="btn stream-plat stream-plat-spotify" href="${esc(STREAMING_ARTIST.spotify)}" target="_blank" rel="noopener">Spotify</a>
-        <a class="btn stream-plat stream-plat-apple" href="${esc(STREAMING_ARTIST.apple)}" target="_blank" rel="noopener">Apple Music</a>
+        <a class="btn stream-plat stream-plat-apple" href="${esc(STREAMING_ARTIST.apple)}" target="_blank" rel="noopener">Apple Music · Listen</a>
+        <a class="btn ghost stream-plat stream-plat-spotify" href="${esc(STREAMING_ARTIST.spotify)}" target="_blank" rel="noopener">Spotify · Alternative</a>
         <a class="btn stream-plat stream-plat-youtubeMusic" href="${esc(STREAMING_ARTIST.youtubeMusic)}" target="_blank" rel="noopener">YouTube Music</a>
         <a class="btn stream-plat stream-plat-youtube" href="${esc(STREAMING_ARTIST.youtube)}" target="_blank" rel="noopener">YouTube</a>
       </div>
