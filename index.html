@@ -92,13 +92,11 @@
     <p class="credit">Built by <a href="https://cox-creations-studio.pages.dev/" target="_blank" rel="noopener">Cox Creations Studio</a></p>
     <p class="credit"><a href="https://cursor.com/canvas/store-4b630a92-1dd3-4b0e-b141-42c424845f21/c81bf315-76c4-4599-bb5d-4bec1a35a001" target="_blank" rel="noopener">Open with Grok Bot team</a> · progress board</p>
   </footer>
-  <script>
-    // Preserve the current route while requesting a fresh HTML entrypoint.
+  <script type="module">
+    import { freshPikkUrl } from './src/refresh-url.js';
     document.getElementById('pikk-refresh-link')?.addEventListener('click', function (event) {
       event.preventDefault();
-      const url = new URL(window.location.href);
-      url.searchParams.set('refresh', String(Date.now()));
-      window.location.assign(url.toString());
+      window.location.assign(freshPikkUrl(window.location.href));
     });
   </script>
   <!-- bottom mini-player removed — §17 sticky top player -->
