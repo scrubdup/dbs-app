@@ -26,8 +26,8 @@ function refresh(hash) {
 }
 
 const PLATFORM_LABELS = {
-  spotify: 'Spotify',
   apple: 'Apple Music',
+  spotify: 'Spotify',
   youtubeMusic: 'YouTube Music',
   youtube: 'YouTube',
   tidal: 'Tidal',
@@ -58,12 +58,25 @@ function platformButtons(links) {
     .join('');
 }
 
+// Apple-hosted embed: playback and preview limits are controlled by Apple.
+// Only construct an embed URL from an official Apple Music catalog link.
+function appleEmbedUrl(link) {
+  try {
+    const url = new URL(link);
+    if (url.protocol !== 'https:' || url.hostname !== 'music.apple.com') return '';
+    if (!/^\/[a-z]{2}(?:-[a-z]{2})?\/(?:song|album)\//i.test(url.pathname)) return '';
+    return 'https://embed.music.apple.com' + url.pathname + url.search;
+  } catch (_) { return ''; }
+}
+
 function renderStreamingReleaseCard(r) {
   const cover = r.cover
     ? `<img class="stream-cover" src="${esc(r.cover)}" alt="${esc(r.title)}" loading="lazy" referrerpolicy="no-referrer" />`
     : `<div class="stream-cover stream-cover-empty" aria-hidden="true">♪</div>`;
   const note = r.albumNote ? `<div class="muted" style="font-size:11px">${esc(r.albumNote)}</div>` : '';
   const year = r.year ? ` · ${esc(String(r.year))}` : '';
+  const appleEmbed = appleEmbedUrl(r.links?.apple);
+  const applePlayer = appleEmbed ? `<details class="apple-music-embed"><summary>▶ Play in PIKK · Apple Music</summary><iframe title="Apple Music player for ${esc(r.title)}" src="${esc(appleEmbed)}" loading="lazy" allow="autoplay *; encrypted-media *; fullscreen *" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation-by-user-activation" style="width:100%;height:175px;border:0;border-radius:12px"></iframe><small class="muted">Apple controls playback availability. Full listening may require Apple Music.</small></details>` : '';
   return `
     <article class="stream-release">
       ${cover}
@@ -72,6 +85,7 @@ function renderStreamingReleaseCard(r) {
         <strong>${esc(r.title)}</strong>
         <div class="muted" style="font-size:12px">${esc(r.artist || 'DatBoiSkeet')}${year}</div>
         ${note}
+        ${applePlayer}
         <div class="stream-plats">${platformButtons(r.links)}</div>
       </div>
     </article>`;
@@ -254,11 +268,11 @@ export function renderMusic() {
 
     <div class="card" id="stream-everywhere">
       <h2>Featured · Stream Everywhere</h2>
-      <p class="muted">Official DatBoiSkeet releases — opens Spotify, Apple Music, YouTube Music, or YouTube in a new tab. External streams are not rehosted in-app. Separate from Vault &amp; purchases.</p>
+      <p class="muted">Official DatBoiSkeet releases — Apple Music is the primary listening destination: use the Apple-hosted player on supported releases or open the song in Apple Music. Other verified platforms are optional. Full Apple Music playback may require a subscription. External streams are not rehosted in-app. Separate from Vault &amp; purchases.</p>
       <div class="stream-artist row wrap" style="gap:8px;margin:10px 0 14px">
         <span class="chip">Artist</span>
-        <a class="btn stream-plat stream-plat-spotify" href="${esc(STREAMING_ARTIST.spotify)}" target="_blank" rel="noopener">Spotify</a>
-        <a class="btn stream-plat stream-plat-apple" href="${esc(STREAMING_ARTIST.apple)}" target="_blank" rel="noopener">Apple Music</a>
+        <a class="btn stream-plat stream-plat-apple" href="${esc(STREAMING_ARTIST.apple)}" target="_blank" rel="noopener">Apple Music · Listen</a>
+        <a class="btn ghost stream-plat stream-plat-spotify" href="${esc(STREAMING_ARTIST.spotify)}" target="_blank" rel="noopener">Spotify · Alternative</a>
         <a class="btn stream-plat stream-plat-youtubeMusic" href="${esc(STREAMING_ARTIST.youtubeMusic)}" target="_blank" rel="noopener">YouTube Music</a>
         <a class="btn stream-plat stream-plat-youtube" href="${esc(STREAMING_ARTIST.youtube)}" target="_blank" rel="noopener">YouTube</a>
       </div>
