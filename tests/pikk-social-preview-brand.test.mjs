@@ -17,6 +17,6 @@ test('PIKK approved published logo is retained for splash and sticky player', ()
 });
 
 test('PIKK public entrypoint and manifest do not revert to KLIK or KLIKK', () => {
-  assert.doesNotMatch(index + manifest, /\\bKLIKK?\\b/i);
+  assert.doesNotMatch(index + manifest, /\bKLIKK?\b/i);
   assert.equal(JSON.parse(manifest).short_name, 'PIKK');
 });
