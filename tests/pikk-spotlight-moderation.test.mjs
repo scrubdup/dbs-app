@@ -49,7 +49,8 @@ test('demo admin retains queue moderation and skip controls', () => {
 
 test('moderator UI is not exposed to ordinary signed-in users', () => {
   const src = readFileSync(new URL('../src/pages/spotlight.js', import.meta.url), 'utf8');
-  assert.match(src, /function canMod\\(\\) \\{[\\s\\S]*?return isAdmin\\(\\);/);
+  assert.ok(src.includes('function canMod() {'));
+  assert.ok(src.includes('return isAdmin();'));
   assert.doesNotMatch(src, /Demo moderator/);
   assert.match(src, /Cannot skip:/);
   assert.match(src, /Cannot remove:/);
