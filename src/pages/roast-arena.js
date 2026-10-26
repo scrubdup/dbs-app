@@ -22,9 +22,9 @@ export function renderRoastArena() {
         <li>The system starts a visible countdown and displays the current round and time remaining to everyone.</li>
         <li>When the round ends, both microphones pause and viewers see <strong>Vote: Contestant A</strong> or <strong>Vote: Contestant B</strong> buttons.</li>
         <li>Each eligible viewer gets one vote per round within the timed voting window; the system locks voting when time expires.</li>
-        <li>Results display the round winner, cumulative score and a separate gifts leaderboard. The system automatically starts the next round or ends the match.</li>
+        <li>Results display the round winner, cumulative score and a separate gifts leaderboard. The system displays a <strong>6-second break</strong> between rounds before starting the next round. If the final match vote is tied, an automatic <strong>tiebreaker final round</strong> begins after the break. At the end of a decided match, viewers can vote <strong>Rematch: Yes</strong> or <strong>Rematch: No</strong>; a rematch proceeds only if both contestants agree.</li>
       </ol>
-      <p class="muted">This is the approved automated competition design, not yet a working real-time match.</p>
+      <p class="muted">Voting windows, tiebreakers, rematch polls and 6-second inter-round breaks are planned behavior, not yet a working real-time match.</p>
     </div>
     <div class="card">
       <h3>Discovery</h3>
