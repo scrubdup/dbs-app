@@ -16,3 +16,13 @@ test('Roast Arena separates vote and gift winners and discloses prelaunch status
   assert.match(arena, /explicitly opt in/);
   assert.match(arena, /mute, remove and report/);
 });
+
+test('Roast rounds are automated with timed audience voting and no host', () => {
+  assert.match(arena, /No host is required/);
+  assert.match(arena, /visible countdown/);
+  assert.match(arena, /Vote: Contestant A/);
+  assert.match(arena, /Vote: Contestant B/);
+  assert.match(arena, /one vote per round/);
+  assert.match(arena, /locks voting when time expires/);
+  assert.doesNotMatch(arena, /host and moderator/);
+});
