@@ -188,8 +188,18 @@ function ensureCreateMenu() {
     if (e.key === 'Tab') {
       const focusable = [...panel.querySelectorAll('a[href], button:not([disabled])')];
       const first = focusable[0], last = focusable[focusable.length - 1];
-      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last?.focus(); }
-      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first?.focus(); }
+      if (!first) { e.preventDefault(); return; }
+      // Keep keyboard focus inside the modal even when focus starts outside it.
+      if (!panel.contains(document.activeElement)) {
+        e.preventDefault();
+        (e.shiftKey ? last : first).focus();
+      } else if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
     }
   });
   return panel;
