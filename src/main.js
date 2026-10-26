@@ -41,7 +41,7 @@ import { renderShorts, bindShorts } from './pages/shorts.js';
 import { renderBlockWars, bindBlockWars } from './pages/blockwars.js';
 import { renderGames } from './pages/games.js';
 import { renderDating } from './pages/dating.js';
-import { renderRoastArena } from './pages/roast-arena.js';
+import { renderRoastArena, bindRoastArena } from './pages/roast-arena.js';
 import {
   renderVideos,
   bindVideos,
@@ -111,7 +111,7 @@ const ROUTES = {
   '/blockwars': { render: renderBlockWars, bind: bindBlockWars },
   '/games': { render: renderGames },
   '/dating': { render: renderDating },
-  '/roast-arena': { render: renderRoastArena },
+  '/roast-arena': { render: renderRoastArena, bind: bindRoastArena },
 };
 
 function buildTabbar() {
