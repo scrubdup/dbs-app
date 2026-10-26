@@ -1,7 +1,6 @@
 // Deterministic Roast Arena match engine. No server, streams, or shared votes here.
 export const ROUND_SECONDS = 60;
 export const VOTE_SECONDS = 10;
-export const BREAK_SECONDS = 6;
 export const REMATCH_SECONDS = 10;
 export const BASE_ROUNDS = 3;
 export function createRoastMatch() {
@@ -18,7 +17,7 @@ export function castRematchVote(match, yes) {
   return { ...match, rematchVotes };
 }
 export function tickRoastMatch(match) {
-  if (!['round','vote','break','rematch'].includes(match.phase)) return match;
+  if (!['round','vote','rematch'].includes(match.phase)) return match;
   if (match.seconds > 1) return { ...match, seconds: match.seconds - 1 };
   if (match.phase === 'round') return { ...match, phase: 'vote', seconds: VOTE_SECONDS, votes: [0, 0], voted: false };
   if (match.phase === 'vote') {
@@ -29,8 +28,7 @@ export function tickRoastMatch(match) {
       return { ...match, scores, roundWinners, winner: scores[0] > scores[1] ? 0 : 1, phase: 'rematch', seconds: REMATCH_SECONDS, rematchVoted: false };
     }
     // A tied result after the scheduled rounds triggers another deciding round.
-    return { ...match, scores, roundWinners, phase: 'break', seconds: BREAK_SECONDS, tieBreaker: match.round >= BASE_ROUNDS };
+    return { ...match, scores, roundWinners, phase: 'round', round: match.round + 1, seconds: ROUND_SECONDS, votes: [0, 0], voted: false, tieBreaker: match.round >= BASE_ROUNDS };
   }
-  if (match.phase === 'break') return { ...match, phase: 'round', round: match.round + 1, seconds: ROUND_SECONDS, votes: [0, 0], voted: false };
   return { ...match, phase: 'finished', seconds: 0 };
 }
