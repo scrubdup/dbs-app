@@ -199,6 +199,22 @@ function renderFollowingPanel(user) {
     </div>`;
 }
 
+// Approved PIKK-specific browse labels from the consolidated developer master.
+// Categories are browse filters, not promises of active streams.
+const PIKK_LIVE_CATEGORIES = [
+  ['IRL', 'Real-life broadcasts', '🌎'],
+  ['The Hangout', 'Conversation and community streams', '💬'],
+  ['Creator Spotlight', 'Creators showing their work', '✨'],
+  ['The Booth', 'Recording, freestyles, beats and studio sessions', '🎙️'],
+  ['Game Room', 'Gaming streams and communities', '🎮'],
+  ['The Stage', 'Music performances and showcases', '🎤'],
+  ['Watch Party', 'Authorized co-viewing and commentary only', '📺'],
+  ['The Workshop', 'Tutorials, production and creative education', '🛠️'],
+  ['PIKK Battles', 'Live gift battles and competitions · TEST MODE', '⚡'],
+  ['City Takeover', 'Location-themed artist contests', '🏙️'],
+  ['Spotlight Live', '24/7 performance queue · TEST MODE', '🌟'],
+];
+
 const LIVE_DISCOVERY_CATEGORIES = [
   ['Just Chatting', 'Conversations, Q&A and hanging out', '💬'],
   ['Gaming', 'Gameplay, tournaments and community games', '🎮'],
@@ -219,18 +235,27 @@ const LIVE_DISCOVERY_CATEGORIES = [
 ];
 
 function renderCategoriesPanel() {
-  const cards = LIVE_DISCOVERY_CATEGORIES.map(([name, description, emoji]) => `
-    <a class="live-cat-card" href="${name === 'Comedy & Roast Battles' ? '#/roast-arena' : `#/live?tab=channels&category=${encodeURIComponent(name)}`}" aria-label="${esc(name)}: browse channels">
+  const categoryLink = (name) =>
+    name === 'PIKK Battles' ? '#/giftbattles'
+      : name === 'Spotlight Live' ? '#/spotlight'
+      : name === 'Comedy & Roast Battles' ? '#/roast-arena'
+      : `#/live?tab=channels&category=${encodeURIComponent(name)}`;
+  const card = ([name, description, emoji]) => `
+    <a class="live-cat-card" href="${categoryLink(name)}" aria-label="${esc(name)}: browse channels">
       <span style="font-size:26px" aria-hidden="true">${emoji}</span>
       <strong>${esc(name)}</strong>
       <p class="muted" style="margin:6px 0 0;font-size:12px">${esc(description)}</p>
       <span class="chip">Browse channels</span>
-    </a>`).join('');
+    </a>`;
+  const pikkCards = PIKK_LIVE_CATEGORIES.map(card).join('');
+  const moreCards = LIVE_DISCOVERY_CATEGORIES.filter(([name]) => name !== 'IRL').map(card).join('');
   return `
     <div class="card live-disc-panel" id="liveTabCategories" data-panel="categories">
-      <h3 style="margin:0 0 8px">Browse Live Categories</h3>
-      <p class="muted" style="margin:0 0 12px;font-size:12px">Explore topics like Twitch and Kick. Select a topic to filter available PIKK live channels. Categories without an active stream show an empty result; no invented viewers.</p>
-      <div class="live-cat-cards">${cards}</div>
+      <h3 style="margin:0 0 8px">Explore Live · PIKK Categories</h3>
+      <p class="muted" style="margin:0 0 12px;font-size:12px">Choose a category to explore. Empty categories show no active streams, not invented viewers. Watch Parties require broadcast rights.</p>
+      <div class="live-cat-cards">${pikkCards}</div>
+      <h3 style="margin:18px 0 8px">More Live Topics</h3>
+      <div class="live-cat-cards">${moreCards}</div>
       <h3 style="margin:18px 0 8px">PIKK 24/7 Stages</h3>
       <div class="live-cat-cards">
         <a class="live-cat-card" href="#/openmic"><strong>Open Mic / Talent Discovery</strong><span class="chip">24/7 stage</span><p class="muted">Join the performance queue</p></a>
