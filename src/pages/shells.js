@@ -439,6 +439,15 @@ export function renderConnect() {
       <div class="section-swipe" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px">${cards}</div>
     </div>
     <div class="card">
+      <h3>Party Line · Voice & Chat</h3>
+      <p class="muted">Drop into a voice lounge without turning on your camera. Talk with the room while using its live text chat.</p>
+      <div class="section-swipe" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px">
+        <div class="preview-card"><strong>Join Voice</strong><span class="muted">Open party-line voice rooms</span><button class="btn ghost" disabled>Coming soon</button></div>
+        <div class="preview-card"><strong>Room Chat</strong><span class="muted">Text, reactions and room conversation</span><button class="btn ghost" disabled>Coming soon</button></div>
+      </div>
+      <p class="muted">Planned room controls: raise hand, mute, speaker queue, invite, host/co-host moderation, report, block and leave. Voice and text stay together in each room.</p>
+    </div>
+    <div class="card">
       <h3>Live Room Stage</h3>
       <p class="muted">Large rooms will feature a main speaker stage, participant camera tiles and room chat. Hosts will control invitations, microphones and removals.</p>
       <p class="muted"><strong>18+ only.</strong> Camera and microphone are opt-in. Reporting, blocking, age assurance, moderation and WebRTC signaling must be working before rooms can launch.</p>
