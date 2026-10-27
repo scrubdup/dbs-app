@@ -23,10 +23,11 @@ test('Dating page does not pretend to match people', () => {
   assert.match(html, /No real matches/);
   assert.match(html, /age|adult/i);
 });
-test('Arcade lists nine games without real-money claims', () => {
+test('Arcade lists all fifteen approved games without real-money claims', () => {
   const html = renderGames();
-  assert.equal((html.match(/Coming Soon<\/span>/g) || []).length, 9);
-  assert.match(html, /No real-money gambling/);
+  assert.equal((html.match(/class="pikk-arcade-card /g) || []).length, 15);
+  assert.match(html, /Play Chips have no cash value or cash-out/);
+  assert.match(html, /not playable/);
 });
 test('DatBoiSkeet music remains in catalog', () => {
   assert.ok(VIDEOS.some(video => video.artist === 'DatBoiSkeet'));
