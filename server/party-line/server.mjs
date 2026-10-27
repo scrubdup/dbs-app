@@ -143,7 +143,7 @@ export function createPartyLineServer({ authenticate } = {}) {
       return reply(res, 200, { room: safeRoom(room) });
     } catch (error) {
       const message = error instanceof SyntaxError ? 'Invalid JSON' : String(error?.message || 'Request rejected');
-      const forbidden = /Authentication|Account not active|Verified adult|permission|membership|Invite required|blocked|Mic publication/.test(message);
+      const forbidden = /Authentication|Account not active|Verified adult|permission|membership|Invite required|blocked|Mic publication|Listeners cannot/.test(message);
       reply(res, forbidden ? 403 : 400, { error: message });
     }
   });
