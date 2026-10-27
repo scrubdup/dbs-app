@@ -4265,3 +4265,51 @@ input:focus, select:focus, textarea:focus {
 }
 @media(max-width:350px){.pikk-video-grid{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){.pikk-video-filters button{scroll-behavior:auto}}
+
+
+/* Premium Music discovery: real cover art, verified streams, existing playback preserved. */
+.pikk-music-showcase.card{
+  display:grid;grid-template-columns:minmax(0,1.25fr) minmax(160px,.75fr);
+  gap:clamp(14px,3vw,27px);align-items:center;overflow:hidden;padding:clamp(16px,3vw,28px);
+  border:1px solid #514b83;border-radius:23px;
+  background:radial-gradient(ellipse at 95% 2%,#5e264c88,transparent 60%),
+    radial-gradient(ellipse at 0 95%,#234fb35c,transparent 60%),#131321;
+  box-shadow:0 14px 36px #0009,inset 0 1px 0 #ffffff13;
+}
+.pikk-music-showcase .kicker{margin:0 0 9px;color:#ffa4db;font-size:11px;letter-spacing:.14em}
+.pikk-music-showcase h2{font-size:clamp(24px,5vw,43px);line-height:1.08;letter-spacing:-.045em;margin:0 0 12px}
+.pikk-music-showcase-copy>p:not(.kicker){font-size:13px;color:#d4d0e0;line-height:1.6}
+.pikk-music-showcase-actions{display:flex;flex-wrap:wrap;gap:9px;margin:15px 0 12px}
+.pikk-music-showcase-note{display:block;color:#c4b8d6;font-size:10px;line-height:1.5}
+.pikk-music-showcase-art{position:relative;aspect-ratio:1/1;width:min(100%,260px);justify-self:end;border-radius:17px;overflow:hidden;border:1px solid #6665ae;box-shadow:0 0 30px #822bba4a}
+.pikk-music-showcase-art img{width:100%;height:100%;object-fit:cover}
+.pikk-music-showcase-art:after{content:"";position:absolute;inset:50% 0 0;background:linear-gradient(transparent,#080814df);pointer-events:none}
+.pikk-music-showcase-art span{position:absolute;z-index:1;bottom:10px;left:12px;right:10px;font-size:14px;font-weight:900;color:#fff}
+.pikk-music-categories{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:3px 0 9px;margin:4px 0 13px}
+.pikk-music-categories::-webkit-scrollbar{display:none}
+.pikk-music-categories a{flex:1 0 auto;min-width:90px;text-align:center;background:#201e2e;color:#ece9f5;border:1px solid #434360;border-radius:100px;font-size:12px;font-weight:800;padding:9px 14px}
+.pikk-music-categories a.on,.pikk-music-categories a:hover{background:linear-gradient(115deg,#d72962,#802dbe);border-color:#d462bf;color:#fff}
+.pikk-music-release-strip{margin:13px 0 19px;border:1px solid #353958;border-radius:18px;background:#141422;padding:15px}
+.pikk-music-release-header{display:flex;align-items:center;justify-content:space-between;gap:9px;margin-bottom:12px}
+.pikk-music-release-header h3{margin:0;font-size:18px;letter-spacing:-.02em}
+.pikk-music-release-header a{font-size:11px;color:#b7c6ff;font-weight:800;white-space:nowrap}
+.pikk-music-release-row{display:flex;gap:12px;overflow-x:auto;scrollbar-width:none;scroll-snap-type:x proximity;padding-bottom:5px}
+.pikk-music-release-row::-webkit-scrollbar{display:none}
+.pikk-music-release-tile{display:flex;flex:0 0 clamp(110px,21vw,155px);flex-direction:column;gap:4px;scroll-snap-align:start;min-width:0}
+.pikk-music-release-tile img{width:100%;aspect-ratio:1/1;object-fit:cover;border:1px solid #535476;border-radius:12px}
+.pikk-music-release-tile strong{font-size:12px;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:3px}
+.pikk-music-release-tile small{color:#bbb9cb;font-size:10px}
+@media(max-width:520px){
+ .pikk-music-showcase.card{grid-template-columns:minmax(0,1fr) minmax(100px,.55fr);gap:9px;padding:12px;border-radius:17px}
+ .pikk-music-showcase h2{font-size:24px}
+ .pikk-music-showcase-copy>p:not(.kicker){font-size:11px}
+ .pikk-music-showcase .btn{font-size:10px;padding:7px 9px;min-height:33px}
+ .pikk-music-showcase-art{border-radius:10px}
+ .pikk-music-showcase-art span{font-size:10px;padding:0;bottom:5px;left:5px}
+ .pikk-music-categories a{min-width:74px;padding:8px 11px;font-size:11px}
+ .pikk-music-release-tile{flex-basis:104px}
+}
+@media(max-width:360px){
+ .pikk-music-showcase.card{grid-template-columns:1fr}
+ .pikk-music-showcase-art{width:125px;justify-self:start}
+}

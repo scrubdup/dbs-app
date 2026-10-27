@@ -266,7 +266,42 @@ export function renderMusic(route = {}) {
       </div>`
     : '';
 
+  const heroRelease = STREAMING_RELEASES.find((release) => release.cover) || null;
+  const quickReleaseCovers = STREAMING_RELEASES.filter((release) => release.cover).slice(0, 5);
+  const musicHero = `
+    <section class="pikk-music-showcase card" aria-label="Official PIKK music discovery">
+      <div class="pikk-music-showcase-copy">
+        <p class="kicker">PIKK MUSIC · DATBOISKEET</p>
+        <h2>Discover the sound.</h2>
+        <p>Stream verified releases, browse albums and playlists, and explore the Vault.</p>
+        <div class="pikk-music-showcase-actions">
+          <a class="btn primary" href="#/music?view=songs">Listen to Songs</a>
+          <a class="btn ghost" href="#/music?view=albums">Browse Albums</a>
+        </div>
+        <span class="pikk-music-showcase-note">Official listening destinations · TEST MODE for purchases and memberships</span>
+      </div>
+      ${heroRelease ? `<div class="pikk-music-showcase-art"><img src="${esc(heroRelease.cover)}" alt="${esc(heroRelease.title)} official cover" decoding="async" loading="eager"/><span>${esc(heroRelease.title)}</span></div>` : ''}
+    </section>
+    <nav class="pikk-music-categories" aria-label="Music categories">
+      <a href="#/music?view=songs" class="${musicView === 'songs' ? 'on' : ''}">Songs</a>
+      <a href="#/music?view=albums" class="${musicView === 'albums' ? 'on' : ''}">Albums</a>
+      <a href="#/music?view=beats" class="${musicView === 'beats' ? 'on' : ''}">Beats</a>
+      <a href="#/music?view=playlists" class="${musicView === 'playlists' ? 'on' : ''}">Playlists</a>
+      <a href="#/music#vault">Vault</a>
+    </nav>
+    <section class="pikk-music-release-strip" aria-label="Official music covers">
+      <div class="pikk-music-release-header"><h3>Listen &amp; discover</h3><a href="#/music#stream-everywhere">See all releases →</a></div>
+      <div class="pikk-music-release-row">
+        ${quickReleaseCovers.map((release) => `<a class="pikk-music-release-tile" href="#/music#stream-everywhere">
+          <img src="${esc(release.cover)}" alt="${esc(release.title)} cover" loading="lazy" decoding="async"/>
+          <strong>${esc(release.title)}</strong>
+          <small>${esc(release.artist || 'DatBoiSkeet')}</small>
+        </a>`).join('')}
+      </div>
+    </section>`;
+
   const body = `
+    ${musicHero}
     ${focusedViewCard}
     <div class="card">
       <h2>Upcoming Releases</h2>
