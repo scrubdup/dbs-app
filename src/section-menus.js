@@ -9,7 +9,8 @@ export const SECTION_MENU_ITEMS = Object.freeze({
   ],
   connect: [
     { title: 'Connect', href: '#/connect', detail: 'Discover people and communities', icon: '♧' },
-    { title: 'Communities', href: '#/community', detail: 'Explore community rooms', icon: '☷' },
+    { title: 'PIKK Communities', href: '#/communities', detail: 'Topic discussions · votes & replies · TEST MODE', icon: '#' },
+    { title: 'PIKK Lounge', href: '#/community', detail: 'Channel rooms · Phase 2 preview', icon: '☷' },
     { title: 'Messages', href: '#/messages', detail: 'Open your messages', icon: '✉' },
     { title: 'Random Chat', href: '#/connect#connect-random-chat', detail: 'Preview only · real matching unavailable', icon: '◉' },
     { title: 'Multistream', href: '#/connect#connect-multistream', detail: 'Broadcast connection preview · TEST MODE', icon: '▹' },
