@@ -168,7 +168,7 @@ export function renderGuidelines() {
 
 export function renderCommunity() {
   return shellPage(
-    'DBS Lounge',
+    'PIKK Community',
     `<div class="card"><p class="muted">Premium music-first community — not a Discord clone.</p>
       <ul class="list-plain">
         <li><span>DBS Lounge</span><span class="chip">Hub</span></li>
@@ -178,7 +178,19 @@ export function renderCommunity() {
         <li><span>Live Rooms</span><span class="chip">Events</span></li>
         <li><span>The Spotlight</span><span class="chip">Featured</span></li>
       </ul>
-      <button class="btn" disabled>Rooms · Phase 2</button></div>`,
+      <button class="btn" disabled>Rooms · Phase 2</button></div>
+    <div class="card">
+      <h3>PIKK Party Line · Voice + Room Chat</h3>
+      <p class="muted">Community voice hangout — separate from Connect video matching. Join a party line to talk or listen while the room's text chat stays open.</p>
+      <div class="section-swipe">
+        <div class="preview-card"><strong>Voice Party Line</strong><span class="muted">Public and private voice rooms · speaker and listener roles</span></div>
+        <div class="preview-card"><strong>Room Chat</strong><span class="muted">Live text conversation alongside voice</span></div>
+        <div class="preview-card"><strong>Request to Speak</strong><span class="muted">Hosts approve speakers and manage microphones</span></div>
+        <div class="preview-card"><strong>Room Controls</strong><span class="muted">Invite, mute, remove, report and block</span></div>
+      </div>
+      <p class="muted">Preview only. Real voice transport, messaging, moderation and access controls must be implemented and tested before enabling rooms.</p>
+      <button class="btn primary" type="button" disabled>Join Party Line · Coming Soon</button>
+    </div>`,
     { lead: 'Community rooms & listening parties.', ...phase(2) }
   );
 }
