@@ -416,14 +416,34 @@ export function renderSpotlight() {
 }
 
 export function renderConnect() {
+  const modes = [
+    ['1 ON 1', '2 people · face-to-face'],
+    ['2 ON 2', '4 people · two teams'],
+    ['3 ON 3', '6 people · group chat'],
+    ['4 ON 4', '8 people · group chat'],
+    ['5 ON 5', '10 people · group chat'],
+    ['LIVE ROOMS', 'Large hangouts · speaker stage'],
+  ];
+  const cards = modes.map(([name, detail]) =>
+    `<div class="preview-card" role="group" aria-label="${esc(name)}">
+      <strong>${esc(name)}</strong>
+      <span class="muted">${esc(detail)}</span>
+      <button class="btn ghost" type="button" disabled aria-label="${esc(name)} not available yet">Coming soon</button>
+    </div>`
+  ).join('');
   return shellPage(
-    'DBS Connect',
+    'PIKK Connect',
     `<div class="card">
-      <p class="muted"><strong>18+ only.</strong> Opt-in random 1:1 video chat. Explicit consent, Next/End/Mute/Camera/Report/Block. Not a replacement for Live, Spotlight, or Messages.</p>
-      <p class="muted">Do not launch without age assurance, moderation, and WebRTC safety.</p>
-      <button class="btn primary" disabled>Start matching · Phase 3</button>
+      <h3>Face-to-face, your way</h3>
+      <p class="muted">Meet people by camera, hang out with friends, or join a live group room.</p>
+      <div class="section-swipe" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px">${cards}</div>
+    </div>
+    <div class="card">
+      <h3>Live Room Stage</h3>
+      <p class="muted">Large rooms will feature a main speaker stage, participant camera tiles and room chat. Hosts will control invitations, microphones and removals.</p>
+      <p class="muted"><strong>18+ only.</strong> Camera and microphone are opt-in. Reporting, blocking, age assurance, moderation and WebRTC signaling must be working before rooms can launch.</p>
     </div>`,
-    { lead: 'Random video discovery (Monkey-style).', ...phase(3) }
+    { lead: '1-on-1, 2-on-2, 3-on-3, 4-on-4, 5-on-5 and live group rooms · planned, not yet connected' }
   );
 }
 
