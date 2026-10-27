@@ -9,6 +9,7 @@ export const PARTY_LINE_LIMITS = Object.freeze({
   maxParticipants: 10, // larger rooms require an SFU and a separate scaling review
   maxMessageLength: 1000,
   maxRoomNameLength: 64,
+  inviteTtlMs: 15 * 60 * 1000, // invitation expires after 15 minutes
 });
 
 function deny(message) {
@@ -55,29 +56,52 @@ export function createPartyRoom({ id, name, visibility = 'public', owner, create
   if (!Number.isSafeInteger(createdAt) || createdAt < 0) deny('Invalid timestamp');
   return {
     id: idOf(id), name: validateName(name), visibility, ownerId,
-    members: [memberOf(ownerId, 'host')], invitedIds: [],
+    members: [memberOf(ownerId, 'host')], invitedIds: [], inviteExpiresAt: {},
     blockedIds: [], messages: [], reports: [], closed: false, createdAt,
   };
 }
-export function inviteToPartyRoom(room, actor, targetId) {
+function validInviteTime(now) {
+  if (!Number.isSafeInteger(now) || now < 0 ||
+      now > Number.MAX_SAFE_INTEGER - PARTY_LINE_LIMITS.inviteTtlMs) deny('Invalid timestamp');
+  return now;
+}
+export function inviteToPartyRoom(room, actor, targetId, now = Date.now()) {
   requireOpen(room);
   requireHost(room, actor);
   const userId = idOf(targetId);
   if (room.blockedIds.includes(userId)) deny('User blocked');
   if (room.members.some((m) => m.userId === userId)) return room;
-  return { ...room, invitedIds: [...new Set([...room.invitedIds, userId])] };
+  const expiresAt = validInviteTime(now) + PARTY_LINE_LIMITS.inviteTtlMs;
+  return { ...room,
+    invitedIds: [...new Set([...room.invitedIds, userId])],
+    inviteExpiresAt: { ...room.inviteExpiresAt, [userId]: expiresAt },
+  };
 }
-export function joinPartyRoom(room, session) {
+export function revokePartyInvite(room, actor, targetId) {
+  requireOpen(room);
+  requireHost(room, actor);
+  const userId = idOf(targetId);
+  if (!room.invitedIds.includes(userId)) return room;
+  const inviteExpiresAt = { ...room.inviteExpiresAt };
+  delete inviteExpiresAt[userId];
+  return { ...room, invitedIds: room.invitedIds.filter((id) => id !== userId), inviteExpiresAt };
+}
+export function joinPartyRoom(room, session, now = Date.now()) {
   requireOpen(room);
   const userId = requireAdultSession(session);
   if (room.blockedIds.includes(userId)) deny('User blocked');
   if (room.members.some((m) => m.userId === userId)) return room;
-  if (room.visibility === 'private' && !room.invitedIds.includes(userId)) deny('Invite required');
+  if (room.visibility === 'private' &&
+      (!room.invitedIds.includes(userId) || !Number.isSafeInteger(now) ||
+       now < 0 || (room.inviteExpiresAt?.[userId] ?? -1) < now)) deny('Invite required or expired');
   if (room.members.length >= PARTY_LINE_LIMITS.maxParticipants) deny('Room is full');
+  const inviteExpiresAt = { ...room.inviteExpiresAt };
+  delete inviteExpiresAt[userId];
   return {
     ...room,
     members: [...room.members, memberOf(userId)],
     invitedIds: room.invitedIds.filter((id) => id !== userId),
+    inviteExpiresAt,
   };
 }
 export function requestPartyMic(room, session) {
@@ -144,8 +168,10 @@ export function removePartyMember(room, actor, targetId, { block = false } = {})
   const target = idOf(targetId);
   if (target === room.ownerId) deny('Host cannot remove themselves');
   if (!room.members.some((m) => m.userId === target)) deny('Member not found');
+  const inviteExpiresAt = { ...room.inviteExpiresAt };
+  delete inviteExpiresAt[target];
   return { ...room, members: room.members.filter((m) => m.userId !== target),
-    invitedIds: room.invitedIds.filter((id) => id !== target),
+    invitedIds: room.invitedIds.filter((id) => id !== target), inviteExpiresAt,
     blockedIds: block ? [...new Set([...room.blockedIds, target])] : room.blockedIds };
 }
 export function leavePartyRoom(room, session) {
