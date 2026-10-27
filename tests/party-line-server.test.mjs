@@ -50,7 +50,10 @@ test('private invites, speaker approval, report and blocked rejoin', async (t) =
   assert.equal((await call('POST', '/rooms/' + id + '/mute', 'guest', { userId: 'guest', muted: false })).status, 403);
   assert.equal((await call('POST', '/rooms/' + id + '/request-mic', 'guest', {})).status, 200);
   assert.equal((await call('POST', '/rooms/' + id + '/approve-mic', 'host', { userId: 'guest' })).status, 200);
+  // The host cannot activate a participant's microphone on their behalf.
+  assert.equal((await call('POST', '/rooms/' + id + '/mute', 'host', { userId: 'guest', muted: false })).status, 403);
   assert.equal((await call('POST', '/rooms/' + id + '/mute', 'guest', { userId: 'guest', muted: false })).status, 200);
+  assert.equal((await call('POST', '/rooms/' + id + '/mute', 'host', { userId: 'guest', muted: true })).status, 200);
   assert.equal((await call('POST', '/rooms/' + id + '/report', 'guest', { userId: 'host', reason: 'abuse' })).status, 200);
   const visible = (await call('GET', '/rooms/' + id, 'guest')).data.room;
   assert.equal('reports' in visible, false);
