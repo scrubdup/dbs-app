@@ -2,7 +2,7 @@ import './styles.css';
 import { DRAWER_LINKS, TABBAR, COMING_SOON } from './data.js';
 import { getState, ensureDemoPosts, markSplash } from './store.js';
 import { startRouter, onRoute, getRoute } from './router.js';
-import { ICONS, esc, toast } from './ui.js';
+import { ICONS, esc, toast, shellPage } from './ui.js';
 
 import { renderHome } from './pages/home.js';
 import { renderPosts, bindPosts } from './pages/posts.js';
@@ -76,6 +76,7 @@ const ROUTES = {
   '/refer': { render: renderRefer, bind: bindRefer },
   '/spotlight': { render: renderSpotlight },
   '/connect': { render: renderConnect },
+  '/dating': { render: () => shellPage('PIKK Dating', '<div class="card"><h3>Dating is being built</h3><p class="muted">Real profiles, preferences, matching, messages, blocking and safety controls are not live yet. No fake matches or demo profiles will be shown.</p></div>', { lead: '18+ dating · not yet available' }) },
 };
 
 function buildTabbar() {
