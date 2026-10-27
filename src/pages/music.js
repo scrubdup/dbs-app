@@ -287,12 +287,12 @@ export function renderMusic(route = {}) {
       <a href="#/music?view=albums" class="${musicView === 'albums' ? 'on' : ''}">Albums</a>
       <a href="#/music?view=beats" class="${musicView === 'beats' ? 'on' : ''}">Beats</a>
       <a href="#/music?view=playlists" class="${musicView === 'playlists' ? 'on' : ''}">Playlists</a>
-      <a href="#vault">Vault</a>
+      <a href="#/music#vault">Vault</a>
     </nav>
     <section class="pikk-music-release-strip" aria-label="Official music covers">
-      <div class="pikk-music-release-header"><h3>Listen &amp; discover</h3><a href="#stream-everywhere">See all releases →</a></div>
+      <div class="pikk-music-release-header"><h3>Listen &amp; discover</h3><a href="#/music#stream-everywhere">See all releases →</a></div>
       <div class="pikk-music-release-row">
-        ${quickReleaseCovers.map((release) => `<a class="pikk-music-release-tile" href="#stream-everywhere">
+        ${quickReleaseCovers.map((release) => `<a class="pikk-music-release-tile" href="#/music#stream-everywhere">
           <img src="${esc(release.cover)}" alt="${esc(release.title)} cover" loading="lazy" decoding="async"/>
           <strong>${esc(release.title)}</strong>
           <small>${esc(release.artist || 'DatBoiSkeet')}</small>
