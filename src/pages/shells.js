@@ -168,7 +168,7 @@ export function renderGuidelines() {
 
 export function renderCommunity() {
   return shellPage(
-    'DBS Lounge',
+    'PIKK Community',
     `<div class="card"><p class="muted">Premium music-first community — not a Discord clone.</p>
       <ul class="list-plain">
         <li><span>DBS Lounge</span><span class="chip">Hub</span></li>
@@ -178,7 +178,19 @@ export function renderCommunity() {
         <li><span>Live Rooms</span><span class="chip">Events</span></li>
         <li><span>The Spotlight</span><span class="chip">Featured</span></li>
       </ul>
-      <button class="btn" disabled>Rooms · Phase 2</button></div>`,
+      <button class="btn" disabled>Rooms · Phase 2</button></div>
+    <div class="card">
+      <h3>PIKK Party Line · Voice + Room Chat</h3>
+      <p class="muted">Community voice hangout — separate from Connect video matching. Join a party line to talk or listen while the room's text chat stays open.</p>
+      <div class="section-swipe">
+        <div class="preview-card"><strong>Voice Party Line</strong><span class="muted">Public and private voice rooms · speaker and listener roles</span></div>
+        <div class="preview-card"><strong>Room Chat</strong><span class="muted">Live text conversation alongside voice</span></div>
+        <div class="preview-card"><strong>Request to Speak</strong><span class="muted">Hosts approve speakers and manage microphones</span></div>
+        <div class="preview-card"><strong>Room Controls</strong><span class="muted">Invite, mute, remove, report and block</span></div>
+      </div>
+      <p class="muted">Preview only. Real voice transport, messaging, moderation and access controls must be implemented and tested before enabling rooms.</p>
+      <button class="btn primary" type="button" disabled>Join Party Line · Coming Soon</button>
+    </div>`,
     { lead: 'Community rooms & listening parties.', ...phase(2) }
   );
 }
@@ -215,15 +227,43 @@ export function renderMessages() {
 
 export function renderShop() {
   return shellPage(
-    'Profile Shop',
-    `<div class="shop-concept"><img src="/design/DBS_Profile_Shop_Concept.png" alt="Profile Shop concept" /></div>
-     <div class="card">
-       <p class="muted">Digital cosmetics only (frames, effects, banners, name styles, badges). Separate from Foreign X-Change physical merch.</p>
-       <p class="muted">Intro pricing targets $2.99–$14.99 · bundles $14.99–$24.99. Live preview before purchase.</p>
-       <button class="btn primary" disabled>Browse items · coming soon</button>
-     </div>`,
-    { lead: 'Original DBS digital cosmetics.', ...phase(2) }
+    'PIKK Shop',
+    `<div class="shop-nav" aria-label="Shop sections">
+      <a class="on" href="#/shop">Discover</a>
+      <a href="#/merch">Categories</a>
+      <a href="#/merch">Shop the Look</a>
+      <a href="#/merch">Collections</a>
+      <a href="#/live">Live Shopping</a>
+      <a href="#/merch">Deals</a>
+      <a href="#/signup">Sell</a>
+      <a href="#/shop-orders">Orders</a>
+    </div>
+    <div class="card"><h3>Discover</h3>
+      <p class="muted">Explore creators, merchandise, and inspiration. Marketplace checkout and seller accounts are still in development.</p>
+      <div class="section-swipe">
+        <a class="preview-card" href="#/merch"><strong>Foreign X-Change</strong><span class="muted">Browse available merch</span></a>
+        <a class="preview-card" href="#/profile-shop"><strong>Profile Style</strong><span class="muted">Digital looks · preview</span></a>
+        <a class="preview-card" href="#/live"><strong>Live Shopping</strong><span class="muted">Not live yet</span></a>
+      </div>
+    </div>
+    <div class="card"><h3>Shop the Look</h3>
+      <p class="muted">Curated looks and inspiration will appear here when creator and seller listings are connected.</p>
+      <a class="btn" href="#/merch">Browse merchandise</a>
+    </div>`,
+    { lead: 'Discover · Categories · Shop the Look · Collections · Live Shopping' }
   );
+}
+
+export function renderShopOrders() {
+  return shellPage('Shop Orders',
+    '<div class="card"><h3>No orders yet</h3><p class="muted">In-app checkout and order tracking are not available yet. External merchandise orders are handled by the seller.</p><a class="btn" href="#/shop">Back to Shop</a></div>',
+    { lead: 'Your PIKK purchases' });
+}
+
+export function renderProfileShop() {
+  return shellPage('Profile Shop',
+    '<div class="shop-concept"><img src="/design/DBS_Profile_Shop_Concept.png" alt="Profile Shop concept" /></div><div class="card"><p class="muted">Digital cosmetics and profile styles are planned. In-app purchases are not active yet.</p><a class="btn" href="#/shop">Back to Shop</a></div>',
+    { lead: 'Digital profile customization · preview only' });
 }
 
 export function renderGiftBattles() {
@@ -388,14 +428,43 @@ export function renderSpotlight() {
 }
 
 export function renderConnect() {
+  const modes = [
+    ['1 ON 1', '2 people · face-to-face'],
+    ['2 ON 2', '4 people · two teams'],
+    ['3 ON 3', '6 people · group chat'],
+    ['4 ON 4', '8 people · group chat'],
+    ['5 ON 5', '10 people · group chat'],
+    ['LIVE ROOMS', 'Large hangouts · speaker stage'],
+  ];
+  const cards = modes.map(([name, detail]) =>
+    `<div class="preview-card" role="group" aria-label="${esc(name)}">
+      <strong>${esc(name)}</strong>
+      <span class="muted">${esc(detail)}</span>
+      <button class="btn ghost" type="button" disabled aria-label="${esc(name)} not available yet">Coming soon</button>
+    </div>`
+  ).join('');
   return shellPage(
-    'DBS Connect',
+    'PIKK Connect',
     `<div class="card">
-      <p class="muted"><strong>18+ only.</strong> Opt-in random 1:1 video chat. Explicit consent, Next/End/Mute/Camera/Report/Block. Not a replacement for Live, Spotlight, or Messages.</p>
-      <p class="muted">Do not launch without age assurance, moderation, and WebRTC safety.</p>
-      <button class="btn primary" disabled>Start matching · Phase 3</button>
+      <h3>Face-to-face, your way</h3>
+      <p class="muted">Meet people by camera, hang out with friends, or join a live group room.</p>
+      <div class="section-swipe" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px">${cards}</div>
+    </div>
+    <div class="card">
+      <h3>Party Line · Voice & Chat</h3>
+      <p class="muted">Drop into a voice lounge without turning on your camera. Talk with the room while using its live text chat.</p>
+      <div class="section-swipe" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px">
+        <div class="preview-card"><strong>Join Voice</strong><span class="muted">Open party-line voice rooms</span><button class="btn ghost" disabled>Coming soon</button></div>
+        <div class="preview-card"><strong>Room Chat</strong><span class="muted">Text, reactions and room conversation</span><button class="btn ghost" disabled>Coming soon</button></div>
+      </div>
+      <p class="muted">Planned room controls: raise hand, mute, speaker queue, invite, host/co-host moderation, report, block and leave. Voice and text stay together in each room.</p>
+    </div>
+    <div class="card">
+      <h3>Live Room Stage</h3>
+      <p class="muted">Large rooms will feature a main speaker stage, participant camera tiles and room chat. Hosts will control invitations, microphones and removals.</p>
+      <p class="muted"><strong>18+ only.</strong> Camera and microphone are opt-in. Reporting, blocking, age assurance, moderation and WebRTC signaling must be working before rooms can launch.</p>
     </div>`,
-    { lead: 'Random video discovery (Monkey-style).', ...phase(3) }
+    { lead: '1-on-1, 2-on-2, 3-on-3, 4-on-4, 5-on-5 and live group rooms · planned, not yet connected' }
   );
 }
 
