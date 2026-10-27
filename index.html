@@ -29,6 +29,31 @@
     </audio>
   </div>
   <!-- TEST MODE remains enforced; disclosure stays in footer, not the top header. -->
+  <header class="top" id="topBar">
+    <a href="#/home" class="logo" aria-label="PIKK Home">
+      <img class="logo-img" src="%BASE_URL%brand/pikk-official-approved.jpg" alt="PIKK" width="86" height="25" />
+    </a>
+    <div class="top-actions">
+      <!-- t290u/t291u: Sign in removed from header; Messages always in this slot. Sign in on #/profile. -->
+      <!-- t298u: Profile next to Messages for discoverability (not Sign in). -->
+      <a class="pill header-profile" id="headerProfile" href="#/profile" aria-label="Profile" title="Profile">
+        <svg class="header-profile-ico" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><circle cx="12" cy="8" r="3.2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M5.5 19.2c1.6-3.2 4-4.8 6.5-4.8s4.9 1.6 6.5 4.8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="header-profile-label">Profile</span>
+      </a>
+      <a class="pill header-msg" id="headerMsg" href="#/messages" aria-label="Messages" title="Messages">
+        <svg class="header-msg-ico" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><rect x="3.5" y="6" width="17" height="12" rx="2.2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m4.5 7.5 7.5 5.2L19.5 7.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="header-msg-label">Messages</span>
+        <span class="header-msg-badge" id="headerMsgBadge" hidden></span>
+      </a>
+      <a class="pill header-notifications" id="notifBtn" href="#/notifications" aria-label="Notifications" title="Notifications">
+        <svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 22a2 2 0 0 0 2-2h-4a2 2 0 0 0 2 2zm6-6V11a6 6 0 1 0-12 0v5l-2 2v1h16v-1l-2-2z" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+        <span class="header-notifications-label">Notifications</span>
+      </a>
+      <button class="icon-btn" id="menuBtn" aria-label="Menu">
+        <svg viewBox="0 0 24 24" width="22" height="22"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </header>
   <!-- §17 Sticky top player — YouTube embeds / Stream Everywhere open links (no rehost) -->
   <div class="sticky-player" id="dbs-sticky-player" data-also="stickyPlayer" aria-label="PIKK music player">
     <div class="sp-row">
@@ -57,31 +82,14 @@
       <div id="dbsStickyFrame"></div><!-- legacy alias: dbsYtHost → use dbsStickyFrame -->
     </div>
   </div>
-  <header class="top" id="topBar">
-    <a href="#/home" class="logo" aria-label="PIKK Home">
-      <img class="logo-img" src="%BASE_URL%brand/pikk-official-approved.jpg" alt="PIKK" width="86" height="25" />
-    </a>
-    <div class="top-actions">
-      <!-- t290u/t291u: Sign in removed from header; Messages always in this slot. Sign in on #/profile. -->
-      <!-- t298u: Profile next to Messages for discoverability (not Sign in). -->
-      <a class="pill header-profile" id="headerProfile" href="#/profile" aria-label="Profile" title="Profile">
-        <svg class="header-profile-ico" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><circle cx="12" cy="8" r="3.2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M5.5 19.2c1.6-3.2 4-4.8 6.5-4.8s4.9 1.6 6.5 4.8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-        <span class="header-profile-label">Profile</span>
-      </a>
-      <a class="pill header-msg" id="headerMsg" href="#/messages" aria-label="Messages" title="Messages">
-        <svg class="header-msg-ico" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><rect x="3.5" y="6" width="17" height="12" rx="2.2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m4.5 7.5 7.5 5.2L19.5 7.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <span class="header-msg-label">Messages</span>
-        <span class="header-msg-badge" id="headerMsgBadge" hidden></span>
-      </a>
-      <a class="pill header-notifications" id="notifBtn" href="#/notifications" aria-label="Notifications" title="Notifications">
-        <svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 22a2 2 0 0 0 2-2h-4a2 2 0 0 0 2 2zm6-6V11a6 6 0 1 0-12 0v5l-2 2v1h16v-1l-2-2z" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
-        <span class="header-notifications-label">Notifications</span>
-      </a>
-      <button class="icon-btn" id="menuBtn" aria-label="Menu">
-        <svg viewBox="0 0 24 24" width="22" height="22"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-      </button>
-    </div>
-  </header>
+
+  <nav class="pikk-explore-rail" aria-label="Explore PIKK and discover content">
+    <a class="pikk-explore-primary" href="#/explore">⌕ Explore</a>
+    <a href="#/posts">Posts</a>
+    <a href="#/videos">Videos</a>
+    <a href="#/live">Live</a>
+    <a href="#/community">Communities</a>
+  </nav>
   <nav class="side" id="sideNav" aria-hidden="true"></nav>
   <div class="scrim" id="scrim"></div>
   <main id="app"></main>

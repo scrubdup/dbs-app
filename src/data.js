@@ -498,6 +498,7 @@ export const HOME_SECTIONS = [
 export const DRAWER_GROUPS = [
   { id: 'home', label: 'Home', href: '#/home' },
   /* t298u — Profile / Sign in pinned near top (not only under Account accordion) */
+  { id: 'explore', label: 'Explore', href: '#/explore' },
   { id: 'profile', label: 'Profile / Sign in', href: '#/profile' },
   {
     id: 'watch',
@@ -524,7 +525,6 @@ export const DRAWER_GROUPS = [
       { href: '#/posts', label: 'Posts' },
       { href: '#/posts?compose=1', label: 'Post · Text / Picture / Short / Video' },
       { href: '#/shorts', label: 'Shorts (in Posts)' },
-      { href: '#/explore', label: 'Explore' },
       { href: '#/notifications', label: 'Notifications' },
       { href: '#/connect', label: 'Connect' },
       { href: '#/dating', label: 'Dating & Connections' },
