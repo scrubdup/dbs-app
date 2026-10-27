@@ -8,7 +8,7 @@
 import { createServer } from 'node:http';
 import { randomUUID } from 'node:crypto';
 import {
-  requireAdultSession, createPartyRoom, joinPartyRoom, inviteToPartyRoom,
+  requireAdultSession, createPartyRoom, joinPartyRoom, inviteToPartyRoom, revokePartyInvite,
   requestPartyMic, approvePartyMic, setPartyMute, sendPartyMessage,
   reportPartyMember, removePartyMember, leavePartyRoom,
 } from '../../src/party-line/room-policy.js';
@@ -100,7 +100,11 @@ export function createPartyLineServer({ authenticate } = {}) {
       switch (action) {
         case 'invite':
           room = inviteToPartyRoom(room, session, body.userId);
-          event = 'invites'; payload = { count: room.invitedIds.length }; break;
+          // Private invitations are not broadcast to room listeners.
+          break;
+        case 'revoke-invite':
+          room = revokePartyInvite(room, session, body.userId);
+          break;
         case 'request-mic':
           room = requestPartyMic(room, session);
           event = 'members'; payload = { members: room.members }; break;
