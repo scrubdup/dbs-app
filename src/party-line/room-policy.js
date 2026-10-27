@@ -104,6 +104,9 @@ export function setPartyMute(room, actor, targetId, muted) {
   if (actorId !== target.userId) requireHost(room, actor);
   else requireMember(room, actor);
   if (typeof muted !== 'boolean') deny('Invalid mute state');
+  // A host may silence someone, but may never activate another person's mic.
+  // Unmuting is a consent-only action performed by the speaker themself.
+  if (!muted && actorId !== target.userId) deny('Only the member can unmute their microphone');
   if (target.role === 'listener' && !muted) deny('Listeners cannot unmute');
   // This is a policy state only; actual microphone publication must be gated server-side.
   return { ...room, members: room.members.map((m) =>
