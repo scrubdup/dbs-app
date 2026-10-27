@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  PARTY_LINE_LIMITS, requireAdultSession, createPartyRoom, inviteToPartyRoom,
+  PARTY_LINE_LIMITS, requireAdultSession, createPartyRoom, inviteToPartyRoom, revokePartyInvite,
   joinPartyRoom, requestPartyMic, approvePartyMic, setPartyMute,
   sendPartyMessage, reportPartyMember, removePartyMember, leavePartyRoom,
 } from '../src/party-line/room-policy.js';
@@ -115,4 +115,27 @@ test('room actions do not mutate input state', () => {
   const joined = joinPartyRoom(r, adult('a'));
   assert.equal(r.members.length, 1);
   assert.equal(joined.members.length, 2);
+});
+
+test('private invitations expire after 15 minutes and never permit late entry', () => {
+  const now = 1000;
+  const invited = inviteToPartyRoom(room('private'), adult('host'), 'guest', now);
+  assert.equal(invited.inviteExpiresAt.guest, now + PARTY_LINE_LIMITS.inviteTtlMs);
+  assert.throws(
+    () => joinPartyRoom(invited, adult('guest'), now + PARTY_LINE_LIMITS.inviteTtlMs + 1),
+    /Invite required or expired/
+  );
+  const joined = joinPartyRoom(invited, adult('guest'), now + PARTY_LINE_LIMITS.inviteTtlMs);
+  assert.equal(joined.members.length, 2);
+  assert.equal(joined.inviteExpiresAt.guest, undefined);
+});
+
+test('only host can revoke an invite, and revocation is idempotent', () => {
+  const invited = inviteToPartyRoom(room('private'), adult('host'), 'guest', 1000);
+  assert.throws(() => revokePartyInvite(invited, adult('guest'), 'guest'), /membership/);
+  const revoked = revokePartyInvite(invited, adult('host'), 'guest');
+  assert.deepEqual(revoked.invitedIds, []);
+  assert.equal(revoked.inviteExpiresAt.guest, undefined);
+  assert.throws(() => joinPartyRoom(revoked, adult('guest'), 1001), /Invite required/);
+  assert.equal(revokePartyInvite(revoked, adult('host'), 'guest'), revoked);
 });
