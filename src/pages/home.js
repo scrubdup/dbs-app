@@ -566,6 +566,21 @@ export function renderHome() {
     </div>`;
 
   const body = `
+    <section class="pikk-home-discover" aria-label="PIKK quick discovery">
+      <div class="pikk-home-discover-heading">
+        <div><p class="kicker">Your world on PIKK</p><h2>Discover what’s happening</h2></div>
+        <a href="#/explore" class="pikk-home-explore-cta" aria-label="Open Explore search">⌕ Explore all</a>
+      </div>
+      <nav class="pikk-home-discover-links" aria-label="Explore PIKK categories">
+        <a href="#/live"><span aria-hidden="true">●</span> Live</a>
+        <a href="#/videos"><span aria-hidden="true">▶</span> Videos</a>
+        <a href="#/music"><span aria-hidden="true">♫</span> Music</a>
+        <a href="#/posts"><span aria-hidden="true">▧</span> Posts</a>
+        <a href="#/community"><span aria-hidden="true">♧</span> Community</a>
+        <a href="#/games"><span aria-hidden="true">♜</span> Arcade</a>
+      </nav>
+    </section>
+
     ${stageBlock}
 
     ${bwPreview}
