@@ -4544,3 +4544,24 @@ input:focus, select:focus, textarea:focus {
 .pikk-create-grid .pikk-menu-title{font-size:12px}
 .pikk-create-grid small{font-size:10px}
 @media(max-width:390px){.pikk-create-grid .pikk-menu-icon svg{width:31px;height:31px}.pikk-create-options.pikk-create-grid a{min-height:103px}.pikk-menu-cancel{min-height:40px}}
+
+
+/* Premium activity/notifications screen — factual zero state until backend exists. */
+.pikk-notif-overview{margin:0 0 15px}
+.pikk-notif-hero{display:flex;gap:14px;justify-content:space-between;align-items:center;padding:20px;border-radius:19px;border:1px solid #555486;background:radial-gradient(ellipse at 94% 0,#7d24556b,transparent 57%),radial-gradient(ellipse at 0 100%,#265ad056,transparent 60%),#181727;box-shadow:0 8px 25px #0007}
+.pikk-notif-hero .kicker{font-size:10px;font-weight:850;letter-spacing:.13em;color:#ff98d7;margin:0 0 9px}
+.pikk-notif-hero h2{margin:0 0 7px;font-size:clamp(23px,4vw,32px);letter-spacing:-.04em}
+.pikk-notif-hero p:not(.kicker){font-size:12px;line-height:1.55;color:#ccc8dc;margin:0}
+.pikk-notif-hero-icon{display:grid;place-items:center;border:1px solid #b056bc;border-radius:16px;width:65px;height:65px;flex:0 0 65px;font-size:42px;color:#fc71d1;background:#69388a33;text-shadow:0 0 14px #fa48bc}
+.pikk-notif-filters{display:flex;align-items:center;gap:7px;overflow-x:auto;scrollbar-width:none;margin:15px 0 12px}
+.pikk-notif-filters::-webkit-scrollbar{display:none}
+.pikk-notif-filters button{flex:1 0 auto;min-width:69px;border:1px solid #43425a;border-radius:100px;background:#252438;color:#ece8f9;font-size:12px;font-weight:800;padding:9px 14px;cursor:pointer}
+.pikk-notif-filters button.on,.pikk-notif-filters button:hover{border-color:#ed5a94;background:linear-gradient(110deg,#e32c64,#a72ec3);color:#fff}
+.pikk-notif-inbox{border:1px solid #413f5a;border-radius:18px;background:linear-gradient(145deg,#211e30,#151622);min-height:220px;display:grid;place-items:center;padding:20px}
+.pikk-notif-empty{text-align:center;max-width:340px}
+.pikk-notif-empty-icon{display:block;font-size:43px;color:#ee7cc9;text-shadow:0 0 15px #f147b5;margin:0 0 9px}
+.pikk-notif-empty h3{margin:0 0 7px;font-size:18px}
+.pikk-notif-empty p{font-size:12px;line-height:1.6;color:#bfbacc;margin:0 0 14px}
+.pikk-notif-preferences{border-radius:17px;border-color:#484665}
+.pikk-notif-preferences h3{font-size:18px;margin:0 0 6px}
+@media(max-width:450px){.pikk-notif-hero{padding:14px;border-radius:15px}.pikk-notif-hero-icon{width:47px;height:47px;flex-basis:47px;font-size:30px}.pikk-notif-filters{gap:5px}.pikk-notif-filters button{min-width:60px;padding:8px 11px;font-size:11px}.pikk-notif-inbox{min-height:185px}}
