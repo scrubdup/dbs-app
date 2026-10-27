@@ -60,6 +60,16 @@ test('non-host cannot mute another member', () => {
   r = joinPartyRoom(r, adult('b'));
   assert.throws(() => setPartyMute(r, adult('a'), 'b', true), /Host permission/);
 });
+test('hosts cannot unmute a guest without explicit speaker consent', () => {
+  let r = joinPartyRoom(room(), adult('guest'));
+  r = approvePartyMic(requestPartyMic(r, adult('guest')), adult('host'), 'guest');
+  assert.equal(r.members.find((m) => m.userId === 'guest').muted, true);
+  assert.throws(() => setPartyMute(r, adult('host'), 'guest', false), /Only the member can unmute/);
+  r = setPartyMute(r, adult('guest'), 'guest', false);
+  assert.equal(r.members.find((m) => m.userId === 'guest').muted, false);
+  r = setPartyMute(r, adult('host'), 'guest', true);
+  assert.equal(r.members.find((m) => m.userId === 'guest').muted, true);
+});
 test('speakers can unmute themselves after approval', () => {
   let r = joinPartyRoom(room(), adult('a'));
   r = approvePartyMic(requestPartyMic(r, adult('a')), adult('host'), 'a');
