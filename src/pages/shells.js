@@ -11,7 +11,7 @@ function phase(n) {
 
 function videoCard(v) {
   return `
-    <article class="card">
+    <article class="card pikk-video-tile">
       <div class="hero-video" style="margin:0 0 10px">
         <iframe src="${esc(ytEmbedSrc(v.embed))}" title="${esc(v.title)}" allowfullscreen loading="lazy"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
@@ -37,13 +37,13 @@ export function renderVideos() {
     .filter((cat) => grouped[cat]?.length)
     .map((cat) => {
       const cards = grouped[cat].map(videoCard).join('');
-      return `<h3 style="margin:16px 0 8px">${esc(cat)}</h3>${cards}`;
+      return `<section class="pikk-video-section" data-video-category="${esc(cat)}"><h3>${esc(cat)}</h3><div class="pikk-video-grid">${cards}</div></section>`;
     })
     .join('');
   // any unexpected categories
   const extra = Object.keys(grouped)
     .filter((c) => !order.includes(c))
-    .map((cat) => `<h3 style="margin:16px 0 8px">${esc(cat)}</h3>${grouped[cat].map(videoCard).join('')}`)
+    .map((cat) => `<section class="pikk-video-section" data-video-category="${esc(cat)}"><h3>${esc(cat)}</h3><div class="pikk-video-grid">${grouped[cat].map(videoCard).join('')}</div></section>`)
     .join('');
 
   const adminVids = listCatalog({ publishedOnly: true, types: ['video'] });
@@ -90,7 +90,26 @@ export function renderVideos() {
 
   return shellPage(
     'Videos & Interviews',
-    `<div class="card"><p class="muted" style="margin:0">Official DatBoiSkeet music videos, mixes, and interviews — YouTube embeds from the original source. No rehosted files.</p>
+    `<section class="pikk-video-hero card">
+      <div class="pikk-video-hero-copy">
+        <p class="kicker">PIKK VIDEOS · OFFICIAL RELEASES</p>
+        <h2>Watch. Discover. Repeat.</h2>
+        <p class="muted">Verified DatBoiSkeet music videos, mixes and interviews. Original YouTube playback, with no invented view counts.</p>
+        <a class="btn primary" href="#/explore">Explore creators</a>
+      </div>
+      ${VIDEOS[0]?.youtube ? `<a class="pikk-video-hero-preview" href="${esc(VIDEOS[0].youtube)}" target="_blank" rel="noopener" aria-label="Watch ${esc(VIDEOS[0].title)}">
+        <img src="https://i.ytimg.com/vi/${esc(new URL(VIDEOS[0].youtube).searchParams.get('v') || '')}/hqdefault.jpg" alt="" loading="eager" decoding="async" />
+        <span class="pikk-video-hero-label">▶ ${esc(VIDEOS[0].title)}</span>
+      </a>` : ''}
+    </section>
+    <nav class="pikk-video-filters" aria-label="Video categories">
+      <button type="button" class="on" data-videos-filter="All" aria-pressed="true">All</button>
+      <button type="button" data-videos-filter="Music Videos" aria-pressed="false">Music Videos</button>
+      <button type="button" data-videos-filter="Mixes" aria-pressed="false">Mixes</button>
+      <button type="button" data-videos-filter="Interviews" aria-pressed="false">Interviews</button>
+      ${adminVids.length ? '<button type="button" data-videos-filter="Admin" aria-pressed="false">Admin</button>' : ''}
+    </nav>
+    <div class="card pikk-video-source-info"><p class="muted" style="margin:0">Official DatBoiSkeet music videos, mixes, and interviews — YouTube embeds from the original source. No rehosted files.</p>
       <div class="row wrap" style="margin-top:8px;gap:8px">
         <a class="btn" href="https://www.youtube.com/channel/UCA2GGwQ-cOUW0ZqmWaGzEBA" target="_blank" rel="noopener">Official YouTube channel</a>
         <a class="btn ghost" href="https://www.youtube.com/@DatBoiSkeet1" target="_blank" rel="noopener">@DatBoiSkeet1</a>
@@ -98,13 +117,28 @@ export function renderVideos() {
       </div>
     </div>
     ${sections}${extra}
-    ${adminHtml ? `<h3 style="margin:16px 0 8px">From Admin</h3>${adminHtml}` : ''}
+    ${adminHtml ? `<section class="pikk-video-section" data-video-category="Admin"><h3>From Admin</h3><div class="pikk-video-grid">${adminHtml}</div></section>` : ''}
     ${coming}`,
     { lead: 'Official MVs · Mixes · Interviews · admin uploads.' }
   );
 }
 
 export function bindVideos(root) {
+  // Filter only video sections; preserve embedded playback and uploaded content.
+  const filterButtons = [...root.querySelectorAll('[data-videos-filter]')];
+  const videoSections = [...root.querySelectorAll('.pikk-video-section[data-video-category]')];
+  filterButtons.forEach((button) => button.addEventListener('click', () => {
+    const category = button.dataset.videosFilter || 'All';
+    filterButtons.forEach((candidate) => {
+      const active = candidate === button;
+      candidate.classList.toggle('on', active);
+      candidate.setAttribute('aria-pressed', active ? 'true' : 'false');
+    });
+    videoSections.forEach((section) => {
+      const visible = category === 'All' || section.dataset.videoCategory === category;
+      section.hidden = !visible;
+    });
+  }));
   // §17: real YT play via IFrame API (Media Links binder) — not cross-origin pointerdown
   bindPageYoutubeEmbeds(root);
   root.querySelectorAll('video.catalog-video').forEach((vid) => {
