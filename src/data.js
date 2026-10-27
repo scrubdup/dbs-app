@@ -151,6 +151,7 @@ export const DRAWER_LINKS = [
   { href: '#/explore', label: 'Explore' },
   { href: '#/spotlight', label: '24/7 Spotlight' },
   { href: '#/connect', label: 'Connect' },
+  { href: '#/dating', label: 'Dating' },
   { href: '#/clippers', label: 'Clippers Apply' },
   { href: '#/marketplace', label: 'Marketplace' },
   { href: '#/missions', label: 'Missions' },
@@ -177,10 +178,10 @@ export const DRAWER_LINKS = [
 
 export const TABBAR = [
   { href: '#/home', label: 'Home', icon: 'home' },
-  { href: '#/posts', label: 'Posts', icon: 'posts' },
   { href: '#/music', label: 'Music', icon: 'music' },
-  { href: '#/merch', label: 'Merch', icon: 'merch' },
-  { href: '#/explore', label: 'Explore', icon: 'explore' },
-  { href: '#/live', label: 'Live', icon: 'live' },
-  { href: '#/profile', label: 'Profile', icon: 'profile' },
+  { href: '#/videos', label: 'Videos', icon: 'videos' },
+  { href: '#/live', label: 'Go Live', icon: 'live' },
+  { href: '#/connect', label: 'Connect', icon: 'connect' },
+  { href: '#/dating', label: 'Dating', icon: 'dating' },
+  { href: '#/shop', label: 'Shop', icon: 'merch' },
 ];
