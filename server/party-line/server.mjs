@@ -32,6 +32,11 @@ async function jsonBody(req) {
 function hasMember(room, userId) {
   return room.members.some((m) => m.userId === userId);
 }
+function safeRoom(room) {
+  // Never expose private invitations, room-level blocks, or moderation reports.
+  const { id, name, visibility, ownerId, members, messages, closed, createdAt } = room;
+  return { id, name, visibility, ownerId, members, messages, closed, createdAt };
+}
 export function createPartyLineServer({ authenticate } = {}) {
   if (typeof authenticate !== 'function') throw new Error('Trusted authentication adapter required');
   const rooms = new Map();
@@ -61,7 +66,7 @@ export function createPartyLineServer({ authenticate } = {}) {
           owner: session, createdAt: Date.now(),
         });
         rooms.set(room.id, room);
-        return reply(res, 201, { room });
+        return reply(res, 201, { room: safeRoom(room) });
       }
       const route = /^\/rooms\/([a-zA-Z0-9_-]{1,80})(?:\/([a-z-]+))?$/.exec(url.pathname);
       if (!route) return reply(res, 404, { error: 'Not found' });
@@ -72,7 +77,7 @@ export function createPartyLineServer({ authenticate } = {}) {
         room = joinPartyRoom(room, session);
         rooms.set(roomId, room);
         sendEvent(roomId, 'members', { members: room.members });
-        return reply(res, 200, { room });
+        return reply(res, 200, { room: safeRoom(room) });
       }
       if (!hasMember(room, userId)) return reply(res, 403, { error: 'Room membership required' });
       if (action === 'events' && req.method === 'GET') {
@@ -88,7 +93,7 @@ export function createPartyLineServer({ authenticate } = {}) {
         res.on('close', () => streams.get(roomId)?.delete(client));
         return;
       }
-      if (!action && req.method === 'GET') return reply(res, 200, { room });
+      if (!action && req.method === 'GET') return reply(res, 200, { room: safeRoom(room) });
       if (req.method !== 'POST') return reply(res, 405, { error: 'Method not allowed' });
       const body = await jsonBody(req);
       let event = null, payload = null;
@@ -110,8 +115,9 @@ export function createPartyLineServer({ authenticate } = {}) {
           event = 'message'; payload = room.messages[room.messages.length - 1]; break;
         case 'report':
           room = reportPartyMember(room, session, body.userId, body.reason, randomUUID());
-          // Never broadcast confidential reports to room participants.
-          break;
+          rooms.set(roomId, room);
+          // Reports stay server-side, never broadcast or included in API snapshots.
+          return reply(res, 200, { ok: true });
         case 'kick':
           room = removePartyMember(room, session, body.userId, { block: body.block === true });
           revokeUser(roomId, body.userId);
@@ -134,7 +140,7 @@ export function createPartyLineServer({ authenticate } = {}) {
       }
       rooms.set(roomId, room);
       if (event) sendEvent(roomId, event, payload);
-      return reply(res, 200, { room });
+      return reply(res, 200, { room: safeRoom(room) });
     } catch (error) {
       const message = error instanceof SyntaxError ? 'Invalid JSON' : String(error?.message || 'Request rejected');
       const forbidden = /Authentication|Account not active|Verified adult|permission|membership|Invite required|blocked|Mic publication/.test(message);
