@@ -109,3 +109,49 @@ test('private invite revocation is host-only and hidden from room snapshots', as
   assert.equal((await call('POST', revoke, 'host', { userId: 'guest' })).status, 200);
   assert.equal((await call('POST', '/rooms/' + id + '/join', 'guest')).status, 403);
 });
+
+test('public room discovery reveals only minimal metadata to verified adults', async (t) => {
+  const { call } = await fixture(t);
+  const pub = (await call('POST', '/rooms', 'host', { name: 'Public party' })).data.room.id;
+  const priv = (await call('POST', '/rooms', 'host', { name: 'Private party', visibility: 'private' })).data.room.id;
+  assert.equal((await call('GET', '/rooms', 'child')).status, 403);
+  const listed = await call('GET', '/rooms', 'other');
+  assert.equal(listed.status, 200);
+  assert.equal(listed.data.rooms.length, 1);
+  assert.deepEqual(listed.data.rooms[0], {
+    id: pub, name: 'Public party', visibility: 'public', participantCount: 1,
+  });
+  assert.equal(JSON.stringify(listed.data).includes(priv), false);
+  assert.equal('members' in listed.data.rooms[0], false);
+  assert.equal('messages' in listed.data.rooms[0], false);
+  await call('POST', '/rooms/' + pub + '/join', 'guest');
+  await call('POST', '/rooms/' + pub + '/kick', 'host', { userId: 'guest', block: true });
+  const blocked = await call('GET', '/rooms', 'guest');
+  assert.deepEqual(blocked.data.rooms, []);
+});
+
+test('private invite inbox is recipient-only, expiring and revocable', async (t) => {
+  const { app, call } = await fixture(t);
+  const id = (await call('POST', '/rooms', 'host', {
+    name: 'Backstage', visibility: 'private',
+  })).data.room.id;
+  assert.deepEqual((await call('GET', '/invitations', 'guest')).data.invitations, []);
+  assert.equal((await call('GET', '/invitations', 'child')).status, 403);
+  await call('POST', '/rooms/' + id + '/invite', 'host', { userId: 'guest' });
+  const inbox = (await call('GET', '/invitations', 'guest')).data.invitations;
+  assert.equal(inbox.length, 1);
+  assert.equal(inbox[0].roomId, id);
+  assert.equal(inbox[0].name, 'Backstage');
+  assert.ok(inbox[0].expiresAt > Date.now());
+  assert.equal('members' in inbox[0], false);
+  assert.deepEqual((await call('GET', '/invitations', 'other')).data.invitations, []);
+  await call('POST', '/rooms/' + id + '/revoke-invite', 'host', { userId: 'guest' });
+  assert.deepEqual((await call('GET', '/invitations', 'guest')).data.invitations, []);
+  await call('POST', '/rooms/' + id + '/invite', 'host', { userId: 'guest' });
+  // Simulate an expired invitation without sleeping for 15 minutes.
+  app.rooms.get(id).inviteExpiresAt.guest = Date.now() - 1;
+  assert.deepEqual((await call('GET', '/invitations', 'guest')).data.invitations, []);
+  await call('POST', '/rooms/' + id + '/invite', 'host', { userId: 'guest' });
+  await call('POST', '/rooms/' + id + '/join', 'guest');
+  assert.deepEqual((await call('GET', '/invitations', 'guest')).data.invitations, []);
+});
