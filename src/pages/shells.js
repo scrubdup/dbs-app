@@ -668,18 +668,64 @@ export function renderNotifications() {
   const n = getState().notifications;
   return shellPage(
     'Notifications',
-    `<div class="card" id="notifPrefs">
+    `<section class="pikk-notif-overview" aria-label="Notification inbox">
+      <div class="pikk-notif-hero">
+        <div>
+          <p class="kicker">PIKK ACTIVITY CENTER</p>
+          <h2>Stay in the loop.</h2>
+          <p>Follow the conversations, creators, and content that matter to you.</p>
+        </div>
+        <span class="pikk-notif-hero-icon" aria-hidden="true">♢</span>
+      </div>
+      <nav class="pikk-notif-filters" aria-label="Notification type filters">
+        <button type="button" class="on" data-notif-filter="all" aria-pressed="true">All</button>
+        <button type="button" data-notif-filter="likes" aria-pressed="false">Likes</button>
+        <button type="button" data-notif-filter="comments" aria-pressed="false">Comments</button>
+        <button type="button" data-notif-filter="follows" aria-pressed="false">Follows</button>
+      </nav>
+      <section class="pikk-notif-inbox" aria-live="polite">
+        <div class="pikk-notif-empty">
+          <span class="pikk-notif-empty-icon" aria-hidden="true">♢</span>
+          <h3 id="notifEmptyHeading">No notifications yet</h3>
+          <p id="notifEmptyText">When in-app notifications are connected, activity will appear here. PIKK does not generate fake alerts.</p>
+          <a class="btn ghost" href="#/posts">Explore Posts</a>
+        </div>
+      </section>
+    </section>
+    <section class="card pikk-notif-preferences" id="notifPrefs">
+      <h3>Notification preferences</h3>
+      <p class="muted" style="font-size:12px">Control which alerts you want to receive when the notification service is available. Preferences are saved on this device.</p>
       <div class="toggle"><span>New releases</span><input type="checkbox" data-k="releases" ${n.releases ? 'checked' : ''}/></div>
       <div class="toggle"><span>Livestreams</span><input type="checkbox" data-k="lives" ${n.lives ? 'checked' : ''}/></div>
       <div class="toggle"><span>Messages</span><input type="checkbox" data-k="messages" ${n.messages ? 'checked' : ''}/></div>
       <div class="toggle"><span>Quiet hours</span><input type="checkbox" data-k="quietHours" ${n.quietHours ? 'checked' : ''}/></div>
-      <p class="muted" style="margin-top:10px">Prefs saved on this device.</p>
-    </div>`,
-    { lead: 'In-app center & alert controls.' }
+    </section>`,
+    { lead: 'Activity · likes · comments · follows · alerts preview' }
   );
 }
 
 export function bindNotifications(root) {
+  const labels = {
+    all: ['No notifications yet', 'When in-app notifications are connected, activity will appear here. PIKK does not generate fake alerts.'],
+    likes: ['No likes to show', 'Likes will appear here after the activity service launches.'],
+    comments: ['No comments to show', 'New comment alerts will appear here when notifications are connected.'],
+    follows: ['No follows to show', 'New follower alerts will appear here when notifications are connected.'],
+  };
+  root.querySelectorAll('[data-notif-filter]').forEach(button => {
+    button.addEventListener('click', () => {
+      const selected = button.dataset.notifFilter;
+      root.querySelectorAll('[data-notif-filter]').forEach(other => {
+        const active = other === button;
+        other.classList.toggle('on', active);
+        other.setAttribute('aria-pressed', String(active));
+      });
+      const pair = labels[selected] || labels.all;
+      const heading = root.querySelector('#notifEmptyHeading');
+      const detail = root.querySelector('#notifEmptyText');
+      if (heading) heading.textContent = pair[0];
+      if (detail) detail.textContent = pair[1];
+    });
+  });
   root.querySelectorAll('#notifPrefs input').forEach((el) => {
     el.addEventListener('change', () => {
       setNotifPrefs({ [el.dataset.k]: el.checked });
