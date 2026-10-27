@@ -8,7 +8,7 @@
 import { createServer } from 'node:http';
 import { randomUUID } from 'node:crypto';
 import {
-  requireAdultSession, createPartyRoom, joinPartyRoom, inviteToPartyRoom, revokePartyInvite,
+  PARTY_LINE_LIMITS, requireAdultSession, createPartyRoom, joinPartyRoom, inviteToPartyRoom, revokePartyInvite,
   requestPartyMic, approvePartyMic, setPartyMute, sendPartyMessage,
   reportPartyMember, removePartyMember, leavePartyRoom,
 } from '../../src/party-line/room-policy.js';
@@ -64,7 +64,7 @@ export function createPartyLineServer({ authenticate } = {}) {
       if (url.pathname === '/rooms' && req.method === 'GET') {
         const available = [...rooms.values()]
           .filter((room) => room.visibility === 'public' && !room.closed &&
-            room.members.length < 10 && !room.blockedIds.includes(userId))
+            room.members.length < PARTY_LINE_LIMITS.maxParticipants && !room.blockedIds.includes(userId))
           .sort((a, b) => b.createdAt - a.createdAt)
           .slice(0, 50)
           .map(({ id, name, visibility, members }) => ({
