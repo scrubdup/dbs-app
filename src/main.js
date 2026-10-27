@@ -25,6 +25,8 @@ import {
   renderSignup,
   renderMessages,
   renderShop,
+  renderShopOrders,
+  renderProfileShop,
   renderGiftBattles,
   renderNotifications,
   bindNotifications,
@@ -64,6 +66,8 @@ const ROUTES = {
   '/signup': { render: renderSignup },
   '/messages': { render: renderMessages },
   '/shop': { render: renderShop },
+  '/shop-orders': { render: renderShopOrders },
+  '/profile-shop': { render: renderProfileShop },
   '/giftbattles': { render: renderGiftBattles },
   '/notifications': { render: renderNotifications, bind: bindNotifications },
   '/fanclubs': { render: renderFanClubs },
@@ -90,7 +94,7 @@ function buildTabbar() {
 function buildDrawer() {
   const el = document.getElementById('sideNav');
   el.innerHTML =
-    `<h2>DBS Network</h2>` +
+    `<h2>PIKK Network</h2>` +
     DRAWER_LINKS.map((l) => `<a href="${l.href}">${esc(l.label)}</a>`).join('');
 }
 
