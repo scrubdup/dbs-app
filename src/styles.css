@@ -3941,3 +3941,61 @@ input:focus, select:focus, textarea:focus {
   border-color: #88a8ff;
   background: #26346d;
 }
+
+
+/* PIKK Arcade premium 15-title catalog and home game carousel */
+.pikk-arcade-intro{overflow:hidden;background:radial-gradient(ellipse at 80% -20%,rgba(255,54,102,.29),transparent 55%),radial-gradient(ellipse at 5% 85%,rgba(54,91,255,.25),transparent 54%),#10101b;border:1px solid #383b5a;padding:24px}
+.pikk-arcade-heading{display:flex;justify-content:space-between;gap:16px;align-items:center}
+.pikk-arcade-heading h2{font-size:clamp(25px,4.8vw,40px);letter-spacing:-.04em;margin:4px 0 7px;text-shadow:0 0 18px rgba(135,139,255,.35)}
+.pikk-arcade-heading h2 span{background:linear-gradient(110deg,#ff5367,#eeb2e6,#80a5ff);color:transparent;background-clip:text}
+.pikk-arcade-heading p{color:#c7c5d5;margin:0;max-width:500px;font-size:13px}
+.pikk-arcade-icon{font-size:48px;filter:drop-shadow(0 0 20px rgba(255,66,112,.32))}
+.pikk-arcade-disclosure{margin:18px 0 0;color:#ffb4c4;font-size:11px;font-weight:750;letter-spacing:.025em}
+.pikk-arcade-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:14px}
+.pikk-arcade-card{border-radius:19px;overflow:hidden;background:#171721;border:1px solid #34374b;box-shadow:0 8px 22px #0007;transition:transform .15s ease,border-color .15s ease}
+.pikk-arcade-card:hover{transform:translateY(-2px);border-color:#717aad}
+.pikk-arcade-art{height:152px;position:relative;isolation:isolate;overflow:hidden;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at 65% 60%,#394f9e,transparent 72%),linear-gradient(125deg,#191d38,#271424)}
+.pikk-arcade-art img{height:100%;width:100%;object-fit:cover}
+.pikk-arcade-symbol{font-size:64px;filter:drop-shadow(0 12px 18px #000b);transform:rotate(-8deg);transition:transform .2s ease}
+.pikk-arcade-card:hover .pikk-arcade-symbol{transform:rotate(0) scale(1.06)}
+.pikk-game-playground .pikk-arcade-art,.pikk-game-playground .home-arcade-image{background:linear-gradient(120deg,#7249b5,#45a9d9)}
+.pikk-game-clash .pikk-arcade-art,.pikk-game-clash .home-arcade-image{background:linear-gradient(135deg,#6937b8,#cf4c9d)}
+.pikk-game-knockout .pikk-arcade-art,.pikk-game-knockout .home-arcade-image{background:linear-gradient(135deg,#951e31,#e09121)}
+.pikk-game-bowling .pikk-arcade-art,.pikk-game-bowling .home-arcade-image{background:linear-gradient(135deg,#24267a,#9157bb)}
+.pikk-game-pickleball .pikk-arcade-art,.pikk-game-pickleball .home-arcade-image{background:linear-gradient(135deg,#075e67,#37a87e)}
+.pikk-game-pool .pikk-arcade-art,.pikk-game-pool .home-arcade-image{background:linear-gradient(135deg,#143f31,#2c8a6b)}
+.pikk-game-pong .pikk-arcade-art,.pikk-game-pong .home-arcade-image{background:linear-gradient(135deg,#8a245e,#dd3c50)}
+.pikk-game-poker .pikk-arcade-art,.pikk-game-poker .home-arcade-image,.pikk-game-blackjack .pikk-arcade-art,.pikk-game-blackjack .home-arcade-image{background:linear-gradient(135deg,#163c37,#92652b)}
+.pikk-game-slots .pikk-arcade-art,.pikk-game-slots .home-arcade-image{background:linear-gradient(135deg,#6c2f12,#d08d17)}
+.pikk-game-speed .pikk-arcade-art,.pikk-game-speed .home-arcade-image{background:linear-gradient(135deg,#902b32,#284bb0)}
+.pikk-game-spades .pikk-arcade-art,.pikk-game-spades .home-arcade-image{background:linear-gradient(135deg,#5e2c84,#2e376d)}
+.pikk-game-dominoes .pikk-arcade-art,.pikk-game-dominoes .home-arcade-image{background:linear-gradient(135deg,#53341f,#97805c)}
+.pikk-game-chess .pikk-arcade-art,.pikk-game-chess .home-arcade-image{background:linear-gradient(135deg,#1d336e,#6e7c9a)}
+.pikk-arcade-number{position:absolute;top:10px;left:10px;border-radius:9px;padding:4px 9px;font-weight:900;font-size:12px;background:#f13146;color:#fff;box-shadow:0 4px 10px #0008}
+.pikk-arcade-soon{position:absolute;right:9px;top:10px;background:rgba(8,9,22,.82);border:1px solid #a94b73;border-radius:6px;padding:4px 7px;font-weight:800;font-size:9px;letter-spacing:.04em;text-transform:uppercase}
+.pikk-arcade-copy{padding:13px;display:flex;flex-direction:column;min-height:174px}
+.pikk-arcade-copy h3{font-size:16px;margin:0 0 4px;line-height:1.2}
+.pikk-arcade-players{color:#d7b6ff;font-size:11px;font-weight:700}
+.pikk-arcade-copy p{color:#c0becd;font-size:12px;line-height:1.45;margin:8px 0 13px;flex:1}
+.pikk-arcade-action{background:linear-gradient(100deg,#e52945,#a91e59);color:#fff;text-align:center;border-radius:10px;padding:9px;font-size:12px;font-weight:900}
+.home-arcade{padding:18px;overflow:hidden;background:radial-gradient(ellipse at 80% 0,rgba(59,72,182,.27),transparent 60%),#15131e;border:1px solid #3a3552}
+.home-arcade-top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px}
+.home-arcade-top .kicker{margin:0 0 2px}
+.home-arcade-top h2{font-size:clamp(18px,4vw,25px);margin:0;letter-spacing:.04em}
+.home-arcade-top .btn{font-size:11px;white-space:nowrap}
+.home-arcade-slide{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:15px;min-height:210px;align-items:stretch;border-radius:16px;overflow:hidden;background:#1a1b2a;border:1px solid #34365b}
+.home-arcade-slide[hidden]{display:none!important}
+.home-arcade-image{min-height:210px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#131d50,#641834)}
+.home-arcade-image img{width:100%;height:100%;max-height:300px;object-fit:cover}
+.home-arcade-symbol{font-size:clamp(60px,11vw,105px);filter:drop-shadow(0 12px 20px #0009)}
+.home-arcade-info{padding:15px 14px 15px 0;display:flex;flex-direction:column;justify-content:center;gap:7px;align-items:flex-start}
+.home-arcade-info h3{font-size:clamp(20px,4vw,30px);line-height:1.1;margin:0}
+.home-arcade-info p{font-size:12px;margin:0;color:#c7c3d4;line-height:1.45}
+.home-arcade-info small{color:#d9b4df;font-weight:700}
+.home-arcade-info .btn{margin-top:5px;font-size:12px}
+.home-arcade-controls{display:flex;align-items:center;justify-content:center;gap:15px;margin-top:12px}
+.home-arcade-controls button{min-width:47px;font-size:24px;padding:2px 12px;line-height:1.4}
+.home-arcade-controls span{font-size:12px;font-variant-numeric:tabular-nums;color:#d3d4e4;font-weight:800}
+@media(max-width:520px){.pikk-arcade-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.pikk-arcade-art{height:126px}.pikk-arcade-copy{min-height:205px;padding:10px}.pikk-arcade-copy h3{font-size:14px}.pikk-arcade-copy p{font-size:11px}.pikk-arcade-symbol{font-size:56px}.home-arcade{padding:11px}.home-arcade-slide{grid-template-columns:1fr;gap:0}.home-arcade-image{min-height:165px;max-height:190px}.home-arcade-info{padding:13px}.home-arcade-top h2{font-size:16px}}
+@media(max-width:360px){.pikk-arcade-grid{grid-template-columns:1fr 1fr}.pikk-arcade-art{height:112px}.pikk-arcade-symbol{font-size:44px}}
+@media(prefers-reduced-motion:reduce){.pikk-arcade-card,.pikk-arcade-symbol{transition:none!important}}
