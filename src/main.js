@@ -167,9 +167,9 @@ function ensureMusicMenu() {
     <div class="pikk-create-options">
       <a href="#/music">♫ Songs <small>Official releases and music catalog</small></a>
       <a href="#/music#stream-everywhere">▤ Albums <small>Official releases and albums</small></a>
-      <a href="#/music">◉ Beats <small>Browse music · dedicated beat marketplace coming later</small></a>
+      <div class="pikk-menu-unavailable" aria-disabled="true">◉ Beats <small>Dedicated beat marketplace coming later</small></div>
       <a href="#/music#youtube-mixes">☷ Playlists <small>Available channel mixes · playlists coming later</small></a>
-      <a href="#/music">⬆ Upload Music <small>Music upload tools not yet available</small></a>
+      <div class="pikk-menu-unavailable" aria-disabled="true">⬆ Upload Music <small>Music upload tools not yet available</small></div>
     </div>
     <p class="muted" style="font-size:11px;margin:10px 0 0">TEST MODE · Dedicated beat sales and music uploads require production services.</p>
   </div>`;
@@ -380,6 +380,11 @@ function render(route) {
   updateChrome(route);
   onRouteForPlayer(route.path);
   window.scrollTo(0, 0);
+  // Approved Music menu category deep-links. The router parses the second # as an element id.
+  if (route.path === '/music' && ['stream-everywhere', 'youtube-mixes'].includes(route.elementId)) {
+    const targetId = route.elementId;
+    setTimeout(() => document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+  }
   // Vault deep-link
   if ((route.path === '/music' || route.path === '/vault') && (location.hash.includes('vault') || route.path === '/vault')) {
     setTimeout(() => document.getElementById('vault')?.scrollIntoView({ behavior: 'smooth' }), 50);
