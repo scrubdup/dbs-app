@@ -80,7 +80,6 @@ export function toggleSectionMenu(name, trigger) {
   }
   const opening = panel.hidden;
   closeSectionMenus();
-  document.getElementById('pikkMusicMenu')?.dispatchEvent(new Event('pikk-close-menu'));
   const music = document.getElementById('pikkMusicMenu');
   if (music && !music.hidden) {
     music.hidden = true;
