@@ -337,3 +337,8 @@ img { max-width: 100%; display: block; }
 .tabbar a:focus-visible { outline: 2px solid #4eacff; outline-offset: -3px; border-radius: 8px; }
 .tabbar a:nth-child(4) { font-weight: 800; border: 1px solid rgba(255,120,145,.35); border-bottom: 0; }
 @media (min-width:721px) { .tabbar { max-width: 720px; left: 50%; right: auto; width: 100%; transform: translateX(-50%); } }
+
+/* Shop navigation stays scrollable on narrow phones */
+.shop-nav { display:flex; gap:8px; overflow-x:auto; padding: 3px 0 14px; scrollbar-width:thin; -webkit-overflow-scrolling:touch; }
+.shop-nav a { white-space:nowrap; flex:0 0 auto; padding:9px 13px; border:1px solid var(--line); border-radius:999px; background:var(--card); font-size:12px; font-weight:700; }
+.shop-nav a.on { border-color:var(--acc); background:#34121c; color:#fff; }
