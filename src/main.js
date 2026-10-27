@@ -1,4 +1,5 @@
 import './styles.css';
+import { SECTION_MENU_ITEMS, closeSectionMenus, toggleSectionMenu } from './section-menus.js';
 import { DRAWER_GROUPS, TABBAR } from './data.js';
 import {
   initDbsPlayer,
@@ -133,14 +134,22 @@ function buildTabbar() {
     const pathOnly = '/' + raw.replace(/^\//, '').split(/[?#]/)[0];
     const label = esc(t.label);
     const primaryClass = t.primary ? ' class="tab-primary"' : '';
-    return `<a${primaryClass} href="${t.href}" data-path="${pathOnly}" aria-label="${label}"${t.href === '#/create' ? ' aria-haspopup="dialog" aria-controls="pikkCreateMenu" aria-expanded="false"' : t.href === '#/music' ? ' aria-haspopup="dialog" aria-controls="pikkMusicMenu" aria-expanded="false"' : ''}><span class="tab-ico">${t.href === '#/create' ? '<svg viewBox="0 0 32 32" width="26" height="26" aria-hidden="true"><path d="M9 5 L25 16 L9 27 Z" fill="currentColor"/><path d="M24 5v11m0 0-4-4m4 4 4-4" stroke="white" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>' : (ICONS[t.icon] || '')}</span><span>${label}</span></a>`;
+    return `<a${primaryClass} href="${t.href}" data-path="${pathOnly}" aria-label="${label}"${t.href === '#/create' ? ' aria-haspopup="dialog" aria-controls="pikkCreateMenu" aria-expanded="false"' : t.href === '#/music' ? ' aria-haspopup="dialog" aria-controls="pikkMusicMenu" aria-expanded="false"' : SECTION_MENU_ITEMS[pathOnly.slice(1)] ? ` aria-haspopup="dialog" aria-controls="pikk${label}Menu" aria-expanded="false"` : ''}><span class="tab-ico">${t.href === '#/create' ? '<svg viewBox="0 0 32 32" width="26" height="26" aria-hidden="true"><path d="M9 5 L25 16 L9 27 Z" fill="currentColor"/><path d="M24 5v11m0 0-4-4m4 4 4-4" stroke="white" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>' : (ICONS[t.icon] || '')}</span><span>${label}</span></a>`;
   }).join('');
+  for (const name of Object.keys(SECTION_MENU_ITEMS)) {
+    el.querySelector(`a[href="#/${name}"]`)?.addEventListener('click', event => {
+      event.preventDefault();
+      toggleSectionMenu(name, event.currentTarget);
+    });
+  }
   el.querySelector('a[href="#/music"]')?.addEventListener('click', (event) => {
     event.preventDefault();
+    closeSectionMenus();
     toggleMusicMenu(event.currentTarget);
   });
   el.querySelector('a[href="#/create"]')?.addEventListener('click', (event) => {
     closeMusicMenu();
+    closeSectionMenus();
     event.preventDefault();
     const panel = ensureCreateMenu();
     panel.hidden = !panel.hidden;
