@@ -6,7 +6,7 @@ const css=readFileSync(new URL('../src/styles.css',import.meta.url),'utf8');
 const main=readFileSync(new URL('../src/main.js',import.meta.url),'utf8');
 test('Connect premium discovery keeps verified routes and never invents profiles',()=>{
  for(const selector of ['pikk-connect-hero','pikk-connect-discover-nav','pikk-connect-feature-grid','pikk-connect-feature-community','pikk-connect-feature-messages']) assert.ok(src.includes(selector),selector);
- for(const route of ['community','messages','live','dating']) {
+ for(const route of ['communities','messages','live','dating']) {
   assert.ok(src.includes('href="#/'+route+'"'),route);
   assert.ok(main.includes("'/"+route+"':"),'missing route '+route);
  }
