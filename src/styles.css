@@ -4525,3 +4525,22 @@ input:focus, select:focus, textarea:focus {
  .pikk-create-options a small{font-size:9px}
 }
 @media(prefers-reduced-motion:reduce){.pikk-create-options.pikk-create-grid a,.pikk-create-options.pikk-category-options a{transition:none!important}}
+
+
+/* Reference-accurate Create modal final polish: outlined glyphs + cancel bar. */
+.pikk-create-grid .pikk-menu-icon svg{width:36px;height:36px;display:block;overflow:visible;filter:drop-shadow(0 0 6px currentColor)}
+.pikk-create-grid .pikk-create-tile:nth-child(1) .pikk-menu-icon{color:#ff4484}
+.pikk-create-grid .pikk-create-tile:nth-child(2) .pikk-menu-icon{color:#f6248b}
+.pikk-create-grid .pikk-create-tile:nth-child(3) .pikk-menu-icon{color:#ff593d}
+.pikk-create-grid .pikk-create-tile:nth-child(4) .pikk-menu-icon{color:#ba55ff}
+.pikk-create-grid .pikk-create-tile:nth-child(5) .pikk-menu-icon{color:#b487e9}
+.pikk-create-grid .pikk-create-tile:nth-child(6) .pikk-menu-icon{color:#268eff}
+.pikk-create-grid .pikk-create-tile:nth-child(7) .pikk-menu-icon{color:#22eaa5}
+.pikk-create-grid .pikk-create-tile:nth-child(8) .pikk-menu-icon{color:#368fff}
+.pikk-create-grid .pikk-create-tile:nth-child(9) .pikk-menu-icon{color:#ffae20}
+.pikk-menu-cancel{display:block;width:100%;min-height:44px;padding:12px 10px;border:1px solid #414051;border-radius:14px;background:linear-gradient(140deg,#272831,#1b1c27);color:#faf9fc;font-size:14px;font-weight:700;margin-top:12px;cursor:pointer}
+.pikk-menu-cancel:is(:focus-visible,:hover){outline:2px solid #a4bfff;outline-offset:2px;background:#373343}
+.pikk-create-options.pikk-create-grid a{min-height:120px}
+.pikk-create-grid .pikk-menu-title{font-size:12px}
+.pikk-create-grid small{font-size:10px}
+@media(max-width:390px){.pikk-create-grid .pikk-menu-icon svg{width:31px;height:31px}.pikk-create-options.pikk-create-grid a{min-height:103px}.pikk-menu-cancel{min-height:40px}}
