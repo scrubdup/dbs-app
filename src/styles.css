@@ -4136,3 +4136,90 @@ input:focus, select:focus, textarea:focus {
 @media(prefers-reduced-motion:reduce) {
   .page .btn,.pikk-create-options a {transition:none!important;}
 }
+
+
+/* Substantive Home layout: artist-owned release art + verified music-video imagery.
+   A real media grid rather than a skin on the old card list. */
+.pikk-home-visual {
+  margin: 0 0 20px;
+  padding: clamp(12px, 2.5vw, 19px);
+  background: linear-gradient(150deg,#15101f,#090a15 60%,#111321);
+  border:1px solid #404269;
+  border-radius:23px;
+  box-shadow:0 14px 40px #0008,inset 0 1px 0 #ffffff10;
+}
+.pikk-home-visual-top {display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:13px}
+.pikk-home-visual-top .kicker{margin:0 0 3px;color:#ef9fe0;font-size:10px;letter-spacing:.15em}
+.pikk-home-visual-top h2{margin:0;font-size:clamp(20px,4vw,30px);letter-spacing:-.04em}
+.pikk-home-visual-more{font-size:12px;font-weight:800;color:#ffe2fa;white-space:nowrap}
+.pikk-home-circle-strip{
+  display:flex;gap:clamp(11px,2vw,20px);
+  padding:4px 0 15px;margin-bottom:13px;
+  overflow-x:auto;scrollbar-width:none;scroll-snap-type:x proximity;
+}
+.pikk-home-circle-strip::-webkit-scrollbar{display:none}
+.pikk-home-circle{display:flex;flex:0 0 84px;flex-direction:column;align-items:center;gap:7px;scroll-snap-align:start;min-width:0}
+.pikk-home-circle-ring{
+  width:76px;height:76px;border-radius:50%;
+  padding:3px;display:flex;align-items:center;justify-content:center;overflow:hidden;
+  background:linear-gradient(135deg,#ff4282 9%,#cf29db 48%,#466eff 92%);
+  border:1px solid #ff6aba;
+  box-shadow:0 0 0 2px #0e0d1a,0 0 14px #e320802f;
+}
+.pikk-home-circle-ring img{display:block;width:100%;height:100%;object-fit:cover;border-radius:50%;border:3px solid #0a0913}
+.pikk-home-circle-symbol{color:#fff;font-size:34px;font-weight:850}
+.pikk-home-circle>span:last-child{
+  width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  font-weight:700;font-size:11px;color:#f1eef8;text-align:center;
+}
+.pikk-home-filterbar{display:flex;gap:8px;margin:0 0 14px;overflow-x:auto;scrollbar-width:none;padding:2px 0 5px}
+.pikk-home-filterbar::-webkit-scrollbar{display:none}
+.pikk-home-filterbar a{
+  flex:1 0 auto;text-align:center;min-width:75px;
+  border:1px solid #343446;border-radius:999px;background:#21212e;
+  padding:9px 13px;color:#e2dfed;font-size:12px;font-weight:750;
+}
+.pikk-home-filterbar a.is-current{
+  background:linear-gradient(105deg,#fa198f,#d71abe);border-color:#ef41c8;
+  color:#fff;box-shadow:0 0 15px #f02aa142;
+}
+.pikk-home-media-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.pikk-home-media-card{
+  position:relative;overflow:hidden;display:block;
+  border-radius:15px;aspect-ratio: 1.12;
+  border:1px solid #3e4265;background:#171829;
+  box-shadow:0 5px 16px #0007;isolation:isolate;
+}
+.pikk-home-media-card.is-featured{grid-column:span 2;aspect-ratio:1.56}
+.pikk-home-media-card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .25s ease}
+.pikk-home-media-card:hover img{transform:scale(1.035)}
+.pikk-home-media-shadow{position:absolute;inset:20% 0 0;background:linear-gradient(transparent,#060712db);z-index:1}
+.pikk-home-media-badge{
+  position:absolute;top:9px;left:9px;z-index:2;
+  border-radius:6px;background:#ec266c;color:#fff;
+  padding:4px 7px;font-size:9px;font-weight:850;letter-spacing:.045em;
+}
+.pikk-home-media-title{
+  position:absolute;bottom:0;left:0;right:0;z-index:2;
+  padding:24px 10px 10px;font-size:12px;font-weight:850;line-height:1.3;
+  color:#fff;text-shadow:0 1px 3px #000;
+}
+.pikk-home-media-card.is-featured .pikk-home-media-title{font-size:clamp(13px,2.2vw,20px);padding:30px 14px 13px}
+.pikk-home-media-fallback{display:grid;place-items:center;height:100%;font-size:40px}
+.pikk-home-media-footer{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:12px}
+.pikk-home-media-footer .muted{font-size:10px;margin:0}
+.pikk-home-media-footer a{font-size:11px;font-weight:850;color:#b8bfff;white-space:nowrap}
+@media(max-width:560px){
+ .pikk-home-visual{border-radius:17px;padding:10px}
+ .pikk-home-circle{flex-basis:65px}
+ .pikk-home-circle-ring{width:59px;height:59px}
+ .pikk-home-circle-symbol{font-size:28px}
+ .pikk-home-media-grid{gap:6px}
+ .pikk-home-media-card{border-radius:10px}
+ .pikk-home-media-card.is-featured{aspect-ratio:1.22}
+ .pikk-home-media-title{font-size:10px;padding:17px 7px 7px}
+ .pikk-home-media-card.is-featured .pikk-home-media-title{font-size:12px;padding:19px 9px 9px}
+ .pikk-home-media-badge{font-size:7px;padding:3px 5px;top:5px;left:5px}
+ .pikk-home-filterbar a{font-size:11px;min-width:67px;padding:8px 10px}
+}
+@media(prefers-reduced-motion:reduce){.pikk-home-media-card img{transition:none}}
