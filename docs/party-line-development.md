@@ -15,7 +15,10 @@
   - Private invites now expire after 15 minutes and can be revoked by the host; invitations and expiry metadata are never returned in public room snapshots.
 - `tests/party-line-policy.test.mjs`: independent policy tests.
 - `server/party-line/server.mjs`: isolated Node HTTP/SSE reference service. Supports cross-user room messages, event delivery, private invites, mic policy and targeted WebRTC signaling **only while this server process runs**. No audio media/SFU, production authentication adapter, database, rate limits or public hosting.
-- `tests/party-line-server.test.mjs`: two-identity HTTP/SSE integration checks, including unauthorized/underage access, private invites, moderation and signaling.
+  - Adult-authenticated `GET /rooms` lists only joinable public rooms with minimal metadata (no member identities or messages); blocked users cannot discover a room.
+  - Adult-authenticated `GET /invitations` returns only the requesting account's unexpired, unrevoked private invitations. It never exposes other recipients, private room memberships or reports. This is a **development-only discovery API**, not a deployed inbox.
+  - Invitations are polled in this reference implementation; real-time invite notifications and cross-device persistence are still pending.
+- `tests/party-line-server.test.mjs`: multi-identity HTTP/SSE integration checks, including unauthorized/underage access, public room discovery, recipient-only private invite inbox, expiration/revocation, moderation and signaling.
 - `src/pages/shells.js` / `src/styles.css`: Party Line channel and responsive preview within the existing Lounge. Join and mic controls remain disabled.
 
 ## Required before real operation
