@@ -19,7 +19,6 @@ function makePosts(v,user,topic,sort){
     const label=TOPICS.find(t=>t[0]===p.topic)?.[1]||'Community';
     const replies=Array.isArray(p.replies)?p.replies:[];
     const vote=Number(v.votes[p.id+':'+(user?.id||'guest')])||0;
-    const article=document.createElement('div'); // used for trustworthy text escaping only
     return '<article class="pikk-forum-post"><div class="pikk-forum-votes">'+
       '<button data-fvote="1" data-id="'+esc(p.id)+'" aria-label="Upvote" aria-pressed="'+(vote===1)+'" '+(user?'':'disabled')+'>▲</button>'+
       '<b>'+score(p)+'</b><button data-fvote="-1" data-id="'+esc(p.id)+'" aria-label="Downvote" aria-pressed="'+(vote===-1)+'" '+(user?'':'disabled')+'>▼</button></div>'+
