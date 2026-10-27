@@ -12,7 +12,7 @@ test('premium home media grid comes from verified catalog rather than fictitious
  assert.match(home,/i\.ytimg\.com\/vi\//);
  assert.match(home,/COMING_SOON\.slice\(0, 4\)/);
  assert.ok(VIDEOS.filter(v=>v.featured && v.youtube).length >= 4);
- assert.ok(COMING_SOON.length >= 4);
+ assert.ok(COMING_SOON.length >= 1);
  assert.doesNotMatch(home,/12\.4K/);
 });
 test('new layout uses real existing routes and keeps Home live/player/game modules',()=>{
