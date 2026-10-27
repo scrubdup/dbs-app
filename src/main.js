@@ -48,6 +48,7 @@ import {
 const ROUTES = {
   '/home': { render: renderHome },
   '/posts': { render: renderPosts, bind: bindPosts },
+  '/create': { render: () => shellPage('Create on PIKK', `<div class="card"><h3>What would you like to create?</h3><div class="create-grid"><a class="preview-card" href="#/posts"><strong>Post</strong><span class="muted">Write a post or add an image link · local test mode</span></a><a class="preview-card" href="#/videos"><strong>Video</strong><span class="muted">Watch videos · uploading not available yet</span></a><a class="preview-card" href="#/music"><strong>Music</strong><span class="muted">Music catalog · uploading not available yet</span></a><a class="preview-card" href="#/live"><strong>Go Live</strong><span class="muted">Broadcasting is not live yet</span></a></div></div>`, { lead: 'Create · 18+ · test mode' }) },
   '/music': { render: renderMusic },
   '/vault': { render: renderMusic },
   '/merch': { render: renderMerch, bind: bindMerch },
@@ -94,7 +95,7 @@ function buildTabbar() {
 function buildDrawer() {
   const el = document.getElementById('sideNav');
   el.innerHTML =
-    `<h2>PIKK Network</h2>` +
+    `<h2>PIKK Network</h2><a href="#/create">Create</a>` +
     DRAWER_LINKS.map((l) => `<a href="${l.href}">${esc(l.label)}</a>`).join('');
 }
 
