@@ -328,3 +328,12 @@ img { max-width: 100%; display: block; }
 .tabbar a:nth-child(4) { color: #fff; background: linear-gradient(145deg,#e92439,#a71530); border-radius: 12px 12px 0 0; }
 .tabbar a:nth-child(4).on { background: linear-gradient(145deg,#ff425a,#bc1c3c); }
 @media(max-width:370px) { .tabbar a svg { width: 18px; height: 18px; } .tabbar a { font-size: 8px; } }
+
+/* Mobile polish: visible focus, legible tab labels and a true center live action */
+.tabbar { grid-template-columns: repeat(7,minmax(0,1fr)); box-shadow: 0 -8px 32px rgba(0,0,0,.55); backdrop-filter: blur(18px); }
+.tabbar a { position: relative; transition: color .18s ease, background .18s ease; min-height: 58px; }
+.tabbar a svg { flex: 0 0 auto; }
+.tabbar a.on:not(:nth-child(4))::before { content: ''; position: absolute; top: 0; left: 25%; right: 25%; height: 2px; border-radius: 4px; background: linear-gradient(90deg,#ec2843,#448cff); }
+.tabbar a:focus-visible { outline: 2px solid #4eacff; outline-offset: -3px; border-radius: 8px; }
+.tabbar a:nth-child(4) { font-weight: 800; border: 1px solid rgba(255,120,145,.35); border-bottom: 0; }
+@media (min-width:721px) { .tabbar { max-width: 720px; left: 50%; right: auto; width: 100%; transform: translateX(-50%); } }
