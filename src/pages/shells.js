@@ -547,7 +547,22 @@ export function renderCommunity() {
 
   return shellPage(
     'PIKK Lounge',
-    `<div class="card lounge-intro">
+    `<section class="pikk-reddit-hub" id="pikkCommunitiesHub">
+      <p class="kicker">PIKK CONNECT · COMMUNITY DISCUSSIONS</p>
+      <h2>Your interests. Your conversations.</h2>
+      <p>Explore topic-based discussion boards, share questions, and meet people through ideas. Designed for PIKK, with a Reddit-style discussion feed.</p>
+      <div class="pikk-reddit-topics" aria-label="Community categories">
+        <a href="#/communities?topic=music"><span aria-hidden="true">♫</span> Music</a>
+        <a href="#/communities?topic=business"><span aria-hidden="true">$</span> Business &amp; Money</a>
+        <a href="#/communities?topic=relationships"><span aria-hidden="true">♡</span> Relationships</a>
+        <a href="#/communities?topic=gaming"><span aria-hidden="true">♜</span> Gaming</a>
+        <a href="#/communities?topic=sports"><span aria-hidden="true">★</span> Sports</a>
+        <a href="#/communities?topic=entertainment"><span aria-hidden="true">▶</span> Entertainment</a>
+      </div>
+      <a class="btn primary" href="#/communities">Open PIKK Communities</a>
+      <p class="muted" style="font-size:11px">Preview · browser-local posts and voting until secure accounts and moderation launch</p>
+    </section>
+    <div class="card lounge-intro">
       <p class="kicker">Artist-owned network</p>
       <h2 style="margin:0 0 8px">Channel-style Lounge</h2>
       <p>PIKK Lounge is DatBoiSkeet’s premium community — Discord-type channel UX (sidebar + room panes) under silver/dark PIKK branding. Announcements, listening parties, and fan conversations in one place.</p>
