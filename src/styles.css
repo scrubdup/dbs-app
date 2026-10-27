@@ -3926,3 +3926,18 @@ input:focus, select:focus, textarea:focus {
     width: 31px; min-width: 31px; height: 32px;
   }
 }
+
+
+/* Permanent header search shortcut: immediately discoverable alongside bell and menu. */
+.top#topBar .header-explore-search {
+  border-color: rgba(72, 123, 255, .65);
+  color: #f6f8ff;
+  background: linear-gradient(135deg, #182047, #221729);
+  box-shadow: 0 0 8px rgba(47, 107, 255, .22);
+  text-decoration: none;
+}
+.top#topBar .header-explore-search:hover,
+.top#topBar .header-explore-search:focus-visible {
+  border-color: #88a8ff;
+  background: #26346d;
+}
