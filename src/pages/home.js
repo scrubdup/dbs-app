@@ -3,6 +3,7 @@ import { notifyVideoPlaying, notifyVideoIdle, bindPageYoutubeEmbeds, bindYoutube
 import { listCatalog, getState, listHotLives, listRisingStreamers, getHotPosts, getMostPlayedSongToday, getAppDailyGoal, donateToGoal } from '../store.js';
 import { esc, shellPage, ytEmbedSrc, toast } from '../ui.js';
 import { resolveMediaSrc } from '../media-db.js';
+import { PIKK_GAMES } from '../games/arcade-catalog.js';
 
 const SECTION_ICONS = {
   Explore: '🧭',
@@ -569,6 +570,32 @@ export function renderHome() {
 
     ${bwPreview}
 
+    <section class="home-arcade card" id="homeArcade" aria-label="PIKK Games featured slideshow">
+      <div class="home-arcade-top">
+        <div><p class="kicker">Discover the arcade</p><h2>15 GAMES. ONE PIKK.</h2></div>
+        <a href="#/games" class="btn ghost">All games →</a>
+      </div>
+      <div class="home-arcade-stage" aria-live="off">
+        ${PIKK_GAMES.map((game, index) => `<article class="home-arcade-slide pikk-game-${esc(game.theme)}" data-game-slide="${index}" ${index ? 'hidden' : ''}>
+          <div class="home-arcade-image">${game.artwork ? `<img src="${esc(game.artwork)}" alt="" loading="lazy" decoding="async" />` : `<span class="home-arcade-symbol" aria-hidden="true">${game.icon}</span>`}</div>
+          <div class="home-arcade-info">
+            <span class="chip">GAME ${index+1} OF 15 · COMING SOON</span>
+            <h3>${esc(game.name)}</h3>
+            <p>${esc(game.description)}</p>
+            <small>${esc(game.players)} ${game.players==='1'?'Player':'Players'} · Preview only</small>
+            <a class="btn primary" href="${esc(game.href || '#/games')}">View in Arcade</a>
+          </div>
+        </article>`).join('')}
+      </div>
+      <div class="home-arcade-controls">
+        <button type="button" class="btn ghost" data-arcade-prev aria-label="Previous game">‹</button>
+        <span id="homeArcadePosition" aria-live="polite">1 / 15</span>
+        <button type="button" class="btn ghost" data-arcade-next aria-label="Next game">›</button>
+      </div>
+      <p class="muted" style="font-size:11px;margin:8px 0 0">Concept previews · Games are not playable yet</p>
+    </section>
+
+
     ${appGoalCard}
 
     ${sellPromo}
@@ -613,6 +640,38 @@ export function renderHome() {
 }
 
 export function bindHome(root) {
+  // 15-game Home carousel: independent from Featured Stage, respects reduced motion.
+  const arcade = root.querySelector('#homeArcade');
+  if (arcade) {
+    const slides = [...arcade.querySelectorAll('[data-game-slide]')];
+    const counter = arcade.querySelector('#homeArcadePosition');
+    let current = 0;
+    let carouselTimer = null;
+    const motionReduced = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
+    const showGame = (next) => {
+      current = (next + slides.length) % slides.length;
+      slides.forEach((slide, i) => { slide.hidden = i !== current; });
+      if (counter) counter.textContent = `${current+1} / ${slides.length}`;
+    };
+    const stopGameRotation = () => { if (carouselTimer !== null) clearInterval(carouselTimer); carouselTimer = null; };
+    arcade.querySelector('[data-arcade-prev]')?.addEventListener('click', () => {
+      stopGameRotation(); showGame(current - 1);
+    });
+    arcade.querySelector('[data-arcade-next]')?.addEventListener('click', () => {
+      stopGameRotation(); showGame(current + 1);
+    });
+    if (!motionReduced) {
+      carouselTimer = setInterval(() => {
+        if (!document.body.contains(arcade)) { stopGameRotation(); return; }
+        if (document.visibilityState === 'visible') showGame(current + 1);
+      }, 6500);
+    }
+    const teardown = new MutationObserver(() => {
+      if (!document.body.contains(arcade)) { stopGameRotation(); teardown.disconnect(); }
+    });
+    teardown.observe(document.body, { childList: true, subtree: true });
+  }
+
   /* t255u app goal: donate chips + countdown refresh */
   const goalBox = root.querySelector('#homeAppGoalBody');
   if (goalBox) {
