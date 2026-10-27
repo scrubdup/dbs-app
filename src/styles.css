@@ -3869,3 +3869,60 @@ input:focus, select:focus, textarea:focus {
 .pikk-create-options a{display:flex;flex-direction:column;gap:5px;padding:16px 10px;border-radius:13px;border:1px solid #36405d;background:#211d2a;color:#fff;text-decoration:none;font-size:14px;font-weight:800}
 .pikk-create-options a small{color:#aaaec1;font-size:11px;font-weight:500}
 .tabbar.tabbar-reshaped.tabbar-fit7 a.tab-primary .tab-ico svg{width:26px;height:26px}
+
+
+/* Approved PIKK chrome: official Home logo above the persistent player, with
+   compact actions and Explore accessible on every route. No assets replaced. */
+.top#topBar { position: sticky; top: 0; z-index: 46; background: #090911; }
+.top#topBar .logo { flex-basis: clamp(94px, 24vw, 164px); width: clamp(94px, 24vw, 164px); min-width: 0; }
+.top#topBar .logo-img { width: 100%; height: 100%; object-fit: contain; object-position: center; }
+.top#topBar .top-actions { gap: 5px; min-width: 0; }
+.top#topBar .top-actions > a, .top#topBar .top-actions > button {
+  width: 37px; min-width: 37px; height: 37px; padding: 0; border-radius: 12px;
+  display: inline-flex; justify-content: center; align-items: center;
+}
+.top#topBar .header-profile-label,
+.top#topBar .header-msg-label,
+.top#topBar .header-notifications-label { display: none; }
+.top#topBar .top-actions svg { width: 19px; height: 19px; }
+.sticky-player#dbs-sticky-player { top: var(--top-h); z-index: 45; }
+.pikk-explore-rail {
+  display: flex; align-items: center; gap: 9px;
+  position: sticky; top: calc(var(--top-h) + var(--sp-h)); z-index: 43;
+  max-width: 100%; overflow-x: auto; overscroll-behavior-x: contain;
+  padding: 8px 12px; background: #0b0b14;
+  border-bottom: 1px solid rgba(70,112,255,.30);
+  scrollbar-width: none; white-space: nowrap;
+}
+.pikk-explore-rail::-webkit-scrollbar { display: none; }
+.pikk-explore-rail a {
+  flex: 0 0 auto; padding: 5px 11px; border-radius: 999px;
+  font-size: 11px; font-weight: 750; background: #1b1924;
+  border: 1px solid #333342; color: #e9e8f1;
+}
+.pikk-explore-rail .pikk-explore-primary {
+  border-color: #5e77e5;
+  color: white; background: linear-gradient(125deg,#20244f,#351329);
+  box-shadow: 0 0 9px rgba(47,107,255,.18);
+}
+.pikk-explore-rail a:focus-visible,
+.top#topBar .top-actions a:focus-visible,
+.top#topBar .top-actions button:focus-visible {
+  outline: 2px solid #9ebaff; outline-offset: 2px;
+}
+@media(max-width: 520px) {
+  :root { --top-h: 58px; }
+  .top#topBar { padding-inline: 9px; }
+  .top#topBar .logo { flex-basis: min(32vw, 126px); width: min(32vw, 126px); }
+  .top#topBar .top-actions { gap: 3px; }
+  .top#topBar .top-actions > a, .top#topBar .top-actions > button {
+    width: 34px; min-width: 34px; height: 34px; border-radius: 10px;
+  }
+  .pikk-explore-rail { gap: 7px; padding: 7px 9px; }
+}
+@media(max-width: 360px) {
+  .top#topBar { padding-inline: 5px; }
+  .top#topBar .top-actions > a, .top#topBar .top-actions > button {
+    width: 31px; min-width: 31px; height: 32px;
+  }
+}
