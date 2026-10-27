@@ -132,8 +132,15 @@ function buildTabbar() {
     const pathOnly = '/' + raw.replace(/^\//, '').split(/[?#]/)[0];
     const label = esc(t.label);
     const primaryClass = t.primary ? ' class="tab-primary"' : '';
-    return `<a${primaryClass} href="${t.href}" data-path="${pathOnly}" aria-label="${label}"${t.href === '#/create' ? ' aria-haspopup="dialog" aria-controls="pikkCreateMenu" aria-expanded="false"' : ''}><span class="tab-ico">${t.href === '#/create' ? '<svg viewBox="0 0 32 32" width="26" height="26" aria-hidden="true"><path d="M9 5 L25 16 L9 27 Z" fill="currentColor"/><path d="M24 5v11m0 0-4-4m4 4 4-4" stroke="white" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>' : (ICONS[t.icon] || '')}</span><span>${label}</span></a>`;
+    return `<a${primaryClass} href="${t.href}" data-path="${pathOnly}" aria-label="${label}"${t.href === '#/create' ? ' aria-haspopup="dialog" aria-controls="pikkCreateMenu" aria-expanded="false"' : t.href === '#/music' ? ' aria-haspopup="dialog" aria-controls="pikkMusicMenu" aria-expanded="false"' : ''}><span class="tab-ico">${t.href === '#/create' ? '<svg viewBox="0 0 32 32" width="26" height="26" aria-hidden="true"><path d="M9 5 L25 16 L9 27 Z" fill="currentColor"/><path d="M24 5v11m0 0-4-4m4 4 4-4" stroke="white" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>' : (ICONS[t.icon] || '')}</span><span>${label}</span></a>`;
   }).join('');
+  el.querySelector('a[href="#/music"]')?.addEventListener('click', (event) => {
+    event.preventDefault();
+    const panel = ensureMusicMenu();
+    panel.hidden = !panel.hidden;
+    event.currentTarget.setAttribute('aria-expanded', String(!panel.hidden));
+    if (!panel.hidden) panel.querySelector('[data-music-close]')?.focus();
+  });
   el.querySelector('a[href="#/create"]')?.addEventListener('click', (event) => {
     event.preventDefault();
     const panel = ensureCreateMenu();
@@ -145,6 +152,52 @@ function buildTabbar() {
   /* Fit all bottom navigation tabs, including Dating and Connect, without horizontal scroll. */
   el.classList.remove('tabbar-scroll');
   el.classList.add('tabbar-reshaped', 'tabbar-fit7');
+}
+
+// Music menu follows the approved Create dialog style without inventing playback or upload capabilities.
+function ensureMusicMenu() {
+  let panel = document.getElementById('pikkMusicMenu');
+  if (panel) return panel;
+  panel = document.createElement('div');
+  panel.id = 'pikkMusicMenu';
+  panel.className = 'pikk-create-overlay';
+  panel.hidden = true;
+  panel.innerHTML = `<div class="pikk-create-sheet" role="dialog" aria-modal="true" aria-label="Music on PIKK">
+    <div class="pikk-create-head"><strong>Music on PIKK</strong><button type="button" class="btn ghost" data-music-close aria-label="Close music menu">✕</button></div>
+    <div class="pikk-create-options">
+      <a href="#/music">♫ Songs <small>Official releases and music catalog</small></a>
+      <a href="#/music#stream-everywhere">▤ Albums <small>Official releases and albums</small></a>
+      <div class="pikk-menu-unavailable" aria-disabled="true">◉ Beats <small>Dedicated beat marketplace coming later</small></div>
+      <a href="#/music#youtube-mixes">☷ Playlists <small>Available channel mixes · playlists coming later</small></a>
+      <div class="pikk-menu-unavailable" aria-disabled="true">⬆ Upload Music <small>Music upload tools not yet available</small></div>
+    </div>
+    <p class="muted" style="font-size:11px;margin:10px 0 0">TEST MODE · Dedicated beat sales and music uploads require production services.</p>
+  </div>`;
+  document.body.appendChild(panel);
+  const closeMenu = (restoreFocus = false) => {
+    panel.hidden = true;
+    const trigger = document.querySelector('#tabbar a[href="#/music"]');
+    trigger?.setAttribute('aria-expanded', 'false');
+    if (restoreFocus) trigger?.focus();
+  };
+  window.addEventListener('hashchange', () => closeMenu());
+  panel.addEventListener('click', (event) => {
+    if (event.target === panel || event.target.closest('[data-music-close]')) closeMenu(true);
+    else if (event.target.closest('.pikk-create-options a')) closeMenu();
+  });
+  document.addEventListener('keydown', (event) => {
+    if (panel.hidden) return;
+    if (event.key === 'Escape') { event.preventDefault(); closeMenu(true); }
+    if (event.key === 'Tab') {
+      const focusable = [...panel.querySelectorAll('a[href], button:not([disabled])')];
+      const first = focusable[0], last = focusable[focusable.length - 1];
+      if (!first) { event.preventDefault(); return; }
+      if (!panel.contains(document.activeElement)) { event.preventDefault(); (event.shiftKey ? last : first).focus(); }
+      else if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+    }
+  });
+  return panel;
 }
 
 function ensureCreateMenu() {
@@ -327,6 +380,11 @@ function render(route) {
   updateChrome(route);
   onRouteForPlayer(route.path);
   window.scrollTo(0, 0);
+  // Approved Music menu category deep-links. The router parses the second # as an element id.
+  if (route.path === '/music' && ['stream-everywhere', 'youtube-mixes'].includes(route.elementId)) {
+    const targetId = route.elementId;
+    setTimeout(() => document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+  }
   // Vault deep-link
   if ((route.path === '/music' || route.path === '/vault') && (location.hash.includes('vault') || route.path === '/vault')) {
     setTimeout(() => document.getElementById('vault')?.scrollIntoView({ behavior: 'smooth' }), 50);

@@ -3868,4 +3868,7 @@ input:focus, select:focus, textarea:focus {
 .pikk-create-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
 .pikk-create-options a{display:flex;flex-direction:column;gap:5px;padding:16px 10px;border-radius:13px;border:1px solid #36405d;background:#211d2a;color:#fff;text-decoration:none;font-size:14px;font-weight:800}
 .pikk-create-options a small{color:#aaaec1;font-size:11px;font-weight:500}
+/* Music categories awaiting backend services are visibly unavailable, never fake navigation. */
+.pikk-create-options .pikk-menu-unavailable{display:flex;flex-direction:column;gap:5px;padding:16px 10px;border-radius:13px;border:1px solid #343547;background:#191824;color:#a6a9b8;font-size:14px;font-weight:800;cursor:not-allowed}
+.pikk-create-options .pikk-menu-unavailable small{color:#8b8f9e;font-size:11px;font-weight:500}
 .tabbar.tabbar-reshaped.tabbar-fit7 a.tab-primary .tab-ico svg{width:26px;height:26px}
