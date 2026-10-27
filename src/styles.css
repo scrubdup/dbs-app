@@ -4370,3 +4370,58 @@ input:focus, select:focus, textarea:focus {
 }
 @media(max-width:350px){.pikk-connect-hero{grid-template-columns:1fr}.pikk-connect-hero-art{display:none}.pikk-connect-feature-grid{grid-template-columns:1fr}.pikk-connect-feature{min-height:80px}}
 @media(prefers-reduced-motion:reduce){.pikk-connect-feature{transition:none}}
+
+
+/* COORDINATED PREMIUM REDESIGN: Dating, Shop and Profile. */
+.pikk-dating-hero,.pikk-shop-showcase,.pikk-profile-cover,.pikk-profile-guest-hero{
+  border:1px solid #57557c;border-radius:22px;overflow:hidden;position:relative;isolation:isolate;
+  background:radial-gradient(ellipse at 87% 15%,#a4306845,transparent 53%),
+    radial-gradient(ellipse at 4% 96%,#335bcc48,transparent 56%),linear-gradient(145deg,#1e1b2e,#10121e);
+  box-shadow:0 12px 32px #0007,inset 0 1px 0 #ffffff14;
+  padding:clamp(18px,3vw,27px);margin-bottom:15px;
+}
+.pikk-dating-hero,.pikk-shop-showcase{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(95px,.7fr);align-items:center;gap:14px}
+.pikk-dating-hero .kicker,.pikk-shop-showcase .kicker,.pikk-profile-guest-hero .kicker{color:#f3a3d8;font-size:10px;letter-spacing:.14em;font-weight:850;margin:9px 0}
+.pikk-dating-hero h2,.pikk-shop-showcase h2,.pikk-profile-guest-hero h2{font-size:clamp(24px,4.7vw,41px);line-height:1.08;letter-spacing:-.045em;margin:8px 0 12px}
+.pikk-dating-hero h2 span,.pikk-shop-showcase h2 span{background:linear-gradient(110deg,#ff66b9,#9b9fff);color:transparent;background-clip:text}
+.pikk-dating-hero-copy>p:not(.kicker),.pikk-shop-showcase-copy>p:not(.kicker),.pikk-profile-guest-hero>p:not(.kicker){color:#d2cede;font-size:12px;line-height:1.6;max-width:590px}
+.pikk-dating-hero-copy>small,.pikk-shop-showcase-copy>small{color:#d4b9ce;display:block;font-size:10px;margin-top:10px}
+.pikk-dating-hero-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}
+.pikk-dating-symbol,.pikk-shop-showcase-art{display:grid;place-items:center;justify-self:center;aspect-ratio:1;width:min(100%,210px);border-radius:50%;border:2px solid #8c6dd1;color:#fff;font-size:clamp(65px,12vw,114px);background:radial-gradient(circle at 40% 38%,#a83ca0aa,#362455 52%,#1d1a37);box-shadow:0 0 0 9px #a6489730,0 0 35px #bc2c8a48}
+.pikk-shop-showcase-art{border-radius:22px;display:flex;flex-direction:column;gap:3px;transform:rotate(-4deg)}
+.pikk-shop-showcase-art span{font-size:clamp(40px,7vw,65px);line-height:1}
+.pikk-shop-showcase-art strong{font-size:clamp(20px,3vw,34px);letter-spacing:.07em}
+.pikk-dating-tabs,.pikk-shop-departments{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:0 0 14px;padding:2px 0 8px}
+.pikk-dating-tabs::-webkit-scrollbar,.pikk-shop-departments::-webkit-scrollbar{display:none}
+.pikk-dating-tabs a,.pikk-shop-departments a{flex:1 0 auto;border-radius:999px;padding:9px 13px;border:1px solid #4d4c6d;background:#242137;color:#e7e4f4;text-align:center;font-size:11px;font-weight:800}
+.pikk-dating-tabs a[aria-current],.pikk-dating-tabs a:hover,.pikk-shop-departments a:hover{background:linear-gradient(110deg,#c42178,#662fa2);color:#fff;border-color:#d068ca}
+.pikk-dating-experience-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:17px}
+.pikk-dating-experience{display:flex;flex-direction:column;align-items:flex-start;gap:8px;background:linear-gradient(145deg,#282240,#191927);border:1px solid #555077;border-radius:16px;padding:14px;min-height:135px}
+.pikk-dating-experience>span{display:grid;place-items:center;width:42px;height:42px;border-radius:12px;background:#7c347d;border:1px solid #b677c4;color:#fff;font-size:26px}
+.pikk-dating-experience strong{font-size:14px;color:#fff;line-height:1.2}
+.pikk-dating-experience small{font-size:11px;line-height:1.4;color:#c7c2d9}
+.pikk-shop-catalog{border-color:#545079}
+.pikk-shop-premium-grid .merch-card{border-radius:16px;overflow:hidden;border:1px solid #4d4d6b;box-shadow:0 8px 22px #0005}
+.pikk-shop-premium-grid .merch-card .img-wrap{background:#211b2f}
+.pikk-shop-premium-grid .merch-card img{object-fit:cover}
+.pikk-profile-cover{min-height:226px;background:radial-gradient(ellipse at 80% 0,#f02c8a4c,transparent 55%),radial-gradient(ellipse at 12% 95%,#3965ff61,transparent 60%),#171427}
+.pikk-profile-cover-inner{display:flex;align-items:center;flex-direction:column;gap:8px;text-align:center}
+.pikk-profile-cover-kicker{font-size:10px;font-weight:850;color:#ffd3ee;letter-spacing:.14em}
+.pikk-profile-cover .avatar{width:85px;height:85px;border-radius:50%;border:3px solid #fa78c7;box-shadow:0 0 0 5px #3b2d6a}
+.pikk-profile-cover h2{margin:0;font-size:clamp(22px,4vw,31px)}
+.pikk-profile-cover p{margin:0;color:#d1cde0;font-size:12px}
+.pikk-profile-shortcuts{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:8px}
+.pikk-profile-shortcuts a{font-weight:800;font-size:11px;border-radius:999px;background:#25233a;border:1px solid #5b5a86;color:#fff;padding:8px 14px}
+.pikk-profile-guest-hero{min-height:150px}
+@media(max-width:520px){
+ .pikk-dating-hero,.pikk-shop-showcase{grid-template-columns:minmax(0,1fr) 78px;gap:8px;padding:13px;border-radius:16px}
+ .pikk-dating-hero h2,.pikk-shop-showcase h2{font-size:23px}
+ .pikk-dating-symbol,.pikk-shop-showcase-art{width:75px;font-size:48px}
+ .pikk-shop-showcase-art span{font-size:28px}.pikk-shop-showcase-art strong{font-size:12px}
+ .pikk-dating-experience-grid{gap:6px}
+ .pikk-dating-experience{padding:9px;min-height:135px;border-radius:11px}
+ .pikk-dating-experience>span{width:33px;height:33px;font-size:19px}
+ .pikk-dating-experience strong{font-size:12px}.pikk-dating-experience small{font-size:10px}
+ .pikk-profile-cover{padding:16px;border-radius:16px}
+}
+@media(max-width:360px){.pikk-dating-hero,.pikk-shop-showcase{grid-template-columns:1fr}.pikk-dating-symbol,.pikk-shop-showcase-art{display:none}.pikk-dating-experience-grid{grid-template-columns:1fr}.pikk-dating-experience{min-height:90px}}
