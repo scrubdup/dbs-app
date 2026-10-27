@@ -101,7 +101,7 @@ export function renderConnect() {
         <p class="muted small">One PIKK account, two separate experiences. Neither starts your camera automatically.</p>
         <div class="row wrap" style="gap:10px">
           <a class="btn primary" href="#/dating">♥ Dating · Swipe &amp; Match</a>
-          <a class="btn ghost" href="#connect-random-chat">◉ Random Chat · 18+ TEST MODE</a>
+          <a class="btn ghost" href="#/connect#connect-random-chat">◉ Random Chat · 18+ TEST MODE</a>
         </div>
         <p class="muted small" style="margin:8px 0 0">Dating requires mutual interest. Random Chat is for spontaneous conversations, not automatic dating matches.</p>
       </section>
