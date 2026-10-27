@@ -52,6 +52,10 @@ test('private invites, speaker approval, report and blocked rejoin', async (t) =
   assert.equal((await call('POST', '/rooms/' + id + '/approve-mic', 'host', { userId: 'guest' })).status, 200);
   assert.equal((await call('POST', '/rooms/' + id + '/mute', 'guest', { userId: 'guest', muted: false })).status, 200);
   assert.equal((await call('POST', '/rooms/' + id + '/report', 'guest', { userId: 'host', reason: 'abuse' })).status, 200);
+  const visible = (await call('GET', '/rooms/' + id, 'guest')).data.room;
+  assert.equal('reports' in visible, false);
+  assert.equal('invitedIds' in visible, false);
+  assert.equal('blockedIds' in visible, false);
   assert.equal((await call('POST', '/rooms/' + id + '/kick', 'host', { userId: 'guest', block: true })).status, 200);
   assert.equal((await call('POST', '/rooms/' + id + '/join', 'guest')).status, 403);
 });
