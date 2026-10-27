@@ -95,3 +95,17 @@ test('signaling is member-only and muted listeners cannot offer audio', async (t
   assert.equal((await call('POST', path, 'other', { to: 'host', kind: 'ice', signal: { candidate: 'x' } })).status, 403);
   assert.equal((await call('POST', path, 'host', { to: 'guest', kind: 'offer', signal: { sdp: 'test' } })).status, 202);
 });
+
+test('private invite revocation is host-only and hidden from room snapshots', async (t) => {
+  const { call } = await fixture(t);
+  const id = (await call('POST', '/rooms', 'host', { name: 'Private party', visibility: 'private' })).data.room.id;
+  const invite = '/rooms/' + id + '/invite';
+  const revoke = '/rooms/' + id + '/revoke-invite';
+  assert.equal((await call('POST', invite, 'host', { userId: 'guest' })).status, 200);
+  const before = (await call('GET', '/rooms/' + id, 'host')).data.room;
+  assert.equal('invitedIds' in before, false);
+  assert.equal('inviteExpiresAt' in before, false);
+  assert.equal((await call('POST', revoke, 'other', { userId: 'guest' })).status, 403);
+  assert.equal((await call('POST', revoke, 'host', { userId: 'guest' })).status, 200);
+  assert.equal((await call('POST', '/rooms/' + id + '/join', 'guest')).status, 403);
+});
