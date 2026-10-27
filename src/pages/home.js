@@ -565,6 +565,57 @@ export function renderHome() {
       <p class="chip" style="margin-top:10px">TEST MODE · no real payments</p>
     </div>`;
 
+  // Editorial content uses only existing verified artist videos and cover artwork.
+  // No invented creators, view counts, live audiences or substitute model photos.
+  const mediaFeatureItems = carouselMVs.slice(0, 6).map((v, index) => {
+    const youtubeId = new URL(v.youtube).searchParams.get('v') || '';
+    const image = youtubeId ? `https://i.ytimg.com/vi/${encodeURIComponent(youtubeId)}/hqdefault.jpg` : '';
+    return `<a class="pikk-home-media-card ${index < 2 ? 'is-featured' : ''}" href="${esc(v.youtube)}" target="_blank" rel="noopener noreferrer"
+       aria-label="Watch ${esc(v.title)} on YouTube">
+       ${image ? `<img src="${esc(image)}" alt="" loading="${index < 2 ? 'eager' : 'lazy'}" decoding="async" referrerpolicy="no-referrer"/>` : '<span class="pikk-home-media-fallback" aria-hidden="true">♫</span>'}
+       <span class="pikk-home-media-shadow"></span>
+       <span class="pikk-home-media-badge">▶ OFFICIAL VIDEO</span>
+       <span class="pikk-home-media-title">${esc(v.title)}</span>
+     </a>`;
+  }).join('');
+  const realCoverCircles = COMING_SOON.slice(0, 4).map((c) => `
+    <a class="pikk-home-circle" href="#/music" aria-label="Explore music: ${esc(c.title)}">
+      <span class="pikk-home-circle-ring"><img src="${esc(c.cover)}" alt="" loading="lazy" decoding="async"/></span>
+      <span>${esc(c.title)}</span>
+    </a>`).join('');
+  const visualFeed = `
+    <section class="pikk-home-visual" id="pikkHomeVisual" aria-labelledby="pikkHomeVisualTitle">
+      <div class="pikk-home-visual-top">
+        <div><p class="kicker">PIKK DISCOVER</p><h2 id="pikkHomeVisualTitle">Your music. Your world.</h2></div>
+        <a href="#/explore" class="pikk-home-visual-more">Explore ↗</a>
+      </div>
+      <nav class="pikk-home-circle-strip" aria-label="Browse PIKK features">
+        <a class="pikk-home-circle" href="#/create" aria-label="Create on PIKK">
+          <span class="pikk-home-circle-ring pikk-home-circle-symbol" aria-hidden="true">＋</span><span>Create</span>
+        </a>
+        ${realCoverCircles}
+        <a class="pikk-home-circle" href="#/live" aria-label="Explore Live">
+          <span class="pikk-home-circle-ring pikk-home-circle-symbol" aria-hidden="true">●</span><span>Live</span>
+        </a>
+      </nav>
+      <nav class="pikk-home-filterbar" aria-label="Discover categories">
+        <a class="is-current" href="#/explore">All</a>
+        <a href="#/videos">Videos</a>
+        <a href="#/music">Music</a>
+        <a href="#/posts">Photos</a>
+        <a href="#/live">Live</a>
+        <a href="#/shop">Shop</a>
+        <a href="#/dating">Dating</a>
+      </nav>
+      <div class="pikk-home-media-grid" aria-label="Official DatBoiSkeet video selections">
+        ${mediaFeatureItems}
+      </div>
+      <div class="pikk-home-media-footer">
+        <p class="muted">Real official releases · Video thumbnails from YouTube · No fabricated views or live counts</p>
+        <a href="#/videos">View all videos →</a>
+      </div>
+    </section>`;
+
   const body = `
     <section class="pikk-home-discover" aria-label="PIKK quick discovery">
       <div class="pikk-home-discover-heading">
@@ -580,6 +631,8 @@ export function renderHome() {
         <a href="#/games"><span aria-hidden="true">♜</span> Arcade</a>
       </nav>
     </section>
+
+    ${visualFeed}
 
     ${stageBlock}
 
