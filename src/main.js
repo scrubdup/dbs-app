@@ -83,7 +83,7 @@ function buildTabbar() {
   const el = document.getElementById('tabbar');
   el.innerHTML = TABBAR.map(
     (t) =>
-      `<a href="${t.href}" data-path="${t.href.replace('#', '')}">${ICONS[t.icon] || ''}<span>${esc(t.label)}</span></a>`
+      `<a href="${t.href}" aria-label="${esc(t.label)}" data-path="${t.href.replace('#', '')}">${ICONS[t.icon] || ''}<span>${esc(t.label)}</span></a>`
   ).join('');
 }
 
@@ -103,7 +103,10 @@ function setDrawer(open) {
 function updateChrome(route) {
   const path = route.path;
   document.querySelectorAll('#tabbar a').forEach((a) => {
-    a.classList.toggle('on', a.getAttribute('data-path') === path);
+    const active = a.getAttribute('data-path') === path;
+    a.classList.toggle('on', active);
+    if (active) a.setAttribute('aria-current', 'page');
+    else a.removeAttribute('aria-current');
   });
   document.querySelectorAll('#sideNav a').forEach((a) => {
     const href = a.getAttribute('href') || '';
