@@ -59,6 +59,36 @@ export function createPartyLineServer({ authenticate } = {}) {
       if (url.pathname === '/health' && req.method === 'GET') return reply(res, 200, { ok: true, mode: 'development-only' });
       const session = await authenticate(req);
       const userId = requireAdultSession(session);
+      // Adult-only discovery. Public listings never reveal messages, identities,
+      // private rooms, invitation lists, reports, or moderation records.
+      if (url.pathname === '/rooms' && req.method === 'GET') {
+        const available = [...rooms.values()]
+          .filter((room) => room.visibility === 'public' && !room.closed &&
+            room.members.length < 10 && !room.blockedIds.includes(userId))
+          .sort((a, b) => b.createdAt - a.createdAt)
+          .slice(0, 50)
+          .map(({ id, name, visibility, members }) => ({
+            id, name, visibility, participantCount: members.length,
+          }));
+        return reply(res, 200, { rooms: available });
+      }
+      // A private invitation is visible ONLY to its authenticated recipient,
+      // and only until expiry/revocation. No room member lists are disclosed.
+      if (url.pathname === '/invitations' && req.method === 'GET') {
+        const now = Date.now();
+        const invitations = [...rooms.values()]
+          .filter((room) => !room.closed && room.visibility === 'private' &&
+            room.invitedIds.includes(userId) && !room.blockedIds.includes(userId) &&
+            !hasMember(room, userId) &&
+            Number.isSafeInteger(room.inviteExpiresAt?.[userId]) &&
+            room.inviteExpiresAt[userId] >= now)
+          .sort((a, b) => a.inviteExpiresAt[userId] - b.inviteExpiresAt[userId])
+          .slice(0, 50)
+          .map(({ id, name, inviteExpiresAt }) => ({
+            roomId: id, name, expiresAt: inviteExpiresAt[userId],
+          }));
+        return reply(res, 200, { invitations });
+      }
       if (url.pathname === '/rooms' && req.method === 'POST') {
         const body = await jsonBody(req);
         const room = createPartyRoom({
