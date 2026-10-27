@@ -4034,3 +4034,105 @@ input:focus, select:focus, textarea:focus {
   .pikk-home-discover-links a{min-height:42px;font-size:11px}
 }
 @media(prefers-reduced-motion:reduce){.pikk-home-discover-links a{transition:none}}
+
+
+/* Platform-wide premium visual system; styling only, no routes/features replaced.
+   Keep sticky player, logo, Create menu and TEST MODE disclosures readable. */
+.page {
+  --pikk-card-edge: rgba(105,111,168,.31);
+  --pikk-card-glint: rgba(255,255,255,.055);
+  --pikk-soft-blue: rgba(51,105,245,.11);
+  --pikk-soft-red: rgba(243,49,90,.09);
+}
+.page > .page-head {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  margin: 1px 0 17px;
+  padding: clamp(16px, 3.2vw, 24px);
+  border: 1px solid #343652;
+  border-radius: 21px;
+  background:
+    radial-gradient(ellipse at 94% 15%,rgba(235,37,81,.16),transparent 46%),
+    radial-gradient(ellipse at 10% 105%,rgba(47,107,255,.20),transparent 58%),
+    linear-gradient(135deg,#181826,#10111c);
+  box-shadow: 0 10px 30px rgba(0,0,0,.22),inset 0 1px 0 var(--pikk-card-glint);
+}
+.page > .page-head h1 {
+  font-size: clamp(23px,4vw,33px);
+  line-height: 1.17;
+  font-weight: 900;
+  letter-spacing: -.045em;
+  color: #faf9ff;
+  text-wrap: balance;
+}
+.page > .page-head .lead { max-width: 780px; margin: 8px 0 0; color:#bcbdd2; font-size: 12px; line-height:1.5; }
+.page > .card,
+.page > div > .card,
+.page > section.card,
+.page > .grid > .card {
+  background: linear-gradient(145deg,rgba(31,31,45,.98),rgba(19,19,29,.98));
+  border: 1px solid var(--pikk-card-edge);
+  border-radius: 19px;
+  box-shadow: 0 6px 20px rgba(0,0,0,.20), inset 0 1px 0 var(--pikk-card-glint);
+}
+.page .card h2,
+.page .card h3 { letter-spacing: -.02em; line-height: 1.27; }
+.page .card .muted { color:#b4b3c6; }
+.page .btn {
+  min-height: 39px;
+  border-radius: 11px;
+  font-weight: 800;
+  letter-spacing: .005em;
+  transition: filter .15s ease, border-color .15s ease, background-color .15s ease;
+}
+.page .btn.primary {
+  color:#fff;
+  background:linear-gradient(118deg,#f1344d,#ce2449 70%,#a51d51);
+  border-color:#ff5870;
+  box-shadow:0 4px 14px rgba(211,29,66,.17);
+}
+.page .btn.ghost {
+  border-color:#404463;
+  background:rgba(27,31,53,.56);
+}
+.page .btn:is(:hover,:focus-visible):not(:disabled) { filter:brightness(1.11); }
+.page :is(input,select,textarea):not([type=checkbox]):not([type=radio]) {
+  max-width:100%;
+  border-color: #43435b;
+  background-color: #10101b;
+  border-radius: 11px;
+}
+.page :is(input,select,textarea):focus-visible,
+.page :is(button,a):focus-visible { outline: 2px solid #8cafff; outline-offset: 2px; }
+.page .shop-chip { border-color: #41445c; color:#deddec; background: #1d1e2e; }
+.page .shop-chip.on { border-color:#758efa; background: #27346c; color:#fff; }
+.page .badge-phase { background:rgba(243,46,83,.12); border-color:rgba(235,65,105,.44); color:#ffb4c5; }
+.page .chip { border-color:rgba(100,111,170,.45); }
+.page :is(.video-list,.explore-search,.stream-release,.shop-preview,.post,.live-activity) {
+  border-radius: 19px;
+}
+.pikk-create-sheet {
+  background:
+    radial-gradient(ellipse at 92% 0,rgba(255,55,101,.13),transparent 47%),
+    linear-gradient(150deg,#1e1b30,#11111e);
+  border-color:#5963a2;
+  box-shadow: 0 16px 70px rgba(0,0,0,.72),0 0 28px rgba(47,107,255,.16);
+}
+.pikk-create-options a {
+  border-color:#464663;
+  background:linear-gradient(142deg,#292538,#1b1c2c);
+  transition:background .15s,border-color .15s;
+}
+.pikk-create-options a:is(:hover,:focus-visible) {background:#313251;border-color:#8098f3}
+.pikk-explore-rail { background:linear-gradient(90deg,#10101c,#141323); }
+@media(max-width:520px) {
+  .page > .page-head {padding:15px 14px;margin-bottom:13px;border-radius:16px;}
+  .page > .page-head h1 {font-size:23px;}
+  .page > .page-head .lead {font-size:11px;}
+  .page > .card,.page > div > .card,.page > section.card {border-radius:15px;}
+  .page .btn {min-height:37px;}
+}
+@media(prefers-reduced-motion:reduce) {
+  .page .btn,.pikk-create-options a {transition:none!important;}
+}
