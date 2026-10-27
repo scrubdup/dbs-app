@@ -132,7 +132,8 @@ function renderVaultCards(unlocked) {
   }).join('');
 }
 
-export function renderMusic() {
+export function renderMusic(route = {}) {
+  const musicView = ['songs', 'albums', 'beats', 'playlists', 'upload'].includes(route.query?.view) ? route.query.view : '';
   const { user } = getState();
   const membership = getMembership();
   const vaultOk = hasVaultAccess('skeet');
@@ -212,6 +213,40 @@ export function renderMusic() {
     })
     .filter(Boolean);
 
+  // Focused views are reached from the Music bottom-tab menu. Existing sections stay intact.
+  const focusReleases = [...STREAMING_RELEASES, ...adminStreaming];
+  let focusedViewCard = '';
+  if (musicView === 'songs' || musicView === 'albums') {
+    const isAlbum = musicView === 'albums';
+    const selected = focusReleases.filter((release) =>
+      isAlbum ? release.type === 'album' : release.type === 'single' || release.type === 'song'
+    );
+    focusedViewCard = `<div class="card" id="music-focused-view">
+      <h2>${isAlbum ? 'Albums' : 'Songs'}</h2>
+      <p class="muted">Verified releases and available official listening links.</p>
+      <div class="stream-grid">${selected.map(renderStreamingReleaseCard).join('') || '<p class="muted">No releases listed in this category yet.</p>'}</div>
+      <a class="btn ghost" href="#/music">Music overview</a>
+    </div>`;
+  } else if (musicView === 'playlists') {
+    focusedViewCard = `<div class="card" id="music-focused-view">
+      <h2>Playlists</h2>
+      <p class="muted">Official YouTube playlists open on YouTube. No rehosted audio.</p>
+      <div class="row wrap" style="gap:8px">
+        ${YOUTUBE_CHANNEL_PLAYLISTS.map((p) => `<a class="btn ghost" href="${esc(p.youtube)}" target="_blank" rel="noopener">${esc(p.title)}</a>`).join('')}
+      </div>
+      <a class="btn ghost" href="#/music">Music overview</a>
+    </div>`;
+  } else if (musicView === 'beats' || musicView === 'upload') {
+    const isUpload = musicView === 'upload';
+    focusedViewCard = `<div class="card" id="music-focused-view">
+      <h2>${isUpload ? 'Upload Music' : 'Beats'}</h2>
+      <p class="muted">Not available yet · TEST MODE. ${isUpload
+        ? 'Creator music uploads require secure storage, ownership verification and publishing tools.'
+        : 'The producer beat marketplace and licensing checkout are still in development.'}</p>
+      <a class="btn ghost" href="#/music">Music overview</a>
+    </div>`;
+  }
+
   const adminMusicHtml = adminMusic.length
     ? `<div class="card catalog-admin-music">
         <h2>From Admin</h2>
@@ -232,6 +267,7 @@ export function renderMusic() {
     : '';
 
   const body = `
+    ${focusedViewCard}
     <div class="card">
       <h2>Upcoming Releases</h2>
       <p class="muted">Real DatBoiSkeet cover art · playback unlocks when released. No fake tracks.</p>

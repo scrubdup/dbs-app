@@ -21,3 +21,9 @@ test('Connect does not claim real random video chat is launched', () => {
   assert.match(connect, /WebRTC \+ age assurance required before launch/);
   assert.match(connect, /TEST MODE/);
 });
+
+test('Connect Random Chat link stays on Connect route so its anchor can scroll', () => {
+  const connect = source('src/pages/connect.js');
+  assert.match(connect, /href="#\/connect#connect-random-chat"/);
+  assert.doesNotMatch(connect, /href="#connect-random-chat"/);
+});
