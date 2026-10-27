@@ -590,7 +590,7 @@ export function renderHome() {
         <a href="#/explore" class="pikk-home-visual-more">Explore ↗</a>
       </div>
       <nav class="pikk-home-circle-strip" aria-label="Browse PIKK features">
-        <a class="pikk-home-circle" href="#/create" aria-label="Create on PIKK">
+        <a class="pikk-home-circle" href="#/posts?compose=1" aria-label="Create a post on PIKK">
           <span class="pikk-home-circle-ring pikk-home-circle-symbol" aria-hidden="true">＋</span><span>Create</span>
         </a>
         ${realCoverCircles}
