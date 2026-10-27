@@ -536,7 +536,7 @@ export const DRAWER_GROUPS = [
     id: 'games',
     label: 'Games',
     links: [
-      { href: '#/games', label: 'PIKK Arcade · 9 Games Coming Soon' },
+      { href: '#/games', label: 'PIKK Arcade · 15 Games Coming Soon' },
       { href: '#/blockwars', label: 'Block Wars · Coming Soon' },
     ],
   },
