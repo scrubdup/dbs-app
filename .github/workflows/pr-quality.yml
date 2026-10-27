@@ -1,0 +1,29 @@
+name: PIKK Pull Request Quality Gate
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Test and build without publishing
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Run regression and Party Line tests
+        run: npm test
+      - name: Build existing PIKK app
+        run: npm run build
+        env:
+          VITE_BASE: /pikk-app/

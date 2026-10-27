@@ -3869,3 +3869,21 @@ input:focus, select:focus, textarea:focus {
 .pikk-create-options a{display:flex;flex-direction:column;gap:5px;padding:16px 10px;border-radius:13px;border:1px solid #36405d;background:#211d2a;color:#fff;text-decoration:none;font-size:14px;font-weight:800}
 .pikk-create-options a small{color:#aaaec1;font-size:11px;font-weight:500}
 .tabbar.tabbar-reshaped.tabbar-fit7 a.tab-primary .tab-ico svg{width:26px;height:26px}
+
+
+/* Party Line preview lives inside Community, not Connect. Disabled until backend QA. */
+.party-line-preview {
+  margin: 12px 0 16px;
+  padding: clamp(12px, 3vw, 18px);
+  border: 1px solid rgba(58, 215, 255, .24);
+  border-radius: 16px;
+  background: linear-gradient(145deg, rgba(24, 30, 46, .95), rgba(13, 13, 19, .96));
+}
+.party-line-preview-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.party-line-role-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; margin-top: 12px; }
+.party-line-role-grid > div { border: 1px solid var(--line); border-radius: 12px; padding: 11px; background: rgba(255,255,255,.025); }
+.party-line-role-grid strong { display: block; font-size: 13px; }
+.party-line-role-grid small { display: block; margin-top: 3px; color: var(--mut); font-size: 11px; }
+@media (max-width: 370px) {
+  .party-line-role-grid { grid-template-columns: 1fr; }
+}

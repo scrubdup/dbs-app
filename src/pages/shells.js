@@ -383,6 +383,14 @@ const LOUNGE_CHANNELS = [
     chip: 'Public',
   },
   {
+    id: 'party-line',
+    cat: 'VOICE / LISTENING',
+    hash: '#party-line',
+    name: 'Party Line',
+    blurb: 'Group voice hangout + room text chat · separate from Connect video',
+    chip: 'Voice',
+  },
+  {
     id: 'listening',
     cat: 'VOICE / LISTENING',
     hash: '#listening-rooms',
@@ -424,6 +432,9 @@ const LOUNGE_DEMO_MSGS = {
   conversation: [
     { who: 'DEMO', text: 'Drop takes on new releases here once Phase 2 chat ships.', tag: 'DEMO' },
   ],
+  'party-line': [
+    { who: 'PIKK · System', text: 'Party Line text chat will appear alongside voice. Not connected yet.', tag: 'DEMO' },
+  ],
   listening: [
     { who: 'DEMO', text: 'Listening parties will sync reactions here — preview only.', tag: 'DEMO' },
   ],
@@ -458,6 +469,25 @@ function loungeChannelPane(ch) {
       </div>`
     )
     .join('');
+  const partyLinePreview = ch.id === 'party-line' ? `
+    <section class="party-line-preview" aria-label="Party Line preview">
+      <div class="party-line-preview-head">
+        <strong>🎙 Party Line · Voice Room</strong>
+        <span class="chip">NOT LIVE · TEST MODE</span>
+      </div>
+      <p class="muted">Drop into a group voice call, listen quietly, or request the mic. Keep the room chat open while talking. This is a preview, not a live call.</p>
+      <div class="party-line-role-grid" aria-label="Planned voice roles">
+        <div><strong>Host</strong><small>Manage speakers, invites, mute and remove</small></div>
+        <div><strong>Speakers</strong><small>Talk after permission and microphone consent</small></div>
+        <div><strong>Listeners</strong><small>Join muted and request to speak</small></div>
+        <div><strong>Room chat</strong><small>Text messages beside the voice conversation</small></div>
+      </div>
+      <div class="row wrap" style="margin-top:12px">
+        <button type="button" class="btn primary" disabled aria-label="Join Party Line unavailable">Join voice · Coming Soon</button>
+        <button type="button" class="btn ghost" disabled>Request mic · Coming Soon</button>
+      </div>
+      <p class="muted" style="font-size:12px;margin:10px 0 0">Public and invite-only rooms are planned. Verified 18+ accounts, secure multi-user signaling, chat storage, reporting and moderation must pass tests before activation.</p>
+    </section>` : '';
   return `<div class="lounge-pane" data-pane="${esc(ch.id)}" ${ch.id === 'dbs-lounge' ? '' : 'hidden'}>
     <header class="lounge-pane-head">
       <div>
@@ -471,6 +501,7 @@ function loungeChannelPane(ch) {
       <span class="chip">TEST MODE</span>
       <p>Live chat, presence, and real member lists aren’t online yet — this is Discord-inspired chrome for PIKK Lounge only.</p>
     </div>
+    ${partyLinePreview}
     <div class="lounge-msgs" aria-label="Demo messages">${msgHtml}</div>
     <div class="lounge-compose">
       <input type="text" disabled placeholder="Message #${esc(ch.name.toLowerCase().replace(/\s+/g, '-'))} · Phase 2" aria-label="Message composer disabled"/>
