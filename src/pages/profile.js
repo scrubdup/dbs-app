@@ -111,6 +111,12 @@ export function renderProfile(route) {
     return shellPage(
       'Profile',
       `
+      <section class="pikk-profile-guest-hero" aria-label="PIKK profile introduction">
+        <p class="kicker">PIKK PROFILE</p>
+        <h2>Your world, your community.</h2>
+        <p>Discover music, posts, creator communities and more through one PIKK account.</p>
+        <span class="chip">TEST MODE · browser-local demo accounts only</span>
+      </section>
       <div class="card">
         <p class="kicker">PIKK account</p>
         <h3>Sign in · local demo</h3>
@@ -141,6 +147,18 @@ export function renderProfile(route) {
   const following = listFollowing(user.id);
   const m = user.memberships || {};
   const body = `
+    <section class="pikk-profile-cover" aria-label="Your PIKK profile overview">
+      <div class="pikk-profile-cover-inner">
+        <span class="pikk-profile-cover-kicker">PIKK PROFILE · TEST MODE</span>
+        ${avatarHtml(user)}
+        <h2>${esc(user.username)}</h2>
+        <p>${esc(user.bio || 'Your creative home on PIKK')}</p>
+        <nav class="pikk-profile-shortcuts" aria-label="Profile shortcuts">
+          <a href="#/posts">Posts</a><a href="#/messages">Messages</a>
+          <a href="#/music">Music</a><a href="#/profile-shop">Profile Shop</a>
+        </nav>
+      </div>
+    </section>
     <div class="card">
       <div class="profile-hero">
         ${avatarHtml(user)}
