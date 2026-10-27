@@ -150,6 +150,7 @@ function initMiniPlayer() {
 function hideSplash() {
   const splash = document.getElementById('splash');
   if (!splash) return;
+  if (splash.classList.contains('hide')) return;
   splash.classList.add('hide');
   markSplash();
   setTimeout(() => splash.remove(), 500);
@@ -173,12 +174,19 @@ function boot() {
   onRoute(render);
   startRouter();
 
-  // Splash: dismiss after assets ready (short, not artificial long delay)
-  const ready = () => hideSplash();
-  if (document.readyState === 'complete') setTimeout(ready, 600);
-  else window.addEventListener('load', () => setTimeout(ready, 600));
-  // Safety max
-  setTimeout(ready, 2500);
+  // PIKK startup: play approved animation once, then reveal the existing app.
+  // The safety timeout also handles autoplay restrictions or missing video assets.
+  const video = document.getElementById('pikkStartupVideo');
+  if (video) {
+    video.addEventListener('ended', hideSplash, { once: true });
+    video.addEventListener('error', hideSplash, { once: true });
+    const play = () => video.play().catch(hideSplash);
+    if (document.readyState === 'complete') play();
+    else window.addEventListener('load', play, { once: true });
+  } else {
+    hideSplash();
+  }
+  setTimeout(hideSplash, 3500);
 }
 
 boot();
