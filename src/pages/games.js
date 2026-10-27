@@ -1,31 +1,32 @@
 import { shellPage, esc } from '../ui.js';
-
-const GAMES = [
-  ['PIKK Poker', 'Social poker with virtual play chips'],
-  ['PIKK Blackjack', 'Social blackjack with virtual play chips'],
-  ['PIKK Slots', 'Entertainment-only slots with virtual play chips'],
-  ['PIKK Clash', 'Original match-puzzle and kingdom-building'],
-  ['PIKK Knockout', 'Original physics-based puzzle action'],
-  ['PIKK Spades', 'Partnership card game and private tables'],
-  ['PIKK Dominoes', 'Private tables, selectable rules and tournaments'],
-  ['PIKK Chess', 'Friend matches, clocks and rankings'],
-  ['PIKK Speed', 'Fast-paced two-player shedding card game'],
-];
+import { PIKK_GAMES } from '../games/arcade-catalog.js';
 
 export function renderGames() {
   return shellPage('PIKK Arcade', `
-    <div class="card">
-      <h2>9 games are coming to PIKK</h2>
-      <p class="muted">These are previews, not playable games. No real-money gambling, winnings, cash-out, purchases or chip redemption are available.</p>
-    </div>
-    <div class="grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px">
-      ${GAMES.map(([name, description]) => `
-        <article class="card">
-          <span class="chip">Coming Soon</span>
-          <h3>${esc(name)}</h3>
-          <p class="muted">${esc(description)}</p>
+    <section class="pikk-arcade-intro card">
+      <div class="pikk-arcade-heading"><div>
+        <p class="kicker">Play · Compete · Hang out</p>
+        <h2>PIKK <span>ARCADE</span></h2>
+        <p>All 15 approved games in one place. Choose a title to see its preview as development continues.</p>
+      </div><span class="pikk-arcade-icon" aria-hidden="true">🎮</span></div>
+      <p class="pikk-arcade-disclosure">ALL GAMES COMING SOON · Gallery previews, not playable releases. Play Chips have no cash value or cash-out.</p>
+    </section>
+    <div class="pikk-arcade-grid">
+      ${PIKK_GAMES.map((game, index) => `
+        <article class="pikk-arcade-card pikk-game-${esc(game.theme)}">
+          <div class="pikk-arcade-art" aria-label="${esc(game.name)} preview artwork">
+            ${game.artwork ? `<img src="${esc(game.artwork)}" alt="Block Wars fighter preview" loading="lazy" decoding="async"/>` : `<span class="pikk-arcade-symbol" aria-hidden="true">${game.icon}</span>`}
+            <span class="pikk-arcade-number">${index+1}</span>
+            <span class="pikk-arcade-soon">Coming Soon</span>
+          </div>
+          <div class="pikk-arcade-copy">
+            <h3>${esc(game.name)}</h3>
+            <span class="pikk-arcade-players">♙ ${esc(game.players)} ${game.players==='1'?'Player':'Players'}</span>
+            <p>${esc(game.description)}</p>
+            ${game.href ? `<a class="pikk-arcade-action" href="${esc(game.href)}">View preview →</a>` : `<span class="pikk-arcade-action" aria-label="${esc(game.name)} coming soon">Coming Soon</span>`}
+          </div>
         </article>`).join('')}
     </div>
-    <div class="card"><a href="#/blockwars">Block Wars development preview</a></div>
-  `, { lead: 'Original PIKK games · previews only' });
+    <p class="muted" style="font-size:12px;margin-top:16px">Game art is a temporary themed preview except for the existing Block Wars still. Approved custom game images are still being integrated; no gambling or real-money prizes are available.</p>
+  `, { lead: 'Fifteen upcoming games · mobile-first catalog · previews only' });
 }
