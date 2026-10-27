@@ -215,15 +215,43 @@ export function renderMessages() {
 
 export function renderShop() {
   return shellPage(
-    'Profile Shop',
-    `<div class="shop-concept"><img src="/design/DBS_Profile_Shop_Concept.png" alt="Profile Shop concept" /></div>
-     <div class="card">
-       <p class="muted">Digital cosmetics only (frames, effects, banners, name styles, badges). Separate from Foreign X-Change physical merch.</p>
-       <p class="muted">Intro pricing targets $2.99–$14.99 · bundles $14.99–$24.99. Live preview before purchase.</p>
-       <button class="btn primary" disabled>Browse items · coming soon</button>
-     </div>`,
-    { lead: 'Original DBS digital cosmetics.', ...phase(2) }
+    'PIKK Shop',
+    `<div class="shop-nav" aria-label="Shop sections">
+      <a class="on" href="#/shop">Discover</a>
+      <a href="#/merch">Categories</a>
+      <a href="#/merch">Shop the Look</a>
+      <a href="#/merch">Collections</a>
+      <a href="#/live">Live Shopping</a>
+      <a href="#/merch">Deals</a>
+      <a href="#/signup">Sell</a>
+      <a href="#/shop-orders">Orders</a>
+    </div>
+    <div class="card"><h3>Discover</h3>
+      <p class="muted">Explore creators, merchandise, and inspiration. Marketplace checkout and seller accounts are still in development.</p>
+      <div class="section-swipe">
+        <a class="preview-card" href="#/merch"><strong>Foreign X-Change</strong><span class="muted">Browse available merch</span></a>
+        <a class="preview-card" href="#/profile-shop"><strong>Profile Style</strong><span class="muted">Digital looks · preview</span></a>
+        <a class="preview-card" href="#/live"><strong>Live Shopping</strong><span class="muted">Not live yet</span></a>
+      </div>
+    </div>
+    <div class="card"><h3>Shop the Look</h3>
+      <p class="muted">Curated looks and inspiration will appear here when creator and seller listings are connected.</p>
+      <a class="btn" href="#/merch">Browse merchandise</a>
+    </div>`,
+    { lead: 'Discover · Categories · Shop the Look · Collections · Live Shopping' }
   );
+}
+
+export function renderShopOrders() {
+  return shellPage('Shop Orders',
+    '<div class="card"><h3>No orders yet</h3><p class="muted">In-app checkout and order tracking are not available yet. External merchandise orders are handled by the seller.</p><a class="btn" href="#/shop">Back to Shop</a></div>',
+    { lead: 'Your PIKK purchases' });
+}
+
+export function renderProfileShop() {
+  return shellPage('Profile Shop',
+    '<div class="shop-concept"><img src="/design/DBS_Profile_Shop_Concept.png" alt="Profile Shop concept" /></div><div class="card"><p class="muted">Digital cosmetics and profile styles are planned. In-app purchases are not active yet.</p><a class="btn" href="#/shop">Back to Shop</a></div>',
+    { lead: 'Digital profile customization · preview only' });
 }
 
 export function renderGiftBattles() {
