@@ -6,7 +6,7 @@ const connect = readFileSync(new URL('../src/pages/connect.js', import.meta.url)
 test('PIKK Connect has distinct Dating and Random Chat choices', () => {
   assert.match(connect, /Choose your connection/);
   assert.match(connect, /href="#\/dating"/);
-  assert.match(connect, /href="#connect-random-chat"/);
+  assert.match(connect, /href="#\/connect#connect-random-chat"/);
   assert.match(connect, /Dating requires mutual interest/);
 });
 test('Random Chat remains gated, and no camera starts automatically', () => {
