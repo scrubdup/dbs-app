@@ -21,3 +21,18 @@ test('Create menu, canonical logo and persistent player remain', () => {
   assert.match(html, /aria-label="PIKK Home"/);
   assert.match(html, /id="dbs-sticky-player"/);
 });
+
+test('Music category deep links point to real sections and are scrolled into view', () => {
+  const music = readFileSync(new URL('../src/pages/music.js', import.meta.url), 'utf8');
+  for (const id of ['stream-everywhere', 'youtube-mixes']) {
+    assert.ok(music.includes('id="' + id + '"'), id + ' must exist in Music view');
+    assert.ok(main.includes("#/music#" + id), id + ' must be linked from Music menu');
+  }
+  assert.match(main, /route\.path === '\/music' && \['stream-everywhere', 'youtube-mixes'\]\.includes\(route\.elementId\)/);
+  assert.match(main, /document\.getElementById\(targetId\)\?\.scrollIntoView/);
+});
+test('Unimplemented Beat marketplace and Upload Music cannot masquerade as working links', () => {
+  assert.match(main, /class="pikk-menu-unavailable" aria-disabled="true">◉ Beats/);
+  assert.match(main, /class="pikk-menu-unavailable" aria-disabled="true">⬆ Upload Music/);
+  assert.doesNotMatch(main, /<a href="#\/music">⬆ Upload Music/);
+});
