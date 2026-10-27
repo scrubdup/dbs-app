@@ -96,6 +96,47 @@ export function renderConnect() {
   return shellPage(
     'PIKK Connect',
     `<div class="connect-monkey" id="connectMonkey">
+      <section class="pikk-connect-hero" aria-label="Find your community on PIKK">
+        <div class="pikk-connect-hero-copy">
+          <p class="kicker">PIKK CONNECT · PEOPLE &amp; COMMUNITIES</p>
+          <h2>Real connections start here.</h2>
+          <p>Find your people, join conversations, and explore the PIKK community. Real-time video matching remains unavailable until safety and infrastructure are ready.</p>
+          <div class="pikk-connect-hero-actions">
+            <a class="btn primary" href="#/community">Explore communities</a>
+            <a class="btn ghost" href="#/messages">Messages</a>
+          </div>
+        </div>
+        <div class="pikk-connect-hero-art" aria-hidden="true">
+          <span class="pikk-connect-hero-person">♧</span>
+          <span class="pikk-connect-hero-orbit orbit-one">✦</span>
+          <span class="pikk-connect-hero-orbit orbit-two">◉</span>
+          <span class="pikk-connect-hero-orbit orbit-three">✧</span>
+        </div>
+      </section>
+      <nav class="pikk-connect-discover-nav" aria-label="Connect sections">
+        <a href="#/community"><span aria-hidden="true">♧</span> Communities</a>
+        <a href="#/messages"><span aria-hidden="true">✉</span> Messages</a>
+        <a href="#/connect#connect-random-chat"><span aria-hidden="true">◉</span> Random Chat</a>
+        <a href="#/connect#connect-multistream"><span aria-hidden="true">▹</span> Broadcasting</a>
+        <a href="#/dating"><span aria-hidden="true">♡</span> Dating</a>
+      </nav>
+      <section class="pikk-connect-feature-grid" aria-label="Discover ways to connect">
+        <a class="pikk-connect-feature pikk-connect-feature-community" href="#/community">
+          <span class="pikk-connect-feature-icon" aria-hidden="true">♧</span>
+          <span class="pikk-connect-feature-copy"><strong>Communities</strong><small>Find groups and discussions</small></span>
+          <span class="pikk-connect-feature-arrow" aria-hidden="true">↗</span>
+        </a>
+        <a class="pikk-connect-feature pikk-connect-feature-messages" href="#/messages">
+          <span class="pikk-connect-feature-icon" aria-hidden="true">✉</span>
+          <span class="pikk-connect-feature-copy"><strong>Messages</strong><small>Open your conversations</small></span>
+          <span class="pikk-connect-feature-arrow" aria-hidden="true">↗</span>
+        </a>
+        <a class="pikk-connect-feature pikk-connect-feature-live" href="#/live">
+          <span class="pikk-connect-feature-icon" aria-hidden="true">●</span>
+          <span class="pikk-connect-feature-copy"><strong>PIKK Live</strong><small>Explore live creators · TEST MODE</small></span>
+          <span class="pikk-connect-feature-arrow" aria-hidden="true">↗</span>
+        </a>
+      </section>
       <section class="card" aria-label="PIKK Connect experiences">
         <h2 style="margin:0 0 8px">Choose your connection</h2>
         <p class="muted small">One PIKK account, two separate experiences. Neither starts your camera automatically.</p>

@@ -4313,3 +4313,60 @@ input:focus, select:focus, textarea:focus {
  .pikk-music-showcase.card{grid-template-columns:1fr}
  .pikk-music-showcase-art{width:125px;justify-self:start}
 }
+
+
+/* PIKK Connect: actual feature-discovery layout, not sample profiles or fake video calls. */
+.pikk-connect-hero {
+  display:grid;grid-template-columns:minmax(0,1.3fr) minmax(130px,.7fr);
+  gap:18px;align-items:center;overflow:hidden;
+  position:relative;isolation:isolate;
+  background:radial-gradient(ellipse at 94% 15%,rgba(232,45,120,.22),transparent 55%),
+    radial-gradient(ellipse at 2% 95%,rgba(47,107,255,.27),transparent 57%),#141422;
+  border:1px solid #52518b;border-radius:22px;
+  padding:clamp(17px,3vw,28px);margin:0 0 14px;
+  box-shadow:0 10px 30px #0008,inset 0 1px 0 #ffffff16;
+}
+.pikk-connect-hero .kicker{font-size:10px;font-weight:900;letter-spacing:.14em;color:#ffa5d8;margin:0 0 8px}
+.pikk-connect-hero h2{font-size:clamp(23px,4.8vw,39px);line-height:1.09;letter-spacing:-.04em;margin:0 0 12px}
+.pikk-connect-hero p:not(.kicker){color:#c8c5d9;font-size:12px;line-height:1.6;max-width:560px}
+.pikk-connect-hero-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:16px}
+.pikk-connect-hero-art{position:relative;display:grid;place-items:center;justify-self:center;aspect-ratio:1;width:min(100%,220px);border-radius:50%;background:radial-gradient(circle at 48% 44%,#7e318d5e,#242650a9 45%,#121322 70%);border:2px solid #6266cf;box-shadow:0 0 0 8px #4b338031,0 0 38px #365ec448}
+.pikk-connect-hero-person{font-size:clamp(55px,10vw,110px);color:#fff;filter:drop-shadow(0 0 12px #d443be)}
+.pikk-connect-hero-orbit{position:absolute;display:grid;place-items:center;border-radius:50%;background:linear-gradient(130deg,#ff3177,#7046d3);border:1px solid #df9ae8;color:#fff;font-size:20px;width:46px;height:46px;box-shadow:0 0 15px #e335864c}
+.pikk-connect-hero-orbit.orbit-one{left:-10px;top:18%}
+.pikk-connect-hero-orbit.orbit-two{right:-7px;top:5%}
+.pikk-connect-hero-orbit.orbit-three{right:2%;bottom:2%}
+.pikk-connect-discover-nav{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:0 0 14px;padding:3px 1px 8px}
+.pikk-connect-discover-nav::-webkit-scrollbar{display:none}
+.pikk-connect-discover-nav a{flex:1 0 auto;min-width:112px;padding:10px;border-radius:999px;text-align:center;white-space:nowrap;font-size:11px;font-weight:850;color:#f1edfc;border:1px solid #4a4968;background:#252237}
+.pikk-connect-discover-nav a:hover,.pikk-connect-discover-nav a:focus-visible{background:#33335a;border-color:#8696ea}
+.pikk-connect-discover-nav a span{font-size:15px;color:#ff87c8;margin-right:3px}
+.pikk-connect-feature-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px;margin:0 0 17px}
+.pikk-connect-feature{min-width:0;min-height:118px;display:flex;align-items:flex-start;flex-direction:column;gap:10px;padding:15px;border-radius:17px;position:relative;border:1px solid #404d7a;background:linear-gradient(145deg,#222541,#161726);box-shadow:0 6px 22px #0006}
+.pikk-connect-feature-community{background:linear-gradient(145deg,#322047,#171a31)}
+.pikk-connect-feature-messages{background:linear-gradient(145deg,#1e3355,#18192e)}
+.pikk-connect-feature-live{background:linear-gradient(145deg,#472039,#17192d)}
+.pikk-connect-feature-icon{display:grid;place-items:center;width:41px;height:41px;border:1px solid #8281d6;border-radius:12px;font-size:24px;color:#fff;background:#603a8777}
+.pikk-connect-feature-copy{display:flex;flex-direction:column;gap:4px}
+.pikk-connect-feature-copy strong{font-size:15px;color:#fff}
+.pikk-connect-feature-copy small{font-size:11px;color:#c9c7db;line-height:1.4}
+.pikk-connect-feature-arrow{position:absolute;right:14px;top:12px;font-size:17px;color:#a9b4e8}
+.connect-monkey .connect-stage,.connect-monkey .connect-multistream,.connect-monkey .connect-gates{border:1px solid #454868;border-radius:19px;background:linear-gradient(140deg,#211e32,#151620);box-shadow:0 8px 24px #0005}
+.connect-monkey .connect-tile{border-radius:16px;overflow:hidden}
+.pikk-connect-feature:focus-visible,.pikk-connect-hero-actions a:focus-visible{outline:2px solid #9fb5ff;outline-offset:3px}
+@media(max-width:560px){
+ .pikk-connect-hero{grid-template-columns:minmax(0,1fr) 90px;gap:8px;padding:13px;border-radius:17px}
+ .pikk-connect-hero h2{font-size:24px}
+ .pikk-connect-hero .btn{font-size:11px;padding:8px 10px}
+ .pikk-connect-hero-art{width:82px}
+ .pikk-connect-hero-person{font-size:46px}
+ .pikk-connect-hero-orbit{width:25px;height:25px;font-size:12px}
+ .pikk-connect-feature-grid{gap:7px}
+ .pikk-connect-feature{padding:10px;min-height:112px;border-radius:12px}
+ .pikk-connect-feature-icon{width:35px;height:35px;font-size:19px}
+ .pikk-connect-feature-copy strong{font-size:12px}
+ .pikk-connect-feature-copy small{font-size:10px}
+ .pikk-connect-feature-arrow{font-size:13px;top:9px;right:8px}
+}
+@media(max-width:350px){.pikk-connect-hero{grid-template-columns:1fr}.pikk-connect-hero-art{display:none}.pikk-connect-feature-grid{grid-template-columns:1fr}.pikk-connect-feature{min-height:80px}}
+@media(prefers-reduced-motion:reduce){.pikk-connect-feature{transition:none}}
