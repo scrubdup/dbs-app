@@ -19,6 +19,7 @@ import { markActiveTab } from './tabbar-state.js';
 import { toggleMusicMenu, closeMusicMenu } from './music-menu.js';
 
 import { renderHome, bindHome } from './pages/home.js';
+import { renderUpdates, bindUpdates } from './pages/updates.js';
 import { renderAdmin, bindAdmin } from './pages/admin.js';
 import { renderPosts, bindPosts } from './pages/posts.js';
 import { renderMusic, bindMusic } from './pages/music.js';
@@ -68,6 +69,7 @@ import {
 
 const ROUTES = {
   '/home': { render: renderHome, bind: bindHome },
+  '/updates': { render: renderUpdates, bind: bindUpdates },
   '/posts': { render: renderPosts, bind: bindPosts },
   '/music': { render: renderMusic, bind: bindMusic },
   '/vault': { render: renderMusic, bind: bindMusic },
@@ -266,7 +268,7 @@ function buildDrawer() {
     );
   }).join('');
 
-  el.innerHTML = `<h2>PIKK Network</h2>${groupsHtml}`;
+  el.innerHTML = `<h2>PIKK Network</h2>${groupsHtml}<a class="drawer-direct" href="#/updates">What's New · App Updates</a>`;
 }
 
 function setDrawer(open) {
