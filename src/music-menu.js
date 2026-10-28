@@ -1,3 +1,5 @@
+import { ICONS } from './ui.js';
+
 // Owner-approved Music tab menu. All destinations remain inside existing Music route.
 // Unavailable creator actions are explicitly described as unavailable in TEST MODE.
 export const MUSIC_MENU_ITEMS = Object.freeze([
@@ -7,6 +9,10 @@ export const MUSIC_MENU_ITEMS = Object.freeze([
   { label: 'Playlists', href: '#/music?view=playlists', detail: 'Verified YouTube playlists', icon: '▤' },
   { label: 'Upload Music', href: '#/music?view=upload', detail: 'Creator uploads coming later', icon: '⇧' },
 ]);
+
+const MUSIC_ICON_KEYS = Object.freeze({
+  Songs: 'music', Albums: 'music', Beats: 'music', Playlists: 'videos', 'Upload Music': 'music',
+});
 
 export function closeMusicMenu(restoreFocus = false) {
   const panel = document.getElementById('pikkMusicMenu');
@@ -24,12 +30,12 @@ export function ensureMusicMenu() {
   panel.id = 'pikkMusicMenu';
   panel.className = 'pikk-create-overlay';
   panel.hidden = true;
-  panel.innerHTML = `<div class="pikk-create-sheet pikk-unified-tab-sheet" role="dialog" aria-modal="true" aria-labelledby="pikkMusicMenuTitle">
+  panel.innerHTML = `<div class="pikk-create-sheet" role="dialog" aria-modal="true" aria-labelledby="pikkMusicMenuTitle">
     <div class="pikk-create-head"><strong id="pikkMusicMenuTitle">Music on PIKK</strong><button type="button" class="btn ghost" data-music-close aria-label="Close music menu">✕</button></div>
-    <div class="pikk-create-options">
-      ${MUSIC_MENU_ITEMS.map((item) => `<a href="${item.href}"><span class="pikk-unified-icon" aria-hidden="true">${item.icon}</span><strong>${item.label}</strong><small>${item.detail}</small></a>`).join('')}
+    <div class="pikk-create-options pikk-create-grid">
+      ${MUSIC_MENU_ITEMS.map((item) => `<a class="pikk-create-tile" href="${item.href}"><span class="pikk-menu-icon" aria-hidden="true">${ICONS[MUSIC_ICON_KEYS[item.label] || "music"]}</span><strong class="pikk-menu-title">${item.label}</strong><small>${item.detail}</small></a>`).join('')}
     </div>
-    <button type="button" class="pikk-unified-cancel" data-music-close>Cancel</button>
+    <button type="button" class="pikk-menu-cancel" data-music-close>Cancel</button>
     <p class="muted" style="font-size:11px;margin:10px 0 0">TEST MODE · Beat selling and music uploads are not available yet</p>
   </div>`;
   document.body.appendChild(panel);
