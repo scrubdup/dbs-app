@@ -21,6 +21,8 @@ test('premium Dating layout works at mobile widths and keyboard focus',()=>{
   for(const selector of ['.pikk-dating-hero','.pikk-dating-tabs','.pikk-dating-experience-grid','.pikk-dating-experience:focus-visible'])assert.ok(css.includes(selector),selector);
   assert.match(css,/@media\(max-width:520px\)/);
   assert.match(css,/@media\(max-width:360px\)/);
+  assert.match(css,/@media\(min-width:900px\)/);
+  assert.match(css,/#app:has\(\.pikk-dating-hero\)/);
 });
 test('existing app shell, player, and all seven navigation tabs are preserved',()=>{
   assert.equal(TABBAR.length,7);
