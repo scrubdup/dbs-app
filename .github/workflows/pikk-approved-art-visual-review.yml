@@ -7,6 +7,7 @@ on:
       - 'src/games/arcade-catalog.js'
       - 'src/pages/games.js'
       - 'src/pages/home.js'
+      - 'scripts/capture-arcade-visuals.mjs'
       - '.github/workflows/pikk-approved-art-visual-review.yml'
 permissions:
   contents: read
@@ -27,8 +28,10 @@ jobs:
         run: npm run build
         env:
           VITE_BASE: /pikk-app/
-      - name: Install Chromium for screenshot review
-        run: npx --yes playwright@1.58.2 install --with-deps chromium
+      - name: Install browser tools for screenshot review
+        run: |
+          npm install --no-save playwright@1.58.2
+          npx playwright install --with-deps chromium
       - name: Start preview
         run: |
           npm run preview -- --host 127.0.0.1 --port 4173 > /tmp/pikk-preview.log 2>&1 &
@@ -38,12 +41,8 @@ jobs:
           done
           cat /tmp/pikk-preview.log
           exit 1
-      - name: Capture mobile and desktop pages after splash
-        run: |
-          mkdir -p visual-evidence
-          npx --yes playwright@1.58.2 screenshot --browser chromium --viewport-size="390,844" --wait-for-timeout=5000 --full-page "http://127.0.0.1:4173/pikk-app/#/games" visual-evidence/arcade-mobile.png
-          npx --yes playwright@1.58.2 screenshot --browser chromium --viewport-size="1440,900" --wait-for-timeout=5000 --full-page "http://127.0.0.1:4173/pikk-app/#/games" visual-evidence/arcade-desktop.png
-          npx --yes playwright@1.58.2 screenshot --browser chromium --viewport-size="390,844" --wait-for-timeout=5000 "http://127.0.0.1:4173/pikk-app/#/home" visual-evidence/home-mobile.png
+      - name: Capture and verify mobile/desktop Arcade and Home
+        run: node scripts/capture-arcade-visuals.mjs
       - name: Save screenshot evidence (not a deployment)
         if: always()
         uses: actions/upload-artifact@v4
