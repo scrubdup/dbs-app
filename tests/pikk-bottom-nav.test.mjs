@@ -13,7 +13,7 @@ test('Create is the exact center of seven bottom navigation slots', () => {
   assert.equal(entries[3][2], 'Create');
   assert.equal(entries[3][1], '#/create');
   assert.match(entries[3][0], /primary: true/);
-  assert.deepEqual(entries.map(x => x[2]), ['Home', 'Music', 'Videos', 'Create', 'Connect', 'Dating', 'Shop']);
+  assert.deepEqual(entries.map(x => x[2]), ['Music', 'Videos', 'Connect', 'Create', 'Dating', 'Games', 'Shop']);
   assert.ok(!entries.some(x => x[2] === 'Profile'));
 });
 
