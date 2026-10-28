@@ -594,7 +594,7 @@ export const DRAWER_LINKS = DRAWER_GROUPS.flatMap((g) =>
  * Home is a real destination; Arcade remains in the drawer and Home showcase.
  * Create stays the raised center action; messages remain in the header. */
 export const TABBAR = [
-  { href: '#/games', label: 'Games', icon: 'games' },
+  { href: '#/games', label: 'Games', icon: 'game' },
   { href: '#/music', label: 'Music', icon: 'music' },
   { href: '#/videos', label: 'Videos', icon: 'videos' },
   { href: '#/connect', label: 'Connect', icon: 'profile' },
