@@ -4680,3 +4680,14 @@ html body #tabbar.tabbar.tabbar-reshaped.tabbar-fit7 > a.tab-primary > span:last
   .pikk-shop-featured-product:first-child {grid-row:auto}
 }
 @media(prefers-reduced-motion:reduce) {.pikk-shop-featured-product {scroll-behavior:auto}}
+
+/* Shop uses the available desktop canvas and a compact, image-first header. */
+#app:has(.pikk-shop-real-hero) {max-width:1140px;padding-inline:clamp(12px,2.4vw,30px)}
+#app:has(.pikk-shop-real-hero) .page>.page-head {
+  position:absolute!important;width:1px;height:1px;overflow:hidden;
+  clip:rect(0,0,0,0);white-space:nowrap;padding:0;margin:-1px;border:0
+}
+.pikk-shop-catalog label[for="pikkShopSearch"] {display:block;margin:8px 0 7px;font-size:12px;font-weight:800;color:#e5ddf4}
+#pikkShopSearch {display:block;width:100%;min-height:43px;padding:11px 15px;border-radius:12px;border:1px solid #595078;background:#151521;color:#fff;font:inherit}
+#pikkShopSearch:focus-visible {outline:2px solid #ef77d1;outline-offset:2px}
+#pikkShopSearch::placeholder {color:#a9a3bc}
