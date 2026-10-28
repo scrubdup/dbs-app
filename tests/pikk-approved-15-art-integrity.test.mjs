@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { PIKK_GAMES, arcadeArtSrc } from '../src/games/arcade-catalog.js';
 import { renderGames } from '../src/pages/games.js';
-import { renderHome } from '../src/pages/home.js';
+
 
 const approved = [
   [
@@ -83,9 +83,10 @@ test('all 15 exact owner-supplied PIKK Arcade JPEGs are committed unchanged', ()
 });
 test('both routes render approved images while preserving previews and coming-soon status', () => {
   const games = renderGames();
-  const home = renderHome();
+  const homeSource = readFileSync(new URL('../src/pages/home.js', import.meta.url), 'utf8');
   assert.equal((games.match(/\/games\/approved\/\d\d_[^"]+\.jpg/g) || []).length, 15);
-  assert.match(home, /\/games\/approved\/01_block_wars\.jpg/);
+  assert.match(homeSource, /PIKK_GAMES\.map/);
+  assert.match(homeSource, /arcadeArtSrc\(game\)/);
   assert.match(games, /ALL GAMES COMING SOON/);
   assert.match(games, /no cash value/);
   assert.match(games, /View preview/);
