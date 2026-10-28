@@ -45,6 +45,7 @@ import { renderConnect, bindConnect } from './pages/connect.js';
 import { renderShorts, bindShorts } from './pages/shorts.js';
 import { renderBlockWars, bindBlockWars } from './pages/blockwars.js';
 import { renderGames, bindGames } from './pages/games.js';
+import { renderSupport, bindSupport } from './pages/support.js';
 import { renderDating } from './pages/dating.js';
 import { renderRoastArena, bindRoastArena } from './pages/roast-arena.js';
 import {
@@ -117,6 +118,7 @@ const ROUTES = {
   '/connect': { render: renderConnect, bind: bindConnect },
   '/blockwars': { render: renderBlockWars, bind: bindBlockWars },
   '/games': { render: renderGames, bind: bindGames },
+  '/support': { render: renderSupport, bind: bindSupport },
   '/dating': { render: renderDating },
   '/roast-arena': { render: renderRoastArena, bind: bindRoastArena },
 };
@@ -269,7 +271,7 @@ function buildDrawer() {
     );
   }).join('');
 
-  el.innerHTML = `<h2>PIKK Network</h2>${groupsHtml}<a class="drawer-direct" href="#/updates">What's New · App Updates</a>`;
+  el.innerHTML = `<h2>PIKK Network</h2>${groupsHtml}<a class="drawer-direct" href="#/updates">What's New · App Updates</a><a class="drawer-direct" href="#/support">PIKK Support · Help &amp; Tickets</a>`;
 }
 
 function setDrawer(open) {
