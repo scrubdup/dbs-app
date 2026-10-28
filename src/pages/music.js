@@ -189,7 +189,7 @@ export function renderMusic(route = {}) {
           user
             ? owned
               ? `<span class="chip">In My Music</span>`
-              : `<button type="button" class="btn primary buy-track" data-id="${esc(t.id)}">Buy · demo</button>`
+              : `<button type="button" class="btn primary buy-track" data-id="${esc(t.id)}">Save preview · free demo</button>`
             : `<a class="btn" href="#/profile">Sign in</a>`
         }
       </div>`;
@@ -300,8 +300,57 @@ export function renderMusic(route = {}) {
       </div>
     </section>`;
 
+  const ownershipOffer = `
+    <section class="pikk-own-music" id="own-your-music" aria-label="Buy and permanently download music">
+      <div class="pikk-own-music-header">
+        <div>
+          <p class="kicker">PIKK MUSIC OWNERSHIP · COMING SOON</p>
+          <h2>Buy It. <span>Download It.</span> Keep It.</h2>
+          <p>Bring back buying a record. Purchase songs and albums once, download regular DRM-free audio files, and listen offline on your own compatible devices.</p>
+        </div>
+        <span class="pikk-own-disc" aria-hidden="true">♫</span>
+      </div>
+      <div class="pikk-own-prices" aria-label="Suggested music prices">
+        <div><strong>$1.29</strong><small>Single</small></div>
+        <div><strong>$1.99</strong><small>Exclusive</small></div>
+        <div><strong>$5.99</strong><small>EP</small></div>
+        <div><strong>$9.99</strong><small>Album</small></div>
+        <div><strong>$14.99</strong><small>Deluxe</small></div>
+        <div><strong>$19.99</strong><small>Collector</small></div>
+      </div>
+      <div class="pikk-own-footer">
+        <div><strong>Artists set their prices.</strong><p>Proposed 85% artist / 15% PIKK revenue split before processing, refunds, taxes and other applicable costs.</p></div>
+        <a class="btn primary" href="#/music#music-purchase-preview">Explore music purchases</a>
+      </div>
+      <p class="pikk-own-notice"><strong>PRELAUNCH CONCEPT — NOT FOR SALE.</strong> Real checkout, licensed downloadable MP3/FLAC files, purchase receipts, personal-use licenses and secure download delivery are not active. The existing My Music demo only marks covers owned locally and does not provide files. Offline files remain usable after membership ends; future account-based re-downloads depend on continued service availability.</p>
+    </section>`;
+
+  const artistProtection = `
+    <section class="pikk-rights card" id="rights-protection" aria-label="PIKK Rights and Protection">
+      <div class="pikk-rights-top">
+        <div>
+          <p class="kicker">ARTIST SERVICES · PLANNED</p>
+          <h2>PIKK Rights &amp; Protection <span aria-hidden="true">🛡</span></h2>
+          <p>Your Music. Your Rights. Your Revenue.</p>
+        </div>
+        <span class="chip">PRELAUNCH · NOT ACTIVE</span>
+      </div>
+      <p class="pikk-rights-intro">Artists keep their copyrights. PIKK plans tools to document ownership, find suspicious duplicates and guide authorized rights enforcement without taking ownership of music.</p>
+      <div class="pikk-rights-grid">
+        <article><strong>Rights Registry</strong><p>Store songwriter, master owner, producer, splits, licenses, permissions and supporting records.</p></article>
+        <article><strong>Audio Shield</strong><p>Planned audio fingerprint checks for copies, sped-up, slowed-down, pitch-shifted and clipped recordings. No scanner is running yet.</p></article>
+        <article><strong>Review &amp; Appeals</strong><p>Matching audio is not proof of infringement. Licensed beats, samples, collaborations and disputes require review before action.</p></article>
+        <article><strong>Outside PIKK</strong><p>Planned evidence collection and copyright claim support for YouTube, Spotify, Apple Music and distributors, subject to their own processes.</p></article>
+        <article><strong>Copyright Assistance</strong><p>Guide artists to official copyright registration. PIKK cannot grant government copyright registrations.</p></article>
+        <article><strong>Royalty Guidance</strong><p>Help explain performing rights, publishing and sound-recording royalties. PIKK is not a BMI replacement.</p></article>
+      </div>
+      <p class="pikk-rights-disclaimer"><strong>Planning notice:</strong> No copyright registration, royalties collection, third-party monitoring, automatic takedowns or Content ID access is provided today. DMCA compliance, authorized claims, rights verification and appeals must be implemented and legally reviewed before launch. Purchased DRM-free downloads can be copied; PIKK cannot guarantee piracy prevention.</p>
+    </section>`;
+
   const body = `
     ${musicHero}
+    ${ownershipOffer}
+    ${artistProtection}
     ${focusedViewCard}
     <div class="card">
       <h2>Upcoming Releases</h2>
@@ -354,9 +403,9 @@ export function renderMusic(route = {}) {
       <p class="muted" style="margin-top:12px;font-size:12px">Tidal / Amazon Music omitted until official links are verified. Admin can add more via streaming link fields.</p>
     </div>
 
-    <div class="card">
+    <div class="card" id="music-purchase-preview">
       <h2>My Music</h2>
-      <p class="muted">Purchases stay here even if membership ends.</p>
+      <p class="muted">Future completed purchases will stay in your PIKK library after membership ends; download your music files to keep them independently of PIKK. The items shown below are local TEST MODE previews, not purchases or licensed downloads.</p>
       ${
         myMusic.length
           ? `<div class="cover-row">${myMusic
@@ -374,8 +423,8 @@ export function renderMusic(route = {}) {
     </div>
 
     <div class="card">
-      <h2>Buy (demo)</h2>
-      <p class="muted">TEST MODE — no charges. Marks the cover as owned in My Music. Audio not available until release.</p>
+      <h2>Purchase previews · TEST MODE</h2>
+      <p class="muted">These buttons only save a cover to this browser’s My Music preview. No charge, real purchase, download or audio license is issued. The new permanent-download store is planned, not live yet.</p>
       <div style="display:flex;flex-direction:column;gap:10px">${shop}</div>
     </div>
 
@@ -434,7 +483,7 @@ export function bindMusic(root) {
       e.preventDefault();
       const r = purchaseTrack(btn.dataset.id);
       if (r?.error) return toast('Sign in required');
-      toast('Added to My Music (demo · no charge)');
+      toast('Saved preview only · no purchase or downloadable file');
       refresh('#/music');
     });
   });
