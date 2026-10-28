@@ -6,6 +6,7 @@
  * until ALL 15 image files have been verified and copied successfully.
  */
 import { stat, copyFile, mkdir, readFile, writeFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
 import { resolve, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -20,12 +21,33 @@ const names = [
   '10_pikk_blackjack.jpg','11_pikk_slots.jpg','12_pikk_speed.jpg',
   '13_pikk_spades.jpg','14_pikk_dominoes.jpg','15_pikk_chess.jpg'
 ];
+// SHA-256 fingerprints measured from the 15 owner-supplied approved crops.
+// A wrong or replaced image must fail validation rather than silently get installed.
+const approvedSHA256Prefixes = [
+  "b45e4bfe786d0da0",
+  "b80d624fc76f8d56",
+  "f8ec5597686ef294",
+  "79bc3110ebc41e5e",
+  "d278e0ee09096f3c",
+  "0ff1a1b6ab6c5095",
+  "6e02042e91199946",
+  "d9b9eb131b0ba2f8",
+  "29e645481a28221c",
+  "26d2b5b98e415afe",
+  "13f751fc184fcad7",
+  "18a357849241be99",
+  "7942aff366e7809e",
+  "3e3f550ad0500694",
+  "a5349c881dbf6948"
+];
 if (!process.argv[2]) throw new Error('Pass the extracted approved arcade picture folder as the first argument.');
-for (const name of names) {
+for (const [index, name] of names.entries()) {
   const f=join(source,name), st=await stat(f);
   if (!st.isFile() || st.size<2048) throw new Error('Missing or incomplete approved artwork: '+name);
   const bytes=await readFile(f);
   if (bytes[0]!==0xff || bytes[1]!==0xd8) throw new Error('Not a JPEG: '+name);
+  const sha256=createHash('sha256').update(bytes).digest('hex');
+  if (!sha256.startsWith(approvedSHA256Prefixes[index])) throw new Error('Wrong or altered approved picture: '+name);
 }
 const original=await readFile(catalogPath,'utf8');
 const lines=original.split('\n');
