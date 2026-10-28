@@ -9,12 +9,13 @@ test('PIKK tabbar has seven unique, navigable destinations', () => {
   assert.equal(new Set(TABBAR.map(tab => tab.href)).size, 7);
   assert.deepEqual(
     TABBAR.map(tab => tab.href),
-    ['#/home', '#/music', '#/videos', '#/create', '#/connect', '#/dating', '#/shop'],
+    ['#/music', '#/videos', '#/connect', '#/create', '#/dating', '#/games', '#/shop'],
     'Keep the exact owner-approved seven-tab order',
   );
   assert.equal(TABBAR.find(tab => tab.primary)?.href, '#/create');
   assert.ok(TABBAR.every(tab => tab.icon), 'Every tab has an icon');
-  assert.ok(!TABBAR.some(tab => tab.href === '#/games'), 'Arcade is reached from the drawer or Home');
+  assert.ok(TABBAR.some(tab => tab.href === '#/games'), 'Arcade must be directly accessible from bottom navigation');
+  assert.ok(!TABBAR.some(tab => tab.href === '#/home'), 'Home stays in the header, not the bottom navigation');
 });
 test('Dating and Arcade remain discoverable in the drawer', () => {
   const hrefs = DRAWER_GROUPS.flatMap(group => group.href ? [group.href] : (group.links || []).map(link => link.href));
