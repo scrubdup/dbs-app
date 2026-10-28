@@ -23,3 +23,11 @@ jobs:
         run: npm test
       - name: Compile app without deploying
         run: npm run build
+      - name: Upload Arcade preview build for visual inspection (no deploy)
+        if: github.event.pull_request.number == 89
+        uses: actions/upload-artifact@v4
+        with:
+          name: pikk-arcade-built-preview
+          path: dist/
+          retention-days: 3
+          if-no-files-found: error
