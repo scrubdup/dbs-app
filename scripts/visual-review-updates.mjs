@@ -26,7 +26,7 @@ for (const [name, width, height] of [['mobile', 390, 844], ['desktop', 1440, 900
   if (overflow > 3) throw new Error(name + ': horizontal overflow ' + overflow + 'px');
   await page.screenshot({ path: 'visual-review/updates-' + name + '.png', fullPage: true });
   await page.locator('.pikk-update-card a[href="#/messages"]').click();
-  await page.waitForURL(/#\\/messages$/, { timeout: 10000 });
+  await page.waitForURL(url => url.hash === '#/messages', { timeout: 10000 });
   await page.locator('#app h1').getByText('Messages', { exact: false }).waitFor({ state: 'visible', timeout: 10000 });
   if (errors.length) throw new Error(name + ': page errors: ' + errors.join('; '));
   await context.close();
