@@ -49,9 +49,9 @@ export function renderPikkShop() {
     `<li><span>${esc(category)}</span><span class="chip">Coming Soon</span></li>`
   ).join('');
   const spotlight = [
-    MERCH.find((item) => item.category === 'Jackets'),
-    MERCH.find((item) => item.category === 'Hats'),
-    MERCH.find((item) => item.category === 'Shirts'),
+    MERCH.find((item) => item.id === 'jacket-black') || MERCH.find((item) => item.category === 'Jackets'),
+    MERCH.find((item) => item.id === 'hat-716-orange') || MERCH.find((item) => item.category === 'Hats'),
+    MERCH.find((item) => item.id === 'tee-ptsd') || MERCH.find((item) => item.category === 'Shirts'),
   ].filter(Boolean);
   const spotlightHtml = spotlight.map((item) =>
     '<a class="pikk-shop-featured-product" href="' + esc(item.shopUrl) + '" target="_blank" rel="noopener noreferrer" aria-label="View ' + esc(item.name) + ' on Foreign X-Change">' +
