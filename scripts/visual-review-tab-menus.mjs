@@ -6,10 +6,10 @@ import { chromium } from 'playwright';
 // existing Create dialog's actual grid, outlined icons, tile and cancel CSS.
 // These are real browser interactions, not static string checks.
 const sections = [
+  ['create', 'pikkCreateMenu', 9],
   ['music', 'pikkMusicMenu', 5],
   ['videos', 'pikkVideosMenu', 4],
   ['connect', 'pikkConnectMenu', 5],
-  ['create', 'pikkCreateMenu', 9],
   ['dating', 'pikkDatingMenu', 4],
   ['games', 'pikkGamesMenu', 2],
   ['shop', 'pikkShopMenu', 4],
@@ -36,7 +36,7 @@ try {
     let createStyle;
     for (const [name, id, count] of sections) {
       await page.evaluate(() => { location.hash = '#/home'; });
-      await page.locator('#tabbar a[href="#/home"]').count(); // Home is NOT a bottom tab
+      assert.equal(await page.locator('#tabbar a[href="#/home"]').count(), 0, 'Home must not be in bottom nav');
       const trigger = page.locator('#tabbar a[href="#/' + name + '"]');
       await trigger.waitFor({ state: 'visible' });
       await trigger.click();
@@ -71,7 +71,7 @@ try {
       else {
         // Every menu uses the same actual Create styles, not an approximation.
         for (const key of ['tileRadius','tileBackground','iconWidth','sheetRadius'])
-          assert.equal(geometry[key], createStyle?.[key] ?? geometry[key], device + ' ' + name + ' ' + key);
+          assert.equal(geometry[key], createStyle[key], device + ' ' + name + ' ' + key);
       }
       await page.screenshot({ path: 'visual-review/tabs-' + device + '-' + name + '.png' });
       await sheet.locator('.pikk-menu-cancel').click();
