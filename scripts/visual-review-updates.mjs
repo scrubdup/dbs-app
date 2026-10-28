@@ -1,6 +1,9 @@
 import { chromium } from 'playwright';
 import { mkdir } from 'node:fs/promises';
 
+// External media embeds may keep document.fonts.ready pending indefinitely in CI.
+// Capture the rendered fallback fonts rather than hanging the screenshot job.
+process.env.PW_TEST_SCREENSHOT_NO_FONTS_READY = '1';
 const browser = await chromium.launch({ headless: true, args: ['--no-sandbox'] });
 await mkdir('visual-review', { recursive: true });
 for (const [name, width, height] of [['mobile', 390, 844], ['desktop', 1440, 900]]) {
