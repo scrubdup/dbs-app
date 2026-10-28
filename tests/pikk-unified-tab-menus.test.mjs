@@ -9,6 +9,7 @@ const read = path => readFileSync(new URL(path, import.meta.url), 'utf8');
 const sections = read('../src/section-menus.js');
 const music = read('../src/music-menu.js');
 const styles = read('../src/styles.css');
+const main = read('../src/main.js');
 
 test('seven approved tabs stay in owner-approved order', () => {
   assert.deepEqual(TABBAR.map(item => item.label), ['Music','Videos','Connect','Create','Dating','Games','Shop']);
@@ -21,6 +22,8 @@ test('every non-Create bottom tab has real menu choices and a consistent card gr
     assert.ok(SECTION_MENU_ITEMS[tab].every(item => item.href.startsWith('#/') && item.title && item.detail), tab);
   }
   assert.ok(MUSIC_MENU_ITEMS.length > 0);
+  assert.doesNotMatch(main, /if \(name === 'games'\) continue/);
+  assert.match(main, /toggleSectionMenu\(name, event\.currentTarget\)/);
   assert.match(sections, /pikk-create-options pikk-create-grid/);
   assert.match(music, /pikk-create-options pikk-create-grid/);
   assert.match(sections, /pikk-menu-cancel/);
