@@ -4412,7 +4412,7 @@ input:focus, select:focus, textarea:focus {
 
 
 /* Owner-approved Arcade art viewer: separate from gameplay, scoped to #/games. */
-.pikk-arcade-view{width:100%;display:flex;align-items:center;justify-content:center;gap:8px;margin:0 0 8px;padding:9px 7px;border:1px solid #6e78ba;border-radius:9px;background:linear-gradient(110deg,#1d2750,#332050);color:#f2eaff;font:800 12px/1.2 inherit;cursor:pointer;transition:background .16s,border-color .16s,transform .16s}
+.pikk-arcade-view{width:100%;display:flex;align-items:center;justify-content:center;gap:8px;margin:0 0 8px;padding:9px 7px;border:1px solid #6e78ba;border-radius:9px;background:linear-gradient(110deg,#1d2750,#332050);color:#f2eaff;font-size:12px;font-weight:800;line-height:1.2;font-family:inherit;cursor:pointer;transition:background .16s,border-color .16s,transform .16s}
 .pikk-arcade-view:hover{background:linear-gradient(110deg,#2c3c76,#562c79);border-color:#bba5ff;transform:translateY(-1px)}
 .pikk-arcade-view span{font-size:16px;color:#9feaff}
 .pikk-arcade-view:focus-visible,.pikk-arcade-lightbox button:focus-visible{outline:3px solid #8fe5ff;outline-offset:3px}
