@@ -16,3 +16,13 @@ export const PIKK_GAMES = Object.freeze([
   { name: 'PIKK Dominoes', players: '2–4', icon: '🁢', theme: 'dominoes', description: 'Match tiles and outplay opponents.' },
   { name: 'PIKK Chess', players: '2', icon: '♟', theme: 'chess', description: 'Challenge opponents in a classic strategy game.' },
 ]);
+
+/**
+ * GitHub Pages serves this app under /pikk-app/, not the site root.
+ * Keep approved artwork and the existing Block Wars still on that base path.
+ */
+export function arcadeArtSrc(game) {
+  if (!game?.artwork) return '';
+  const base = import.meta.env.BASE_URL || '/';
+  return base.replace(/\/?$/, '/') + String(game.artwork).replace(/^\/+/, '');
+}
