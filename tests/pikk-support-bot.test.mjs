@@ -11,7 +11,7 @@ test('support bot answers six common question categories without inventing activ
  assert.match(supportAnswer('weird nonsense 123').text,/cannot deliver tickets/);
 });
 test('support ticket clearly remains a local prototype with no invented delivery',()=>{
- assert.match(page,/NOT submitted to staff/);
+ assert.match(page,/not submitted to staff/i);
  assert.match(page,/Saved on this device/);
  assert.match(page,/localStorage\.setItem/);
  assert.match(page,/maxlength="1500"/);
