@@ -8,7 +8,7 @@ export function renderGames() {
         <p class="kicker">Play · Compete · Hang out</p>
         <h2>PIKK <span>ARCADE</span></h2>
         <p>All 15 approved games in one place. Choose a title to see its preview as development continues.</p>
-      </div><span class="pikk-arcade-icon" aria-hidden="true">♜</span></div>
+      </div><span class="pikk-arcade-icon" aria-hidden="true">🎮</span></div>
       <p class="pikk-arcade-disclosure">ALL GAMES COMING SOON · Gallery previews, not playable releases. Play Chips have no cash value or cash-out.</p>
     </section>
     <div class="pikk-arcade-toolbar"><strong>15 upcoming games</strong><span>Original PIKK game concepts · all previews</span></div>
