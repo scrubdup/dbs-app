@@ -4503,3 +4503,39 @@ input:focus, select:focus, textarea:focus {
   .page:has(.pikk-dating-hero) > :is(.page-head,.pikk-dating-hero,.pikk-dating-tabs,.pikk-dating-experience-grid){grid-column:1/-1;margin-bottom:0}
   .page:has(.pikk-dating-hero) > .card{margin:0;min-width:0}
 }
+
+/* Premium Messages reference: authentic thread avatars, search and neon inbox. */
+.pikk-messages-hero{display:flex;justify-content:space-between;align-items:center;gap:12px;border:1px solid #4e4e81;border-radius:20px;padding:19px;margin:0 0 12px;background:radial-gradient(ellipse at 100% 0,#aa275a5a,transparent 60%),radial-gradient(ellipse at 0 100%,#2e65dc59,transparent 65%),#171725;box-shadow:0 8px 28px #0007}
+.pikk-messages-hero .kicker{font-size:10px;color:#f4a2d5;font-weight:850;letter-spacing:.13em;margin:0 0 8px}
+.pikk-messages-hero h2{font-size:clamp(23px,4vw,32px);letter-spacing:-.04em;margin:0 0 7px}
+.pikk-messages-hero p:not(.kicker){font-size:12px;color:#c7c7d7;line-height:1.5;margin:0}
+.pikk-messages-hero-mark{display:grid;place-items:center;width:66px;height:66px;flex:0 0 66px;border:1px solid #e74fb0;border-radius:16px;background:#843caa44;box-shadow:0 0 22px #f146a13b;font-size:35px;color:#fa75d9}
+.pikk-msg-tools{display:flex;flex-direction:column;gap:7px;margin:0 0 13px;border-radius:15px}
+.pikk-msg-tools label{font-size:11px;font-weight:800;color:#d7cfe4}
+.pikk-msg-tools input{width:100%;background:#171724;border:1px solid #4a4965;border-radius:999px;color:#f2effb;padding:11px 17px;font-size:13px}
+.pikk-msg-tools input:focus-visible{outline:2px solid #9e75e9;outline-offset:2px}
+.pikk-msg-tool-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:3px}
+.msg-inbox .msg-thread-row{display:flex;align-items:center;gap:12px;text-align:left;border:1px solid #3b3a55;border-radius:13px;background:linear-gradient(130deg,#242136,#161822);padding:13px;margin:0 0 8px;box-shadow:0 5px 15px #0004}
+.msg-inbox .msg-thread-row:hover{border-color:#c75ba4;background:#30283f}
+.msg-inbox .msg-thread-row[hidden]{display:none!important}
+.pikk-msg-avatar{display:grid;place-items:center;flex:0 0 43px;width:43px;height:43px;border-radius:50%;border:2px solid #d447af;color:white;font-size:18px;font-weight:900;background:linear-gradient(130deg,#562b9a,#db326d);box-shadow:0 0 12px #d133925c}
+.pikk-msg-thread-body{min-width:0;flex:1}
+.pikk-msg-thread-body .msg-thread-top{display:flex;justify-content:space-between;align-items:baseline;gap:6px}
+.pikk-msg-thread-body .msg-thread-top strong{font-size:13px}
+.pikk-msg-thread-body .msg-thread-top .muted{font-size:10px;white-space:nowrap}
+.pikk-msg-thread-body .msg-thread-preview{font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media(max-width:450px){.pikk-messages-hero{padding:13px;border-radius:15px}.pikk-messages-hero-mark{width:49px;height:49px;flex-basis:49px;font-size:26px}.pikk-msg-avatar{width:38px;height:38px;flex-basis:38px}.msg-inbox .msg-thread-row{padding:10px;gap:9px}}
+.pikk-msg-no-results{padding:18px;text-align:center;color:#d7cfe8;font-size:12px;background:#19182b;border:1px dashed #655677;border-radius:12px;margin:10px 0 0}
+.pikk-msg-no-results[hidden]{display:none!important}
+@media(prefers-reduced-motion:reduce){.msg-inbox .msg-thread-row{transition:none}}
+
+/* Desktop Messages uses available space instead of a narrow phone-sized column. */
+@media(min-width:960px){
+  #app:has(.pikk-messages-hero){max-width:1000px;padding-inline:24px}
+  .page:has(.pikk-messages-hero){display:grid;grid-template-columns:minmax(0,1.6fr) minmax(250px,.8fr);gap:14px}
+  .page:has(.pikk-messages-hero)>:is(.page-head,.pikk-messages-hero,.pikk-msg-tools){grid-column:1/-1;margin-bottom:0}
+  .page:has(.pikk-messages-hero)>.card{margin:0;min-width:0}
+  .page:has(.pikk-messages-hero)>.msg-team-card{grid-column:2;grid-row:4}
+  .page:has(.pikk-messages-hero)>.card:has(#msgInbox){grid-column:1;grid-row:4 / span 2}
+  .page:has(.pikk-messages-hero)>.card:has(#msgPrefDMs){grid-column:2;grid-row:5}
+}
