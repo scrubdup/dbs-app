@@ -35,3 +35,10 @@ test('Header PIKK logo returns to Home without a bottom Home tab; Profile stays 
   assert.match(html, /href="#\/home" class="logo" aria-label="PIKK Home"/);
   assert.match(html, /id="headerProfile" href="#\/profile"/);
 });
+
+
+test('Games bottom tab opens Arcade directly instead of intercepting the link with a menu', () => {
+  assert.match(main, /if \(name === 'games'\) continue/);
+  assert.match(main, /pathOnly !== '\/games'/);
+  assert.match(main, /'\/games': \{ render: renderGames, bind: bindGames \}/);
+});
