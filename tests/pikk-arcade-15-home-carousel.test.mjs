@@ -12,7 +12,7 @@ test('PIKK gallery uses exact approved fifteen-game set in approved order',()=>{
  for(const g of PIKK_GAMES) { assert.ok(g.description && g.icon && g.players && g.theme); }
  assert.match(PIKK_GAMES[2].description,/neighborhood-themed match/);
  assert.match(PIKK_GAMES[3].description,/physics challenges/);
- assert.equal(PIKK_GAMES[0].artwork,'/blockwars-preview/preview-ny-still.jpg');
+ assert.equal(PIKK_GAMES[0].artwork,'/games/approved/01_block_wars.jpg');
 });
 
 test('gallery and Home slideshow share one catalog and do not claim gameplay',()=>{
@@ -32,8 +32,8 @@ test('gallery and Home slideshow share one catalog and do not claim gameplay',()
  assert.match(css,/\.pikk-arcade-grid/);
 });
 
-test('approved artwork is not falsely claimed ready and Block Wars remains independent',()=>{
- assert.equal(PIKK_GAMES.filter(g=>g.artwork).length,1);
- assert.match(games,/Approved custom game images are still being integrated/);
+test('all 15 owner-supplied concept images are linked while gameplay remains unreleased',()=>{
+ assert.equal(PIKK_GAMES.filter(g=>g.artwork).length,15);
+ assert.match(games,/All 15 owner-supplied concept images are now displayed/);
  assert.match(games,/View preview/);
 });
