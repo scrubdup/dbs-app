@@ -55,9 +55,10 @@ export function toggleSectionMenu(name, trigger) {
     panel.className = 'pikk-create-overlay';
     panel.hidden = true;
     // All labels and URLs are fixed, audited developer literals; no untrusted HTML.
-    panel.innerHTML = `<div class="pikk-create-sheet" role="dialog" aria-modal="true" aria-labelledby="${id}Title">
+    panel.innerHTML = `<div class="pikk-create-sheet pikk-unified-tab-sheet" role="dialog" aria-modal="true" aria-labelledby="${id}Title">
       <div class="pikk-create-head"><strong id="${id}Title">${name[0].toUpperCase() + name.slice(1)} on PIKK</strong><button type="button" class="btn ghost" data-section-close aria-label="Close ${name} menu">✕</button></div>
-      <div class="pikk-create-options">${SECTION_MENU_ITEMS[name].map(item => `<a href="${item.href}">${item.icon} ${item.title}<small>${item.detail}</small></a>`).join('')}</div>
+      <div class="pikk-create-options">${SECTION_MENU_ITEMS[name].map(item => `<a href="${item.href}"><span class="pikk-unified-icon" aria-hidden="true">${item.icon}</span><strong>${item.title}</strong><small>${item.detail}</small></a>`).join('')}</div>
+      <button type="button" class="pikk-unified-cancel" data-section-close>Cancel</button>
       <p class="muted" style="font-size:11px;margin:10px 0 0">TEST MODE · Production features are not enabled until secure services are available.</p>
     </div>`;
     document.body.appendChild(panel);
