@@ -36,7 +36,7 @@ export function renderGames() {
           <span class="pikk-arcade-lightbox-kicker">PIKK ARCADE <span aria-hidden="true">·</span> CONCEPT ART <span data-arcade-counter>01 / 15</span></span>
           <button type="button" class="pikk-arcade-lightbox-close" data-arcade-close aria-label="Close artwork preview">×</button>
         </div>
-        <div class="pikk-arcade-lightbox-art"><img data-arcade-full-image src="${esc(arcadeArtSrc(PIKK_GAMES[0]))}" alt="Block Wars concept artwork" decoding="async"/></div>
+        <div class="pikk-arcade-lightbox-art"><img data-arcade-full-image alt="" decoding="async"/></div>
         <div class="pikk-arcade-lightbox-bottom">
           <div class="pikk-arcade-lightbox-description">
             <h2 id="pikkArcadePreviewTitle" data-arcade-title>Block Wars</h2>
