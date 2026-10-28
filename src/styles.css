@@ -4646,3 +4646,20 @@ html body #tabbar.tabbar.tabbar-reshaped.tabbar-fit7 > a.tab-primary > span:last
 .pikk-own-notice strong{color:#ffb7db}
 @media(max-width:700px){.pikk-own-prices{grid-template-columns:repeat(3,minmax(0,1fr))}.pikk-own-footer{flex-direction:column;align-items:flex-start}.pikk-own-disc{height:53px;width:53px;flex-basis:53px;font-size:26px}.pikk-own-prices div{padding:12px 4px}}
 @media(max-width:380px){.pikk-own-prices{grid-template-columns:repeat(2,minmax(0,1fr))}.pikk-own-music{padding:13px}}
+
+
+/* PIKK Rights & Protection — proposed artist services, not an active claim service. */
+.pikk-rights{margin:16px 0 20px;padding:clamp(16px,3vw,25px);border-radius:19px;border:1px solid #3c5372;background:radial-gradient(ellipse at 100% 0%,#185c8050,transparent 60%),#131a28}
+.pikk-rights-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.pikk-rights .kicker{font-weight:800;font-size:10px;letter-spacing:.15em;color:#91d9fa;margin:0 0 7px}
+.pikk-rights h2{font-size:clamp(20px,3.8vw,28px);margin:0 0 6px;line-height:1.2}
+.pikk-rights-top p:not(.kicker){color:#b8d6ee;font-size:12px;margin:0}
+.pikk-rights .chip{flex:0 0 auto;color:#f4c59d;border-color:#b48458}
+.pikk-rights-intro{font-size:13px;color:#cedbeb;line-height:1.55;margin:14px 0}
+.pikk-rights-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.pikk-rights-grid article{background:#19253a;border:1px solid #365370;padding:15px;border-radius:12px}
+.pikk-rights-grid strong{color:#f2f7ff;font-size:13px}
+.pikk-rights-grid p{color:#bdc8d7;font-size:11px;line-height:1.5;margin:8px 0 0}
+.pikk-rights-disclaimer{border-top:1px solid #33506d;margin:15px 0 0;padding-top:11px;font-size:11px;line-height:1.55;color:#b9cbdd}
+@media(max-width:720px){.pikk-rights-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:420px){.pikk-rights-grid{grid-template-columns:1fr}.pikk-rights-top{flex-direction:column}.pikk-rights-grid article{padding:11px}}
