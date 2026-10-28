@@ -1,0 +1,42 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import {SECTION_MENU_ITEMS} from '../src/section-menus.js';
+import {MUSIC_MENU_ITEMS} from '../src/music-menu.js';
+import {TABBAR} from '../src/data.js';
+
+const read = path => readFileSync(new URL(path, import.meta.url), 'utf8');
+const sections = read('../src/section-menus.js');
+const music = read('../src/music-menu.js');
+const styles = read('../src/styles.css');
+const main = read('../src/main.js');
+
+test('seven approved tabs stay in owner-approved order', () => {
+  assert.deepEqual(TABBAR.map(item => item.label), ['Music','Videos','Connect','Create','Dating','Games','Shop']);
+  assert.equal(TABBAR.filter(item => item.primary).length, 1);
+  assert.equal(TABBAR.find(item => item.primary).label, 'Create');
+});
+test('every non-Create bottom tab has real menu choices and a consistent card grid', () => {
+  for(const tab of ['videos','connect','dating','games','shop']) {
+    assert.ok(SECTION_MENU_ITEMS[tab]?.length > 0, tab);
+    assert.ok(SECTION_MENU_ITEMS[tab].every(item => item.href.startsWith('#/') && item.title && item.detail), tab);
+  }
+  assert.ok(MUSIC_MENU_ITEMS.length > 0);
+  assert.doesNotMatch(main, /if \(name === 'games'\) continue/);
+  assert.match(main, /toggleSectionMenu\(name, event\.currentTarget\)/);
+  assert.match(sections, /pikk-create-options pikk-create-grid/);
+  assert.match(music, /pikk-create-options pikk-create-grid/);
+  assert.match(sections, /pikk-menu-cancel/);
+  assert.match(music, /pikk-menu-cancel/);
+  assert.match(styles, /grid-template-columns:repeat\(3,minmax\(0,1fr\)\)/);
+  assert.match(styles, /pikk-create-grid \.pikk-menu-icon svg/);
+  assert.match(sections, /ICONS\[MENU_ICON_KEYS/);
+  assert.match(music, /ICONS\[MUSIC_ICON_KEYS/);
+});
+test('modal controls retain keyboard escape, focus trapping, and route close', () => {
+  for(const src of [sections,music]) {
+    assert.match(src, /event\.key === 'Escape'/);
+    assert.match(src, /event\.key (?:!==|===) 'Tab'/);
+    assert.match(src, /hashchange/);
+  }
+});

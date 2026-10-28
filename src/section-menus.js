@@ -1,3 +1,5 @@
+import { ICONS } from './ui.js';
+
 // PIKK approved category menus: route only to existing sections.
 // No menu item implies that demo workflows are production services.
 export const SECTION_MENU_ITEMS = Object.freeze({
@@ -32,6 +34,15 @@ export const SECTION_MENU_ITEMS = Object.freeze({
   ],
 });
 
+// Reuse the exact outlined SVG icon system used by the approved Create dialog.
+const MENU_ICON_KEYS = Object.freeze({
+  'Video Feed': 'videos', 'Shorts & Reels': 'videos', 'Posts': 'posts', 'Upload Video': 'videos',
+  'Connect': 'profile', 'Communities': 'chat', 'Messages': 'msg', 'Random Chat': 'camera', 'Multistream': 'live',
+  'Discover Dating': 'heart', 'My Profile': 'profile', 'Safety Guidelines': 'heart',
+  'PIKK Arcade': 'game', 'Block Wars': 'game',
+  'PIKK Shop': 'merch', 'Marketplace': 'merch', 'Foreign X-Change': 'merch', 'Creator Pricing': 'posts',
+});
+
 const IDS = { videos: 'pikkVideosMenu', connect: 'pikkConnectMenu', dating: 'pikkDatingMenu', games: 'pikkGamesMenu', shop: 'pikkShopMenu' };
 
 export function closeSectionMenus(restoreFocus = false) {
@@ -57,7 +68,8 @@ export function toggleSectionMenu(name, trigger) {
     // All labels and URLs are fixed, audited developer literals; no untrusted HTML.
     panel.innerHTML = `<div class="pikk-create-sheet" role="dialog" aria-modal="true" aria-labelledby="${id}Title">
       <div class="pikk-create-head"><strong id="${id}Title">${name[0].toUpperCase() + name.slice(1)} on PIKK</strong><button type="button" class="btn ghost" data-section-close aria-label="Close ${name} menu">✕</button></div>
-      <div class="pikk-create-options">${SECTION_MENU_ITEMS[name].map(item => `<a href="${item.href}">${item.icon} ${item.title}<small>${item.detail}</small></a>`).join('')}</div>
+      <div class="pikk-create-options pikk-create-grid">${SECTION_MENU_ITEMS[name].map(item => `<a class="pikk-create-tile" href="${item.href}"><span class="pikk-menu-icon" aria-hidden="true">${ICONS[MENU_ICON_KEYS[item.title] || "explore"]}</span><strong class="pikk-menu-title">${item.title}</strong><small>${item.detail}</small></a>`).join('')}</div>
+      <button type="button" class="pikk-menu-cancel" data-section-close>Cancel</button>
       <p class="muted" style="font-size:11px;margin:10px 0 0">TEST MODE · Production features are not enabled until secure services are available.</p>
     </div>`;
     document.body.appendChild(panel);

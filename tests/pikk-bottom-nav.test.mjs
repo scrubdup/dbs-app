@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs';
 const data = readFileSync(new URL('../src/data.js', import.meta.url), 'utf8');
 const main = readFileSync(new URL('../src/main.js', import.meta.url), 'utf8');
 const posts = readFileSync(new URL('../src/pages/posts.js', import.meta.url), 'utf8');
+import { SECTION_MENU_ITEMS } from '../src/section-menus.js';
 
 test('Create is the exact center of seven bottom navigation slots', () => {
   const match = data.match(/export const TABBAR = \[([\s\S]*?)\];/);
@@ -37,8 +38,10 @@ test('Header PIKK logo returns to Home without a bottom Home tab; Profile stays 
 });
 
 
-test('Games bottom tab opens Arcade directly instead of intercepting the link with a menu', () => {
-  assert.match(main, /if \(name === 'games'\) continue/);
-  assert.match(main, /pathOnly !== '\/games'/);
+test('Games bottom tab opens approved category menu with Arcade as first destination', () => {
+  assert.doesNotMatch(main, /if \(name === 'games'\) continue/);
+  assert.doesNotMatch(main, /pathOnly !== '\/games'/);
+  assert.equal(SECTION_MENU_ITEMS.games[0].href, '#/games');
+  assert.match(main, /toggleSectionMenu\(name, event\.currentTarget\)/);
   assert.match(main, /'\/games': \{ render: renderGames, bind: bindGames \}/);
 });
