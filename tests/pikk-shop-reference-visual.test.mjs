@@ -15,7 +15,7 @@ test('PIKK Shop premium hero shows real catalog photos and no invented products'
     assert.ok(html.includes(item.image), category + ' authentic photo missing');
     assert.ok(html.includes(item.name), category + ' real product title missing');
   }
-  assert.doesNotMatch(html, /fake viewers|invented reviews|verified seller/i);
+  assert.doesNotMatch(html, /fake viewers|invented reviews|12\\.4K watching/i);
 });
 
 test('Shop category shortcuts and original search filters remain available', () => {
