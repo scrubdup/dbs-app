@@ -2,6 +2,8 @@ import assert from 'node:assert/strict';
 import { mkdir } from 'node:fs/promises';
 import { chromium } from 'playwright';
 
+// External media can hold font readiness indefinitely in CI; screenshot the rendered fallback fonts.
+process.env.PW_TEST_SCREENSHOT_NO_FONTS_READY = '1';
 const base = 'http://127.0.0.1:5173/';
 const browser = await chromium.launch({ headless: true });
 await mkdir('visual-review', { recursive: true });
