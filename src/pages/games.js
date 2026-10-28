@@ -27,6 +27,6 @@ export function renderGames() {
           </div>
         </article>`).join('')}
     </div>
-    <p class="muted" style="font-size:12px;margin-top:16px">Game art is a temporary themed preview except for the existing Block Wars still. Approved custom game images are still being integrated; no gambling or real-money prizes are available.</p>
+    <p class="muted" style="font-size:12px;margin-top:16px">All 15 owner-supplied concept images are now displayed. Game concepts and final artwork may evolve; no gambling or real-money prizes are available.</p>
   `, { lead: 'Fifteen upcoming games · mobile-first catalog · previews only' });
 }
