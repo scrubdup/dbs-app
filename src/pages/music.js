@@ -325,9 +325,32 @@ export function renderMusic(route = {}) {
       <p class="pikk-own-notice"><strong>PRELAUNCH CONCEPT — NOT FOR SALE.</strong> Real checkout, licensed downloadable MP3/FLAC files, purchase receipts, personal-use licenses and secure download delivery are not active. The existing My Music demo only marks covers owned locally and does not provide files. Offline files remain usable after membership ends; future account-based re-downloads depend on continued service availability.</p>
     </section>`;
 
+  const artistProtection = `
+    <section class="pikk-rights card" id="rights-protection" aria-label="PIKK Rights and Protection">
+      <div class="pikk-rights-top">
+        <div>
+          <p class="kicker">ARTIST SERVICES · PLANNED</p>
+          <h2>PIKK Rights &amp; Protection <span aria-hidden="true">🛡</span></h2>
+          <p>Your Music. Your Rights. Your Revenue.</p>
+        </div>
+        <span class="chip">PRELAUNCH · NOT ACTIVE</span>
+      </div>
+      <p class="pikk-rights-intro">Artists keep their copyrights. PIKK plans tools to document ownership, find suspicious duplicates and guide authorized rights enforcement without taking ownership of music.</p>
+      <div class="pikk-rights-grid">
+        <article><strong>Rights Registry</strong><p>Store songwriter, master owner, producer, splits, licenses, permissions and supporting records.</p></article>
+        <article><strong>Audio Shield</strong><p>Planned audio fingerprint checks for copies, sped-up, slowed-down, pitch-shifted and clipped recordings. No scanner is running yet.</p></article>
+        <article><strong>Review &amp; Appeals</strong><p>Matching audio is not proof of infringement. Licensed beats, samples, collaborations and disputes require review before action.</p></article>
+        <article><strong>Outside PIKK</strong><p>Planned evidence collection and copyright claim support for YouTube, Spotify, Apple Music and distributors, subject to their own processes.</p></article>
+        <article><strong>Copyright Assistance</strong><p>Guide artists to official copyright registration. PIKK cannot grant government copyright registrations.</p></article>
+        <article><strong>Royalty Guidance</strong><p>Help explain performing rights, publishing and sound-recording royalties. PIKK is not a BMI replacement.</p></article>
+      </div>
+      <p class="pikk-rights-disclaimer"><strong>Planning notice:</strong> No copyright registration, royalties collection, third-party monitoring, automatic takedowns or Content ID access is provided today. DMCA compliance, authorized claims, rights verification and appeals must be implemented and legally reviewed before launch. Purchased DRM-free downloads can be copied; no system can guarantee piracy prevention.</p>
+    </section>`;
+
   const body = `
     ${musicHero}
     ${ownershipOffer}
+    ${artistProtection}
     ${focusedViewCard}
     <div class="card">
       <h2>Upcoming Releases</h2>
