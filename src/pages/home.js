@@ -3,7 +3,7 @@ import { notifyVideoPlaying, notifyVideoIdle, bindPageYoutubeEmbeds, bindYoutube
 import { listCatalog, getState, listHotLives, listRisingStreamers, getHotPosts, getMostPlayedSongToday, getAppDailyGoal, donateToGoal } from '../store.js';
 import { esc, shellPage, ytEmbedSrc, toast } from '../ui.js';
 import { resolveMediaSrc } from '../media-db.js';
-import { PIKK_GAMES } from '../games/arcade-catalog.js';
+import { PIKK_GAMES, arcadeArtSrc } from '../games/arcade-catalog.js';
 
 const SECTION_ICONS = {
   Explore: '🧭',
@@ -645,7 +645,7 @@ export function renderHome() {
       </div>
       <div class="home-arcade-stage" aria-live="off">
         ${PIKK_GAMES.map((game, index) => `<article class="home-arcade-slide pikk-game-${esc(game.theme)}" data-game-slide="${index}" ${index ? 'hidden' : ''}>
-          <div class="home-arcade-image">${game.artwork ? `<img src="${esc(game.artwork)}" alt="" loading="lazy" decoding="async" />` : `<span class="home-arcade-symbol" aria-hidden="true">${game.icon}</span>`}</div>
+          <div class="home-arcade-image">${game.artwork ? `<img src="${esc(arcadeArtSrc(game))}" alt="" loading="lazy" decoding="async" />` : `<span class="home-arcade-symbol" aria-hidden="true">${game.icon}</span>`}</div>
           <div class="home-arcade-info">
             <span class="chip">GAME ${index+1} OF 15 · COMING SOON</span>
             <h3>${esc(game.name)}</h3>
