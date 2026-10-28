@@ -344,7 +344,7 @@ export function renderMusic(route = {}) {
         <article><strong>Copyright Assistance</strong><p>Guide artists to official copyright registration. PIKK cannot grant government copyright registrations.</p></article>
         <article><strong>Royalty Guidance</strong><p>Help explain performing rights, publishing and sound-recording royalties. PIKK is not a BMI replacement.</p></article>
       </div>
-      <p class="pikk-rights-disclaimer"><strong>Planning notice:</strong> No copyright registration, royalties collection, third-party monitoring, automatic takedowns or Content ID access is provided today. DMCA compliance, authorized claims, rights verification and appeals must be implemented and legally reviewed before launch. Purchased DRM-free downloads can be copied; no system can guarantee piracy prevention.</p>
+      <p class="pikk-rights-disclaimer"><strong>Planning notice:</strong> No copyright registration, royalties collection, third-party monitoring, automatic takedowns or Content ID access is provided today. DMCA compliance, authorized claims, rights verification and appeals must be implemented and legally reviewed before launch. Purchased DRM-free downloads can be copied; PIKK cannot guarantee piracy prevention.</p>
     </section>`;
 
   const body = `
