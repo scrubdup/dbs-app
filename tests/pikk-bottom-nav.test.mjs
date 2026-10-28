@@ -13,7 +13,7 @@ test('Create is the exact center of seven bottom navigation slots', () => {
   assert.equal(entries[3][2], 'Create');
   assert.equal(entries[3][1], '#/create');
   assert.match(entries[3][0], /primary: true/);
-  assert.deepEqual(entries.map(x => x[2]), ['Home', 'Music', 'Videos', 'Create', 'Connect', 'Dating', 'Shop']);
+  assert.deepEqual(entries.map(x => x[2]), ['Music', 'Videos', 'Connect', 'Create', 'Dating', 'Games', 'Shop']);
   assert.ok(!entries.some(x => x[2] === 'Profile'));
 });
 
@@ -34,4 +34,11 @@ test('Header PIKK logo returns to Home without a bottom Home tab; Profile stays 
   const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
   assert.match(html, /href="#\/home" class="logo" aria-label="PIKK Home"/);
   assert.match(html, /id="headerProfile" href="#\/profile"/);
+});
+
+
+test('Games bottom tab opens Arcade directly instead of intercepting the link with a menu', () => {
+  assert.match(main, /if \(name === 'games'\) continue/);
+  assert.match(main, /pathOnly !== '\/games'/);
+  assert.match(main, /'\/games': \{ render: renderGames, bind: bindGames \}/);
 });

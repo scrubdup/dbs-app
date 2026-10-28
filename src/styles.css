@@ -4539,3 +4539,23 @@ input:focus, select:focus, textarea:focus {
   .page:has(.pikk-messages-hero)>.card:has(#msgInbox){grid-column:1;grid-row:4 / span 2}
   .page:has(.pikk-messages-hero)>.card:has(#msgPrefDMs){grid-column:2;grid-row:5}
 }
+
+/* Owner-approved 7-tab chrome: Create is the centered neon action, Games is visible. */
+html body #tabbar.tabbar.tabbar-reshaped.tabbar-fit7 > a.tab-primary {
+  color: #ff8ce9;
+}
+html body #tabbar.tabbar.tabbar-reshaped.tabbar-fit7 > a.tab-primary .tab-ico svg {
+  width: 30px;
+  height: 30px;
+  padding: 7px;
+  border: 2px solid #f85add;
+  background: linear-gradient(145deg, #ff1fae 0%, #b92ff4 52%, #1869ff 100%);
+  box-shadow: 0 0 0 2px #080d1d, 0 0 12px rgba(247, 33, 189, .75), 0 0 19px rgba(33, 112, 255, .42);
+}
+html body #tabbar.tabbar.tabbar-reshaped.tabbar-fit7 > a.tab-primary > span:last-child {
+  color: #ff8ce9;
+  font-weight: 800;
+}
+@media (prefers-reduced-motion: reduce) {
+  html body #tabbar.tabbar.tabbar-reshaped.tabbar-fit7 > a.tab-primary .tab-ico svg { transition: none; }
+}
