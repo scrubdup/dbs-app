@@ -8,10 +8,10 @@ const main = readFileSync(new URL('../src/main.js', import.meta.url), 'utf8');
 
 test('approved seven bottom tabs appear in exact order with centered Create', () => {
   assert.deepEqual(TABBAR.map(({ label }) => label), [
-    'Music', 'Videos', 'Connect', 'Create', 'Dating', 'Games', 'Shop',
+    'Home', 'Music', 'Videos', 'Create', 'Connect', 'Dating', 'Shop',
   ]);
   assert.deepEqual(TABBAR.map(({ href }) => href), [
-    '#/music', '#/videos', '#/connect', '#/create', '#/dating', '#/games', '#/shop',
+    '#/home', '#/music', '#/videos', '#/create', '#/connect', '#/dating', '#/shop',
   ]);
   assert.equal(TABBAR.length, 7);
   assert.equal(TABBAR[3].primary, true);

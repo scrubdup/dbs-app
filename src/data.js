@@ -590,15 +590,15 @@ export const DRAWER_LINKS = DRAWER_GROUPS.flatMap((g) =>
   g.href ? [{ href: g.href, label: g.label }] : (g.links || [])
 );
 
-/** Approved bottom navigation: seven tabs in this exact order.
- * Home remains accessible through the official PIKK header logo.
- * Create remains the raised center action; messages stay in the header. */
+/** Owner-approved seven-tab bottom navigation in this exact order.
+ * Home is a real destination; Arcade remains in the drawer and Home showcase.
+ * Create stays the raised center action; messages remain in the header. */
 export const TABBAR = [
+  { href: '#/home', label: 'Home', icon: 'home' },
   { href: '#/music', label: 'Music', icon: 'music' },
   { href: '#/videos', label: 'Videos', icon: 'videos' },
-  { href: '#/connect', label: 'Connect', icon: 'profile' },
   { href: '#/create', label: 'Create', icon: 'live', primary: true },
+  { href: '#/connect', label: 'Connect', icon: 'profile' },
   { href: '#/dating', label: 'Dating', icon: 'heart' },
-  { href: '#/games', label: 'Games', icon: 'game' },
   { href: '#/shop', label: 'Shop', icon: 'merch' },
 ];
