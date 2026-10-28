@@ -23,6 +23,6 @@ export const PIKK_GAMES = Object.freeze([
  */
 export function arcadeArtSrc(game) {
   if (!game?.artwork) return '';
-  const base = import.meta.env.BASE_URL || '/';
+  const base = (import.meta.env && import.meta.env.BASE_URL) || '/';
   return base.replace(/\/?$/, '/') + String(game.artwork).replace(/^\/+/, '');
 }
