@@ -34,6 +34,9 @@ try {
     const gallery = await page.locator('.pikk-shop-hero-gallery').boundingBox();
     assert.ok(hero && gallery && gallery.width >= 110 && gallery.x > hero.x,
       name + ' hero gallery must fit beside the headline');
+    if (width >= 960) assert.ok(hero.width >= 900, 'Desktop Shop must use the wide content canvas');
+    const searchBox = await page.locator('#pikkShopSearch').boundingBox();
+    assert.ok(searchBox && searchBox.width >= Math.min(width - 70, 400), name + ' search must be full width');
 
     await page.screenshot({ path: 'visual-review/shop-' + name + '.png', fullPage: true });
     await page.locator('.pikk-shop-category[data-category="Hats"]').click();
