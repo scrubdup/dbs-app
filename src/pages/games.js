@@ -86,7 +86,7 @@ export function bindGames(root) {
     image.alt = preview.title + ' concept artwork';
     title.textContent = preview.title;
     description.textContent = preview.description;
-    players.textContent = preview.players + ' Players · Preview only';
+    players.textContent = preview.players + (preview.players === '1' ? ' Player · Preview only' : ' Players · Preview only');
     counter.textContent = String(active + 1).padStart(2, '0') + ' / ' + preview.total;
   };
 
