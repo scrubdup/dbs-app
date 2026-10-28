@@ -23,8 +23,18 @@ export const SECTION_MENU_ITEMS = Object.freeze({
     { title: 'Safety Guidelines', href: '#/guidelines', detail: 'Review community safety rules', icon: '◇' },
   ],
   games: [
-    { title: 'PIKK Arcade', href: '#/games', detail: 'Browse upcoming PIKK games · preview', icon: '♜' },
-    { title: 'Block Wars', href: '#/blockwars', detail: 'Development preview · not live multiplayer', icon: '▣' },
+    { title: 'PIKK Arcade', href: '#/games', detail: 'View the full game collection · preview', icon: '♜' },
+    { title: 'PIKK Speed', href: '#/games', detail: 'Card game · planned', icon: '♠' },
+    { title: 'Blackjack', href: '#/games', detail: 'Card game · planned', icon: '♠' },
+    { title: 'Slots', href: '#/games', detail: 'Play-chip game · planned', icon: '♜' },
+    { title: 'Poker', href: '#/games', detail: 'Play-chip card game · planned', icon: '♠' },
+    { title: 'Spades', href: '#/games', detail: 'Card game · planned', icon: '♠' },
+    { title: 'Dominoes', href: '#/games', detail: 'Table game · planned', icon: '♜' },
+    { title: 'Chess', href: '#/games', detail: 'Strategy game · planned', icon: '♜' },
+    { title: 'PIKK Clash', href: '#/games', detail: 'Neighborhood puzzle · planned', icon: '♜' },
+    { title: 'PIKK Knockout', href: '#/games', detail: 'Physics challenge · planned', icon: '♜' },
+    { title: 'PIKK Playground', href: '#/games', detail: 'Social mini-games · planned', icon: '♜' },
+    { title: 'Block Wars', href: '#/blockwars', detail: 'Fighting game · development preview', icon: '▣' },
   ],
   shop: [
     { title: 'PIKK Shop', href: '#/shop', detail: 'Browse available products', icon: '▤' },
@@ -39,7 +49,7 @@ const MENU_ICON_KEYS = Object.freeze({
   'Video Feed': 'videos', 'Shorts & Reels': 'videos', 'Posts': 'posts', 'Upload Video': 'videos',
   'Connect': 'profile', 'Communities': 'chat', 'Messages': 'msg', 'Random Chat': 'camera', 'Multistream': 'live',
   'Discover Dating': 'heart', 'My Profile': 'profile', 'Safety Guidelines': 'heart',
-  'PIKK Arcade': 'game', 'Block Wars': 'game',
+  'PIKK Arcade': 'game', 'PIKK Speed': 'game', 'Blackjack': 'game', 'Slots': 'game', 'Poker': 'game', 'Spades': 'game', 'Dominoes': 'game', 'Chess': 'game', 'PIKK Clash': 'game', 'PIKK Knockout': 'game', 'PIKK Playground': 'game', 'Block Wars': 'game',
   'PIKK Shop': 'merch', 'Marketplace': 'merch', 'Foreign X-Change': 'merch', 'Creator Pricing': 'posts',
 });
 
