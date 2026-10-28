@@ -4495,3 +4495,11 @@ input:focus, select:focus, textarea:focus {
 /* Accessible keyboard focus for the premium Dating landing. */
 .pikk-dating-hero a:focus-visible,.pikk-dating-tabs a:focus-visible,.pikk-dating-experience:focus-visible{outline:3px solid #f5b8ec;outline-offset:3px}
 @media(prefers-reduced-motion:reduce){.pikk-dating-hero,.pikk-dating-experience{scroll-behavior:auto}}
+
+/* Dating only: use available desktop space without changing other PIKK pages. */
+@media(min-width:900px){
+  #app:has(.pikk-dating-hero){max-width:1080px;padding-inline:clamp(16px,3vw,30px)}
+  .page:has(.pikk-dating-hero){display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+  .page:has(.pikk-dating-hero) > :is(.page-head,.pikk-dating-hero,.pikk-dating-tabs,.pikk-dating-experience-grid){grid-column:1/-1;margin-bottom:0}
+  .page:has(.pikk-dating-hero) > .card{margin:0;min-width:0}
+}
