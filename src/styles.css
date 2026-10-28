@@ -4663,3 +4663,22 @@ html body #tabbar.tabbar.tabbar-reshaped.tabbar-fit7 > a.tab-primary > span:last
 .pikk-rights-disclaimer{border-top:1px solid #33506d;margin:15px 0 0;padding-top:11px;font-size:11px;line-height:1.55;color:#b9cbdd}
 @media(max-width:720px){.pikk-rights-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:420px){.pikk-rights-grid{grid-template-columns:1fr}.pikk-rights-top{flex-direction:column}.pikk-rights-grid article{padding:11px}}
+
+
+/* PIKK Support: human escalation is not connected; no fake ticket submissions. */
+.pikk-support{margin:16px 0;padding:clamp(16px,3vw,24px);border:1px solid #534366;border-radius:18px;background:radial-gradient(ellipse at top right,#5e236064,transparent 60%),#161521}
+.pikk-support .kicker{font-size:10px;letter-spacing:.15em;font-weight:800;color:#e7a3ff}.pikk-support h2{font-size:clamp(24px,4vw,32px);margin:8px 0}
+.pikk-support-warning{border:1px solid #776047;background:#33291f;border-radius:10px;padding:11px;font-size:12px;line-height:1.5;color:#f5d5aa;margin:15px 0}
+.pikk-support-layout{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.pikk-support-chat,.pikk-support-ticket{background:#202033;border:1px solid #46445e;border-radius:14px;padding:16px;min-width:0}
+.pikk-support h3{margin:0 0 12px;font-size:17px}
+.pikk-support-reply{background:#282b42;border:1px solid #555b85;padding:14px;border-radius:12px;font-size:13px;line-height:1.55;min-height:90px;color:#f4edff;white-space:pre-wrap}
+.pikk-support-topics{display:flex;flex-wrap:wrap;gap:7px;margin:13px 0}
+.pikk-support-topics button{border:1px solid #6c5b89;border-radius:25px;color:#e9d4ff;background:#332f4d;padding:8px 10px;font-size:11px;cursor:pointer}
+.pikk-support-topics button:hover{background:#51406d}
+.pikk-support label{font-size:12px;font-weight:750;color:#e9e4f5;margin:10px 0 6px;display:block}
+.pikk-support input,.pikk-support textarea,.pikk-support select{width:100%;max-width:100%;min-width:0;padding:10px;border-radius:9px;border:1px solid #58566f;background:#161827;color:#fff;font:inherit;font-size:13px;box-sizing:border-box}
+.pikk-support-inputrow{display:flex;gap:7px}.pikk-support-inputrow .btn{flex:0 0 auto}
+.pikk-support-ticket .btn{margin:12px 0 6px}.pikk-support-ticket [role="status"]{font-size:11px;line-height:1.5}
+.pikk-support-draft{display:flex;flex-direction:column;gap:3px;padding:9px 0;border-bottom:1px solid #3b3752}.pikk-support-draft strong{font-size:12px}.pikk-support-draft small{color:#b9afcc}
+@media(max-width:760px){.pikk-support-layout{grid-template-columns:1fr}}
