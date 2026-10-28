@@ -14,7 +14,7 @@ test('update center is a real route and accessible from menu and footer', () => 
 });
 test('release links point to actual completed PIKK sections and PRs', () => {
   assert.match(updates, /pr: 95[\s\S]*pr: 94[\s\S]*pr: 93[\s\S]*pr: 92[\s\S]*pr: 91/);
-  assert.match(updates, /href="\\$\\{esc\\(release.route\\)\\}"/);
+  assert.ok(updates.includes('href="${esc(release.route)}"'));
   assert.match(updates, /pikkUpdatesRefresh/);
 });
 test('production version is the source commit of the deployed build', () => {
