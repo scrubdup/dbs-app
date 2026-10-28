@@ -4691,17 +4691,3 @@ html body #tabbar.tabbar.tabbar-reshaped.tabbar-fit7 > a.tab-primary > span:last
 #pikkShopSearch {display:block;width:100%;min-height:43px;padding:11px 15px;border-radius:12px;border:1px solid #595078;background:#151521;color:#fff;font:inherit}
 #pikkShopSearch:focus-visible {outline:2px solid #ef77d1;outline-offset:2px}
 #pikkShopSearch::placeholder {color:#a9a3bc}
-
-
-/* Owner-approved unified bottom-tab panels: preserve the Create modal and existing routes. */
-.pikk-unified-tab-sheet .pikk-create-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
-.pikk-unified-tab-sheet .pikk-create-options>a{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-width:0;min-height:132px;padding:14px 7px;gap:7px;border:1px solid rgba(171,151,225,.22);border-radius:18px;background:linear-gradient(145deg,rgba(45,43,61,.98),rgba(19,19,29,.98));color:#f7f5ff;text-decoration:none;box-shadow:inset 0 1px 0 rgba(255,255,255,.07)}
-.pikk-unified-tab-sheet .pikk-create-options>a:hover,.pikk-unified-tab-sheet .pikk-create-options>a:focus-visible{border-color:#e944b6;box-shadow:0 0 19px rgba(241,45,167,.2);outline-offset:2px}
-.pikk-unified-tab-sheet .pikk-create-options>a strong{font-size:14px;line-height:1.2}
-.pikk-unified-tab-sheet .pikk-create-options>a small{font-size:11px;line-height:1.3;color:#bdb8cc;font-weight:400}
-.pikk-unified-icon{display:flex;align-items:center;justify-content:center;font-size:29px;line-height:1;min-height:37px;color:#ff399e;text-shadow:0 0 12px rgba(255,48,162,.65)}
-.pikk-unified-tab-sheet .pikk-create-options>a:nth-child(3n+2) .pikk-unified-icon{color:#b45aff;text-shadow:0 0 12px rgba(180,90,255,.6)}
-.pikk-unified-tab-sheet .pikk-create-options>a:nth-child(3n) .pikk-unified-icon{color:#329aff;text-shadow:0 0 12px rgba(50,154,255,.6)}
-.pikk-unified-cancel{display:block;width:100%;margin-top:14px;padding:15px;border:1px solid rgba(194,184,220,.25);border-radius:17px;background:linear-gradient(135deg,#292833,#1c1c28);color:#fff;font:inherit;font-weight:700;cursor:pointer}
-.pikk-unified-cancel:focus-visible{outline:2px solid #f43ab1;outline-offset:2px}
-@media(max-width:390px){.pikk-unified-tab-sheet .pikk-create-options{gap:7px}.pikk-unified-tab-sheet .pikk-create-options>a{padding:10px 5px;min-height:116px}.pikk-unified-tab-sheet .pikk-create-options>a strong{font-size:12px}.pikk-unified-tab-sheet .pikk-create-options>a small{font-size:10px}}
