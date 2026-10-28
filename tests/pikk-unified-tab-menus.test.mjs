@@ -33,7 +33,7 @@ test('every non-Create bottom tab has real menu choices and a consistent card gr
 test('modal controls retain keyboard escape, focus trapping, and route close', () => {
   for(const src of [sections,music]) {
     assert.match(src, /event\.key === 'Escape'/);
-    assert.match(src, /event\.key === 'Tab'/);
+    assert.match(src, /event\.key (?:!==|===) 'Tab'/);
     assert.match(src, /hashchange/);
   }
 });
