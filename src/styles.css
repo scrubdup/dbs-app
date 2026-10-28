@@ -4528,3 +4528,14 @@ input:focus, select:focus, textarea:focus {
 .pikk-msg-no-results{padding:18px;text-align:center;color:#d7cfe8;font-size:12px;background:#19182b;border:1px dashed #655677;border-radius:12px;margin:10px 0 0}
 .pikk-msg-no-results[hidden]{display:none!important}
 @media(prefers-reduced-motion:reduce){.msg-inbox .msg-thread-row{transition:none}}
+
+/* Desktop Messages uses available space instead of a narrow phone-sized column. */
+@media(min-width:960px){
+  #app:has(.pikk-messages-hero){max-width:1000px;padding-inline:24px}
+  .page:has(.pikk-messages-hero){display:grid;grid-template-columns:minmax(0,1.6fr) minmax(250px,.8fr);gap:14px}
+  .page:has(.pikk-messages-hero)>:is(.page-head,.pikk-messages-hero,.pikk-msg-tools){grid-column:1/-1;margin-bottom:0}
+  .page:has(.pikk-messages-hero)>.card{margin:0;min-width:0}
+  .page:has(.pikk-messages-hero)>.msg-team-card{grid-column:2;grid-row:4}
+  .page:has(.pikk-messages-hero)>.card:has(#msgInbox){grid-column:1;grid-row:4 / span 2}
+  .page:has(.pikk-messages-hero)>.card:has(#msgPrefDMs){grid-column:2;grid-row:5}
+}
