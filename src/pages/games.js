@@ -1,5 +1,5 @@
 import { shellPage, esc } from '../ui.js';
-import { PIKK_GAMES } from '../games/arcade-catalog.js';
+import { PIKK_GAMES, arcadeArtSrc } from '../games/arcade-catalog.js';
 
 export function renderGames() {
   return shellPage('PIKK Arcade', `
@@ -17,7 +17,7 @@ export function renderGames() {
         <article class="pikk-arcade-card pikk-game-${esc(game.theme)}">
           <div class="pikk-arcade-card-header"><span class="pikk-arcade-number">${index+1}</span><h3>${esc(game.name)}</h3></div>
           <div class="pikk-arcade-art" aria-label="${esc(game.name)} preview artwork">
-            ${game.artwork ? `<img src="${esc(game.artwork)}" alt="Block Wars fighter preview" loading="lazy" decoding="async"/>` : `<span class="pikk-arcade-symbol" aria-hidden="true">${game.icon}</span>`}
+            ${game.artwork ? `<img src="${esc(arcadeArtSrc(game))}" alt="${esc(game.name)} concept artwork" loading="lazy" decoding="async"/>` : `<span class="pikk-arcade-symbol" aria-hidden="true">${game.icon}</span>`}
             <span class="pikk-arcade-soon">Concept Preview</span>
           </div>
           <div class="pikk-arcade-copy">
