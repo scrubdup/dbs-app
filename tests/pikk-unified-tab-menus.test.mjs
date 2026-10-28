@@ -21,12 +21,14 @@ test('every non-Create bottom tab has real menu choices and a consistent card gr
     assert.ok(SECTION_MENU_ITEMS[tab].every(item => item.href.startsWith('#/') && item.title && item.detail), tab);
   }
   assert.ok(MUSIC_MENU_ITEMS.length > 0);
-  assert.match(sections, /pikk-unified-tab-sheet/);
-  assert.match(music, /pikk-unified-tab-sheet/);
-  assert.match(sections, /pikk-unified-cancel/);
-  assert.match(music, /pikk-unified-cancel/);
+  assert.match(sections, /pikk-create-options pikk-create-grid/);
+  assert.match(music, /pikk-create-options pikk-create-grid/);
+  assert.match(sections, /pikk-menu-cancel/);
+  assert.match(music, /pikk-menu-cancel/);
   assert.match(styles, /grid-template-columns:repeat\(3,minmax\(0,1fr\)\)/);
-  assert.match(styles, /pikk-unified-icon/);
+  assert.match(styles, /pikk-create-grid \.pikk-menu-icon svg/);
+  assert.match(sections, /ICONS\[MENU_ICON_KEYS/);
+  assert.match(music, /ICONS\[MUSIC_ICON_KEYS/);
 });
 test('modal controls retain keyboard escape, focus trapping, and route close', () => {
   for(const src of [sections,music]) {
