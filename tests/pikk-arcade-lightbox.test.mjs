@@ -6,17 +6,17 @@ import { PIKK_GAMES } from '../src/games/arcade-catalog.js';
 
 test('all 15 approved Arcade covers open a full-size concept preview, not fake gameplay', () => {
   const html = renderGames();
-  assert.equal((html.match(/data-game-preview="\\d+"/g) || []).length, 15);
-  assert.equal((html.match(/class="pikk-arcade-card /g) || []).length, 15);
-  assert.match(html, /<dialog id="pikkArcadeLightbox"/);
-  assert.match(html, /data-arcade-full-image/);
-  assert.match(html, /data-arcade-prev/);
-  assert.match(html, /data-arcade-next/);
-  assert.match(html, /pikk-official-approved\\.jpg/);
-  assert.match(html, /Games are not playable yet/);
-  assert.match(html, /Play Chips have no cash value or cash-out/);
+  assert.equal(html.split('data-game-preview="').length - 1, 15);
+  assert.equal(html.split('class="pikk-arcade-card ').length - 1, 15);
+  assert.ok(html.includes('<dialog id="pikkArcadeLightbox"'));
+  assert.ok(html.includes('data-arcade-full-image'));
+  assert.ok(html.includes('data-arcade-prev'));
+  assert.ok(html.includes('data-arcade-next'));
+  assert.ok(html.includes('pikk-official-approved.jpg'));
+  assert.ok(html.includes('Games are not playable yet'));
+  assert.ok(html.includes('Play Chips have no cash value or cash-out'));
   for (const game of PIKK_GAMES) {
-    assert.match(html, new RegExp(game.artwork.split('/').pop().replaceAll('.', '\\.')));
+    assert.ok(html.includes(game.artwork.split('/').pop()));
   }
 });
 
@@ -27,7 +27,7 @@ test('preview wraps around without modifying catalog, and uses project-base imag
   assert.equal(arcadePreviewAt(15).title, first.title);
   assert.equal(arcadePreviewAt(-1).title, last.title);
   assert.equal(first.total, 15);
-  assert.match(first.image, /games\\/approved\\/01_block_wars\\.jpg$/);
+  assert.ok(first.image.endsWith('games/approved/01_block_wars.jpg'));
   assert.equal(PIKK_GAMES.length, 15);
 });
 
@@ -68,8 +68,8 @@ test('route binds real open, next, previous, keyboard, and close actions with fo
 
 test('Arcade route binds preview only on Arcade and keeps global shell/player', () => {
   const main = readFileSync(new URL('../src/main.js', import.meta.url), 'utf8');
-  assert.match(main, /import \\{ renderGames, bindGames \\} from '\\.\\/pages\\/games\\.js'/);
-  assert.match(main, /'\\/games': \\{ render: renderGames, bind: bindGames \\}/);
-  assert.match(main, /initDbsPlayer/);
-  assert.match(main, /buildTabbar/);
+  assert.ok(main.includes("import { renderGames, bindGames } from './pages/games.js'"));
+  assert.ok(main.includes("'/games': { render: renderGames, bind: bindGames }"));
+  assert.ok(main.includes('initDbsPlayer'));
+  assert.ok(main.includes('buildTabbar'));
 });
