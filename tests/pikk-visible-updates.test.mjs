@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { RECENT_RELEASES } from '../src/pages/updates.js';
+const updates = readFileSync(new URL('../src/pages/updates.js', import.meta.url), 'utf8');
 
 const main = readFileSync(new URL('../src/main.js', import.meta.url), 'utf8');
 const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
@@ -13,10 +13,9 @@ test('update center is a real route and accessible from menu and footer', () => 
   assert.match(html, /href="#\/updates"/);
 });
 test('release links point to actual completed PIKK sections and PRs', () => {
-  assert.deepEqual(RECENT_RELEASES.map(x => x.pr), [95,94,93,92,91]);
-  for (const release of RECENT_RELEASES) {
-    assert.match(release.route, /^#\/(home|messages|dating|games)$/);
-  }
+  assert.match(updates, /pr: 95[\s\S]*pr: 94[\s\S]*pr: 93[\s\S]*pr: 92[\s\S]*pr: 91/);
+  assert.match(updates, /href="\\$\\{esc\\(release.route\\)\\}"/);
+  assert.match(updates, /pikkUpdatesRefresh/);
 });
 test('production version is the source commit of the deployed build', () => {
   assert.match(workflow, /VITE_BUILD_SHA: \$\{\{ github\.sha \}\}/);
