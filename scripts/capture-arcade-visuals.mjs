@@ -28,6 +28,39 @@ try {
       if (!nav) throw new Error('Navigation missing from Arcade route');
     }
     await page.screenshot({ path: 'visual-evidence/' + file, fullPage, animations: 'disabled', timeout: 20000 });
+    // Validate the real full-size concept-art viewer, not just the static cards.
+    if (route === 'games') {
+      const previewButtons = page.locator('[data-game-preview]');
+      if (await previewButtons.count() !== 15) throw new Error('Expected 15 View artwork controls');
+      await previewButtons.first().click();
+      const dialog = page.locator('#pikkArcadeLightbox');
+      if (!await dialog.evaluate(el => el.open)) throw new Error('Arcade artwork dialog did not open');
+      if (await dialog.locator('[data-arcade-title]').textContent() !== 'Block Wars') {
+        throw new Error('Wrong initial concept artwork');
+      }
+      await dialog.locator('[data-arcade-next]').click();
+      if (await dialog.locator('[data-arcade-title]').textContent() !== 'PIKK Playground') {
+        throw new Error('Next artwork navigation failed');
+      }
+      await page.keyboard.press('ArrowLeft');
+      if (await dialog.locator('[data-arcade-title]').textContent() !== 'Block Wars') {
+        throw new Error('Keyboard artwork navigation failed');
+      }
+      const art = dialog.locator('[data-arcade-full-image]');
+      await art.evaluate(img => img.decode());
+      const fits = await dialog.evaluate(el => {
+        const r = el.getBoundingClientRect();
+        return r.left >= -1 && r.right <= innerWidth + 1 && r.top >= -1 && r.bottom <= innerHeight + 1;
+      });
+      if (!fits) throw new Error('Artwork viewer overflows the ' + width + 'px viewport');
+      await page.screenshot({
+        path: 'visual-evidence/arcade-preview-' + (width === 390 ? 'mobile' : 'desktop') + '.png',
+        fullPage: false, animations: 'disabled', timeout: 20000,
+      });
+      await page.keyboard.press('Escape');
+      if (await dialog.evaluate(el => el.open)) throw new Error('Escape did not close the artwork viewer');
+    }
+
     await page.close();
     console.log('Captured ' + file);
   }

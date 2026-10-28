@@ -4409,3 +4409,30 @@ input:focus, select:focus, textarea:focus {
 @media(max-width:800px){.pikk-arcade-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.pikk-arcade-brand img{width:190px}}
 @media(max-width:620px){.pikk-arcade-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.pikk-arcade-intro.card{padding:14px 13px}.pikk-arcade-brand{gap:6px}.pikk-arcade-brand img{width:clamp(95px,30vw,150px);height:48px}.pikk-arcade-brand span{font-size:clamp(26px,9vw,42px)}.pikk-arcade-icon{font-size:32px}.pikk-arcade-toolbar span{display:none}.pikk-arcade-card-header{padding:6px;min-height:44px;gap:6px}.pikk-arcade-card-header .pikk-arcade-number{flex-basis:27px;width:27px;height:27px;font-size:14px}.pikk-arcade-card-header h3{font-size:clamp(10px,3vw,13px)}.pikk-arcade-copy{padding:9px;min-height:172px}.pikk-arcade-copy p{font-size:11px}.pikk-arcade-players{font-size:11px}.pikk-arcade-action{font-size:11px;padding:9px 5px}}
 @media(max-width:350px){.pikk-arcade-card-header h3{font-size:10px}.pikk-arcade-copy{min-height:190px}}
+
+
+/* Owner-approved Arcade art viewer: separate from gameplay, scoped to #/games. */
+.pikk-arcade-view{width:100%;display:flex;align-items:center;justify-content:center;gap:8px;margin:0 0 8px;padding:9px 7px;border:1px solid #6e78ba;border-radius:9px;background:linear-gradient(110deg,#1d2750,#332050);color:#f2eaff;font-size:12px;font-weight:800;line-height:1.2;font-family:inherit;cursor:pointer;transition:background .16s,border-color .16s,transform .16s}
+.pikk-arcade-view:hover{background:linear-gradient(110deg,#2c3c76,#562c79);border-color:#bba5ff;transform:translateY(-1px)}
+.pikk-arcade-view span{font-size:16px;color:#9feaff}
+.pikk-arcade-view:focus-visible,.pikk-arcade-lightbox button:focus-visible{outline:3px solid #8fe5ff;outline-offset:3px}
+.pikk-arcade-lightbox{position:fixed;inset:0;box-sizing:border-box;width:min(820px,calc(100vw - 24px));max-width:820px;max-height:min(92svh,920px);margin:auto;padding:0;border:1px solid #6a83ce;border-radius:22px;overflow:auto;color:#f6f4ff;background:linear-gradient(150deg,#131a36,#0b1021 75%);box-shadow:0 22px 90px #000d,0 0 42px #355cbb3a}
+.pikk-arcade-lightbox::backdrop{background:#02030ad9;backdrop-filter:blur(8px)}
+.pikk-arcade-lightbox-panel{padding:16px}
+.pikk-arcade-lightbox-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 13px}
+.pikk-arcade-lightbox-kicker{font-size:11px;font-weight:900;letter-spacing:.13em;color:#8fe5ff}
+.pikk-arcade-lightbox-kicker [data-arcade-counter]{margin-left:10px;color:#ffc3e8}
+.pikk-arcade-lightbox-close{flex:0 0 38px;width:38px;height:38px;border:1px solid #5b628e;border-radius:11px;background:#262b48;color:#fff;font-size:27px;line-height:1;cursor:pointer}
+.pikk-arcade-lightbox-art{overflow:hidden;border:1px solid #49649d;border-radius:15px;background:#0b1020;aspect-ratio:600/390}
+.pikk-arcade-lightbox-art img{display:block;width:100%;height:100%;object-fit:contain}
+.pikk-arcade-lightbox-bottom{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:17px 3px 4px}
+.pikk-arcade-lightbox-description{min-width:0}
+.pikk-arcade-lightbox-description h2{margin:0 0 5px;font-size:clamp(20px,4vw,30px);font-weight:950;letter-spacing:-.035em;color:#fff}
+.pikk-arcade-lightbox-description p{margin:0 0 8px;color:#d4d8ee;font-size:13px;line-height:1.5}
+.pikk-arcade-lightbox-description [data-arcade-players]{font-size:11px;font-weight:800;color:#ffbddc}
+.pikk-arcade-lightbox-controls{display:flex;gap:8px;flex-shrink:0}
+.pikk-arcade-lightbox-controls button{width:43px;height:43px;border:1px solid #7585c3;border-radius:11px;background:linear-gradient(140deg,#242c55,#402a69);color:#fff;font-size:23px;cursor:pointer}
+.pikk-arcade-lightbox-controls button:hover,.pikk-arcade-lightbox-close:hover{background:#4a3d7b}
+.pikk-arcade-lightbox-note{margin:12px 3px 0;padding-top:12px;border-top:1px solid #3a4265;color:#9caacb;font-size:11px}
+@media(max-width:620px){.pikk-arcade-view{padding:8px 4px;font-size:11px}.pikk-arcade-lightbox{width:calc(100vw - 16px);border-radius:15px}.pikk-arcade-lightbox-panel{padding:10px}.pikk-arcade-lightbox-art{border-radius:10px}.pikk-arcade-lightbox-kicker{font-size:9px;letter-spacing:.08em}.pikk-arcade-lightbox-bottom{align-items:flex-start}.pikk-arcade-lightbox-controls button{width:38px;height:38px}.pikk-arcade-lightbox-description p{font-size:12px}}
+@media(prefers-reduced-motion:reduce){.pikk-arcade-view{transition:none}.pikk-arcade-view:hover{transform:none}}
