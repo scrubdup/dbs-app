@@ -16,3 +16,10 @@ export const PIKK_GAMES = Object.freeze([
   { name: 'PIKK Dominoes', players: '2–4', icon: '🁢', theme: 'dominoes', description: 'Match tiles and outplay opponents.' },
   { name: 'PIKK Chess', players: '2', icon: '♟', theme: 'chess', description: 'Challenge opponents in a classic strategy game.' },
 ]);
+
+/** Resolve game art on GitHub Pages and local development hosts. */
+export function arcadeArtSrc(game) {
+  if (!game?.artwork) return '';
+  const base = (import.meta.env && import.meta.env.BASE_URL) || '/';
+  return base.replace(/\/?$/, '/') + String(game.artwork).replace(/^\/+/, '');
+}
