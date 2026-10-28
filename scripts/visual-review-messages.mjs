@@ -24,6 +24,13 @@ try {
     await page.locator('#msgBackInbox').click();
     await page.locator('#pikkMsgSearch').waitFor();
     assert.ok(await page.locator('#msgInbox [data-open-thread]').count() > 0);
+    if (width >= 960) {
+      const inbox = await page.locator('#msgInbox').boundingBox();
+      const team = await page.locator('.msg-team-card').boundingBox();
+      assert.ok(inbox && team && inbox.x < team.x, 'Desktop inbox and team card must be side by side');
+    }
+    // Let the demo group-created toast fade before visual capture.
+    await page.waitForTimeout(2400);
     await page.screenshot({ path: 'visual-review/messages-' + name + '.png', fullPage: true });
     await page.locator('#pikkMsgSearch').fill('unfindable___999');
     assert.equal(await page.locator('#msgInbox [data-open-thread]:visible').count(), 0);
