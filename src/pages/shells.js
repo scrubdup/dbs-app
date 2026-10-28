@@ -547,7 +547,22 @@ export function renderCommunity() {
 
   return shellPage(
     'PIKK Lounge',
-    `<div class="card lounge-intro">
+    `<section class="pikk-reddit-hub" id="pikkCommunitiesHub">
+      <p class="kicker">PIKK CONNECT · COMMUNITY DISCUSSIONS</p>
+      <h2>Your interests. Your conversations.</h2>
+      <p>Explore topic-based discussion boards, share questions, and meet people through ideas. Designed for PIKK, with a Reddit-style discussion feed.</p>
+      <div class="pikk-reddit-topics" aria-label="Community categories">
+        <a href="#/communities?topic=music"><span aria-hidden="true">♫</span> Music</a>
+        <a href="#/communities?topic=business"><span aria-hidden="true">$</span> Business &amp; Money</a>
+        <a href="#/communities?topic=relationships"><span aria-hidden="true">♡</span> Relationships</a>
+        <a href="#/communities?topic=gaming"><span aria-hidden="true">♜</span> Gaming</a>
+        <a href="#/communities?topic=sports"><span aria-hidden="true">★</span> Sports</a>
+        <a href="#/communities?topic=entertainment"><span aria-hidden="true">▶</span> Entertainment</a>
+      </div>
+      <a class="btn primary" href="#/communities">Open PIKK Communities</a>
+      <p class="muted" style="font-size:11px">Preview · browser-local posts and voting until secure accounts and moderation launch</p>
+    </section>
+    <div class="card lounge-intro">
       <p class="kicker">Artist-owned network</p>
       <h2 style="margin:0 0 8px">Channel-style Lounge</h2>
       <p>PIKK Lounge is DatBoiSkeet’s premium community — Discord-type channel UX (sidebar + room panes) under silver/dark PIKK branding. Announcements, listening parties, and fan conversations in one place.</p>
@@ -653,18 +668,64 @@ export function renderNotifications() {
   const n = getState().notifications;
   return shellPage(
     'Notifications',
-    `<div class="card" id="notifPrefs">
+    `<section class="pikk-notif-overview" aria-label="Notification inbox">
+      <div class="pikk-notif-hero">
+        <div>
+          <p class="kicker">PIKK ACTIVITY CENTER</p>
+          <h2>Stay in the loop.</h2>
+          <p>Follow the conversations, creators, and content that matter to you.</p>
+        </div>
+        <span class="pikk-notif-hero-icon" aria-hidden="true">♢</span>
+      </div>
+      <nav class="pikk-notif-filters" aria-label="Notification type filters">
+        <button type="button" class="on" data-notif-filter="all" aria-pressed="true">All</button>
+        <button type="button" data-notif-filter="likes" aria-pressed="false">Likes</button>
+        <button type="button" data-notif-filter="comments" aria-pressed="false">Comments</button>
+        <button type="button" data-notif-filter="follows" aria-pressed="false">Follows</button>
+      </nav>
+      <section class="pikk-notif-inbox" aria-live="polite">
+        <div class="pikk-notif-empty">
+          <span class="pikk-notif-empty-icon" aria-hidden="true">♢</span>
+          <h3 id="notifEmptyHeading">No notifications yet</h3>
+          <p id="notifEmptyText">When in-app notifications are connected, activity will appear here. PIKK does not generate fake alerts.</p>
+          <a class="btn ghost" href="#/posts">Explore Posts</a>
+        </div>
+      </section>
+    </section>
+    <section class="card pikk-notif-preferences" id="notifPrefs">
+      <h3>Notification preferences</h3>
+      <p class="muted" style="font-size:12px">Control which alerts you want to receive when the notification service is available. Preferences are saved on this device.</p>
       <div class="toggle"><span>New releases</span><input type="checkbox" data-k="releases" ${n.releases ? 'checked' : ''}/></div>
       <div class="toggle"><span>Livestreams</span><input type="checkbox" data-k="lives" ${n.lives ? 'checked' : ''}/></div>
       <div class="toggle"><span>Messages</span><input type="checkbox" data-k="messages" ${n.messages ? 'checked' : ''}/></div>
       <div class="toggle"><span>Quiet hours</span><input type="checkbox" data-k="quietHours" ${n.quietHours ? 'checked' : ''}/></div>
-      <p class="muted" style="margin-top:10px">Prefs saved on this device.</p>
-    </div>`,
-    { lead: 'In-app center & alert controls.' }
+    </section>`,
+    { lead: 'Activity · likes · comments · follows · alerts preview' }
   );
 }
 
 export function bindNotifications(root) {
+  const labels = {
+    all: ['No notifications yet', 'When in-app notifications are connected, activity will appear here. PIKK does not generate fake alerts.'],
+    likes: ['No likes to show', 'Likes will appear here after the activity service launches.'],
+    comments: ['No comments to show', 'New comment alerts will appear here when notifications are connected.'],
+    follows: ['No follows to show', 'New follower alerts will appear here when notifications are connected.'],
+  };
+  root.querySelectorAll('[data-notif-filter]').forEach(button => {
+    button.addEventListener('click', () => {
+      const selected = button.dataset.notifFilter;
+      root.querySelectorAll('[data-notif-filter]').forEach(other => {
+        const active = other === button;
+        other.classList.toggle('on', active);
+        other.setAttribute('aria-pressed', String(active));
+      });
+      const pair = labels[selected] || labels.all;
+      const heading = root.querySelector('#notifEmptyHeading');
+      const detail = root.querySelector('#notifEmptyText');
+      if (heading) heading.textContent = pair[0];
+      if (detail) detail.textContent = pair[1];
+    });
+  });
   root.querySelectorAll('#notifPrefs input').forEach((el) => {
     el.addEventListener('change', () => {
       setNotifPrefs({ [el.dataset.k]: el.checked });

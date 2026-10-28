@@ -26,9 +26,10 @@ export function ensureMusicMenu() {
   panel.hidden = true;
   panel.innerHTML = `<div class="pikk-create-sheet" role="dialog" aria-modal="true" aria-labelledby="pikkMusicMenuTitle">
     <div class="pikk-create-head"><strong id="pikkMusicMenuTitle">Music on PIKK</strong><button type="button" class="btn ghost" data-music-close aria-label="Close music menu">✕</button></div>
-    <div class="pikk-create-options">
-      ${MUSIC_MENU_ITEMS.map((item) => `<a href="${item.href}">${item.icon} ${item.label}<small>${item.detail}</small></a>`).join('')}
+    <div class="pikk-create-options pikk-category-options">
+      ${MUSIC_MENU_ITEMS.map((item) => `<a href="${item.href}"><span class="pikk-menu-icon" aria-hidden="true">${item.icon}</span><strong class="pikk-menu-title">${item.label}</strong><small>${item.detail}</small></a>`).join('')}
     </div>
+    <button type="button" class="pikk-menu-cancel" data-music-close>Cancel</button>
     <p class="muted" style="font-size:11px;margin:10px 0 0">TEST MODE · Beat selling and music uploads are not available yet</p>
   </div>`;
   document.body.appendChild(panel);

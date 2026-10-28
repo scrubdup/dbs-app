@@ -49,6 +49,22 @@ export function renderPikkShop() {
     `<li><span>${esc(category)}</span><span class="chip">Coming Soon</span></li>`
   ).join('');
   return shellPage('PIKK Shop', `
+    <section class="pikk-shop-showcase" aria-label="PIKK Shop featured store">
+      <div class="pikk-shop-showcase-copy">
+        <p class="kicker">PIKK SHOP · STYLE &amp; CREATOR BRANDS</p>
+        <h2>Shop the culture.<br/><span>Express your style.</span></h2>
+        <p>Discover authentic Foreign X-Change merchandise while PIKK's verified seller marketplace is developed.</p>
+        <a class="btn primary" href="#/shop#pikkShopCatalog">Browse merchandise</a>
+        <small>External merchant checkout · No PIKK in-app payments</small>
+      </div>
+      <div class="pikk-shop-showcase-art" aria-hidden="true"><span>✦</span><strong>SHOP</strong></div>
+    </section>
+    <nav class="pikk-shop-departments" aria-label="Shopping sections">
+      <a href="#/shop#pikkShopCatalog">All Products</a>
+      <a href="#/merch">Foreign X-Change</a>
+      <a href="#/marketplace">Marketplace · Preview</a>
+      <a href="#/profile-shop">Profile Accessories</a>
+    </nav>
     <section class="card" aria-label="PIKK Shop information">
       <span class="chip">PIKK Shop · Phase 1 preview</span>
       <h2>Discover real merchandise</h2>
@@ -60,7 +76,7 @@ export function renderPikkShop() {
         <a class="btn ghost" href="#/profile-shop">Profile Shop · cosmetic preview</a>
       </div>
     </section>
-    <section class="card" id="pikkShopCatalog" aria-label="Browse merchandise">
+    <section class="card pikk-shop-catalog" id="pikkShopCatalog" aria-label="Browse merchandise">
       <h3>Foreign X-Change catalog</h3>
       <label for="pikkShopSearch">Search merchandise</label>
       <input id="pikkShopSearch" type="search" placeholder="Search hats, shirts, jackets…" autocomplete="off" />
@@ -68,7 +84,7 @@ export function renderPikkShop() {
         ${chips}
       </div>
       <p class="muted small" id="pikkShopCount" aria-live="polite">${MERCH.length} items</p>
-      <div class="merch-grid" id="pikkShopProducts">${MERCH.map(merchCard).join('')}</div>
+      <div class="merch-grid pikk-shop-premium-grid" id="pikkShopProducts">${MERCH.map(merchCard).join('')}</div>
       <p class="muted" id="pikkShopEmpty" hidden>No matching merchandise. Try another search or category.</p>
     </section>
     <section class="card" aria-label="Future PIKK Shop departments">

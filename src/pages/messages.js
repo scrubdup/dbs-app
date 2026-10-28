@@ -62,18 +62,28 @@ function renderInbox(user) {
         ? `<span class="chip msg-unread-chip" aria-label="${unreadN} unread">${unreadN}</span>`
         : '';
       return `
-      <button type="button" class="msg-thread-row${unreadN ? ' has-unread' : ''}" data-open-thread="${esc(t.id)}">
-        <div class="msg-thread-top">
+      <button type="button" class="msg-thread-row${unreadN ? ' has-unread' : ''}" data-search="${esc(String(t.peerName || t.peerId).toLowerCase())}" data-open-thread="${esc(t.id)}">
+        <div class="pikk-msg-avatar" aria-hidden="true">${esc(String(t.peerName || t.peerId || "?").slice(0,1).toUpperCase())}</div>
+        <div class="pikk-msg-thread-body"><div class="msg-thread-top">
           <strong>${esc(t.peerName || t.peerId)}</strong>
           <span class="muted">${esc(timeAgo(t.updatedAt || 0))}</span>
         </div>
         <div class="msg-thread-preview muted">${esc(lastPreview(t))}</div>
-        <div class="msg-thread-chips">${unreadChip}${chips}</div>
+        <div class="msg-thread-chips">${unreadChip}${chips}</div></div>
       </button>`;
     })
     .join('');
 
   return `
+    <section class="pikk-messages-hero" aria-label="PIKK inbox">
+      <div><p class="kicker">PIKK CONNECT · MESSAGES</p><h2>Your conversations.</h2><p>Stay connected with people, groups, and the DatBoiSkeet team.</p></div>
+      <span class="pikk-messages-hero-mark" aria-hidden="true">✉</span>
+    </section>
+    <div class="pikk-msg-tools">
+      <label for="pikkMsgSearch">Search conversations</label>
+      <input id="pikkMsgSearch" type="search" placeholder="Search messages..." autocomplete="off" aria-controls="msgInbox" />
+      <div class="pikk-msg-tool-actions"><button type="button" class="btn primary" id="pikkNewChatTop">+ New chat</button><button type="button" class="btn ghost" id="pikkGroupTop">Group chat</button></div>
+    </div>
     <div class="card msg-team-card">
       <h3>DatBoiSkeet · Team inbox</h3>
       <p class="muted" style="margin:0 0 10px">Free inquiry or <strong>Priority $2.99 TEST MODE</strong> (not charged). Priority = faster review, not a guaranteed personal reply.</p>
@@ -270,8 +280,15 @@ export function bindMessages(root) {
 
   root.querySelector('#msgBackInbox')?.addEventListener('click', goInbox);
   root.querySelector('#msgNewChat')?.addEventListener('click', () => refresh('#/messages?view=new'));
+  root.querySelector('#pikkNewChatTop')?.addEventListener('click', () => refresh('#/messages?view=new'));
+  root.querySelector('#pikkMsgSearch')?.addEventListener('input', e => {
+    const query=String(e.target.value||'').trim().toLowerCase();
+    root.querySelectorAll('#msgInbox [data-open-thread]').forEach(row => { row.hidden=!!query&&!String(row.dataset.search||'').includes(query); });
+  });
   root.querySelector('#msgEmptyNew')?.addEventListener('click', () => refresh('#/messages?view=new'));
   root.querySelector('#msgOpenTeam')?.addEventListener('click', () => refresh('#/messages?view=team'));
+
+  root.querySelector('#pikkGroupTop')?.addEventListener('click', () => root.querySelector('#msgOpenGroup')?.click());
 
   root.querySelector('#msgOpenGroup')?.addEventListener('click', () => {
     const g = ensureDemoGroupThread();

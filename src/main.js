@@ -41,6 +41,7 @@ import { renderShop, bindShop } from './pages/shop.js';
 import { renderPikkShop, bindPikkShop } from './pages/pikk-shop.js';
 import { renderSpotlight, bindSpotlight } from './pages/spotlight.js';
 import { renderConnect, bindConnect } from './pages/connect.js';
+import { renderCommunities, bindCommunities } from './pages/communities.js';
 import { renderShorts, bindShorts } from './pages/shorts.js';
 import { renderBlockWars, bindBlockWars } from './pages/blockwars.js';
 import { renderGames } from './pages/games.js';
@@ -84,6 +85,7 @@ const ROUTES = {
   '/admin': { render: renderAdmin, bind: bindAdmin },
   '/guidelines': { render: renderGuidelines },
   '/community': { render: renderCommunity, bind: bindCommunity },
+  '/communities': { render: renderCommunities, bind: bindCommunities },
   '/signup': { render: renderSignup },
   '/messages': { render: renderMessages, bind: bindMessages },
   '/shop': { render: renderPikkShop, bind: bindPikkShop },
@@ -171,18 +173,18 @@ function ensureCreateMenu() {
   panel.hidden = true;
   panel.innerHTML = `<div class="pikk-create-sheet" role="dialog" aria-modal="true" aria-label="Create on PIKK">
     <div class="pikk-create-head"><strong>Create on PIKK</strong><button type="button" class="btn ghost" data-create-close aria-label="Close create menu">✕</button></div>
-    <div class="pikk-create-options">
-      <a href="#/posts?type=picture">▧ Post Picture <small>Photo or album · TEST MODE</small></a>
-      <a href="#/posts?type=short">▣ Create Reel <small>Short-form video · TEST MODE</small></a>
-      <a href="#/posts?type=short">▶ Upload Short <small>Vertical clip · TEST MODE</small></a>
-      <a href="#/posts?type=picture">◌ Post Story <small>Story publishing not yet available</small></a>
-      <a href="#/music">◉ Upload Beat <small>Producer uploads coming later</small></a>
-      <a href="#/music">♫ Upload Song <small>Music uploads coming later</small></a>
-      <a href="#/live?go=1">● Go Live <small>Livestream controls · TEST MODE</small></a>
-      <a href="#/posts?type=video">▸ Upload Video <small>Long video · TEST MODE</small></a>
-      <a href="#/shop">▤ Sell Something <small>Shop listing tools · TEST MODE</small></a>
-      <a href="#/posts?type=text">✎ Write Post <small>Text and updates</small></a>
+    <div class="pikk-create-options pikk-create-grid">
+      <a href="#/live?go=1" class="pikk-create-tile"><span class="pikk-menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="13" height="12" rx="3"/><path d="m16 10 5-3v10l-5-3"/></svg></span><strong class="pikk-menu-title">Go Live</strong><small>Start a stream · TEST MODE</small></a>
+      <a href="#/posts?type=video" class="pikk-create-tile"><span class="pikk-menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m7 4 14 8-14 8z"/></svg></span><strong class="pikk-menu-title">Upload Video</strong><small>Long video · TEST MODE</small></a>
+      <a href="#/posts?type=short" class="pikk-create-tile"><span class="pikk-menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="3" width="12" height="18" rx="2"/><path d="m11 9 4 3-4 3z"/><circle cx="15" cy="6" r="1"/></svg></span><strong class="pikk-menu-title">Shorts / Reels</strong><small>Short video</small></a>
+      <a href="#/posts?type=picture" class="pikk-create-tile"><span class="pikk-menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8" cy="9" r="1.4"/><path d="m4 18 6-6 4 4 3-3 4 5"/></svg></span><strong class="pikk-menu-title">Post Photos</strong><small>Add photos</small></a>
+      <a href="#/posts?type=picture" class="pikk-create-tile"><span class="pikk-menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9" stroke-dasharray="2.5 3.5"/><path d="M12 7v10M7 12h10"/></svg></span><strong class="pikk-menu-title">Story</strong><small>24-hour stories · planned</small></a>
+      <a href="#/music?view=upload" class="pikk-create-tile"><span class="pikk-menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V6l11-2v12"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg></span><strong class="pikk-menu-title">Upload Music</strong><small>Beat / song · planned</small></a>
+      <a href="#/shop" class="pikk-create-tile"><span class="pikk-menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h10l8 8-9 9-9-9z"/><circle cx="9" cy="9" r="1.8"/></svg></span><strong class="pikk-menu-title">Sell Something</strong><small>List a product · TEST MODE</small></a>
+      <a href="#/posts?type=text" class="pikk-create-tile"><span class="pikk-menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h10l4 4v14H5z"/><path d="M15 3v5h4M8 12h8M8 16h8"/></svg></span><strong class="pikk-menu-title">Create Post</strong><small>Text / poll / link</small></a>
+      <a href="#/pricing" class="pikk-create-tile"><span class="pikk-menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15 8.5c-1.5-1.7-6-1.2-6 1.5 0 3 6 1.1 6 4 0 2.7-4.5 3.2-6 1.5M12 5v14"/></svg></span><strong class="pikk-menu-title">Paid Content</strong><small>Premium creator content · planned</small></a>
     </div>
+    <button type="button" class="pikk-menu-cancel" data-create-close>Cancel</button>
     <p class="muted" style="font-size:11px;margin:10px 0 0">TEST MODE · uploads depend on available prototype tools</p>
   </div>`;
   document.body.appendChild(panel);
