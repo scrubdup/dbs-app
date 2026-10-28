@@ -4691,3 +4691,11 @@ html body #tabbar.tabbar.tabbar-reshaped.tabbar-fit7 > a.tab-primary > span:last
 #pikkShopSearch {display:block;width:100%;min-height:43px;padding:11px 15px;border-radius:12px;border:1px solid #595078;background:#151521;color:#fff;font:inherit}
 #pikkShopSearch:focus-visible {outline:2px solid #ef77d1;outline-offset:2px}
 #pikkShopSearch::placeholder {color:#a9a3bc}
+
+/* Full Create hub: retain approved three-column cards while allowing every creator option. */
+#pikkCreateMenu .pikk-create-sheet{max-height:min(88dvh,850px);overflow-y:auto;overscroll-behavior:contain}
+#pikkCreateMenu .pikk-create-menu-group{margin:12px 0 20px}
+#pikkCreateMenu .pikk-create-menu-group h3{font-size:13px;font-weight:800;letter-spacing:.04em;margin:0 0 10px;color:#e8d9ff}
+#pikkCreateMenu .pikk-create-menu-group .pikk-create-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+#pikkCreateMenu .pikk-create-menu-group .pikk-create-tile{min-width:0}
+@media(max-width:390px){#pikkCreateMenu .pikk-create-menu-group .pikk-create-options{gap:7px}}
