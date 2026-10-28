@@ -19,3 +19,11 @@
 .pikk-updates-note{font-size:12px;line-height:1.6;color:#a9a6b9}
 @media(max-width:580px){.pikk-updates-hero{grid-template-columns:1fr;padding:17px}.pikk-updates-hero-mark{height:65px;font-size:23px}.pikk-update-card{gap:10px;padding:12px}.pikk-update-number{flex-basis:35px;width:35px;height:35px;font-size:12px}}
 @media(prefers-reduced-motion:reduce){.pikk-updates-hero,.pikk-update-card{scroll-behavior:auto}}
+
+/* Use the full desktop canvas, matching the approved premium section layout. */
+@media(min-width:960px){
+  #app:has(.pikk-updates-hero){max-width:1040px;padding-inline:24px}
+  .pikk-updates-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .pikk-updates-list>h2{grid-column:1/-1;margin-bottom:0}
+  .pikk-update-card{margin:0;min-height:155px}
+}
