@@ -25,5 +25,5 @@ test('inbox has functional search, quick chat, group and empty search results', 
 
 test('Messages visual update preserves owner-approved seven navigation tabs', () => {
   assert.deepEqual(TABBAR.map(x => x.href),
-    ['#/home', '#/music', '#/videos', '#/create', '#/connect', '#/dating', '#/shop']);
+    ['#/music', '#/videos', '#/connect', '#/create', '#/dating', '#/games', '#/shop']);
 });
