@@ -4624,3 +4624,25 @@ html body #tabbar.tabbar.tabbar-reshaped.tabbar-fit7 > a.tab-primary > span:last
 @media(max-width:390px){.pikk-create-grid .pikk-menu-icon svg{width:31px;height:31px}.pikk-create-options.pikk-create-grid a{min-height:103px}.pikk-menu-cancel{min-height:40px}}
 
 
+
+
+/* PIKK Music Ownership — distinct premium old-school music purchase proposition. */
+.pikk-own-music{margin:15px 0 20px;padding:clamp(16px,3vw,24px);border-radius:20px;border:1px solid #5c487b;background:radial-gradient(ellipse at 95% 0%,#bf265348,transparent 55%),radial-gradient(ellipse at 5% 100%,#2855c25a,transparent 60%),#151520;box-shadow:0 10px 30px #0009}
+.pikk-own-music-header{display:flex;justify-content:space-between;align-items:center;gap:15px}
+.pikk-own-music .kicker{color:#fba7d2;font-size:10px;font-weight:850;letter-spacing:.14em;margin:0 0 8px}
+.pikk-own-music h2{font-size:clamp(22px,4.5vw,34px);letter-spacing:-.05em;line-height:1.12;margin:0 0 11px}
+.pikk-own-music h2 span{color:#ff91ca}
+.pikk-own-music-header p:not(.kicker){font-size:12px;color:#d0c9e3;max-width:660px;line-height:1.6;margin:0}
+.pikk-own-disc{width:80px;height:80px;flex:0 0 80px;border:3px solid #8082ca;display:grid;place-items:center;border-radius:50%;font-size:38px;background:repeating-radial-gradient(circle,#15172e 0 5px,#31324a 6px 7px);color:#f987e4;box-shadow:0 0 20px #bd34a15e,inset 0 0 18px #000}
+.pikk-own-prices{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin:19px 0}
+.pikk-own-prices div{display:flex;flex-direction:column;align-items:center;gap:5px;background:linear-gradient(155deg,#2d2940,#1a1c2c);border:1px solid #514469;border-radius:12px;padding:15px 4px}
+.pikk-own-prices strong{font-size:clamp(15px,2vw,22px);color:#fff}
+.pikk-own-prices small{font-size:11px;color:#e0afd8}
+.pikk-own-footer{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.pikk-own-footer strong{font-size:14px;color:white}
+.pikk-own-footer p{font-size:11px;line-height:1.5;color:#c9c4dc;margin:6px 0 0}
+.pikk-own-footer a{flex:0 0 auto}
+.pikk-own-notice{font-size:11px;line-height:1.6;color:#bdb9ce;border-top:1px solid #49445c;padding-top:12px;margin:15px 0 0}
+.pikk-own-notice strong{color:#ffb7db}
+@media(max-width:700px){.pikk-own-prices{grid-template-columns:repeat(3,minmax(0,1fr))}.pikk-own-footer{flex-direction:column;align-items:flex-start}.pikk-own-disc{height:53px;width:53px;flex-basis:53px;font-size:26px}.pikk-own-prices div{padding:12px 4px}}
+@media(max-width:380px){.pikk-own-prices{grid-template-columns:repeat(2,minmax(0,1fr))}.pikk-own-music{padding:13px}}
