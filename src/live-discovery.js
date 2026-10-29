@@ -104,5 +104,9 @@ export function renderLiveDiscoveryDirectory(categories, escapeHtml) {
       '<span class="pikk-live-directory-chevron" aria-hidden="true">⌄</span></summary>' +
       '<div class="live-cat-cards pikk-live-directory-cards">' + extra.map(card).join('') + '</div></details>');
   }
-  return '<div class="pikk-live-directory" aria-label="Live category groups">' + groups.join('') + '</div>';
+  return '<div class="pikk-live-directory" aria-label="Live category groups">' +
+    '<label for="pikkLiveRoomSearch" class="muted">Find a Live room</label>' +
+    '<input id="pikkLiveRoomSearch" type="search" autocomplete="off" placeholder="Search rooms or topics" aria-controls="pikkLiveRoomGroups" />' +
+    '<p id="pikkLiveRoomSearchStatus" class="muted" role="status" aria-live="polite"></p>' +
+    '<div id="pikkLiveRoomGroups">' + groups.join('') + '</div></div>';
 }
