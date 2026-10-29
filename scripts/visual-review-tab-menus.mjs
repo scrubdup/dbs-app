@@ -2,6 +2,10 @@ import assert from 'node:assert/strict';
 import { mkdir } from 'node:fs/promises';
 import { chromium } from 'playwright';
 
+// The app uses local/system fonts; avoid a flaky Chromium screenshot wait on
+// unrelated pending web fonts (e.g. third-party embedded media).
+process.env.PW_TEST_SCREENSHOT_NO_FONTS_READY = '1';
+
 // Checks the owner's screenshot requirement: ALL seven bottom tabs use the
 // existing Create dialog's actual grid, outlined icons, tile and cancel CSS.
 // These are real browser interactions, not static string checks.
@@ -11,7 +15,7 @@ const sections = [
   ['videos', 'pikkVideosMenu', 4],
   ['connect', 'pikkConnectMenu', 5],
   ['dating', 'pikkDatingMenu', 4],
-  ['games', 'pikkGamesMenu', 2],
+  ['games', 'pikkGamesMenu', 12],
   ['shop', 'pikkShopMenu', 4],
 ];
 const expectedTabs = ['Music', 'Videos', 'Connect', 'Create', 'Dating', 'Games', 'Shop'];
@@ -84,6 +88,15 @@ try {
         await page.screenshot({ path: 'visual-review/tabs-' + device + '-create-bottom.png' });
         await sheet.evaluate(el => { el.scrollTop = 0; });
       }
+      if (name === 'games') {
+        assert.equal(await panel.locator('.pikk-menu-planned[aria-disabled="true"]').count(), 10, '10 upcoming games are visibly disabled');
+        assert.equal(await panel.locator('.pikk-menu-planned[href]').count(), 0, 'planned games cannot masquerade as links');
+        await sheet.evaluate(el => { el.scrollTop = el.scrollHeight; });
+        await panel.getByText('PIKK Playground', { exact: true }).scrollIntoViewIfNeeded();
+        assert.equal(await panel.getByText('PIKK Playground', { exact: true }).isVisible(), true, 'last planned game is accessible');
+        await page.screenshot({ path: 'visual-review/tabs-' + device + '-games-bottom.png' });
+        await sheet.evaluate(el => { el.scrollTop = 0; });
+      }
       await sheet.locator('.pikk-menu-cancel').click();
       await panel.waitFor({ state: 'hidden' });
       assert.equal(await trigger.getAttribute('aria-expanded'), 'false', name + ' cancel expanded');
@@ -103,7 +116,7 @@ try {
     assert.deepEqual(errors, [], device + ' uncaught errors');
     await context.close();
   }
-  console.log('PASS: 7 Create-matched menus x 2 viewports, 16 screenshots, SVG icons, 3-column grids, Cancel, Escape, route navigation, logo/player/nav and no overflow.');
+  console.log('PASS: 7 Create-matched menus x 2 viewports, 18 screenshots, SVG icons, 3-column grids, Cancel, Escape, route navigation, logo/player/nav and no overflow.');
 } finally {
   await browser.close();
 }

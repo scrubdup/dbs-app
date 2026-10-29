@@ -13,7 +13,13 @@ test('all five remaining bottom sections have honest, verified menu destinations
   for (const [section, items] of Object.entries(SECTION_MENU_ITEMS)) {
     assert.ok(items.length >= 2, section);
     for (const { title, href, detail } of items) {
-      assert.ok(title && detail && href.startsWith('#/'), section);
+      assert.ok(title && detail, section);
+      if (!href) {
+        assert.equal(section, 'games', title + ': only upcoming games may omit routes');
+        assert.match(detail, /planned/i, title + ': disabled card must disclose planned status');
+        continue;
+      }
+      assert.ok(href.startsWith('#/'), title + ': invalid route');
       const path = href.slice(1).split(/[?#]/)[0];
       assert.ok(routes.includes(path), title + ': missing route ' + path);
     }
