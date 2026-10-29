@@ -464,9 +464,9 @@ export const SHOP_CATEGORIES = [
 ];
 
 export const MEMBERSHIPS = [
-  { id: 'skeet', name: 'Skeet+', price: 3.99, blurb: 'Early DatBoiSkeet releases · basic Vault' },
-  { id: 'backstage', name: 'Backstage', price: 7.99, blurb: 'Deeper Vault · studio lives · listening rooms' },
-  { id: 'inner', name: 'Inner Circle', price: 14.99, blurb: 'VIP drops · private Q&As · Inner Circle rooms' },
+  { id: 'skeet', name: 'PIKK+', price: 3.99, blurb: 'Early DatBoiSkeet releases · basic Vault' },
+  { id: 'backstage', name: 'PIKK VIP', price: 7.99, blurb: 'Deeper Vault · studio lives · listening rooms' },
+  { id: 'inner', name: 'PIKK Elite', price: 14.99, blurb: 'VIP drops · private Q&As · PIKK Elite rooms' },
 ];
 
 /** Quick-pick images for the Posts composer (real assets only) */
