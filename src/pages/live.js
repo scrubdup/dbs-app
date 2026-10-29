@@ -200,10 +200,11 @@ function renderFollowingPanel(user) {
 }
 
 const LIVE_DISCOVERY_CATEGORIES = [
-  ['The Booth', 'Artist performances, freestyle sessions and producers', '🎙️'],
-  ['The Stage', 'Live talent, performances and entertainment', '🎤'],
-  ['PIKK Battles', 'Live competitions and community challenges', '🏆'],
-  ['City Takeover', 'City-based creator challenges and broadcasts', '🌆'],
+  ['The Booth', 'Rappers, freestyles, hip-hop performances and song previews', '🎙️'],
+  ['The Stage', 'Singers, bands, vocalists and instrumental performances', '🎤'],
+  ['City Takeover', 'City-versus-city showcases, performances and local pride challenges', '🌆'],
+  ['Producer Room', 'Beat showcases, producer collaborations and beat competitions', '🎹'],
+  ['Ladies Lounge', 'Women-centered girl talk, beauty, fashion, relationships and community', '💅'],
   ['The Hangout', 'Conversations and social live streams', '💬'],
   ['Creator Spotlight', 'Featured creators and emerging talent', '🌟'],
   ['Game Room', 'Gameplay, tournaments and community games', '🎮'],
