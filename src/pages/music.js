@@ -288,6 +288,7 @@ export function renderMusic(route = {}) {
       <a href="#/music?view=beats" class="${musicView === 'beats' ? 'on' : ''}">Beats</a>
       <a href="#/music?view=playlists" class="${musicView === 'playlists' ? 'on' : ''}">Playlists</a>
       <a href="#/music#vault">Vault</a>
+      <a href="#/shield">PIKK Shield · Rights preview</a>
     </nav>
     <section class="pikk-music-release-strip" aria-label="Official music covers">
       <div class="pikk-music-release-header"><h3>Listen &amp; discover</h3><a href="#/music#stream-everywhere">See all releases →</a></div>
