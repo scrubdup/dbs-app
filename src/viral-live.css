@@ -8,9 +8,8 @@
 .pikk-viral-hero h2 em { font-style: normal; background: linear-gradient(100deg,#ff5b64 5%,#f4f1f4 47%,#6999ff 95%); background-clip: text; -webkit-background-clip: text; color: transparent; }
 .pikk-viral-hero p { max-width: 550px; color: #c6c1cf; line-height: 1.6; margin: 0; }
 .pikk-viral-hero-actions { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 20px; }
-.pikk-viral-hero-mark { width: min(100%,200px); aspect-ratio: 1; justify-self: center; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 35%; border: 1px solid rgba(255,255,255,.14); background: linear-gradient(145deg,rgba(255,70,75,.24),rgba(47,107,255,.23)); box-shadow: 0 0 65px rgba(47,107,255,.16), inset 0 0 30px rgba(255,255,255,.035); transform: rotate(-7deg); }
-.pikk-viral-hero-mark span { font-size: 74px; color: #fff; line-height: 1; text-shadow: 0 0 28px #ff3333; }
-.pikk-viral-hero-mark small { font-weight: 950; font-size: 23px; letter-spacing: .18em; margin-top: 7px; }
+.pikk-viral-hero-mark { width: min(100%, 260px); min-width: 0; justify-self: center; display: grid; place-items: center; padding: 14px; border-radius: 22px; border: 1px solid rgba(184,191,226,.28); background: linear-gradient(145deg,rgba(18,20,35,.94),rgba(8,9,19,.98)); box-shadow: 0 0 46px rgba(49,98,255,.21), 0 0 30px rgba(255,44,70,.13), inset 0 1px 0 rgba(255,255,255,.09); }
+.pikk-viral-hero-logo { display: block; width: 100%; height: auto; object-fit: contain; border-radius: 7px; }
 .pikk-viral-notice { display: flex; gap: 12px; align-items: center; padding: 13px 16px; border-radius: 13px; background: #171722; border: 1px solid #3b3b4e; color: #c3c3d0; font-size: 12px; }
 .pikk-viral-notice strong { flex-shrink: 0; color: #fff; font-size: 11px; letter-spacing: .08em; }
 .pikk-viral-tabs { display: flex; flex-wrap: wrap; gap: 8px; border-bottom: 1px solid #323242; padding-bottom: 12px; }
@@ -54,7 +53,7 @@
   .pikk-viral-hero { grid-template-columns: 1fr; min-height: 0; padding: 24px 18px; }
   .pikk-viral-tabs { gap: 6px; }
   .pikk-viral-tabs button { padding: 9px 11px; font-size: 12px; }
-  .pikk-viral-hero-mark { display: none; }
+  .pikk-viral-hero-mark { display: grid; width: min(100%, 200px); justify-self: start; padding: 8px; border-radius: 14px; margin-top: 6px; }
   .pikk-viral-hero h2 { font-size: clamp(31px,9vw,42px); }
   .pikk-viral-notice { align-items: flex-start; flex-direction: column; gap: 5px; }
   .pikk-viral-stage { grid-template-columns: 1fr; }
