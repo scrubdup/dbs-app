@@ -1,3 +1,4 @@
+import { mountStoriesAndPromotions } from './stories-promotions.js';
 import './styles.css';
 import { SECTION_MENU_ITEMS, closeSectionMenus, toggleSectionMenu } from './section-menus.js';
 import { CREATE_MENU_GROUPS } from './create-menu.js';
@@ -342,6 +343,7 @@ function render(route) {
   const entry = ROUTES[route.path];
   const html = entry ? entry.render(route) : renderNotFound(route.path);
   app.innerHTML = html;
+  mountStoriesAndPromotions(app, route.path);
   rewriteAssetUrls(app);
   entry?.bind?.(app);
   updateChrome(route);
