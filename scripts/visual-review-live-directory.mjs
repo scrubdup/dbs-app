@@ -24,7 +24,7 @@ try {
     assert.equal(await page.locator('#tabbar a').count(), 7, 'seven bottom tabs preserved');
     assert.equal(await page.locator('.pikk-live-directory-group').count(), 8, 'eight organized sections');
     assert.equal(await page.locator('#pikk-live-group-coed').getAttribute('open'), '', 'coed open by default');
-    assert.equal(await page.locator('#pikk-live-group-coed .pikk-live-room-card').count(), 11);
+    assert.equal(await page.locator('#pikk-live-group-coed .pikk-live-room-card').count(), 10);
     assert.equal(await page.locator('#pikk-live-group-women .pikk-live-room-card').count(), 15);
     assert.equal(await page.locator('#pikk-live-group-men .pikk-live-room-card').count(), 15);
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - innerWidth);
@@ -55,7 +55,7 @@ try {
     assert.deepEqual(errors, [], device + ' browser errors');
     await context.close();
   }
-  console.log('PASS: Live categories grouped 15 women/15 men/11 coed, route, responsive cards, logo, player and seven tabs.');
+  console.log('PASS: Live categories grouped 15 women/15 men/10 coed, route, responsive cards, logo, player and seven tabs.');
 } finally {
   await browser.close();
 }
