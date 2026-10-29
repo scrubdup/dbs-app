@@ -1,19 +1,37 @@
-import test from 'node:test';import assert from 'node:assert/strict';import {readFileSync} from 'node:fs';
-const main=readFileSync(new URL('../src/main.js',import.meta.url),'utf8');
-const css=readFileSync(new URL('../src/styles.css',import.meta.url),'utf8');
-test('Create has exact nine approved icons, links and mobile reference layout',()=>{
- const a=main.slice(main.indexOf('function ensureCreateMenu()'),main.indexOf('  document.body.appendChild(panel);',main.indexOf('function ensureCreateMenu()')));
- for(const title of ['Go Live','Upload Video','Shorts / Reels','Post Photos','Story','Upload Music','Sell Something','Create Post','Paid Content']) assert.ok(a.includes(title),title);
- assert.equal((a.match(/class="pikk-create-tile"/g)||[]).length,9);
- assert.equal((a.match(/<svg viewBox="0 0 24 24"/g)||[]).length,9);
- assert.match(a,/data-create-close>Cancel/);
- assert.match(css,/\.pikk-create-options\.pikk-create-grid/);
- assert.match(css,/grid-template-columns:repeat\(3,minmax\(0,1fr\)\)/);
- assert.match(css,/@media\(max-width:390px\)/);
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { CREATE_MENU_GROUPS, CREATE_MENU_ITEMS } from '../src/create-menu.js';
+import { ICONS } from '../src/ui.js';
+
+const main = readFileSync(new URL('../src/main.js', import.meta.url), 'utf8');
+const css = readFileSync(new URL('../src/styles.css', import.meta.url), 'utf8');
+
+test('Create expands approved original actions into complete grouped menu with outlined icons', () => {
+  const titles = CREATE_MENU_ITEMS.map(item => item.title);
+  for (const title of [
+    'Go Live','Upload Video','Reels','Photo Post','Story','Upload Song',
+    'List Product','Create Post','Paid Content','Community Post','Music Video',
+    'Upload Album','Upload EP','Artist Protection','AI Support',
+  ]) assert.ok(titles.includes(title), title);
+  assert.ok(CREATE_MENU_ITEMS.length > 9);
+  assert.ok(CREATE_MENU_GROUPS.length >= 4);
+  for (const item of CREATE_MENU_ITEMS) assert.ok(ICONS[item.icon], item.title + ' missing SVG icon');
+  assert.match(main, /createMenuMarkup\(\)/);
+  assert.match(main, /ICONS\[item\.icon\]/);
+  assert.match(main, /data-create-close>Cancel/);
+  assert.match(css, /\.pikk-create-options\.pikk-create-grid/);
+  assert.match(css, /grid-template-columns:repeat\(3,minmax\(0,1fr\)\)/);
+  assert.match(css, /@media\(max-width:390px\)/);
 });
-test('menu preserves user content, honest unavailable actions and established destinations',()=>{
- const a=main.slice(main.indexOf('function ensureCreateMenu()'),main.indexOf('  document.body.appendChild(panel);',main.indexOf('function ensureCreateMenu()')));
- for(const route of ['#/live?go=1','#/posts?type=video','#/posts?type=short','#/posts?type=picture','#/music?view=upload','#/shop','#/posts?type=text','#/pricing']) assert.ok(a.includes(route),route);
- assert.match(a,/TEST MODE/);assert.match(a,/planned/);
- assert.match(main,/pikkCreateMenu/);
+
+test('menu preserves existing routes, user content and honest unavailable states', () => {
+  for (const route of [
+    '#/live?go=1','#/posts?type=video','#/posts?type=short',
+    '#/posts?type=picture','#/posts?type=text','#/pricing',
+  ]) assert.ok(CREATE_MENU_ITEMS.some(item => item.href === route), route);
+  assert.ok(CREATE_MENU_ITEMS.some(item => !item.href && /Planned/.test(item.detail)));
+  assert.match(main, /pikk-create-tile-planned/);
+  assert.match(main, /aria-disabled="true"/);
+  assert.match(main, /pikkCreateMenu/);
 });

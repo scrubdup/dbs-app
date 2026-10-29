@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { CREATE_MENU_ITEMS } from '../src/create-menu.js';
 
 const main = readFileSync(new URL('../src/main.js', import.meta.url), 'utf8');
 const data = readFileSync(new URL('../src/data.js', import.meta.url), 'utf8');
@@ -21,5 +22,5 @@ test('Create remains the primary fourth tab and opens its menu', () => {
   assert.match(entries[3][0], /primary: true/);
   assert.match(main, /ensureCreateMenu\(\)/);
   assert.match(main, /aria-controls="pikkCreateMenu"/);
-  assert.match(main, /href="#\/live\?go=1"/);
+  assert.ok(CREATE_MENU_ITEMS.some(item => item.href === '#/live?go=1'));
 });

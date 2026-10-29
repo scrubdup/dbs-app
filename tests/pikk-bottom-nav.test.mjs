@@ -5,6 +5,7 @@ const data = readFileSync(new URL('../src/data.js', import.meta.url), 'utf8');
 const main = readFileSync(new URL('../src/main.js', import.meta.url), 'utf8');
 const posts = readFileSync(new URL('../src/pages/posts.js', import.meta.url), 'utf8');
 import { SECTION_MENU_ITEMS } from '../src/section-menus.js';
+import { CREATE_MENU_ITEMS } from '../src/create-menu.js';
 
 test('Create is the exact center of seven bottom navigation slots', () => {
   const match = data.match(/export const TABBAR = \[([\s\S]*?)\];/);
@@ -20,10 +21,10 @@ test('Create is the exact center of seven bottom navigation slots', () => {
 
 test('Create opens all six existing destinations without pretending uploads are live', () => {
   assert.match(main, /t\.primary \? ' class="tab-primary"'/);
-  assert.match(main, /href="#\/live\?go=1"/);
+  assert.ok(CREATE_MENU_ITEMS.some(item => item.href === '#/live?go=1'));
   assert.match(main, /route\.query\.go === '1'/);
   for (const type of ['video', 'short', 'picture', 'text']) {
-    assert.ok(main.includes(`#/posts?type=${type}`), type);
+    assert.ok(CREATE_MENU_ITEMS.some(item => item.href === `#/posts?type=${type}`), type);
   }
   assert.match(posts, /route\.query\.type/);
   assert.match(main, /TEST MODE/);
