@@ -43,6 +43,7 @@ import { esc, toast, shellPage, timeAgo, ytEmbedSrc } from '../ui.js';
 import { navigate, getRoute } from '../router.js';
 import { notifyLiveOpen, notifyLiveClosed } from '../player.js';
 import { giftStickerHtml, getGiftSticker } from '../gift-stickers.js';
+import { renderLiveDiscoveryDirectory } from '../live-discovery.js';
 
 /** t197u discovery tabs — preserve ?tab= on soft refresh */
 function getLiveDiscTab() {
@@ -200,6 +201,71 @@ function renderFollowingPanel(user) {
 }
 
 const LIVE_DISCOVERY_CATEGORIES = [
+  ['The Booth', 'Rappers, freestyles, hip-hop performances and song previews', '🎙️'],
+  ['The Stage', 'Singers, bands, vocalists and instrumental performances', '🎤'],
+  ['City Takeover', 'City-versus-city showcases, performances and local pride challenges', '🌆'],
+  ['Producer Room', 'Beat showcases, producer collaborations and beat competitions', '🎹'],
+  ['Ladies Lounge', 'Women-centered girl talk, beauty, fashion, relationships and community', '💅'],
+  ['Girl Talk', 'Everyday conversations, friendships and women’s discussions', '💬'],
+  ['Tea Time', 'Celebrity gossip, trending stories and entertainment drama', '🫖'],
+  ['Who Did What?', 'Viral moments, celebrity controversies and debates', '👀'],
+  ['Boss Ladies', 'Women entrepreneurs, business networking and financial growth', '👑'],
+  ['Fashion & Fits', 'Fashion, outfits and personal style', '👗'],
+  ['Ladies Only Live', 'Women-centered livestreams and hosted events', '🎥'],
+
+  ["What's the Word?", 'Entertainment news, celebrity conversations, viral moments and trending discussions', '🗣️'],
+  ['Women in Business', 'Women entrepreneurs, founders, business networking and mentorship', '👩‍💼'],
+  ['The Man Cave', 'Men’s social conversations, sports and community', '🤝'],
+  ['Men in Business', 'Men’s entrepreneurship, networking, mentorship and partnerships', '👔'],
+  ['Girls\' Night In', 'Women-centered social nights, games and discussions', '🌙'],
+  ['Beauty Bar', 'Beauty, hair, makeup and skincare conversations', '💄'],
+  ['Love & Standards', 'Dating, relationships and boundaries', '💗'],
+  ['Women\'s Mental Wellness', 'Women-centered stress, confidence, emotional wellbeing and peer support', '🧠'],
+  ['Dating From Her Side', 'Women-centered dating experiences, relationships and personal standards', '💞'],
+  ['The Hustle Room: Women', 'Women-centered side hustles, extra income ideas and building businesses', '📈'],
+  ['The Barbershop', 'Men-centered everyday debates, conversation and community', '💈'],
+  ['Fellas\' Night', 'Men-centered social events and games', '🌃'],
+  ['Men\'s Corner', 'Men-centered life, relationships and personal development', '🧢'],
+  ['Cars & Motors', 'Cars, motorcycles, customization and auto culture', '🚘'],
+  ['Fitness & Brotherhood', 'Fitness, wellbeing and peer support', '💪'],
+  ['Fatherhood', 'Parenting, family responsibilities and raising children', '👨‍👧'],
+  ['Men\'s Mental Wellness', 'Men-centered stress, wellbeing and peer support', '🧠'],
+  ['Dating From His Side', 'Men-centered dating experiences and relationship advice', '💬'],
+  ['Sports Debate', 'Sports arguments, player comparisons and predictions', '🏅'],
+  ['Gaming Brotherhood', 'Gaming, tournaments and player communities', '🎮'],
+  ['Men\'s Style', 'Fashion, grooming, watches and fragrances', '⌚'],
+  ['The Hustle Room', 'Careers, side businesses and professional growth', '📈'],
+  ['Brotherhood & Mentorship', 'Intergenerational mentoring and peer support', '🤝'],
+
+  ['Sports Central', 'All-sports discussion, fan talk and analysis', '🏆'],
+  ['Basketball', 'Basketball discussion and fan streams', '🏀'],
+  ['Football', 'American football discussion and fan streams', '🏈'],
+  ['Soccer', 'Soccer discussion and fan streams', '⚽'],
+  ['Baseball', 'Baseball discussion and fan streams', '⚾'],
+  ['Hockey', 'Hockey discussion and fan streams', '🏒'],
+  ['Tech Talk', 'AI, gadgets, apps and technology', '💻'],
+  ['Startups & Innovation', 'Building businesses, technology and new ideas', '🚀'],
+  ['World News', 'International events and global news discussions', '🌍'],
+  ['Economy & Markets', 'Inflation, housing, jobs, interest rates and markets', '📈'],
+  ["Let's Talk", 'Open conversations, questions and community discussion', '🗣️'],
+  ['The Hangout', 'Conversations and social live streams', '💬'],
+  ['Creator Spotlight', 'Featured creators and emerging talent', '🌟'],
+  ['Game Room', 'Gameplay, tournaments and community games', '🎮'],
+  ['Why Are You Single?', 'Coed conversations about single life, dating experiences and relationship challenges', '❓'],
+  ['What Are You Looking For?', 'Coed conversations about dating intentions, values and ideal partners', '💭'],
+  ['Single & Ready to Mingle', 'Opt-in coed social conversations and introductions for singles', '💘'],
+  ['Looking for My Match', 'Opt-in dating live conversations', '❤️'],
+  ['The Flirt Zone', 'Dating and connection conversations', '💕'],
+  ['Speed Connections', 'Fast-paced introductions and connections', '⏱️'],
+  ['Poly Connections', 'Consensual nonmonogamy discussions and connections', '🔗'],
+  ['Couples Corner', 'Couples-versus-couples games, trivia, partner challenges, friendly competitions and rematches', '💞'],
+  ['Date Night Live', 'Live dating conversations and activities', '🌹'],
+  ['Love & Advice', 'Relationship conversations and advice', '💌'],
+  ['Business Connect & Wealth Academy', 'Coed business networking and beginner education in entrepreneurship, credit, stocks, crypto, real estate and Roth IRAs', '💼'],
+  ['City Connect', 'Meet people by city for friendship, dating, business networking and local conversations', '📍'],
+  ['Conspiracy Room', 'Open discussion of theories and claims', '🧩'],
+  ['Money Talk', 'Stocks, housing, crypto and financial discussions', '💰'],
+
   ['Just Chatting', 'Conversations, Q&A and hanging out', '💬'],
   ['Gaming', 'Gameplay, tournaments and community games', '🎮'],
   ['Music', 'Artists, DJs, producers and listening sessions', '🎵'],
@@ -219,19 +285,16 @@ const LIVE_DISCOVERY_CATEGORIES = [
 ];
 
 function renderCategoriesPanel() {
-  const cards = LIVE_DISCOVERY_CATEGORIES.map(([name, description, emoji]) => `
-    <a class="live-cat-card" href="${name === 'Comedy & Roast Battles' ? '#/roast-arena' : `#/live?tab=channels&category=${encodeURIComponent(name)}`}" aria-label="${esc(name)}: browse channels">
-      <span style="font-size:26px" aria-hidden="true">${emoji}</span>
-      <strong>${esc(name)}</strong>
-      <p class="muted" style="margin:6px 0 0;font-size:12px">${esc(description)}</p>
-      <span class="chip">Browse channels</span>
-    </a>`).join('');
   return `
     <div class="card live-disc-panel" id="liveTabCategories" data-panel="categories">
-      <h3 style="margin:0 0 8px">Browse Live Categories</h3>
-      <p class="muted" style="margin:0 0 12px;font-size:12px">Explore topics like Twitch and Kick. Select a topic to filter available PIKK live channels. Categories without an active stream show an empty result; no invented viewers.</p>
-      <div class="live-cat-cards">${cards}</div>
-      <h3 style="margin:18px 0 8px">PIKK 24/7 Stages</h3>
+      <div class="pikk-live-directory-hero">
+        <span class="pikk-live-directory-kicker">PIKK LIVE · DISCOVER</span>
+        <h3>Find your room.</h3>
+        <p>Choose a community, explore a sport or find a conversation. Open a section to browse its topics.</p>
+        <span class="pikk-live-directory-note">Discovery categories filter channels; a category is not a hosted room or a live stream. No active stream? You'll see an empty result.</span>
+      </div>
+      ${renderLiveDiscoveryDirectory(LIVE_DISCOVERY_CATEGORIES, esc)}
+      <h3 style="margin:20px 0 8px">PIKK 24/7 Stages</h3>
       <div class="live-cat-cards">
         <a class="live-cat-card" href="#/openmic"><strong>Open Mic / Talent Discovery</strong><span class="chip">24/7 stage</span><p class="muted">Join the performance queue</p></a>
         <a class="live-cat-card" href="#/spotlight"><strong>Spotlight Live</strong><span class="chip">24/7 stage</span><p class="muted">Keep Going votes and creator performances</p></a>
