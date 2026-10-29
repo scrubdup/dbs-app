@@ -48,8 +48,7 @@ try {
       await group.screenshot({ path: 'visual-review/pikk-live-' + device + '-' + id + '.png' });
       await group.locator('summary').click();
     }
-    await page.locator('#pikk-live-group-dating summary').click();
-    await page.locator('#pikk-live-group-dating a').filter({ hasText: 'Why Are You Single?' }).click();
+    await page.locator('#pikk-live-group-coed a').filter({ hasText: 'Why Are You Single?' }).click();
     await page.waitForTimeout(200);
     assert.ok(page.url().includes('tab=channels&category=Why%20Are%20You%20Single%3F'), 'dating room routes to channel filter');
     assert.deepEqual(errors, [], device + ' browser errors');
