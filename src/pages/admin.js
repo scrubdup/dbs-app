@@ -1,3 +1,4 @@
+import { renderAdminOnlineNow } from '../online-now.js';
 import {
   getState,
   setClipperStatus,
@@ -409,6 +410,7 @@ export function renderAdmin() {
       <p class="muted admin-gate-hint">Gate: Profile toggle or <code>?admin=1</code> → <code>user.role='admin'</code> in <code>dbs_v1</code>. Phase 2 panels deep-link to owner pages.</p>
     </div>
 
+    ${renderAdminOnlineNow()}
     ${quickLinksHtml()}
     ${engagementAlertsHtml(overview)}
     ${openMicQueueHtml(overview)}
