@@ -5,6 +5,7 @@ import './earnings-premium.css';
 import './messages-premium.css';
 import './notifications-premium.css';
 import './wallet-premium.css';
+import './loyalty-premium.css';
 import { SECTION_MENU_ITEMS, closeSectionMenus, toggleSectionMenu } from './section-menus.js';
 import { CREATE_MENU_GROUPS } from './create-menu.js';
 import { DRAWER_GROUPS, TABBAR } from './data.js';
