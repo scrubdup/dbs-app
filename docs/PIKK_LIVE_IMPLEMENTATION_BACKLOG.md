@@ -53,6 +53,13 @@ Existing Live daily-goal and gift controls are **TEST MODE/demo**; they do not e
 - [ ] Show the host-entered title and goal progress bar on the stream and the shareable goal page. Apply reasonable character limits, escaping, content moderation and fraud/impersonation protections.
 - [ ] Generate a stable, unguessable, shareable goal URL with native share and copy-link actions; allow sharing via DMs, text and social platforms. Include appropriate public preview metadata without exposing private account information.
 - [ ] Anyone with a valid link can view the goal without joining the stream. Support donation from outside the stream after secure sign-in or a compliant guest-checkout flow; do not claim anonymous guest payment is implemented.
-- [ ] Allow donors to add an optional message, with moderation and privacy controls. Donors must not be able to edit the host's goal title.
+- [ ] Always display a donation-message input (optional to fill in) on every donation flow, including in-stream, shared goal links and guest checkout, with moderation and privacy controls. Donors must not be able to edit the host's goal title.
 - [ ] Ensure each link resolves to the correct goal and displays accurate amount raised, remaining time and status (active, completed, expired); prevent contributions to expired/removed goals.
 - [ ] Real donations require verified payment settlement, idempotency, refund/chargeback handling, rate limiting and transparent fees before production launch.
+
+## Donation notifications: sound and vibration (approved)
+- [ ] On every **confirmed donation**, show a real-time notification to the receiving host with donor name/display preference, amount and optional donor message; preserve donor anonymity settings.
+- [ ] Play a recognizable donation sound and trigger device vibration/haptic feedback when supported and permitted, including when a host is in a Live room. Do not trigger on unconfirmed, duplicate or failed payments.
+- [ ] Provide notification settings for volume/mute, vibration on/off, reduced-motion/accessibility and quiet mode. Respect browser autoplay restrictions, mobile OS notification permissions, Do Not Disturb and devices without vibration APIs; use visible fallback alerts.
+- [ ] Ensure donor-message input is **always offered** (but message entry is optional) in every donation flow. Sanitize and moderate messages before public display or text-to-speech; no unconsented public message reading.
+- [ ] Deduplicate events across reconnections/devices; test sound/haptic behavior on iOS, Android and desktop. Never promise vibration where the platform disallows it.
