@@ -19,7 +19,9 @@ try{
       page.on('pageerror',e=>errors.push(e.message));
       await page.goto(base+'#/profile',{waitUntil:'domcontentloaded',timeout:30000});
       await page.locator('.pikk-profile-guest-hero').waitFor({state:'visible',timeout:20000});
-      await page.waitForTimeout(1100);
+      // The first visit shows PIKK's approved splash; do not capture a false guest review under it.
+      await page.locator('#splash').waitFor({state:'hidden',timeout:15000});
+      await page.waitForTimeout(250);
       const verify=async phase=>{
         assert.equal(await page.locator('#tabbar a').count(),7);
         assert.equal(await page.locator('#dbs-sticky-player').isVisible(),true);
