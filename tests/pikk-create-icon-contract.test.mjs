@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { CREATE_MENU_ITEMS } from '../src/create-menu.js';
 
 const main = readFileSync(new URL('../src/main.js', import.meta.url), 'utf8');
 const data = readFileSync(new URL('../src/data.js', import.meta.url), 'utf8');
