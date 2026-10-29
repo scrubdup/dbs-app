@@ -65,9 +65,27 @@ Existing Live daily-goal and gift controls are **TEST MODE/demo**; they do not e
 - [ ] Deduplicate events across reconnections/devices; test sound/haptic behavior on iOS, Android and desktop. Never promise vibration where the platform disallows it.
 
 ## Streamer donation recognition and community appreciation (approved)
-- [ ] After each confirmed paid donation, display a prominent on-stream donor acknowledgment card for a meaningful period (default **15 seconds**, configurable 10–30 seconds), showing donor display name, contribution amount and optional moderated message. Respect anonymous/private donor preferences.
+- [ ] After each confirmed paid donation, display a prominent on-stream donor acknowledgment card for a meaningful period (**15-second animated alert**, followed by a longer pinned donation message based on the amount), showing donor display name, contribution amount and optional moderated message. Respect anonymous/private donor preferences.
 - [ ] Play the donation sound and trigger supported haptics once per verified donation event, subject to user notification settings and device permissions.
 - [ ] Queue simultaneous donation alerts fairly so each supporter gets visible recognition; combine bursts carefully without losing individual acknowledgments. Avoid covering essential stream controls, captions or safety actions.
 - [ ] In the **Streamer Guide / Creator Onboarding** include the following community guideline: **“We encourage all streamers to acknowledge paid donations. Give supporters a shout-out, thank them by name when they allow it, and show them love. Make them feel appreciated and part of your community—not like you're just taking their money.”**
 - [ ] Remind hosts to acknowledge donors in-stream, but do not require a shout-out as a condition of receiving donations, promise guaranteed attention, or pressure fans to give money. Respect donor anonymity and accessibility needs.
 - [ ] Verify duration, alert queue, privacy, mute settings, cross-device synchronization and real-payment confirmation in testing.
+
+## Approved PIKK donation pinning model
+On each confirmed paid donation, play the 15-second animated on-stream acknowledgment (with permitted sound/haptics), then keep the donor's message **pinned in the Live chat** for the following duration. These are PIKK's own tiers, not YouTube's exact tiers:
+
+| Paid donation | Pinned message duration |
+|---|---|
+| $1–$4.99 | 2 minutes |
+| $5–$9.99 | 5 minutes |
+| $10–$24.99 | 10 minutes |
+| $25–$49.99 | 20 minutes |
+| $50–$99.99 | 30 minutes |
+| $100–$249.99 | 1 hour |
+| $250+ | 2 hours |
+
+- [ ] Implement pinning with a persistent expiration timestamp, across reconnections and devices, with remaining-time indicator. When multiple donors qualify, support a fair visible rotation or stacked list rather than silently replacing prior paid acknowledgments.
+- [ ] Add a **Donation Inbox** showing all verified donations, including those not yet acknowledged, with a **Thank Supporter** action that marks the donation acknowledged. Never mark it acknowledged automatically just because the alert displayed.
+- [ ] Show donation messages only after moderation and according to donor privacy preferences; keep anonymous donations anonymous. Respect accessibility and streamer sound/haptic preferences.
+- [ ] Prevent duplicate alerts on retries and do not pin failed, refunded, test or unconfirmed donations as real contributions. Verify payment currency normalization and any refund behavior before production.
