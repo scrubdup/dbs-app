@@ -15,7 +15,7 @@ const sections = [
   ['videos', 'pikkVideosMenu', 4],
   ['connect', 'pikkConnectMenu', 5],
   ['dating', 'pikkDatingMenu', 4],
-  ['games', 'pikkGamesMenu', 12],
+  ['games', 'pikkGamesMenu', 16],
   ['shop', 'pikkShopMenu', 4],
 ];
 const expectedTabs = ['Music', 'Videos', 'Connect', 'Create', 'Dating', 'Games', 'Shop'];
@@ -89,11 +89,11 @@ try {
         await sheet.evaluate(el => { el.scrollTop = 0; });
       }
       if (name === 'games') {
-        assert.equal(await panel.locator('.pikk-menu-planned[aria-disabled="true"]').count(), 10, '10 upcoming games are visibly disabled');
+        assert.equal(await panel.locator('.pikk-menu-planned[aria-disabled="true"]').count(), 14, '14 upcoming games are visibly disabled');
         assert.equal(await panel.locator('.pikk-menu-planned[href]').count(), 0, 'planned games cannot masquerade as links');
         await sheet.evaluate(el => { el.scrollTop = el.scrollHeight; });
-        await panel.getByText('PIKK Playground', { exact: true }).scrollIntoViewIfNeeded();
-        assert.equal(await panel.getByText('PIKK Playground', { exact: true }).isVisible(), true, 'last planned game is accessible');
+        await panel.getByText('PIKK Cup Pong', { exact: true }).scrollIntoViewIfNeeded();
+        assert.equal(await panel.getByText('PIKK Cup Pong', { exact: true }).isVisible(), true, 'last planned game is accessible');
         await page.screenshot({ path: 'visual-review/tabs-' + device + '-games-bottom.png' });
         await sheet.evaluate(el => { el.scrollTop = 0; });
       }
