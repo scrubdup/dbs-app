@@ -1139,6 +1139,23 @@ function mountSongRequestForm(root) {
 }
 
 export function bindLive(root) {
+  const roomSearch = root.querySelector('#pikkLiveRoomSearch');
+  roomSearch?.addEventListener('input', () => {
+    const query = roomSearch.value.trim().toLocaleLowerCase();
+    let matches = 0;
+    root.querySelectorAll('.pikk-live-directory-group').forEach((group) => {
+      let groupMatches = 0;
+      group.querySelectorAll('.pikk-live-room-card').forEach((card) => {
+        const visible = !query || card.textContent.toLocaleLowerCase().includes(query);
+        card.hidden = !visible;
+        if (visible) { groupMatches++; matches++; }
+      });
+      group.hidden = groupMatches === 0;
+      if (query && groupMatches) group.open = true;
+    });
+    const status = root.querySelector('#pikkLiveRoomSearchStatus');
+    if (status) status.textContent = query ? matches + ' matching rooms' : '';
+  });
   root.querySelectorAll('.hot-live-watch').forEach((btn) => {
     btn.addEventListener('click', () => {
       notifyLiveOpen();
