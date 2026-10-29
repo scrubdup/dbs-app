@@ -3,6 +3,7 @@ import './featured-promos.css';
 import './viral-live.css';
 import './earnings-premium.css';
 import './messages-premium.css';
+import './notifications-premium.css';
 import { SECTION_MENU_ITEMS, closeSectionMenus, toggleSectionMenu } from './section-menus.js';
 import { CREATE_MENU_GROUPS } from './create-menu.js';
 import { DRAWER_GROUPS, TABBAR } from './data.js';
@@ -35,6 +36,7 @@ import { renderLive, bindLive } from './pages/live.js';
 import { renderViralLive, bindViralLive } from './pages/viral-live.js';
 import { renderMarketplace, bindMarketplace } from './pages/marketplace.js';
 import { renderMessages, bindMessages } from './pages/messages.js';
+import { renderNotifications, bindNotifications } from './pages/notifications.js';
 import { renderWallet, bindWallet } from './pages/wallet.js';
 import { renderEarnings, bindEarnings } from './pages/earnings.js';
 import { renderMissions, bindMissions } from './pages/missions.js';
@@ -63,8 +65,6 @@ import {
   renderCommunity,
   bindCommunity,
   renderSignup,
-  renderNotifications,
-  bindNotifications,
   renderLaunch,
   renderPhases,
   renderShare,
