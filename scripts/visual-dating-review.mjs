@@ -3,6 +3,8 @@ import {mkdir} from 'node:fs/promises';
 import {spawn} from 'node:child_process';
 import {chromium, devices} from 'playwright';
 
+// Embedded media can leave remote fonts pending indefinitely in CI screenshots.
+process.env.PW_TEST_SCREENSHOT_NO_FONTS_READY = '1';
 const url='http://127.0.0.1:4173/pikk-app/#/dating';
 const server=spawn('npx',['vite','preview','--host','127.0.0.1','--port','4173','--strictPort'],{
   env:{...process.env,VITE_BASE:'/pikk-app/'},stdio:'inherit'
