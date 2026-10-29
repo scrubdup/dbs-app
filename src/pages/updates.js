@@ -8,11 +8,11 @@ import { freshPikkUrl } from '../refresh-url.js';
 export const PIKK_BUILD_SHA = import.meta.env.VITE_BUILD_SHA || '';
 // Curated, merged UI releases only. Keep this list factual; planned backend features are not shipped.
 export const RECENT_RELEASES = Object.freeze([
-  { title: 'Premium Wallet & Payouts', detail: 'Refreshed balance summaries, coin cards and payout demo. Real payments remain disabled.', route: '#/wallet', pr: 122, kind: 'UI · TEST MODE' },
-  { title: 'Notifications Control Center', detail: 'Four persistent notification preferences and a clearer settings layout. Subscriber alerts are planned.', route: '#/notifications', pr: 121, kind: 'UI · TEST MODE' },
-  { title: 'Premium Messages', detail: 'Redesigned inbox, contact selection and conversation screens. Server messaging is not yet available.', route: '#/messages', pr: 120, kind: 'UI · TEST MODE' },
-  { title: 'Creator Earnings Studio', detail: 'Earnings summaries, commission tables and responsive ledger filters with existing demo data.', route: '#/earnings', pr: 119, kind: 'UI · TEST MODE' },
-  { title: 'Premium Creator Profiles', detail: 'Updated personal and public profile layouts with existing demo sign-in and follow controls.', route: '#/profile', pr: 118, kind: 'UI · TEST MODE' },
+  { title: 'Connect: Accessible Navigation', detail: 'Random Chat and Broadcasting section links respect reduced-motion preferences. Matching and streaming remain previews.', route: '#/connect', pr: 147, kind: 'ACCESSIBILITY · TEST MODE' },
+  { title: 'Dating: Premium Discover', detail: 'Refreshed red-and-blue layout with Discover, Experiences, Dating Live and Safety sections. Real matching is not live.', route: '#/dating', pr: 139, kind: 'UI · TEST MODE' },
+  { title: 'AI Artists: Rights-Aware Drafts', detail: 'Separate AI music category, disclosure and commercial-rights acknowledgment with private local drafts. No public sales yet.', route: '#/ai-artists', pr: 135, kind: 'UI · TEST MODE' },
+  { title: 'PIKK Shield: Rights Declarations', detail: 'Creators can save music ownership declaration drafts on this device. Fingerprinting, takedowns and review are not active.', route: '#/shield', pr: 132, kind: 'LOCAL DRAFT · TEST MODE' },
+  { title: 'Live Rooms: Men’s Room Labels', detail: 'Refined the approved handshake icon treatment for Men’s Rooms while keeping the existing room directory.', route: '#/live', pr: 131, kind: 'UI · TEST MODE' },
 ]);
 
 export function renderUpdates() {
@@ -36,7 +36,7 @@ export function renderUpdates() {
       <div>
         <p class="kicker">PIKK · WHAT'S NEW</p>
         <h2>See what changed. <span>Know what loaded.</span></h2>
-        <p>The five latest verified interface releases are below. Open each updated section and see exactly what shipped. Backend services marked TEST MODE are not production-ready.</p>
+        <p>Five recent verified interface improvements are below. Open each updated section and see exactly what shipped. Backend services marked TEST MODE are not production-ready.</p>
         <div class="pikk-updates-build">
           <span>Version loaded on this device</span>
           <strong id="pikkLoadedBuild" data-build="${esc(build)}">${esc(build)}</strong>
