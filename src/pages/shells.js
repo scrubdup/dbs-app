@@ -1,3 +1,4 @@
+import { renderStoriesAndPromotions } from '../featured-promos.js';
 import { getState, setState, setNotifPrefs, listCatalog, submitCreatorSellApp } from '../store.js';
 import { resolveMediaSrc } from '../media-db.js';
 import { VIDEOS, VIDEO_COMING_SOON, MEMBERSHIPS } from '../data.js';
@@ -90,7 +91,8 @@ export function renderVideos() {
 
   return shellPage(
     'Videos & Interviews',
-    `<section class="pikk-video-hero card">
+    `${renderStoriesAndPromotions('videos')}
+    <section class="pikk-video-hero card">
       <div class="pikk-video-hero-copy">
         <p class="kicker">PIKK VIDEOS · OFFICIAL RELEASES</p>
         <h2>Watch. Discover. Repeat.</h2>

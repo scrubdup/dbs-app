@@ -4,6 +4,7 @@ import { listCatalog, getState, listHotLives, listRisingStreamers, getHotPosts, 
 import { esc, shellPage, ytEmbedSrc, toast } from '../ui.js';
 import { resolveMediaSrc } from '../media-db.js';
 import { PIKK_GAMES, arcadeArtSrc } from '../games/arcade-catalog.js';
+import { renderStoriesAndPromotions } from '../featured-promos.js';
 
 const SECTION_ICONS = {
   Explore: '🧭',
@@ -635,6 +636,8 @@ export function renderHome() {
     ${visualFeed}
 
     ${stageBlock}
+
+    ${renderStoriesAndPromotions('home')}
 
     ${bwPreview}
 
