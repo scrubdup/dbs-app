@@ -263,6 +263,7 @@ const LIVE_DISCOVERY_CATEGORIES = [
   ['Date Night Live', 'Live dating conversations and activities', '🌹'],
   ['Love & Advice', 'Relationship conversations and advice', '💌'],
   ['Business Connect', 'Open networking for women and men: entrepreneurship, careers and partnerships', '💼'],
+  ['City Connect', 'Meet people by city for friendship, dating, business networking and local conversations', '📍'],
   ['Conspiracy Room', 'Open discussion of theories and claims', '🧩'],
   ['Money Talk', 'Stocks, housing, crypto and financial discussions', '💰'],
 
