@@ -554,6 +554,7 @@ export function renderCommunity() {
       <h2 style="margin:0 0 8px">Channel-style Lounge</h2>
       <p>PIKK Lounge is DatBoiSkeet’s premium community — Discord-type channel UX (sidebar + room panes) under silver/dark PIKK branding. Announcements, listening parties, and fan conversations in one place.</p>
       <p class="muted" style="margin:8px 0 0">Not affiliated with Discord. Channels below are the same rooms as before; live chat unlocks in Phase 2.</p>
+      <a class="btn ghost" href="#/communities">Open PIKK Communities · local discussion preview</a>
     </div>
 
     <div class="lounge-discord" id="loungeDiscord">
