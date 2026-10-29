@@ -14,6 +14,10 @@ try {
     await page.locator('#signinBtn').click();
     await page.goto('http://127.0.0.1:5173/#/communities', { waitUntil: 'domcontentloaded' });
     await page.locator('#pikkForum').waitFor();
+    if (width >= 1100) {
+      const board = await page.locator('#pikkForum').boundingBox();
+      assert.ok(board && board.width >= 950, 'Desktop Communities must use wide three-column canvas');
+    }
     assert.equal(await page.locator('.pikk-forum-topic-cards button').count(), 8);
     assert.equal(await page.locator('#pikkForumForm').count(), 1);
     assert.ok(await page.locator('a[href="#/community"]').count() > 0, 'PIKK Lounge link preserved');
