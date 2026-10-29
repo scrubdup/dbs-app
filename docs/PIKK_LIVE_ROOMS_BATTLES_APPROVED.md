@@ -37,3 +37,18 @@
 - Maintain field-specific city standings and winner rankings; calculate city scores only from verified completed battles, with explicit scoring rules and anti-manipulation controls.
 - Matching UI must show chosen city, field, opposing city, compatible opponents and waiting state if none are available. No simulated opponent or fabricated matchup.
 - Backend must enforce category equality transactionally; do not rely on UI-only filtering. Test mismatched-field rejection, multi-field profiles, empty queues, disconnects, vote integrity and expiry of recognition banners.
+
+## Recovered women and business room history (October 2026 planning)
+Earlier names included Girl Talk, Tea Time, What's the Word?, Who Did What?, Beauty Bar, Girls' Night In, Love & Standards, Boss Ladies, Fashion & Fits, Ladies Only Live, and historically The Pink Lounge (women's social) / The Man Cave (men's sports/business/networking). Avoid confusing original discussion names with already operational services.
+
+### Newly prioritized distinct live discovery rooms
+- **What's the Word?** — tea-style entertainment news, gossip, viral topics and discussions, without the name Tea Room; combines the earlier Tea Time and Who Did What? concepts.
+- **Women in Business** — women entrepreneurs, business ownership, networking, collaborations and mentorship; evolves Boss Ladies.
+- **The Man Cave** — men's business networking, partnerships, entrepreneurship and mentorship; preserve men's social/sports as separate optional topics.
+- **Ladies Lounge** — general women-centered social live discussion, separate from news/tea and business.
+- **Business Only** — general business room open to all eligible participants.
+
+### Required production functionality
+- Moderated hosted rooms and/or live category filtering must connect to actual active streams; room-specific host roles, room guidelines, opt-in participation, reporting and safety tools.
+- Role/eligibility restrictions, if any, must be consistently disclosed and enforced without inferring a user's gender from their appearance or name. Build privacy-preserving access and moderation policies before rollout.
+- No invented streams, fake viewer counts or simulated room participation in production.
