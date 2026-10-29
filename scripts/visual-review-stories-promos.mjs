@@ -38,6 +38,13 @@ try{
       assert.deepEqual(geometry.rows.map(r=>r.columns),[1,2,3],route+' layout columns');
       assert.deepEqual(geometry.rows.map(r=>r.children),[1,2,3],route+' slot counts');
       assert.ok(geometry.overflow<=3,route+' horizontal overflow '+geometry.overflow);
+      await panel.locator('.pikk-stories-strip').evaluate(el => {
+        window.scrollTo({top: Math.max(0, window.scrollY + el.getBoundingClientRect().top - 195), behavior:'instant'});
+      });
+      await page.waitForTimeout(120);
+      const storyTop = await panel.locator('.pikk-stories-strip').evaluate(el => el.getBoundingClientRect().top);
+      assert.ok(storyTop >= 170 && storyTop < height, route + ' Stories must clear the sticky header');
+      await page.screenshot({path:'visual-review/pikk-'+route+'-'+device+'-stories-overview.png'});
       await panel.screenshot({path:'visual-review/pikk-'+route+'-'+device+'-stories-ads.png'});
     }
     assert.deepEqual(errors,[],device+' uncaught browser errors');
