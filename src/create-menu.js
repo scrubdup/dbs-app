@@ -26,7 +26,9 @@ export const CREATE_MENU_GROUPS = Object.freeze([
   { title: 'Live & Commerce', items: [
     { title: 'Go Live', href: '#/live?go=1', detail: 'Livestream · TEST MODE', icon: 'live' },
     { title: 'Schedule Live', detail: 'Live scheduling · Planned', icon: 'live' },
-    { title: 'Live Battle', href: '#/giftbattles', detail: 'Battle area · preview', icon: 'live' },
+    // Battle modes are available only from an active livestream, not as standalone creation actions.
+    { title: 'Live Battles', detail: 'Inside an active livestream · Planned', icon: 'live' },
+    { title: 'Roast Battle', detail: 'Inside an active livestream · Planned', icon: 'live' },
     { title: 'List Product', href: '#/marketplace', detail: 'Marketplace · TEST MODE', icon: 'merch' },
     { title: 'Seller Store', detail: 'Store creation · Planned', icon: 'merch' },
     { title: 'Paid Content', href: '#/pricing', detail: 'Creator pricing · preview', icon: 'merch' },
