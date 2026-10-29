@@ -21,7 +21,7 @@ test('Create is the exact center of seven bottom navigation slots', () => {
 
 test('Create opens all six existing destinations without pretending uploads are live', () => {
   assert.match(main, /t\.primary \? ' class="tab-primary"'/);
-  assert.match(main, /href="#\/live\?go=1"/);
+  assert.ok(CREATE_MENU_ITEMS.some(item => item.href === '#/live?go=1'));
   assert.match(main, /route\.query\.go === '1'/);
   for (const type of ['video', 'short', 'picture', 'text']) {
     assert.ok(CREATE_MENU_ITEMS.some(item => item.href === `#/posts?type=${type}`), type);
