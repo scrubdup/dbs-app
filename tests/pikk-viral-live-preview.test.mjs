@@ -36,6 +36,19 @@ test('channel preview uses only existing official source links with no fabricate
   }
 });
 
+test('featured source thumbnails are derived from original YouTube video IDs, not fabricated assets', () => {
+  const html = renderViralLive();
+  assert.match(html, /id="pikkViralThumbnail"/);
+  assert.equal((html.match(/class="pikk-viral-choice-thumb"/g) || []).length, FEATURED.length);
+  for (const video of FEATURED) {
+    const id = new URL(video.youtube).searchParams.get('v');
+    assert.ok(id, 'original source has a YouTube video ID');
+    assert.ok(html.includes('https://i.ytimg.com/vi/' + id + '/hqdefault.jpg'));
+  }
+  assert.match(css, /pikk-viral-choice-thumb/);
+  assert.doesNotMatch(html, /autoplay=1|data-fake-viewers/);
+});
+
 test('content type tabs and empty states distinguish videos from uncleared clips, songs and photos', () => {
   const html = renderViralLive();
   assert.equal((html.match(/role="tab"/g) || []).length, 4);

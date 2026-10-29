@@ -18,8 +18,16 @@ try {
     assert.equal(await page.locator('#dbs-sticky-player').isVisible(), true, 'persistent player remains');
     assert.equal(await page.locator('[data-viral-pick]').count(), 3, 'three original sources');
     assert.equal(await page.locator('#pikkViralSource').getAttribute('href'), 'https://www.youtube.com/watch?v=-rHDLWfiuDI');
+    assert.match(await page.locator('#pikkViralThumbnail').getAttribute('src'), /-rHDLWfiuDI\/hqdefault\.jpg$/);
+    assert.equal(await page.locator('.pikk-viral-choice-thumb').count(), 3);
+    if (device === 'mobile') {
+      const tabs = await page.locator('[data-viral-type]').evaluateAll(items => items.map(el => ({ top: el.getBoundingClientRect().top, width: el.getBoundingClientRect().width })));
+      assert.equal(tabs.length, 4, 'all content categories remain present');
+      assert.ok(tabs.every(tab => Math.abs(tab.top - tabs[0].top) <= 2), 'all four category tabs fit in one mobile row');
+    }
     await page.locator('[data-viral-pick="1"]').click();
     assert.match(await page.locator('#pikkViralTitle').textContent(), /^93 ft/);
+    assert.match(await page.locator('#pikkViralThumbnail').getAttribute('src'), /zC0BYFxs5W0\/hqdefault\.jpg$/);
     assert.equal(await page.locator('#pikkViralSource').getAttribute('href'), 'https://www.youtube.com/watch?v=zC0BYFxs5W0');
     assert.equal(await page.locator('[data-viral-pick="1"]').getAttribute('aria-pressed'), 'true');
     await page.locator('[data-viral-type="photos"]').click();
