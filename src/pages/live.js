@@ -223,6 +223,7 @@ const LIVE_DISCOVERY_CATEGORIES = [
   ['Soccer', 'Soccer discussion and fan streams', '⚽'],
   ['Baseball', 'Baseball discussion and fan streams', '⚾'],
   ['Hockey', 'Hockey discussion and fan streams', '🏒'],
+  ['Wealth Academy', 'Beginner education in crypto, stocks, ETFs, real estate, Roth IRAs, budgeting and starting a business', '🎓'],
   ['Tech Talk', 'AI, gadgets, apps and technology', '💻'],
   ['Startups & Innovation', 'Building businesses, technology and new ideas', '🚀'],
   ['World News', 'International events and global news discussions', '🌍'],
