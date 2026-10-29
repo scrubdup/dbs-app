@@ -36,10 +36,12 @@ try{
       await page.locator('#loyListen').click();
       await page.locator('.pikk-loyalty-points').waitFor({state:'visible'});
       assert.ok(Number(await page.locator('.pikk-loyalty-points').textContent())>=5,'listen tick added demo points');
-      await page.locator('#loyPublic').check();
+      const originallyPublic=await page.locator('#loyPublic').isChecked();
+      if(originallyPublic) await page.locator('#loyPublic').uncheck();
+      else await page.locator('#loyPublic').check();
       await page.reload({waitUntil:'domcontentloaded'});
       await page.locator('.pikk-loyalty-hero').waitFor({state:'visible'});
-      assert.equal(await page.locator('#loyPublic').isChecked(),true,'visibility saved');
+      assert.equal(await page.locator('#loyPublic').isChecked(),!originallyPublic,'changed visibility persists');
       await verify('saved');
       await context.close();
     }
