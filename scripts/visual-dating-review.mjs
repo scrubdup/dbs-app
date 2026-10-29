@@ -30,7 +30,8 @@ try {
       const page=await context.newPage();
       const errors=[];
       page.on('pageerror',err=>errors.push(err.message));
-      await page.goto(url,{waitUntil:'networkidle',timeout:30000});
+      // The PIKK player and embedded media can keep network requests active; wait for the actual Dating hero instead.
+      await page.goto(url,{waitUntil:'domcontentloaded',timeout:30000});
       await page.locator('.pikk-dating-hero').waitFor({state:'visible',timeout:20000});
       await page.waitForTimeout(3600);
       assert.equal(await page.locator('.pikk-dating-experience').count(),3);
