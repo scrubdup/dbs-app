@@ -57,8 +57,9 @@ export function renderProfile(route) {
     const followers = listFollowers(profile.id);
     const following = listFollowing(profile.id);
     const body = `
-      <div class="card">
-        <div class="profile-hero">
+      <section class="pikk-profile-cover" aria-label="Public PIKK profile">
+        <div class="pikk-profile-cover-inner">
+          <span class="pikk-profile-cover-kicker">PIKK · CREATOR PROFILE</span>
           ${avatarHtml(profile)}
           <div>
             <h2 style="margin:0">${esc(profile.username)}${profile.verified ? ' ✓' : ''}</h2>
@@ -66,12 +67,12 @@ export function renderProfile(route) {
             ${profile.verified ? '<span class="chip">Verified</span>' : ''}
           </div>
         </div>
-        <div class="stats">
+        <div class="stats pikk-profile-stats">
           <div><strong>${theirPosts.length}</strong><span>Posts</span></div>
           <div><strong>${(profile.followers || []).length}</strong><span>Followers</span></div>
           <div><strong>${(profile.following || []).length}</strong><span>Following</span></div>
         </div>
-        <div class="row wrap">
+        <div class="row wrap pikk-profile-shortcuts">
           ${
             user
               ? `<button class="btn ${isFollowing ? 'ghost' : 'primary'}" id="pubFollow" data-uid="${esc(
@@ -82,7 +83,7 @@ export function renderProfile(route) {
           <a class="btn ghost" href="#/posts">Posts feed</a>
           <a class="btn ghost" href="#/profile">My profile</a>
         </div>
-      </div>
+      </section>
       <div class="card">
         <h3>Posts</h3>
         ${
@@ -111,6 +112,12 @@ export function renderProfile(route) {
     return shellPage(
       'Profile',
       `
+      <section class="pikk-profile-guest-hero" aria-label="Join PIKK">
+        <p class="kicker">PIKK · YOUR PROFILE</p>
+        <h2>Your space. Your people. <span>One PIKK.</span></h2>
+        <p>Follow artists, share posts and build your profile. Explore the official DatBoiSkeet page or create a local demo account to try the experience.</p>
+        <span class="chip">TEST MODE · Browser-local account only</span>
+      </section>
       <div class="card">
         <p class="kicker">PIKK account</p>
         <h3>Sign in · local demo</h3>
@@ -141,8 +148,9 @@ export function renderProfile(route) {
   const following = listFollowing(user.id);
   const m = user.memberships || {};
   const body = `
-    <div class="card">
-      <div class="profile-hero">
+    <section class="pikk-profile-cover" aria-label="Your PIKK profile">
+      <div class="pikk-profile-cover-inner">
+        <span class="pikk-profile-cover-kicker">PIKK · MY PROFILE</span>
         ${avatarHtml(user)}
         <div>
           <h2 style="margin:0">${esc(user.username)}</h2>
@@ -151,19 +159,19 @@ export function renderProfile(route) {
           ${m.skeetPlus || m.backstage || m.innerCircle ? `<span class="chip">${m.innerCircle ? 'Inner Circle' : m.backstage ? 'Backstage' : 'Skeet+'}</span>` : ''}
         </div>
       </div>
-      <div class="stats">
+      <div class="stats pikk-profile-stats">
         <div><strong>${myPosts.length}</strong><span>Posts</span></div>
         <div><strong>${(user.followers || []).length}</strong><span>Followers</span></div>
         <div><strong>${(user.following || []).length}</strong><span>Following</span></div>
       </div>
-      <div class="row wrap">
+      <div class="row wrap pikk-profile-shortcuts">
         <a class="btn" href="#/posts">New post</a>
         <a class="btn" href="#/profile/${esc(user.id)}">Public view</a>
         <a class="btn" href="#/profile-shop">Profile Shop</a>
         <a class="btn" href="#/messages">Messages</a>
         <button class="btn ghost" id="signoutBtn">Sign out</button>
       </div>
-    </div>
+    </section>
 
     <div class="card" id="editCard">
       <h3>Edit profile</h3>
