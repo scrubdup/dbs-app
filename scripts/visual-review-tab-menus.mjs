@@ -2,6 +2,10 @@ import assert from 'node:assert/strict';
 import { mkdir } from 'node:fs/promises';
 import { chromium } from 'playwright';
 
+// The app uses local/system fonts; avoid a flaky Chromium screenshot wait on
+// unrelated pending web fonts (e.g. third-party embedded media).
+process.env.PW_TEST_SCREENSHOT_NO_FONTS_READY = '1';
+
 // Checks the owner's screenshot requirement: ALL seven bottom tabs use the
 // existing Create dialog's actual grid, outlined icons, tile and cancel CSS.
 // These are real browser interactions, not static string checks.
