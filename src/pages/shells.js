@@ -603,36 +603,55 @@ export function bindCommunity(root = document) {
 }
 
 export function renderSignup() {
+  const roles = [
+    ['member', 'Member', 'Listen, watch, connect, shop, date and play games'],
+    ['creator', 'Content Creator', 'Post videos, Shorts, Reels and original content'],
+    ['artist', 'Music Artist', 'Release and sell singles and albums'],
+    ['streamer', 'Streamer', 'Go live, broadcast, receive gifts and join battles'],
+    ['publisher', 'Video Publisher', 'Build a long-form video channel, playlists and subscribers'],
+    ['producer', 'Producer / Beat Seller', 'Upload and license original beats'],
+    ['seller', 'Shop Seller', 'Apply for a PIKK Shop storefront'],
+    ['advertiser', 'Business / Advertiser', 'Book featured placements and promote your brand'],
+    ['clipper', 'Clipper / Promoter', 'Apply for clipping, referrals and promotional campaigns']
+  ];
+  const options = roles.map(([id, name, description]) =>
+    `<label class="card" style="display:flex;gap:12px;align-items:flex-start;margin:8px 0;padding:12px;cursor:pointer"><input type="checkbox" name="pikk-role" value="${id}" ${id === 'member' ? 'checked' : ''} aria-label="${name}" style="margin-top:4px"/><span><strong>${name}</strong><br/><span class="muted">${description}</span></span></label>`
+  ).join('');
   return shellPage(
-    'Signup & Creator Apps',
+    'Join PIKK',
     `<div class="card">
-      <p class="kicker">Join PIKK</p>
-      <h2 style="margin:0 0 8px">Fan account first</h2>
-      <p>Everyone creates a DatBoiSkeet account to participate — follow, comment, save, join Lounge rooms, buy memberships, message the team, or apply to earn. Visitors can browse public promo pages; signing up unlocks the network.</p>
-      <p class="muted" style="margin:8px 0 12px"><strong>Basic fan signup is free</strong> — no manual approval. This demo uses local Profile sign-in (TEST MODE · no real email/auth yet).</p>
-      <a class="btn primary" href="#/profile">Sign in / create demo user</a>
-      <a class="btn ghost" href="#/guidelines" style="margin-left:8px">Read Guidelines</a>
+      <p class="kicker">One account. Endless possibilities.</p>
+      <h2>How will you use PIKK?</h2>
+      <p>Select as many roles as you want. Everyone gets free basic member access. You can add roles later in Account Settings.</p>
+      <form id="pikk-signup-roles-form">
+        <fieldset style="border:0;padding:0;margin:0"><legend class="muted">Choose your account roles</legend>${options}</fieldset>
+        <button class="btn primary" type="submit">Continue with selected roles</button>
+      </form>
+      <p id="pikk-signup-roles-result" class="muted" role="status" aria-live="polite"></p>
+      <p class="muted">TEST MODE: selections are saved only on this device. Real registration, verification, agreements and payouts are not active.</p>
+      <a class="btn ghost" href="#/guidelines">Read Community Guidelines</a>
     </div>
-
-    <div class="card">
-      <h3>Apply for a role</h3>
-      <p class="muted" style="margin:0 0 10px">From Profile → Become a Creator, request one or more roles. Each has its own application — no automatic access to earning tools.</p>
-      <ul class="list-plain">
-        <li><span><strong>Creator / Streamer</strong><br/><span class="muted" style="font-size:12px">Profile, socials, livestream plan · PIKK branding &amp; moderation</span></span><a href="#/live">Live</a></li>
-        <li><span><strong>Clipper</strong><br/><span class="muted" style="font-size:12px">Work samples &amp; analytics · paid promo campaigns</span></span><a href="#/clippers">Apply</a></li>
-        <li><span><strong>Brand / Advertiser</strong><br/><span class="muted" style="font-size:12px">Business identity, campaigns &amp; disclosures</span></span><a href="#/marketplace">Marketplace</a></li>
-        <li><span><strong>Affiliate / Promoter</strong><br/><span class="muted" style="font-size:12px">Referral &amp; campaign promotion plan</span></span><a href="#/refer">Refer</a></li>
-        <li><span><strong>Seller</strong><br/><span class="muted" style="font-size:12px">Storefront details, fulfillment &amp; verification</span></span><a href="#/marketplace">Storefront</a></li>
-      </ul>
-    </div>
-
-    <div class="card">
-      <h3>Approval flow</h3>
-      <p class="muted" style="margin:0">Register → select role → submit → admin reviews → approve / reject / waitlist → notify → unlock role tools. Earnings need identity/tax/payout checks before payouts. All roles stay under Community Guidelines.</p>
-      <p class="chip" style="margin-top:10px">TEST MODE · local demo user on Profile</p>
+    <div class="card"><h3>Role approval and safety</h3>
+      <p>Content creation and publishing may require rights attestations. Seller storefronts, advertising, creator earnings and payouts require separate approval, agreements and verification. Dating requires age eligibility. Selecting a role does not grant paid or restricted privileges.</p>
     </div>`,
-    { lead: 'Free fan signup + creator role applications · §16.' }
+    { lead: 'Free member account · multiple creator and business roles · §16.' }
   );
+}
+
+export function bindSignup() {
+  const form = document.getElementById('pikk-signup-roles-form');
+  if (!form) return;
+  try {
+    const saved = JSON.parse(localStorage.getItem('pikk-signup-roles') || '["member"]');
+    form.querySelectorAll('input[name="pikk-role"]').forEach(input => { input.checked = saved.includes(input.value); });
+  } catch { /* preserve default member selection */ }
+  form.addEventListener('submit', event => {
+    event.preventDefault();
+    const selected = [...form.querySelectorAll('input[name="pikk-role"]:checked')].map(input => input.value);
+    if (!selected.includes('member')) selected.unshift('member');
+    localStorage.setItem('pikk-signup-roles', JSON.stringify(selected));
+    document.getElementById('pikk-signup-roles-result').textContent = 'Preferences saved on this device. Continue to the demo profile to create your account.';
+  });
 }
 
 export function renderMessages() {
