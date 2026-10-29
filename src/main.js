@@ -12,6 +12,7 @@ import './fanclubs-premium.css';
 import './openmic-premium.css';
 import './shield.css';
 import './ai-artists.css';
+import './creator-rights-policy.css';
 import { SECTION_MENU_ITEMS, closeSectionMenus, toggleSectionMenu } from './section-menus.js';
 import { CREATE_MENU_GROUPS } from './create-menu.js';
 import { DRAWER_GROUPS, TABBAR } from './data.js';
@@ -38,6 +39,7 @@ import { renderAdmin, bindAdmin } from './pages/admin.js';
 import { renderPosts, bindPosts } from './pages/posts.js';
 import { renderMusic, bindMusic } from './pages/music.js';
 import { renderAIArtists, bindAIArtists } from './pages/ai-artists.js';
+import { renderCreatorRightsPolicy, bindCreatorRightsPolicy } from './pages/creator-rights-policy.js';
 import { renderShield, bindShield } from './pages/shield.js';
 import { renderAIArtists, bindAIArtists } from './pages/ai-artists.js';
 import { renderMerch, bindMerch } from './pages/merch.js';
@@ -91,6 +93,7 @@ const ROUTES = {
   '/posts': { render: renderPosts, bind: bindPosts },
   '/music': { render: renderMusic, bind: bindMusic },
   '/ai-artists': { render: renderAIArtists, bind: bindAIArtists },
+  '/creator-rights': { render: renderCreatorRightsPolicy, bind: bindCreatorRightsPolicy },
   '/shield': { render: renderShield, bind: bindShield },
   '/ai-artists': { render: renderAIArtists, bind: bindAIArtists },
   '/vault': { render: renderMusic, bind: bindMusic },
