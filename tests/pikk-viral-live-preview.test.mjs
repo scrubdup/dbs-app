@@ -46,6 +46,9 @@ test('featured source thumbnails are derived from original YouTube video IDs, no
     assert.ok(html.includes('https://i.ytimg.com/vi/' + id + '/hqdefault.jpg'));
   }
   assert.match(css, /pikk-viral-choice-thumb/);
+  assert.match(html, /class="pikk-viral-hero-logo" src="\/brand\/pikk-official-approved\.jpg"/);
+  assert.doesNotMatch(html, /<small>PIKK<\/small>/);
+  assert.match(css, /\.pikk-viral-hero-logo/);
   assert.doesNotMatch(html, /autoplay=1|data-fake-viewers/);
 });
 
