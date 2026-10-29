@@ -102,7 +102,8 @@ export function renderConnect() {
           <h2>Real connections start here.</h2>
           <p>Find your people, join conversations, and explore the PIKK community. Real-time video matching remains unavailable until safety and infrastructure are ready.</p>
           <div class="pikk-connect-hero-actions">
-            <a class="btn primary" href="#/community">Explore communities</a>
+            <a class="btn primary" href="#/communities">Explore communities</a>
+            <a class="btn ghost" href="#/community">PIKK Lounge</a>
             <a class="btn ghost" href="#/messages">Messages</a>
           </div>
         </div>
@@ -114,7 +115,7 @@ export function renderConnect() {
         </div>
       </section>
       <nav class="pikk-connect-discover-nav" aria-label="Connect sections">
-        <a href="#/community"><span aria-hidden="true">♧</span> Communities</a>
+        <a href="#/communities"><span aria-hidden="true">♧</span> Communities</a>
         <a href="#/messages"><span aria-hidden="true">✉</span> Messages</a>
         <a href="#/connect#connect-random-chat"><span aria-hidden="true">◉</span> Random Chat</a>
         <a href="#/connect#connect-multistream"><span aria-hidden="true">▹</span> Broadcasting</a>
