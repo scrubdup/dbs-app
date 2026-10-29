@@ -2,7 +2,7 @@
 
 This file tracks *notification thresholds*, not marketing claims. It is stored on the draft production-readiness branch until reviewed/merged. Future checks must read the ledger before notifying, and must not re-alert for the same threshold.
 
-- Last checked: 2026-10-29 04:42 UTC (2026-10-28 23:42 America/Chicago)
+- Last checked: 2026-10-29 05:37 UTC (2026-10-29 00:37 America/Chicago)
 - Overall development baseline: **35% estimated** (includes prototypes and design; NOT a verified production-completion score)
 - Current overall development meter: **35% (unchanged)**
 - Last notified milestone: **35% baseline** (no 5% increase sent)
@@ -42,3 +42,11 @@ This file tracks *notification thresholds*, not marketing claims. It is stored o
 - `gh-pages:index.html` now references `/pikk-app/assets/index-BbM82kTg.js` and `index-iZ41PtNQ.css`. Published-branch JS contains `/communities`, `PIKK Communities`, and local forum key `pikk_forum_local_v1`. **Deployment artifact present**, but independent public CDN accessibility, user-to-user posting, backend integration and production end-to-end journeys are not verified.
 - Open draft [PR #111](https://github.com/scrubdup/pikk-app/pull/111) remains the milestone ledger's branch; do not merge it without review. Open draft PRs #88 and #110 remain unmerged; do not count as shipped. Repository default is still `master`, while active releases merge into `main`.
 - Blockers: production authentication, cross-device persistence, actual hosted live rooms, secure payments/donations, external multistream, copyright enforcement, safety/moderation, live production monitoring, staging acceptance and end-to-end tests. The Communities addition is verified local UI/demo functionality, **not** sufficient to justify moving the 35% estimate to 40%.
+
+## Verification check — 2026-10-29 05:37 UTC
+- **No new milestone.** Overall development estimate stays **35%**; next eligible threshold **40%**; last notified milestone remains the 35% baseline. **Production readiness: unmeasured.** Do not issue a new alert.
+- Recent merged PRs still topped by [#114](https://github.com/scrubdup/pikk-app/pull/114), merged 2026-10-29 04:27:09 UTC, with verified local TEST MODE Communities UI, not multiuser backend functionality. Previously verified 10 successful PR CI workflows and compiled `gh-pages` assets remain the latest merge evidence checked.
+- New [PR #115](https://github.com/scrubdup/pikk-app/pull/115) is **open and unmerged** as of this check. It introduces a rights-safe Viral Live *preview* route and three source-selection options; it expressly does not implement broadcasting or real live audience counts. Its head `fd8d3c77576d61ceeeb393587d83151fe4ab20fe` has **8 successful PR-triggered GitHub Actions workflows**, including [regression/build run 40824261106](https://github.com/scrubdup/pikk-app/actions/runs/40824261106) and [mobile/desktop visual review 40824261005](https://github.com/scrubdup/pikk-app/actions/runs/40824261005). The latter passed local Chromium route/interactions and produced screenshot artifact `pikk-viral-live-preview-screenshots` (ID 12876230917). These tests are local preview tests, **not production end-to-end or deployment verification**. No milestone credit for unmerged preview.
+- The `gh-pages:index.html` still references compiled asset `/pikk-app/assets/index-BbM82kTg.js`, consistent with previously checked #114 publication. Public GitHub Pages URL `https://scrubdup.github.io/pikk-app/#/home` was inaccessible to the web fetch in this check, so public delivery and production user journeys remain unverified.
+- Open draft [#111](https://github.com/scrubdup/pikk-app/pull/111) still contains this ledger on a review branch. It has not been merged into `main`; preserve review gates. Open #115 and drafts #110/#88 are not shipped evidence.
+- Remaining blockers: real authentication and persistent backend, multiuser moderation, actual hosted live/video rooms, secure donations and payments, external multistream permissions and integration, rights protection, mobile/desktop public acceptance tests, and independent deployed end-to-end evidence. No 5-point increase is supported.
