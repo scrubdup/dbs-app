@@ -291,7 +291,7 @@ export function bindConnect(root = document, rerender) {
   if (anchor === 'connect-random-chat' || anchor === 'connect-multistream') {
     requestAnimationFrame(() => {
       root.querySelector(`#${anchor}`)?.scrollIntoView({
-        behavior: window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth',
+        behavior: globalThis.window?.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches ? 'instant' : 'smooth',
         block: 'start',
       });
     });
