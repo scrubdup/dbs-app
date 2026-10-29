@@ -207,7 +207,8 @@ const LIVE_DISCOVERY_CATEGORIES = [
   ['Ladies Lounge', 'Women-centered girl talk, beauty, fashion, relationships and community', '💅'],
   ["What's the Word?", 'Entertainment news, celebrity conversations, viral moments and trending discussions', '🗣️'],
   ['Women in Business', 'Women entrepreneurs, founders, business networking and mentorship', '👩‍💼'],
-  ['The Man Cave', 'Men’s business networking, entrepreneurship, mentorship and partnerships', '🤝'],
+  ['The Man Cave', 'Men’s social conversations, sports and community', '🤝'],
+  ['Men in Business', 'Men’s entrepreneurship, networking, mentorship and partnerships', '👔'],
   ['The Hangout', 'Conversations and social live streams', '💬'],
   ['Creator Spotlight', 'Featured creators and emerging talent', '🌟'],
   ['Game Room', 'Gameplay, tournaments and community games', '🎮'],
@@ -218,7 +219,7 @@ const LIVE_DISCOVERY_CATEGORIES = [
   ['Couples Corner', 'Couples conversations and community', '💞'],
   ['Date Night Live', 'Live dating conversations and activities', '🌹'],
   ['Love & Advice', 'Relationship conversations and advice', '💌'],
-  ['Business Only', 'Entrepreneurs and professional networking', '💼'],
+  ['Business Connect', 'Open networking for women and men: entrepreneurship, careers and partnerships', '💼'],
   ['Conspiracy Room', 'Open discussion of theories and claims', '🧩'],
   ['Money Talk', 'Stocks, housing, crypto and financial discussions', '💰'],
 
