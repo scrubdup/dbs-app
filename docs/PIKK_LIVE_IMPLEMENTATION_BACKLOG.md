@@ -36,3 +36,14 @@ Single coed room for business networking, starting a business, stocks/ETFs, cryp
 - [ ] P0: Automated syntax, route, mobile layout, accessibility, streaming, permission and end-to-end tests before merging or deploying.
 
 The current Live categories in src/pages/live.js are discovery filters, not proof that backend-hosted rooms or game logic exist.
+
+## Universal live room engagement and daily goals (approved)
+Applies to **every** room and hosted stream across Women, Men, Coed, Sports, Music, IRL and all other Live categories, not just the main Live page.
+- [ ] Show **current concurrent viewer count**, **live likes**, and **total gifts received** on each active stream card and inside its room. Counts must come from authoritative server data; display “—” when unknown, never fabricate zero or simulated values as real activity.
+- [ ] Every eligible livestream host can create/edit a **24-hour daily goal** with custom goal name and target amount; define timezone and reset policy explicitly and prevent editing from falsifying received donations.
+- [ ] Fans can **donate to the active host goal** using verified, secure payment/coin transactions with explicit confirmation, insufficient-balance handling, and refund/chargeback accounting.
+- [ ] Show live progress, total contributed, target and time remaining. Do not count gifts toward goal unless the host has explicitly selected that policy; keep gift totals and goal donations separate by default.
+- [ ] Persist per-stream viewer/like/gift counts and per-host daily goal across devices. Handle reconnects, bot prevention, double-counted likes, idempotent donation events and moderation.
+- [ ] Provide a consistent room-card and stream header component so the metrics and donation controls are available in every category. Do not imply that a category itself has viewers unless aggregating actual active streams with a clearly labeled metric.
+- [ ] Verify production payment permissions, financial compliance, creator payout accounting, abuse safeguards and end-to-end tests before enabling real-money donations.
+Existing Live daily-goal and gift controls are **TEST MODE/demo**; they do not establish production payments or universal room support.
