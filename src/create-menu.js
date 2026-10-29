@@ -26,9 +26,12 @@ export const CREATE_MENU_GROUPS = Object.freeze([
   { title: 'Live & Commerce', items: [
     { title: 'Go Live', href: '#/live?go=1', detail: 'Livestream · TEST MODE', icon: 'live' },
     { title: 'Schedule Live', detail: 'Live scheduling · Planned', icon: 'live' },
-    // Battle modes are available only from an active livestream, not as standalone creation actions.
-    { title: 'Live Battles', detail: 'Inside an active livestream · Planned', icon: 'live' },
-    { title: 'Roast Battle', detail: 'Inside an active livestream · Planned', icon: 'live' },
+    // Fan Gift Battles are initiated by viewers in an active live chat, not created by a host.
+    // A viewer who has sent a gift may be challenged by another viewer; they must accept.
+    // The highest total gift value sent by a competing viewer during the battle wins.
+    // Roast Battle is a distinct mode and must not be conflated with fan Gift Battles.
+    { title: 'Gift Battles', detail: 'Fan challenges in live chat · Planned', icon: 'live' },
+    { title: 'Roast Battle', detail: 'Separate live feature · Planned', icon: 'live' },
     { title: 'List Product', href: '#/marketplace', detail: 'Marketplace · TEST MODE', icon: 'merch' },
     { title: 'Seller Store', detail: 'Store creation · Planned', icon: 'merch' },
     { title: 'Paid Content', href: '#/pricing', detail: 'Creator pricing · preview', icon: 'merch' },
