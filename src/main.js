@@ -44,6 +44,7 @@ import { renderShop, bindShop } from './pages/shop.js';
 import { renderPikkShop, bindPikkShop } from './pages/pikk-shop.js';
 import { renderSpotlight, bindSpotlight } from './pages/spotlight.js';
 import { renderConnect, bindConnect } from './pages/connect.js';
+import { renderCommunities, bindCommunities } from './pages/communities.js';
 import { renderShorts, bindShorts } from './pages/shorts.js';
 import { renderBlockWars, bindBlockWars } from './pages/blockwars.js';
 import { renderGames, bindGames } from './pages/games.js';
@@ -88,6 +89,7 @@ const ROUTES = {
   '/admin': { render: renderAdmin, bind: bindAdmin },
   '/guidelines': { render: renderGuidelines },
   '/community': { render: renderCommunity, bind: bindCommunity },
+  '/communities': { render: renderCommunities, bind: bindCommunities },
   '/signup': { render: renderSignup },
   '/messages': { render: renderMessages, bind: bindMessages },
   '/shop': { render: renderPikkShop, bind: bindPikkShop },
