@@ -28,3 +28,12 @@
 - Real stream ingest, matching, turn-taking, synchronized clocks, authenticated audience vote storage, round result aggregation, tie-breaker, badge/reward issuance, leaderboards, 24-hour expiry and 7-day expiry.
 - Cross-device tests, moderation, anti-fraud, reconnect/recovery and staging-to-production validation.
 - UI category additions alone do not mean these features are working or live.
+
+## City Takeover — strict same-field city-versus-city matching (approved)
+- Each entrant chooses a city and a specific competition field before entering the queue. Fields: Rapper, Producer, Singer, Band, DJ, Dancer, Comedian; Other Talent only matches the same explicitly specified subcategory, never a generic miscellaneous opponent.
+- **Hard match rule:** city A vs city B AND field A === field B (and subcategory equality where relevant). Never match a rapper against a singer, producer, band, DJ, dancer or comedian. No fallback cross-field matching when a queue is empty.
+- Competitors with multiple talents may enroll in multiple queues, but must lock one field for each match; do not switch fields mid-battle.
+- City Takeover uses the same two rounds, one turn per competitor per round, authenticated audience voting, tiebreaker if needed, badge/reward and anti-fraud/moderation rules as PIKK Battles.
+- Maintain field-specific city standings and winner rankings; calculate city scores only from verified completed battles, with explicit scoring rules and anti-manipulation controls.
+- Matching UI must show chosen city, field, opposing city, compatible opponents and waiting state if none are available. No simulated opponent or fabricated matchup.
+- Backend must enforce category equality transactionally; do not rely on UI-only filtering. Test mismatched-field rejection, multi-field profiles, empty queues, disconnects, vote integrity and expiry of recognition banners.
