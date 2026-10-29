@@ -15,7 +15,7 @@ export function renderShield() {
         <div class="shield-kicker">PIKK CREATOR PROTECTION · EARLY ACCESS</div>
         <h2>Your music. Your rights. Your control.</h2>
         <p>Record a draft ownership declaration for music you have rights to. This prototype saves information only on this device.</p>
-        <p class="shield-notice"><strong>TEST MODE:</strong> No upload scanning, automated fingerprinting, copyright registration, takedown, or staff review is active. These records are not sent to PIKK.</p>
+        <p class="shield-notice"><strong>TEST MODE:</strong> No upload scanning, automated fingerprinting, copyright registration, takedown, or staff review is active. <a href="#/creator-rights">Review creator rights and impersonation rules</a>. These records are not sent to PIKK.</p>
       </header>
       <div class="shield-grid">
         <section class="card shield-panel">
