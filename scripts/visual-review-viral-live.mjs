@@ -29,6 +29,10 @@ try {
     assert.equal(await page.locator('#viral-panel-videos').isVisible(), true);
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - innerWidth);
     assert.ok(overflow <= 3, device + ' horizontal overflow ' + overflow);
+    // Interacting with Up Next scrolls to the queue; return to the top before reviewing first paint.
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await page.waitForTimeout(250);
+    await page.screenshot({ path: 'visual-review/pikk-viral-live-'+device+'-viewport.png' });
     await page.screenshot({ path: 'visual-review/pikk-viral-live-'+device+'.png', fullPage: true });
     assert.deepEqual(errors, [], device + ' JS errors');
     await page.goto('http://127.0.0.1:5173/#/live?tab=categories', { waitUntil: 'domcontentloaded' });
