@@ -22,5 +22,5 @@ test('Create remains the primary fourth tab and opens its menu', () => {
   assert.match(entries[3][0], /primary: true/);
   assert.match(main, /ensureCreateMenu\(\)/);
   assert.match(main, /aria-controls="pikkCreateMenu"/);
-  assert.match(main, /href="#\/live\?go=1"/);
+  assert.ok(CREATE_MENU_ITEMS.some(item => item.href === '#/live?go=1'));
 });
