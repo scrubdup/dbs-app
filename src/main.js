@@ -11,6 +11,7 @@ import './clippers-premium.css';
 import './fanclubs-premium.css';
 import './openmic-premium.css';
 import './shield.css';
+import './ai-artists.css';
 import { SECTION_MENU_ITEMS, closeSectionMenus, toggleSectionMenu } from './section-menus.js';
 import { CREATE_MENU_GROUPS } from './create-menu.js';
 import { DRAWER_GROUPS, TABBAR } from './data.js';
@@ -37,6 +38,7 @@ import { renderAdmin, bindAdmin } from './pages/admin.js';
 import { renderPosts, bindPosts } from './pages/posts.js';
 import { renderMusic, bindMusic } from './pages/music.js';
 import { renderShield, bindShield } from './pages/shield.js';
+import { renderAIArtists, bindAIArtists } from './pages/ai-artists.js';
 import { renderMerch, bindMerch } from './pages/merch.js';
 import { renderProfile, bindProfile } from './pages/profile.js';
 import { renderClippers, bindClippers } from './pages/clippers.js';
@@ -88,6 +90,7 @@ const ROUTES = {
   '/posts': { render: renderPosts, bind: bindPosts },
   '/music': { render: renderMusic, bind: bindMusic },
   '/shield': { render: renderShield, bind: bindShield },
+  '/ai-artists': { render: renderAIArtists, bind: bindAIArtists },
   '/vault': { render: renderMusic, bind: bindMusic },
   '/merch': { render: renderMerch, bind: bindMerch },
   '/profile': { render: renderProfile, bind: bindProfile },
