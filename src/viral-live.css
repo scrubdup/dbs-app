@@ -52,6 +52,8 @@
 .pikk-viral-page [hidden] { display: none !important; }
 @media(max-width:700px) {
   .pikk-viral-hero { grid-template-columns: 1fr; min-height: 0; padding: 24px 18px; }
+  .pikk-viral-tabs { gap: 6px; }
+  .pikk-viral-tabs button { padding: 9px 11px; font-size: 12px; }
   .pikk-viral-hero-mark { display: none; }
   .pikk-viral-hero h2 { font-size: clamp(31px,9vw,42px); }
   .pikk-viral-notice { align-items: flex-start; flex-direction: column; gap: 5px; }
