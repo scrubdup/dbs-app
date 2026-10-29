@@ -74,6 +74,7 @@ function renderLiveCategoryChips(active = 'live') {
     { id: 'live', href: '#/live?tab=channels', label: 'Live' },
     { id: 'openmic', href: '#/openmic', label: 'Open Mic / Talent Discovery (24/7)' },
     { id: 'spotlight', href: '#/spotlight', label: 'Spotlight (24/7)' },
+    { id: 'viral', href: '#/viral-live', label: 'Viral Live · Preview' },
   ];
   const chips = items
     .map((it) => {
@@ -299,6 +300,7 @@ function renderCategoriesPanel() {
         <a class="live-cat-card" href="#/openmic"><strong>Open Mic / Talent Discovery</strong><span class="chip">24/7 stage</span><p class="muted">Join the performance queue</p></a>
         <a class="live-cat-card" href="#/spotlight"><strong>Spotlight Live</strong><span class="chip">24/7 stage</span><p class="muted">Keep Going votes and creator performances</p></a>
         <a class="live-cat-card" href="#/shorts"><strong>Clips / Shorts</strong><span class="chip">Watch</span><p class="muted">Watch short videos</p></a>
+        <a class="live-cat-card" href="#/viral-live"><strong>PIKK Viral Live</strong><span class="chip">Preview · not broadcasting</span><p class="muted">Explore the future 24/7 trending channel and original video sources</p></a>
       </div>
     </div>`;
 }

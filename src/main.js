@@ -1,5 +1,6 @@
 import './styles.css';
 import './featured-promos.css';
+import './viral-live.css';
 import { SECTION_MENU_ITEMS, closeSectionMenus, toggleSectionMenu } from './section-menus.js';
 import { CREATE_MENU_GROUPS } from './create-menu.js';
 import { DRAWER_GROUPS, TABBAR } from './data.js';
@@ -29,6 +30,7 @@ import { renderMerch, bindMerch } from './pages/merch.js';
 import { renderProfile, bindProfile } from './pages/profile.js';
 import { renderClippers, bindClippers } from './pages/clippers.js';
 import { renderLive, bindLive } from './pages/live.js';
+import { renderViralLive, bindViralLive } from './pages/viral-live.js';
 import { renderMarketplace, bindMarketplace } from './pages/marketplace.js';
 import { renderMessages, bindMessages } from './pages/messages.js';
 import { renderWallet, bindWallet } from './pages/wallet.js';
@@ -81,6 +83,7 @@ const ROUTES = {
   '/clippers': { render: renderClippers, bind: bindClippers },
   '/videos': { render: renderVideos, bind: bindVideos },
   '/live': { render: renderLive, bind: bindLive },
+  '/viral-live': { render: renderViralLive, bind: bindViralLive },
   '/explore': { render: renderExplore, bind: bindExplore },
   '/marketplace': { render: renderMarketplace, bind: bindMarketplace },
   '/earnings': { render: renderEarnings, bind: bindEarnings },
