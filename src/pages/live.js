@@ -200,6 +200,24 @@ function renderFollowingPanel(user) {
 }
 
 const LIVE_DISCOVERY_CATEGORIES = [
+  ['The Booth', 'Artist performances, freestyle sessions and producers', '🎙️'],
+  ['The Stage', 'Live talent, performances and entertainment', '🎤'],
+  ['PIKK Battles', 'Live competitions and community challenges', '🏆'],
+  ['City Takeover', 'City-based creator challenges and broadcasts', '🌆'],
+  ['The Hangout', 'Conversations and social live streams', '💬'],
+  ['Creator Spotlight', 'Featured creators and emerging talent', '🌟'],
+  ['Game Room', 'Gameplay, tournaments and community games', '🎮'],
+  ['Looking for My Match', 'Opt-in dating live conversations', '❤️'],
+  ['The Flirt Zone', 'Dating and connection conversations', '💕'],
+  ['Speed Connections', 'Fast-paced introductions and connections', '⏱️'],
+  ['Poly Connections', 'Consensual nonmonogamy discussions and connections', '🔗'],
+  ['Couples Corner', 'Couples conversations and community', '💞'],
+  ['Date Night Live', 'Live dating conversations and activities', '🌹'],
+  ['Love & Advice', 'Relationship conversations and advice', '💌'],
+  ['Business Only', 'Entrepreneurs and professional networking', '💼'],
+  ['Conspiracy Room', 'Open discussion of theories and claims', '🧩'],
+  ['Money Talk', 'Stocks, housing, crypto and financial discussions', '💰'],
+
   ['Just Chatting', 'Conversations, Q&A and hanging out', '💬'],
   ['Gaming', 'Gameplay, tournaments and community games', '🎮'],
   ['Music', 'Artists, DJs, producers and listening sessions', '🎵'],
