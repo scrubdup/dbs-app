@@ -22,7 +22,7 @@ test('Live room discovery keeps all 78 approved categories in exactly one folder
   assert.deepEqual([...grouped].sort(), [...names].sort(), 'group map matches exact discovery categories');
   assert.equal(LIVE_DISCOVERY_GROUPS.find(g => g.id === 'women').names.length, 15);
   assert.equal(LIVE_DISCOVERY_GROUPS.find(g => g.id === 'men').names.length, 15);
-  assert.equal(LIVE_DISCOVERY_GROUPS.find(g => g.id === 'men').icon, '🫱🏻‍🫲🏽', 'light and brown skin tone hands, not yellow or dark');
+  assert.equal(LIVE_DISCOVERY_GROUPS.find(g => g.id === 'men').icon, '🫱🏻‍🫲🏿', 'light and dark skin tone emoji handshake');
   assert.equal(LIVE_DISCOVERY_GROUPS.find(g => g.id === 'coed').names.length, 10);
   assert.deepEqual(LIVE_DISCOVERY_GROUPS.find(g => g.id === 'coed').names, [
     "Let's Talk", 'The Hangout', 'Business Connect & Wealth Academy',
@@ -43,7 +43,7 @@ test('directory renders accessible collapsible groups with real channel filters'
   assert.equal((html.match(/class="pikk-live-directory-summary"/g) || []).length, 8);
   assert.match(html, /id="pikk-live-group-coed" open/);
   assert.match(html, /15 rooms/);
-  assert.ok(html.includes('<span class="pikk-live-directory-icon" aria-hidden="true">🫱🏻‍🫲🏽</span>'), 'Men\'s Rooms shows mixed-tone handshake in rendered directory');
+  assert.ok(html.includes('<span class="pikk-live-directory-icon" aria-hidden="true">🫱🏻‍🫲🏿</span>'), 'Men\'s Rooms shows mixed-tone handshake in rendered directory');
   assert.match(html, /10 rooms/);
   assert.match(html, /category=Why%20Are%20You%20Single%3F/);
   assert.match(html, /category=Single%20%26%20Ready%20to%20Mingle/);
