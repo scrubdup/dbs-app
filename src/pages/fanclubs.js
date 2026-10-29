@@ -221,8 +221,8 @@ export function renderFanClubs(route) {
         <h2 id="fanclubs-heading">Find your people. Build your club.</h2>
         <p>Explore creator-led communities, join conversations, and follow the artists you love. Your existing clubs and local demo activity stay right here.</p>
         <div class="fanclubs-hero-actions">
-          <a class="btn primary" href="#fcDiscover">Discover clubs</a>
-          <a class="btn ghost" href="#fcCreateCard">Create a club</a>
+          <button class="btn primary" type="button" data-fc-jump="fcDiscover">Discover clubs</button>
+          <button class="btn ghost" type="button" data-fc-jump="fcCreateCard">Create a club</button>
         </div>
         <div class="fanclubs-hero-note">TEST MODE · Clubs, memberships and posts are browser-local demo data</div>
       </section>
@@ -252,6 +252,10 @@ export function renderFanClubs(route) {
 }
 
 export function bindFanClubs(root) {
+  root.querySelectorAll('[data-fc-jump]').forEach((btn) => btn.addEventListener('click', () => {
+    const target = btn.getAttribute('data-fc-jump');
+    root.querySelector(`#${target}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }));
   root.querySelector('#fcSearch')?.addEventListener('input', (event) => {
     const term = String(event.currentTarget.value || '').trim().toLocaleLowerCase();
     const cards = [...root.querySelectorAll('.fanclub-card[data-search]')];
