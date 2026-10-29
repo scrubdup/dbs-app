@@ -6,7 +6,7 @@ import { esc, shellPage } from '../ui.js';
  * Source links are not a rebroadcast license. Do not autoplay, rehost, claim
  * actual engagement, or call this a running stream until the server exists.
  */
-const SOURCES = VIDEOS.map(video => ({
+const SOURCES = VIDEOS.filter(video => ['dirty-money', '93', 'no-love'].includes(video.id)).map(video => ({
   id: video.id,
   title: video.title,
   artist: 'DatBoiSkeet',
