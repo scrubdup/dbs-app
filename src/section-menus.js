@@ -23,8 +23,18 @@ export const SECTION_MENU_ITEMS = Object.freeze({
     { title: 'Safety Guidelines', href: '#/guidelines', detail: 'Review community safety rules', icon: '◇' },
   ],
   games: [
-    { title: 'PIKK Arcade', href: '#/games', detail: 'Browse upcoming PIKK games · preview', icon: '♜' },
-    { title: 'Block Wars', href: '#/blockwars', detail: 'Development preview · not live multiplayer', icon: '▣' },
+    { title: 'PIKK Arcade', href: '#/games', detail: 'View the full game collection · preview', icon: '♜' },
+    { title: 'PIKK Speed', detail: 'Card game · planned', icon: '♠' },
+    { title: 'PIKK Blackjack', detail: 'Card game · planned', icon: '♠' },
+    { title: 'PIKK Slots', detail: 'Play-chip game · planned', icon: '♜' },
+    { title: 'Poker', detail: 'Play-chip card game · planned', icon: '♠' },
+    { title: 'Spades', detail: 'Card game · planned', icon: '♠' },
+    { title: 'Dominoes', detail: 'Table game · planned', icon: '♜' },
+    { title: 'Chess', detail: 'Strategy game · planned', icon: '♜' },
+    { title: 'PIKK Clash', detail: 'Neighborhood puzzle · planned', icon: '♜' },
+    { title: 'PIKK Knockout', detail: 'Physics challenge · planned', icon: '♜' },
+    { title: 'PIKK Playground', detail: 'Social mini-games · planned', icon: '♜' },
+    { title: 'Block Wars', href: '#/blockwars', detail: 'Fighting game · development preview', icon: '▣' },
   ],
   shop: [
     { title: 'PIKK Shop', href: '#/shop', detail: 'Browse available products', icon: '▤' },
@@ -39,7 +49,7 @@ const MENU_ICON_KEYS = Object.freeze({
   'Video Feed': 'videos', 'Shorts & Reels': 'videos', 'Posts': 'posts', 'Upload Video': 'videos',
   'Connect': 'profile', 'Communities': 'chat', 'Messages': 'msg', 'Random Chat': 'camera', 'Multistream': 'live',
   'Discover Dating': 'heart', 'My Profile': 'profile', 'Safety Guidelines': 'heart',
-  'PIKK Arcade': 'game', 'Block Wars': 'game',
+  'PIKK Arcade': 'game', 'PIKK Speed': 'game', 'PIKK Blackjack': 'game', 'PIKK Slots': 'game', 'Poker': 'game', 'Spades': 'game', 'Dominoes': 'game', 'Chess': 'game', 'PIKK Clash': 'game', 'PIKK Knockout': 'game', 'PIKK Playground': 'game', 'Block Wars': 'game',
   'PIKK Shop': 'merch', 'Marketplace': 'merch', 'Foreign X-Change': 'merch', 'Creator Pricing': 'posts',
 });
 
@@ -68,7 +78,7 @@ export function toggleSectionMenu(name, trigger) {
     // All labels and URLs are fixed, audited developer literals; no untrusted HTML.
     panel.innerHTML = `<div class="pikk-create-sheet" role="dialog" aria-modal="true" aria-labelledby="${id}Title">
       <div class="pikk-create-head"><strong id="${id}Title">${name[0].toUpperCase() + name.slice(1)} on PIKK</strong><button type="button" class="btn ghost" data-section-close aria-label="Close ${name} menu">✕</button></div>
-      <div class="pikk-create-options pikk-create-grid">${SECTION_MENU_ITEMS[name].map(item => `<a class="pikk-create-tile" href="${item.href}"><span class="pikk-menu-icon" aria-hidden="true">${ICONS[MENU_ICON_KEYS[item.title] || "explore"]}</span><strong class="pikk-menu-title">${item.title}</strong><small>${item.detail}</small></a>`).join('')}</div>
+      <div class="pikk-create-options pikk-create-grid">${SECTION_MENU_ITEMS[name].map(item => { const inner = `<span class="pikk-menu-icon" aria-hidden="true">${ICONS[MENU_ICON_KEYS[item.title] || "explore"]}</span><strong class="pikk-menu-title">${item.title}</strong><small>${item.detail}</small>`; return item.href ? `<a class="pikk-create-tile" href="${item.href}">${inner}</a>` : `<div class="pikk-create-tile pikk-menu-planned" aria-disabled="true">${inner}</div>`; }).join('')}</div>
       <button type="button" class="pikk-menu-cancel" data-section-close>Cancel</button>
       <p class="muted" style="font-size:11px;margin:10px 0 0">TEST MODE · Production features are not enabled until secure services are available.</p>
     </div>`;
