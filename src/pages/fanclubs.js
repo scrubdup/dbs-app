@@ -53,7 +53,7 @@ function clubCard(c, selectedId) {
   ]
     .filter(Boolean)
     .join(' ');
-  return `<button type="button" class="fanclub-card${on ? ' on' : ''}" data-open-club="${esc(c.id)}" style="text-align:left;width:100%;display:block;background:transparent;border:1px solid ${on ? 'var(--accent, #f59e0b)' : 'var(--line)'};border-radius:14px;padding:12px;margin:0 0 10px;cursor:pointer;color:inherit">
+  return `<button type="button" class="fanclub-card${on ? ' on' : ''}" data-open-club="${esc(c.id)}" data-search="${esc(`${c.name || ''} ${c.hostName || ''} ${c.description || ''}`)}" aria-label="Open ${esc(c.name)} club">
     <div class="row" style="gap:10px;align-items:center">
       <img src="${esc(c.graphic || '/brand/logo-dbs-v3@2x.webp')}" alt="" width="48" height="48" style="border-radius:12px;object-fit:cover;background:#111" />
       <div style="flex:1;min-width:0">
@@ -130,7 +130,7 @@ function renderDetail(clubId) {
     : '';
 
   return `
-    <div class="card">
+    <div class="card fanclubs-detail">
       <button class="btn ghost" data-back-list style="margin-bottom:8px">← All clubs</button>
       <div class="row" style="gap:12px;align-items:flex-start">
         <img src="${esc(c.graphic || '/brand/logo-dbs-v3@2x.webp')}" alt="" width="72" height="72" style="border-radius:16px;object-fit:cover" />
@@ -185,6 +185,8 @@ export function renderFanClubs(route) {
   const { user } = getState();
 
   const listHtml = clubs.map((c) => clubCard(c, clubId)).join('');
+  const publicCount = clubs.filter((c) => c.privacy === 'public').length;
+  const gatedCount = clubs.length - publicCount;
 
   const createPanel = `
     <div class="card" id="fcCreateCard">
@@ -214,31 +216,56 @@ export function renderFanClubs(route) {
   const body = clubId
     ? renderDetail(clubId)
     : `
-      <div class="card">
-        <p class="kicker">§26 · DBS Lounge</p>
-        <h2 style="margin:0 0 6px">Fan Clubs</h2>
-        <p class="muted" style="margin:0 0 10px">Approved creators host clubs with public discussions and optional paid/private rooms. Fans join or follow — never forced. DatBoiSkeet discovery stays front and center.</p>
-        <div class="row wrap" style="gap:8px">
-          <a class="btn" href="#/community">Community / Lounge</a>
-          <a class="btn" href="#/music">Music</a>
-          <a class="btn" href="#/explore">Explore</a>
-          <a class="btn" href="#/loyalty">Loyalty</a>
+      <section class="fanclubs-hero" aria-labelledby="fanclubs-heading">
+        <div class="fanclubs-eyebrow">PIKK CONNECT <span aria-hidden="true">◆</span> CREATOR COMMUNITIES</div>
+        <h2 id="fanclubs-heading">Find your people. Build your club.</h2>
+        <p>Explore creator-led communities, join conversations, and follow the artists you love. Your existing clubs and local demo activity stay right here.</p>
+        <div class="fanclubs-hero-actions">
+          <a class="btn primary" href="#fcDiscover">Discover clubs</a>
+          <a class="btn ghost" href="#fcCreateCard">Create a club</a>
         </div>
-      </div>
-      <div class="card">
-        <h3 style="margin:0 0 10px">Discover clubs</h3>
-        ${listHtml || '<p class="muted">No clubs yet.</p>'}
-      </div>
+        <div class="fanclubs-hero-note">TEST MODE · Clubs, memberships and posts are browser-local demo data</div>
+      </section>
+      <section class="fanclubs-stats" aria-label="Club directory overview">
+        <div><span>Available clubs</span><strong>${clubs.length}</strong><small>In this demo</small></div>
+        <div><span>Public rooms</span><strong>${publicCount}</strong><small>Open discussions</small></div>
+        <div><span>Private / gated</span><strong>${gatedCount}</strong><small>Demo access controls</small></div>
+      </section>
+      <section class="card fanclubs-discover" id="fcDiscover" aria-labelledby="fcDiscoverTitle">
+        <div class="fanclubs-discover-head">
+          <div><h3 id="fcDiscoverTitle">Discover clubs</h3><p class="muted">Find communities by club, host or topic.</p></div>
+          <a class="btn ghost" href="#/community">Community Lounge</a>
+        </div>
+        <label for="fcSearch">Search clubs</label>
+        <input id="fcSearch" type="search" autocomplete="off" placeholder="Search clubs, creators or interests" />
+        <p id="fcSearchStatus" class="muted" role="status" aria-live="polite">Showing ${clubs.length} of ${clubs.length} clubs</p>
+        <div class="fanclubs-grid">${listHtml || '<p class="muted">No clubs yet.</p>'}</div>
+        <p id="fcNoResults" class="muted" hidden>No clubs match your search. Try a different name or topic.</p>
+      </section>
       ${createPanel}
     `;
 
-  return shellPage('Fan Clubs', body, {
+  return shellPage('Fan Clubs', `<div class="fanclubs-studio">${body}</div>`, {
     lead: 'Creator communities inside DBS Lounge · DEMO.',
     badge: 'Phase 2 demo',
   });
 }
 
 export function bindFanClubs(root) {
+  root.querySelector('#fcSearch')?.addEventListener('input', (event) => {
+    const term = String(event.currentTarget.value || '').trim().toLocaleLowerCase();
+    const cards = [...root.querySelectorAll('.fanclub-card[data-search]')];
+    let visible = 0;
+    cards.forEach((card) => {
+      const match = (card.dataset.search || '').toLocaleLowerCase().includes(term);
+      card.hidden = !match;
+      if (match) visible += 1;
+    });
+    const status = root.querySelector('#fcSearchStatus');
+    if (status) status.textContent = `Showing ${visible} of ${cards.length} clubs`;
+    const empty = root.querySelector('#fcNoResults');
+    if (empty) empty.hidden = visible > 0 || !term;
+  });
   root.querySelectorAll('[data-open-club]').forEach((btn) => {
     btn.addEventListener('click', () => refresh(btn.getAttribute('data-open-club')));
   });
