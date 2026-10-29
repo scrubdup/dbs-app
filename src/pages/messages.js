@@ -32,7 +32,13 @@ function lastPreview(t) {
 function renderSignIn() {
   return shellPage(
     'Messages',
-    `<div class="card">
+    `<section class="pikk-msg-flow-hero" aria-label="PIKK messages sign-in">
+      <span class="pikk-msg-flow-kicker">PIKK CONNECT · PRIVATE MESSAGES</span>
+      <h2>Your conversations. <em>Your circle.</em></h2>
+      <p>Try DMs, group conversations and the DatBoiSkeet team inbox with a local demo account.</p>
+      <span class="chip">TEST MODE · No server messaging</span>
+    </section>
+    <div class="card pikk-msg-flow-panel">
       <h3>Sign in required</h3>
       <p class="muted">Private DMs, team inbox, and group chats need a local demo account.</p>
       <a class="btn primary" href="#/profile">Sign in</a>
@@ -132,8 +138,9 @@ function renderNewChat() {
       const mutual = c.team || isMutualFollow(c.id);
       const label = c.team ? 'Team inbox' : mutual ? 'Message' : 'Message request';
       return `
-      <article class="card msg-contact">
+      <article class="card msg-contact pikk-msg-contact-card">
         <div class="msg-contact-head">
+          <span class="pikk-msg-contact-avatar" aria-hidden="true">${esc(String(c.username || "?").slice(0, 1).toUpperCase())}</span>
           <strong>${esc(c.username)}</strong>
           ${c.team ? '<span class="chip">Official</span>' : mutual ? '<span class="chip">Mutual</span>' : '<span class="chip">Request</span>'}
         </div>
@@ -144,20 +151,32 @@ function renderNewChat() {
     .join('');
 
   return `
-    <div class="card">
+    <section class="pikk-msg-flow-hero" aria-label="Start a PIKK conversation">
+      <span class="pikk-msg-flow-kicker">PIKK CONNECT · NEW CONVERSATION</span>
+      <h2>Start a conversation. <em>Stay connected.</em></h2>
+      <p>Choose a demo contact below. Mutual follows open a DM; other contacts start a message request.</p>
+      <span class="chip">TEST MODE · Browser-local conversations</span>
+    </section>
+    <div class="card pikk-msg-flow-panel">
       <div class="row" style="justify-content:space-between">
         <h3 style="margin:0">Start chat</h3>
         <button type="button" class="btn ghost" id="msgBackInbox">← Inbox</button>
       </div>
       <p class="muted">Demo peers. Mutual follows open a DM; others create a <em>request</em> thread (still usable in TEST MODE).</p>
     </div>
-    ${cards}
+    <section class="pikk-msg-contact-grid" aria-label="Available demo contacts">${cards}</section>
   `;
 }
 
 function renderTeamIntro() {
   return `
-    <div class="card msg-team-card">
+    <section class="pikk-msg-flow-hero" aria-label="DatBoiSkeet team inbox">
+      <span class="pikk-msg-flow-kicker">PIKK CONNECT · CREATOR TEAM</span>
+      <h2>Reach the team. <em>One inbox.</em></h2>
+      <p>Send a local demo inquiry to the DatBoiSkeet team. Priority is a test-mode flag, never a charge.</p>
+      <span class="chip">TEST MODE · No real delivery</span>
+    </section>
+    <div class="card msg-team-card pikk-msg-flow-panel">
       <div class="row" style="justify-content:space-between">
         <h3 style="margin:0">Team inbox</h3>
         <button type="button" class="btn ghost" id="msgBackInbox">← Inbox</button>
@@ -199,7 +218,13 @@ function renderThread(thread, { teamPriorityHint = false } = {}) {
     : '';
 
   return `
-    <div class="card msg-thread-head">
+    <section class="pikk-msg-flow-hero pikk-msg-flow-hero-thread" aria-label="Current PIKK conversation">
+      <span class="pikk-msg-flow-kicker">PIKK CONNECT · ${isGroup ? "GROUP CHAT" : isTeam ? "TEAM INBOX" : "DIRECT MESSAGES"}</span>
+      <h2>${esc(thread.peerName || thread.peerId)}</h2>
+      <p>Browser-local conversation preview · Messages are not delivered to other accounts.</p>
+      <span class="chip">TEST MODE</span>
+    </section>
+    <div class="card msg-thread-head pikk-msg-flow-panel">
       <div class="row wrap" style="justify-content:space-between;gap:8px">
         <div>
           <button type="button" class="btn ghost" id="msgBackInbox">← Inbox</button>
@@ -221,7 +246,7 @@ function renderThread(thread, { teamPriorityHint = false } = {}) {
     </div>
     ${requestBanner}
     ${priorityBanner}
-    <div class="card msg-thread-card">
+    <div class="card msg-thread-card pikk-msg-flow-panel">
       <div class="msg-thread" id="msgThread">${msgs || '<p class="muted">No messages yet — say hi.</p>'}</div>
       ${
         blocked
