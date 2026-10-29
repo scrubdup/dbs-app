@@ -18,8 +18,11 @@ try {
     assert.equal(await page.locator('#dbs-sticky-player').isVisible(), true, 'persistent player remains');
     assert.equal(await page.locator('[data-viral-pick]').count(), 3, 'three original sources');
     assert.equal(await page.locator('#pikkViralSource').getAttribute('href'), 'https://www.youtube.com/watch?v=-rHDLWfiuDI');
+    assert.match(await page.locator('#pikkViralThumbnail').getAttribute('src'), /-rHDLWfiuDI\/hqdefault\.jpg$/);
+    assert.equal(await page.locator('.pikk-viral-choice-thumb').count(), 3);
     await page.locator('[data-viral-pick="1"]').click();
     assert.match(await page.locator('#pikkViralTitle').textContent(), /^93 ft/);
+    assert.match(await page.locator('#pikkViralThumbnail').getAttribute('src'), /zC0BYFxs5W0\/hqdefault\.jpg$/);
     assert.equal(await page.locator('#pikkViralSource').getAttribute('href'), 'https://www.youtube.com/watch?v=zC0BYFxs5W0');
     assert.equal(await page.locator('[data-viral-pick="1"]').getAttribute('aria-pressed'), 'true');
     await page.locator('[data-viral-type="photos"]').click();
