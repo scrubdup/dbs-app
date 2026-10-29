@@ -288,6 +288,7 @@ export function renderMusic(route = {}) {
       <a href="#/music?view=beats" class="${musicView === 'beats' ? 'on' : ''}">Beats</a>
       <a href="#/music?view=playlists" class="${musicView === 'playlists' ? 'on' : ''}">Playlists</a>
       <a href="#/music#vault">Vault</a>
+      <a href="#/ai-artists">AI Artists · Clearly labeled</a>
       <a href="#/shield">PIKK Shield · Rights preview</a>
       <a href="#/ai-artists">AI Artists · Clearly labeled</a>
     </nav>

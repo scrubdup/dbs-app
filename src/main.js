@@ -37,6 +37,7 @@ import { renderUpdates, bindUpdates } from './pages/updates.js';
 import { renderAdmin, bindAdmin } from './pages/admin.js';
 import { renderPosts, bindPosts } from './pages/posts.js';
 import { renderMusic, bindMusic } from './pages/music.js';
+import { renderAIArtists, bindAIArtists } from './pages/ai-artists.js';
 import { renderShield, bindShield } from './pages/shield.js';
 import { renderAIArtists, bindAIArtists } from './pages/ai-artists.js';
 import { renderMerch, bindMerch } from './pages/merch.js';
@@ -89,6 +90,7 @@ const ROUTES = {
   '/updates': { render: renderUpdates, bind: bindUpdates },
   '/posts': { render: renderPosts, bind: bindPosts },
   '/music': { render: renderMusic, bind: bindMusic },
+  '/ai-artists': { render: renderAIArtists, bind: bindAIArtists },
   '/shield': { render: renderShield, bind: bindShield },
   '/ai-artists': { render: renderAIArtists, bind: bindAIArtists },
   '/vault': { render: renderMusic, bind: bindMusic },
