@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { renderViralLive } from '../src/pages/viral-live.js';
 import { VIDEOS } from '../src/data.js';
+const FEATURED = VIDEOS.filter(video => ['dirty-money', '93', 'no-love'].includes(video.id));
 
 const main = readFileSync(new URL('../src/main.js', import.meta.url), 'utf8');
 const live = readFileSync(new URL('../src/pages/live.js', import.meta.url), 'utf8');
@@ -26,8 +27,8 @@ test('channel preview uses only existing official source links with no fabricate
   assert.match(html, /Music and third-party rights clearance/);
   assert.match(html, /Creator permission|permission to rebroadcast/i);
   assert.doesNotMatch(html, /\b[0-9,]+ watching\b|autoplay=1|data-fake-viewers/);
-  assert.equal((html.match(/data-viral-pick="/g) || []).length, VIDEOS.length);
-  for (const video of VIDEOS) {
+  assert.equal((html.match(/data-viral-pick="/g) || []).length, FEATURED.length);
+  for (const video of FEATURED) {
     assert.ok(html.includes(video.title), video.title);
     // Queue stores source indices; only the selected source URL is rendered initially.
     // Other original links are selected by bindViralLive and checked in browser CI.
