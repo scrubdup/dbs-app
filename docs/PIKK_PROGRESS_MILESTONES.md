@@ -2,7 +2,7 @@
 
 This file tracks *notification thresholds*, not marketing claims. It is stored on the draft production-readiness branch until reviewed/merged. Future checks must read the ledger before notifying, and must not re-alert for the same threshold.
 
-- Last checked: 2026-10-29 03:53 UTC (2026-10-28 22:53 America/Chicago)
+- Last checked: 2026-10-29 04:42 UTC (2026-10-28 23:42 America/Chicago)
 - Overall development baseline: **35% estimated** (includes prototypes and design; NOT a verified production-completion score)
 - Current overall development meter: **35% (unchanged)**
 - Last notified milestone: **35% baseline** (no 5% increase sent)
@@ -34,3 +34,11 @@ This file tracks *notification thresholds*, not marketing claims. It is stored o
 - Open draft PRs #109, #110, #111 and open PR #107 do not qualify as shipped features. PR #108 Stories/sponsored slots remains visual-only with no publishing/checkout.
 - Architecture blocker: `main` contains active development, but the repository default branch is still `master`, **275 commits behind `main`** at this check. The milestone ledger remains on the draft PR #111 branch, not merged into `main` or `master`; future checks must read this branch explicitly until reviewed. Do not silently assume default branch is current.
 - Functional blockers: no verified production authentication, cross-device data persistence, live room hosting, donations/checkout, external multistream integrations, copyright enforcement, moderation, end-to-end payment/security acceptance or launch-readiness suite. No 5-point increase justified by UI-only work.
+
+## Verification check — 2026-10-29 04:42 UTC
+- **No new 5-point milestone.** Overall development estimate stays **35%**; next threshold **40%**. Last notified milestone remains the 35% baseline; no new user alert. Production readiness is **unmeasured**.
+- Newly merged [PR #114](https://github.com/scrubdup/pikk-app/pull/114) at **2026-10-29 04:27:09 UTC**, squash merge SHA `e67df7c05179899c1c5a572f5407677ff2a70867` into `main`. Adds `#/communities` with eight topic groups, local discussion composer, votes, replies, filters, sorting and browser-local persistence; explicitly **TEST MODE**. No public multiuser service, backend, real moderation, real accounts or remote publishing.
+- PR #114 head `fe581f6ce213de2adfd31b03f50e994e759133cd`: **10/10 PR-triggered GitHub Actions workflows succeeded**, including [Regression Guard #40817690947](https://github.com/scrubdup/pikk-app/actions/runs/40817690947), [Communities Visual Review #40817690923](https://github.com/scrubdup/pikk-app/actions/runs/40817690923), and Live/Shop/Messages/Stories/Navigation/Seven Tab/Dating/Update Center visual workflows. Communities screenshot job `123262530413` succeeded including local interactions at 390px/1440px; screenshot artifact `pikk-communities-visual-review` (artifact ID 12873131817) exists. Tests inspect browser-local code, not real multiuser backend.
+- `gh-pages:index.html` now references `/pikk-app/assets/index-BbM82kTg.js` and `index-iZ41PtNQ.css`. Published-branch JS contains `/communities`, `PIKK Communities`, and local forum key `pikk_forum_local_v1`. **Deployment artifact present**, but independent public CDN accessibility, user-to-user posting, backend integration and production end-to-end journeys are not verified.
+- Open draft [PR #111](https://github.com/scrubdup/pikk-app/pull/111) remains the milestone ledger's branch; do not merge it without review. Open draft PRs #88 and #110 remain unmerged; do not count as shipped. Repository default is still `master`, while active releases merge into `main`.
+- Blockers: production authentication, cross-device persistence, actual hosted live rooms, secure payments/donations, external multistream, copyright enforcement, safety/moderation, live production monitoring, staging acceptance and end-to-end tests. The Communities addition is verified local UI/demo functionality, **not** sufficient to justify moving the 35% estimate to 40%.
