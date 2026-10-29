@@ -11,6 +11,8 @@ const SOURCES = VIDEOS.filter(video => ['dirty-money', '93', 'no-love'].includes
   title: video.title,
   artist: 'DatBoiSkeet',
   url: video.youtube,
+  // Original YouTube source thumbnail: discovery artwork, never rebroadcast media.
+  thumbnail: `https://i.ytimg.com/vi/${encodeURIComponent(new URL(video.youtube).searchParams.get('v'))}/hqdefault.jpg`,
 }));
 
 const TYPES = [
@@ -26,6 +28,7 @@ export function renderViralLive() {
     <button type="button" class="pikk-viral-choice${index === 0 ? ' is-selected' : ''}"
       data-viral-pick="${index}" aria-pressed="${index === 0}">
       <span class="pikk-viral-choice-num">${String(index + 1).padStart(2, '0')}</span>
+      <img class="pikk-viral-choice-thumb" src="${esc(item.thumbnail)}" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer">
       <span class="pikk-viral-choice-copy"><strong>${esc(item.title)}</strong><small>${esc(item.artist)} · Original YouTube source</small></span>
       <span class="pikk-viral-choice-arrow" aria-hidden="true">↗</span>
     </button>`).join('');
@@ -56,7 +59,7 @@ export function renderViralLive() {
 
       <section id="viral-panel-videos" data-viral-panel="videos" role="tabpanel" aria-labelledby="viral-tab-videos">
         <div class="pikk-viral-stage" aria-label="Original video discovery">
-          <div class="pikk-viral-stage-art" aria-hidden="true"><span>▶</span><small>ORIGINAL VIDEO</small></div>
+          <div class="pikk-viral-stage-art"><img id="pikkViralThumbnail" src="${esc(first.thumbnail)}" alt="" decoding="async" referrerpolicy="no-referrer"><span class="pikk-viral-stage-play" aria-hidden="true">▶</span><small>ORIGINAL VIDEO · SOURCE PREVIEW</small></div>
           <div class="pikk-viral-stage-body">
             <span class="pikk-viral-stage-eyebrow">FEATURED SOURCE · NOT A LIVESTREAM</span>
             <h3 id="pikkViralTitle" aria-live="polite">${esc(first.title)}</h3>
@@ -101,6 +104,7 @@ export function bindViralLive(root) {
       page.querySelector('#pikkViralTitle').textContent = source.title;
       page.querySelector('#pikkViralCreator').textContent = source.artist + ' · Watch from the original publisher';
       page.querySelector('#pikkViralSource').href = source.url;
+      page.querySelector('#pikkViralThumbnail').src = source.thumbnail;
       page.querySelectorAll('[data-viral-pick]').forEach(item => {
         const selected = item === button;
         item.classList.toggle('is-selected', selected);
