@@ -15,6 +15,9 @@ try {
     await page.locator('#pikkViralPreview').waitFor({ state: 'visible', timeout: 20000 });
     assert.equal(await page.locator('#tabbar a').count(), 7, 'seven approved tabs remain');
     assert.equal(await page.locator('.logo-img').isVisible(), true, 'approved PIKK logo remains');
+    assert.equal(await page.locator('.pikk-viral-hero-logo').isVisible(), true, 'official approved PIKK hero logo visible on mobile and desktop');
+    assert.match(await page.locator('.pikk-viral-hero-logo').getAttribute('src'), /\/brand\/pikk-official-approved\.jpg$/);
+    assert.equal(await page.locator('.pikk-viral-hero-logo').evaluate(el => el.complete && el.naturalWidth > 0), true, 'approved hero image loads');
     assert.equal(await page.locator('#dbs-sticky-player').isVisible(), true, 'persistent player remains');
     assert.equal(await page.locator('[data-viral-pick]').count(), 3, 'three original sources');
     assert.equal(await page.locator('#pikkViralSource').getAttribute('href'), 'https://www.youtube.com/watch?v=-rHDLWfiuDI');
