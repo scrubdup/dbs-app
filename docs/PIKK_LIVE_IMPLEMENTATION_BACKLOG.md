@@ -47,3 +47,12 @@ Applies to **every** room and hosted stream across Women, Men, Coed, Sports, Mus
 - [ ] Provide a consistent room-card and stream header component so the metrics and donation controls are available in every category. Do not imply that a category itself has viewers unless aggregating actual active streams with a clearly labeled metric.
 - [ ] Verify production payment permissions, financial compliance, creator payout accounting, abuse safeguards and end-to-end tests before enabling real-money donations.
 Existing Live daily-goal and gift controls are **TEST MODE/demo**; they do not establish production payments or universal room support.
+
+## Shareable, fully customizable donation goals (approved)
+- [ ] Every eligible Live host can type a **freeform goal title** describing what donations are for, plus optional description, custom target amount and 24-hour duration; do not limit titles to predefined categories.
+- [ ] Show the host-entered title and goal progress bar on the stream and the shareable goal page. Apply reasonable character limits, escaping, content moderation and fraud/impersonation protections.
+- [ ] Generate a stable, unguessable, shareable goal URL with native share and copy-link actions; allow sharing via DMs, text and social platforms. Include appropriate public preview metadata without exposing private account information.
+- [ ] Anyone with a valid link can view the goal without joining the stream. Support donation from outside the stream after secure sign-in or a compliant guest-checkout flow; do not claim anonymous guest payment is implemented.
+- [ ] Allow donors to add an optional message, with moderation and privacy controls. Donors must not be able to edit the host's goal title.
+- [ ] Ensure each link resolves to the correct goal and displays accurate amount raised, remaining time and status (active, completed, expired); prevent contributions to expired/removed goals.
+- [ ] Real donations require verified payment settlement, idempotency, refund/chargeback handling, rate limiting and transparent fees before production launch.
