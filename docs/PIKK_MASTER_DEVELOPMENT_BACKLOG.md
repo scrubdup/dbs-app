@@ -88,3 +88,5 @@ See [PIKK Live implementation backlog](PIKK_LIVE_IMPLEMENTATION_BACKLOG.md).
 - [ ] Staged beta and launch readiness verification
 
 Every feature needs the actual services, databases, APIs, permissions, security and testing required to operate. Do not mark a task complete without code, integration and test evidence.
+
+- [ ] Streamer Guide: donor shout-outs, on-screen recognition, appreciation and privacy-respecting donation alerts
