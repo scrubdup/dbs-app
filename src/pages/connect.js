@@ -290,7 +290,10 @@ export function bindConnect(root = document, rerender) {
   const anchor = getRoute().elementId;
   if (anchor === 'connect-random-chat' || anchor === 'connect-multistream') {
     requestAnimationFrame(() => {
-      root.querySelector(`#${anchor}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      root.querySelector(`#${anchor}`)?.scrollIntoView({
+        behavior: globalThis.window?.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches ? 'instant' : 'smooth',
+        block: 'start',
+      });
     });
   }
 }
