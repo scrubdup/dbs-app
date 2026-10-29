@@ -63,3 +63,11 @@ Existing Live daily-goal and gift controls are **TEST MODE/demo**; they do not e
 - [ ] Provide notification settings for volume/mute, vibration on/off, reduced-motion/accessibility and quiet mode. Respect browser autoplay restrictions, mobile OS notification permissions, Do Not Disturb and devices without vibration APIs; use visible fallback alerts.
 - [ ] Ensure donor-message input is **always offered** (but message entry is optional) in every donation flow. Sanitize and moderate messages before public display or text-to-speech; no unconsented public message reading.
 - [ ] Deduplicate events across reconnections/devices; test sound/haptic behavior on iOS, Android and desktop. Never promise vibration where the platform disallows it.
+
+## Streamer donation recognition and community appreciation (approved)
+- [ ] After each confirmed paid donation, display a prominent on-stream donor acknowledgment card for a meaningful period (default **15 seconds**, configurable 10–30 seconds), showing donor display name, contribution amount and optional moderated message. Respect anonymous/private donor preferences.
+- [ ] Play the donation sound and trigger supported haptics once per verified donation event, subject to user notification settings and device permissions.
+- [ ] Queue simultaneous donation alerts fairly so each supporter gets visible recognition; combine bursts carefully without losing individual acknowledgments. Avoid covering essential stream controls, captions or safety actions.
+- [ ] In the **Streamer Guide / Creator Onboarding** include the following community guideline: **“We encourage all streamers to acknowledge paid donations. Give supporters a shout-out, thank them by name when they allow it, and show them love. Make them feel appreciated and part of your community—not like you're just taking their money.”**
+- [ ] Remind hosts to acknowledge donors in-stream, but do not require a shout-out as a condition of receiving donations, promise guaranteed attention, or pressure fans to give money. Respect donor anonymity and accessibility needs.
+- [ ] Verify duration, alert queue, privacy, mute settings, cross-device synchronization and real-payment confirmation in testing.
