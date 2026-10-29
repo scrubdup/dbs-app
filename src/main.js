@@ -1,5 +1,6 @@
 import './styles.css';
 import { SECTION_MENU_ITEMS, closeSectionMenus, toggleSectionMenu } from './section-menus.js';
+import { CREATE_MENU_GROUPS } from './create-menu.js';
 import { DRAWER_GROUPS, TABBAR } from './data.js';
 import {
   initDbsPlayer,
@@ -164,6 +165,18 @@ function buildTabbar() {
   el.classList.add('tabbar-reshaped', 'tabbar-fit7');
 }
 
+function createMenuMarkup() {
+  return CREATE_MENU_GROUPS.map(group => {
+    const tiles = group.items.map(item => {
+      const contents = `<span class="pikk-menu-icon" aria-hidden="true">${ICONS[item.icon] || ICONS.explore}</span><strong class="pikk-menu-title">${esc(item.title)}</strong><small>${esc(item.detail)}</small>`;
+      return item.href
+        ? `<a href="${esc(item.href)}" class="pikk-create-tile">${contents}</a>`
+        : `<div class="pikk-create-tile pikk-create-tile-planned" aria-disabled="true">${contents}</div>`;
+    }).join('');
+    return `<section class="pikk-create-menu-group" aria-label="${esc(group.title)}"><h3>${esc(group.title)}</h3><div class="pikk-create-options pikk-create-grid">${tiles}</div></section>`;
+  }).join('');
+}
+
 function ensureCreateMenu() {
   let panel = document.getElementById('pikkCreateMenu');
   if (panel) return panel;
@@ -173,39 +186,7 @@ function ensureCreateMenu() {
   panel.hidden = true;
   panel.innerHTML = `<div class="pikk-create-sheet" role="dialog" aria-modal="true" aria-label="Create on PIKK">
     <div class="pikk-create-head"><strong>Create on PIKK</strong><button type="button" class="btn ghost" data-create-close aria-label="Close create menu">✕</button></div>
-      <section class="pikk-create-menu-group" aria-label="Social &amp; Community"><h3>Social &amp; Community</h3><div class="pikk-create-options pikk-create-grid">
-        <a href="#/posts?type=text" class="pikk-create-tile"><span class="pikk-menu-icon" aria-hidden="true">✦</span><strong class="pikk-menu-title">Create Post</strong><small>Text, link or poll</small></a>
-        <a href="#/community" class="pikk-create-tile"><span class="pikk-menu-icon" aria-hidden="true">✦</span><strong class="pikk-menu-title">Community Post</strong><small>Open communities · preview</small></a>
-        <a href="#/posts?type=picture" class="pikk-create-tile"><span class="pikk-menu-icon" aria-hidden="true">✦</span><strong class="pikk-menu-title">Story</strong><small>24-hour story · planned</small></a>
-        <a href="#/posts?type=short" class="pikk-create-tile"><span class="pikk-menu-icon" aria-hidden="true">✦</span><strong class="pikk-menu-title">Reels</strong><small>Short video · TEST MODE</small></a>
-        <a href="#/posts?type=picture" class="pikk-create-tile"><span class="pikk-menu-icon" aria-hidden="true">✦</span><strong class="pikk-menu-title">Photo Post</strong><small>Photos · TEST MODE</small></a>
-        <a href="#/posts?type=text" class="pikk-create-tile"><span class="pikk-menu-icon" aria-hidden="true">✦</span><strong class="pikk-menu-title">Create Poll</strong><small>Poll composer · preview</small></a>
-        <a href="#/community" class="pikk-create-tile"><span class="pikk-menu-icon" aria-hidden="true">✦</span><strong class="pikk-menu-title">Create Community</strong><small>Community tools · preview</small></a>
-        <a href="#/community" class="pikk-create-tile"><span class="pikk-menu-icon" aria-hidden="true">✦</span><strong class="pikk-menu-title">Create Chatroom</strong><small>Community rooms · preview</small></a>
-      </div></section>
-      <section class="pikk-create-menu-group" aria-label="Videos &amp; Music"><h3>Videos &amp; Music</h3><div class="pikk-create-options pikk-create-grid">
-        <a href="#/posts?type=video" class="pikk-create-tile"><span class="pikk-menu-icon" aria-hidden="true">✦</span><strong class="pikk-menu-title">Upload Video</strong><small>Video upload · TEST MODE</small></a>
-        <a href="#/posts?type=video" class="pikk-create-tile"><span class="pikk-menu-icon" aria-hidden="true">✦</span><strong class="pikk-menu-title">Music Video</strong><small>Music video upload · TEST MODE</small></a>
-        <a href="#/posts?type=short" class="pikk-create-tile"><span class="pikk-menu-icon" aria-hidden="true">✦</span><strong class="pikk-menu-title">Short Video</strong><small>Short video · TEST MODE</small></a>
-        <a href="#/music?view=upload" class="pikk-create-tile"><span class="pikk-menu-icon" aria-hidden="true">✦</span><strong class="pikk-menu-title">Upload Song</strong><small>Music upload · planned</small></a>
-        <a href="#/music?view=upload" class="pikk-create-tile"><span class="pikk-menu-icon" aria-hidden="true">✦</span><strong class="pikk-menu-title">Upload Album</strong><small>Album upload · planned</small></a>
-        <a href="#/music?view=upload" class="pikk-create-tile"><span class="pikk-menu-icon" aria-hidden="true">✦</span><strong class="pikk-menu-title">Upload EP</strong><small>EP upload · planned</small></a>
-        <a href="#/music" class="pikk-create-tile"><span class="pikk-menu-icon" aria-hidden="true">✦</span><strong class="pikk-menu-title">Create Playlist</strong><small>Playlist tools · preview</small></a>
-        <a href="#/music" class="pikk-create-tile"><span class="pikk-menu-icon" aria-hidden="true">✦</span><strong class="pikk-menu-title">Add to Vault</strong><small>Vault tools · preview</small></a>
-      </div></section>
-      <section class="pikk-create-menu-group" aria-label="Live &amp; Commerce"><h3>Live &amp; Commerce</h3><div class="pikk-create-options pikk-create-grid">
-        <a href="#/live?go=1" class="pikk-create-tile"><span class="pikk-menu-icon" aria-hidden="true">✦</span><strong class="pikk-menu-title">Go Live</strong><small>Stream · TEST MODE</small></a>
-        <a href="#/live" class="pikk-create-tile"><span class="pikk-menu-icon" aria-hidden="true">✦</span><strong class="pikk-menu-title">Schedule Live</strong><small>Scheduling · planned</small></a>
-        <a href="#/live" class="pikk-create-tile"><span class="pikk-menu-icon" aria-hidden="true">✦</span><strong class="pikk-menu-title">Live Battle</strong><small>Battle setup · preview</small></a>
-        <a href="#/shop" class="pikk-create-tile"><span class="pikk-menu-icon" aria-hidden="true">✦</span><strong class="pikk-menu-title">List Product</strong><small>Seller listing · TEST MODE</small></a>
-        <a href="#/marketplace" class="pikk-create-tile"><span class="pikk-menu-icon" aria-hidden="true">✦</span><strong class="pikk-menu-title">Seller Store</strong><small>Store setup · planned</small></a>
-        <a href="#/pricing" class="pikk-create-tile"><span class="pikk-menu-icon" aria-hidden="true">✦</span><strong class="pikk-menu-title">Paid Content</strong><small>Creator pricing · planned</small></a>
-      </div></section>
-      <section class="pikk-create-menu-group" aria-label="Creator Tools"><h3>Creator Tools</h3><div class="pikk-create-options pikk-create-grid">
-        <a href="#/profile" class="pikk-create-tile"><span class="pikk-menu-icon" aria-hidden="true">✦</span><strong class="pikk-menu-title">Creator Dashboard</strong><small>Creator profile &amp; tools</small></a>
-        <a href="#/posts" class="pikk-create-tile"><span class="pikk-menu-icon" aria-hidden="true">✦</span><strong class="pikk-menu-title">Manage Content</strong><small>Posts and content</small></a>
-        <a href="#/posts" class="pikk-create-tile"><span class="pikk-menu-icon" aria-hidden="true">✦</span><strong class="pikk-menu-title">Drafts</strong><small>Draft management · planned</small></a>
-      </div></section>
+    ${createMenuMarkup()}
     <button type="button" class="pikk-menu-cancel" data-create-close>Cancel</button>
     <p class="muted" style="font-size:11px;margin:10px 0 0">TEST MODE · uploads depend on available prototype tools</p>
   </div>`;
