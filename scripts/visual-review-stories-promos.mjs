@@ -38,6 +38,12 @@ try{
       assert.deepEqual(geometry.rows.map(r=>r.columns),[1,2,3],route+' layout columns');
       assert.deepEqual(geometry.rows.map(r=>r.children),[1,2,3],route+' slot counts');
       assert.ok(geometry.overflow<=3,route+' horizontal overflow '+geometry.overflow);
+      const cardOverlap = await panel.locator('.pikk-ad-slot').evaluateAll(cards => cards.some(card => {
+        const icon = card.querySelector('.pikk-ad-slot-icon').getBoundingClientRect();
+        const title = card.querySelector('strong').getBoundingClientRect();
+        return title.top < icon.bottom + 2;
+      }));
+      assert.equal(cardOverlap,false,route+' sponsored card titles must clear play icons');
       await panel.locator('.pikk-stories-strip').evaluate(el => {
         window.scrollTo({top: Math.max(0, window.scrollY + el.getBoundingClientRect().top - 195), behavior:'instant'});
       });
