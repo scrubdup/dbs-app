@@ -622,7 +622,7 @@ export function renderSignup() {
     `<div class="card">
       <p class="kicker">One account. Endless possibilities.</p>
       <h2>How will you use PIKK?</h2>
-      <p>Select as many roles as you want. Everyone gets free basic member access. You can add roles later in Account Settings.</p>
+      <p>Select as many roles as you want. PIKK Free is $0 forever and includes access to all seven main sections: Music, Videos, Connect, Create, Dating, Games and Shop. Roles add capabilities, not separate app access. You can add roles later in Account Settings.</p>
       <form id="pikk-signup-roles-form">
         <fieldset style="border:0;padding:0;margin:0"><legend class="muted">Choose your account roles</legend>${options}</fieldset>
         <button class="btn primary" type="submit">Continue with selected roles</button>
@@ -632,7 +632,7 @@ export function renderSignup() {
       <a class="btn ghost" href="#/guidelines">Read Community Guidelines</a>
     </div>
     <div class="card"><h3>Role approval and safety</h3>
-      <p>Content creation and publishing may require rights attestations. Seller storefronts, advertising, creator earnings and payouts require separate approval, agreements and verification. Dating requires age eligibility. Selecting a role does not grant paid or restricted privileges.</p>
+      <p>All account roles can browse public sections. Premium memberships are optional; individual music, gifts, products and other purchases remain available without a paid membership. Age restrictions, eligibility rules and creator rights still apply. Content creation and publishing may require rights attestations. Seller storefronts, advertising, creator earnings and payouts require separate approval, agreements and verification. Dating requires age eligibility. Selecting a role does not grant paid or restricted privileges.</p>
     </div>`,
     { lead: 'Free member account · multiple creator and business roles · §16.' }
   );
