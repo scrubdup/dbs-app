@@ -23,7 +23,7 @@
 .pikk-ad-slot::after{content:"";position:absolute;right:-35px;top:-38px;width:155px;height:155px;border:1px solid rgba(99,150,250,.15);border-radius:50%;pointer-events:none}
 .pikk-ad-spotlight{min-height:188px;padding:22px;background:radial-gradient(ellipse at 82% 0%,rgba(50,96,223,.4),transparent 50%),linear-gradient(140deg,#25283e,#151725 60%,#121827)}
 .pikk-ad-featured{min-height:150px}
-.pikk-ad-promo{min-height:128px;padding:12px}
+.pikk-ad-promo{min-height:158px;padding:12px}
 .pikk-ad-slot-top{position:absolute;left:17px;right:17px;top:14px;display:flex;align-items:center;justify-content:space-between}
 .pikk-ad-slot-icon{display:grid;place-items:center;width:31px;height:31px;border:1px solid rgba(242,102,144,.5);border-radius:50%;font-size:11px;color:#ffb1c7;background:rgba(194,42,91,.14)}
 .pikk-ad-slot-number{font-size:11px;color:#8996b6;letter-spacing:.12em}
@@ -42,7 +42,7 @@
   .pikk-featured-rows,.pikk-featured-row{gap:7px}
   .pikk-ad-spotlight{min-height:150px;padding:15px}
   .pikk-ad-featured{min-height:143px;padding:11px}
-  .pikk-ad-promo{min-height:139px;padding:9px}
+  .pikk-ad-promo{min-height:164px;padding:9px}
   .pikk-ad-slot-top{top:10px;left:11px;right:11px}
   .pikk-ad-promo .pikk-ad-slot-top{left:9px;right:9px}
   .pikk-ad-promo .pikk-ad-slot-icon{width:21px;height:21px;font-size:9px}
