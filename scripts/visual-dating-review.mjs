@@ -37,7 +37,7 @@ try {
       await page.locator('.pikk-dating-hero').waitFor({state:'visible',timeout:20000});
       await page.waitForTimeout(3600);
       assert.equal(await page.locator('.pikk-dating-experience').count(),3);
-      assert.equal(await page.locator('.pikk-dating-tabs a').count(),4);
+      assert.equal(await page.locator('.pikk-dating-tabs button').count(),4);
       assert.ok(await page.locator('.pikk-dating-hero h2').isVisible());
       assert.ok(await page.getByText('No real matches are being created here').count()>=1);
       assert.ok(await page.locator('#tabbar a').count()===7);
@@ -51,6 +51,10 @@ try {
       assert.ok(bounds.logoLoaded,name+' approved logo failed to load');
       assert.deepEqual(errors,[],name+' page errors');
       await page.screenshot({path:'visual-review/dating-'+name+'.png',fullPage:true,animations:'disabled'});
+      const safety=page.locator('[data-dating-jump="dating-safety"]');
+      await safety.click();
+      assert.equal(await safety.getAttribute('aria-pressed'),'true');
+      assert.equal(await page.evaluate(()=>document.activeElement?.id),'dating-safety');
       console.log(name+' Dating review OK',bounds);
       await context.close();
     }

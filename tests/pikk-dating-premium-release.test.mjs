@@ -15,7 +15,7 @@ test('premium Dating screen keeps original prelaunch information and safety prom
 });
 test('Dating discovery links navigate only to existing PIKK routes',()=>{
   for(const route of ['#/dating','#/community','#/connect#connect-random-chat','#/messages','#/profile','#/live'])assert.ok(html.includes('href="'+route+'"'),route);
-  assert.match(main,/'\/dating': \{ render: renderDating \}/);
+  assert.match(main,/'\/dating': \{ render: renderDating(?:, bind: bindDating)? \}/);
 });
 test('premium Dating layout works at mobile widths and keyboard focus',()=>{
   for(const selector of ['.pikk-dating-hero','.pikk-dating-tabs','.pikk-dating-experience-grid','.pikk-dating-experience:focus-visible'])assert.ok(css.includes(selector),selector);
