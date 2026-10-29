@@ -27,3 +27,15 @@
   .pikk-updates-list>h2{grid-column:1/-1;margin-bottom:0}
   .pikk-update-card{margin:0;min-height:155px}
 }
+
+/* Oct 29: approved chrome, red and electric-blue treatment, scoped to Updates only. */
+.pikk-updates-hero{border-color:#4c5069;background:radial-gradient(ellipse at 94% 8%,#db2e5747,transparent 56%),radial-gradient(ellipse at 0 100%,#0875ff4d,transparent 58%),#10121c}
+.pikk-updates-hero .kicker{color:#ff778b}
+.pikk-updates-hero h2 span{color:#7ecaff}
+.pikk-updates-hero-mark{overflow:hidden;background:#08090d;border:1px solid #45516b;box-shadow:0 0 30px #0875ff28,0 0 26px #f3304a23}
+.pikk-updates-hero-mark img{width:100%;height:100%;object-fit:contain;display:block}
+.pikk-update-card{border-color:#303c58;background:linear-gradient(130deg,#1a2133,#11131c)}
+.pikk-update-number{background:linear-gradient(145deg,#d92e48,#146ee7)}
+.pikk-update-kind{display:inline-flex;max-width:100%;padding:3px 8px;margin-bottom:8px;border:1px solid #426286;border-radius:999px;background:#0c2337;color:#b6dcff;font-size:10px;font-weight:800;letter-spacing:.06em}
+.pikk-update-card:focus-within{outline:2px solid #68baff;outline-offset:2px}
+@media(max-width:580px){.pikk-updates-hero-mark{height:76px}.pikk-updates-hero-mark img{max-width:260px;margin:auto}.pikk-update-card h3{font-size:15px}}
