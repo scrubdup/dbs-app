@@ -12,7 +12,7 @@ export const LIVE_DISCOVERY_GROUPS = Object.freeze([
     ],
   },
   {
-    id: 'men', title: "Men's Rooms", icon: '🫱🏻‍🫲🏽',
+    id: 'men', title: "Men's Rooms", icon: '🫱🏻‍🫲🏿',
     description: 'Brotherhood, relationships, business, wellness and hobbies',
     names: [
       'The Man Cave', 'The Barbershop', "Fellas' Night", "Men's Corner",

@@ -27,7 +27,7 @@ try {
     assert.equal(await page.locator('#pikk-live-group-coed .pikk-live-room-card').count(), 10);
     assert.equal(await page.locator('#pikk-live-group-women .pikk-live-room-card').count(), 15);
     assert.equal(await page.locator('#pikk-live-group-men .pikk-live-room-card').count(), 15);
-    assert.equal(await page.locator('#pikk-live-group-men .pikk-live-directory-icon').textContent(), '🫱🏻‍🫲🏽', 'light and brown handshake on mobile and desktop');
+    assert.equal(await page.locator('#pikk-live-group-men .pikk-live-directory-icon').textContent(), '🫱🏻‍🫲🏿', 'light and dark handshake on mobile and desktop');
     const iconWidth = await page.locator('#pikk-live-group-men .pikk-live-directory-icon').evaluate(el => el.getBoundingClientRect().width);
     assert.ok(iconWidth >= 32, 'handshake icon retains its visible tile');
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - innerWidth);
