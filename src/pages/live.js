@@ -43,6 +43,7 @@ import { esc, toast, shellPage, timeAgo, ytEmbedSrc } from '../ui.js';
 import { navigate, getRoute } from '../router.js';
 import { notifyLiveOpen, notifyLiveClosed } from '../player.js';
 import { giftStickerHtml, getGiftSticker } from '../gift-stickers.js';
+import { renderLiveDiscoveryDirectory } from '../live-discovery.js';
 
 /** t197u discovery tabs — preserve ?tab= on soft refresh */
 function getLiveDiscTab() {
@@ -284,19 +285,16 @@ const LIVE_DISCOVERY_CATEGORIES = [
 ];
 
 function renderCategoriesPanel() {
-  const cards = LIVE_DISCOVERY_CATEGORIES.map(([name, description, emoji]) => `
-    <a class="live-cat-card" href="${name === 'Comedy & Roast Battles' ? '#/roast-arena' : `#/live?tab=channels&category=${encodeURIComponent(name)}`}" aria-label="${esc(name)}: browse channels">
-      <span style="font-size:26px" aria-hidden="true">${emoji}</span>
-      <strong>${esc(name)}</strong>
-      <p class="muted" style="margin:6px 0 0;font-size:12px">${esc(description)}</p>
-      <span class="chip">Browse channels</span>
-    </a>`).join('');
   return `
     <div class="card live-disc-panel" id="liveTabCategories" data-panel="categories">
-      <h3 style="margin:0 0 8px">Browse Live Categories</h3>
-      <p class="muted" style="margin:0 0 12px;font-size:12px">Explore topics like Twitch and Kick. Select a topic to filter available PIKK live channels. Categories without an active stream show an empty result; no invented viewers.</p>
-      <div class="live-cat-cards">${cards}</div>
-      <h3 style="margin:18px 0 8px">PIKK 24/7 Stages</h3>
+      <div class="pikk-live-directory-hero">
+        <span class="pikk-live-directory-kicker">PIKK LIVE · DISCOVER</span>
+        <h3>Find your room.</h3>
+        <p>Choose a community, explore a sport or find a conversation. Open a section to browse its topics.</p>
+        <span class="pikk-live-directory-note">Discovery categories filter channels; a category is not a hosted room or a live stream. No active stream? You'll see an empty result.</span>
+      </div>
+      ${renderLiveDiscoveryDirectory(LIVE_DISCOVERY_CATEGORIES, esc)}
+      <h3 style="margin:20px 0 8px">PIKK 24/7 Stages</h3>
       <div class="live-cat-cards">
         <a class="live-cat-card" href="#/openmic"><strong>Open Mic / Talent Discovery</strong><span class="chip">24/7 stage</span><p class="muted">Join the performance queue</p></a>
         <a class="live-cat-card" href="#/spotlight"><strong>Spotlight Live</strong><span class="chip">24/7 stage</span><p class="muted">Keep Going votes and creator performances</p></a>
