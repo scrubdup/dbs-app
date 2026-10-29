@@ -26,16 +26,15 @@ export const LIVE_DISCOVERY_GROUPS = Object.freeze([
     id: 'coed', title: 'Coed Communities', icon: '🌐',
     description: 'Shared conversations, learning and networking for everyone',
     names: [
-      "Let's Talk", 'The Hangout', 'Wealth Academy', 'Business Connect',
-      'Money Talk', 'City Connect', 'Game Room', 'Creator Spotlight', 'Tech Talk',
-      'Couples Corner', 'Conspiracy Room',
+      "Let's Talk", 'The Hangout', 'Business Connect & Wealth Academy',
+      'Couples Corner', 'Conspiracy Room', 'Game Room', 'Why Are You Single?',
+      'What Are You Looking For?', 'Single & Ready to Mingle', 'City Connect',
     ],
   },
   {
     id: 'dating', title: 'Singles & Dating', icon: '💘',
     description: 'Opt-in conversations, introductions and relationship topics',
     names: [
-      'Why Are You Single?', 'What Are You Looking For?', 'Single & Ready to Mingle',
       'Looking for My Match', 'The Flirt Zone', 'Speed Connections',
       'Poly Connections', 'Date Night Live', 'Love & Advice',
     ],
@@ -53,7 +52,7 @@ export const LIVE_DISCOVERY_GROUPS = Object.freeze([
   {
     id: 'news', title: 'News & Innovation', icon: '📰',
     description: 'World events, markets and new ideas',
-    names: ['World News', 'Economy & Markets', 'Startups & Innovation'],
+    names: ['World News', 'Economy & Markets', 'Startups & Innovation', 'Tech Talk', 'Money Talk'],
   },
   {
     id: 'general', title: 'General Live', icon: '📡',
@@ -62,7 +61,7 @@ export const LIVE_DISCOVERY_GROUPS = Object.freeze([
       'Just Chatting', 'Gaming', 'Music', 'IRL', 'Sports', 'Creative',
       'Podcasts & Talk Shows', 'Food & Cooking', 'Fitness', 'Beauty & Fashion',
       'Business & Money Talk', 'Dating & Connections', 'Education',
-      'News & Commentary', 'Comedy & Entertainment', 'Comedy & Roast Battles',
+      'News & Commentary', 'Comedy & Entertainment', 'Comedy & Roast Battles', 'Creator Spotlight',
     ],
   },
 ]);
