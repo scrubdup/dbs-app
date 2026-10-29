@@ -6,7 +6,7 @@ import { chromium } from 'playwright';
 // existing Create dialog's actual grid, outlined icons, tile and cancel CSS.
 // These are real browser interactions, not static string checks.
 const sections = [
-  ['create', 'pikkCreateMenu', 9],
+  ['create', 'pikkCreateMenu', 30],
   ['music', 'pikkMusicMenu', 5],
   ['videos', 'pikkVideosMenu', 4],
   ['connect', 'pikkConnectMenu', 5],
@@ -74,6 +74,16 @@ try {
           assert.equal(geometry[key], createStyle[key], device + ' ' + name + ' ' + key);
       }
       await page.screenshot({ path: 'visual-review/tabs-' + device + '-' + name + '.png' });
+      if (name === 'create') {
+        // The expanded menu must scroll to the last approved options on both viewports.
+        await sheet.evaluate(el => { el.scrollTop = el.scrollHeight; });
+        await panel.getByText('Artist Protection', { exact: true }).scrollIntoViewIfNeeded();
+        assert.equal(await panel.getByText('Artist Protection', { exact: true }).isVisible(), true);
+        assert.equal(await panel.getByText('AI Support', { exact: true }).count(), 1);
+        assert.equal(await panel.locator('.pikk-create-tile-planned[aria-disabled="true"]').count() > 0, true);
+        await page.screenshot({ path: 'visual-review/tabs-' + device + '-create-bottom.png' });
+        await sheet.evaluate(el => { el.scrollTop = 0; });
+      }
       await sheet.locator('.pikk-menu-cancel').click();
       await panel.waitFor({ state: 'hidden' });
       assert.equal(await trigger.getAttribute('aria-expanded'), 'false', name + ' cancel expanded');
@@ -93,7 +103,7 @@ try {
     assert.deepEqual(errors, [], device + ' uncaught errors');
     await context.close();
   }
-  console.log('PASS: 7 Create-matched menus x 2 viewports, 14 screenshots, SVG icons, 3-column grids, Cancel, Escape, route navigation, logo/player/nav and no overflow.');
+  console.log('PASS: 7 Create-matched menus x 2 viewports, 16 screenshots, SVG icons, 3-column grids, Cancel, Escape, route navigation, logo/player/nav and no overflow.');
 } finally {
   await browser.close();
 }
