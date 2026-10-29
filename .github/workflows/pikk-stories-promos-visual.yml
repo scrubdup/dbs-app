@@ -45,5 +45,5 @@ jobs:
         if: always()
         with:
           name: pikk-stories-six-ads-screenshots
-          path: visual-review/pikk-*-stories-ads.png
+          path: visual-review/pikk-*.png
           if-no-files-found: warn
