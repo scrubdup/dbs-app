@@ -24,8 +24,10 @@ jobs:
           cache: 'npm'
       - name: Install app dependencies
         run: npm ci
-      - name: Install Chromium
-        run: npx playwright install --with-deps chromium
+      - name: Install screenshot runner and Chromium
+        run: |
+          npm install --no-save playwright@1.56.1
+          npx playwright install --with-deps chromium
       - name: Build production bundle
         run: npm run build
       - name: Start Vite
