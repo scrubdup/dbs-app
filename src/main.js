@@ -41,7 +41,6 @@ import { renderMusic, bindMusic } from './pages/music.js';
 import { renderAIArtists, bindAIArtists } from './pages/ai-artists.js';
 import { renderCreatorRightsPolicy, bindCreatorRightsPolicy } from './pages/creator-rights-policy.js';
 import { renderShield, bindShield } from './pages/shield.js';
-import { renderAIArtists, bindAIArtists } from './pages/ai-artists.js';
 import { renderMerch, bindMerch } from './pages/merch.js';
 import { renderProfile, bindProfile } from './pages/profile.js';
 import { renderClippers, bindClippers } from './pages/clippers.js';
@@ -95,7 +94,6 @@ const ROUTES = {
   '/ai-artists': { render: renderAIArtists, bind: bindAIArtists },
   '/creator-rights': { render: renderCreatorRightsPolicy, bind: bindCreatorRightsPolicy },
   '/shield': { render: renderShield, bind: bindShield },
-  '/ai-artists': { render: renderAIArtists, bind: bindAIArtists },
   '/vault': { render: renderMusic, bind: bindMusic },
   '/merch': { render: renderMerch, bind: bindMerch },
   '/profile': { render: renderProfile, bind: bindProfile },
