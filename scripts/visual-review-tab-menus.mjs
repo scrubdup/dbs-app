@@ -13,7 +13,7 @@ const sections = [
   ['create', 'pikkCreateMenu', 30],
   ['music', 'pikkMusicMenu', 5],
   ['videos', 'pikkVideosMenu', 4],
-  ['connect', 'pikkConnectMenu', 5],
+  ['connect', 'pikkConnectMenu', 6],
   ['dating', 'pikkDatingMenu', 4],
   ['games', 'pikkGamesMenu', 16],
   ['shop', 'pikkShopMenu', 4],

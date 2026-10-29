@@ -11,7 +11,8 @@ export const SECTION_MENU_ITEMS = Object.freeze({
   ],
   connect: [
     { title: 'Connect', href: '#/connect', detail: 'Discover people and communities', icon: '♧' },
-    { title: 'Communities', href: '#/community', detail: 'Explore community rooms', icon: '☷' },
+    { title: 'PIKK Communities', href: '#/communities', detail: 'Topic discussions, votes and replies · TEST MODE', icon: '#' },
+    { title: 'Communities', href: '#/community', detail: 'Explore PIKK Lounge channel rooms', icon: '☷' },
     { title: 'Messages', href: '#/messages', detail: 'Open your messages', icon: '✉' },
     { title: 'Random Chat', href: '#/connect#connect-random-chat', detail: 'Preview only · real matching unavailable', icon: '◉' },
     { title: 'Multistream', href: '#/connect#connect-multistream', detail: 'Broadcast connection preview · TEST MODE', icon: '▹' },
@@ -51,7 +52,7 @@ export const SECTION_MENU_ITEMS = Object.freeze({
 // Reuse the exact outlined SVG icon system used by the approved Create dialog.
 const MENU_ICON_KEYS = Object.freeze({
   'Video Feed': 'videos', 'Shorts & Reels': 'videos', 'Posts': 'posts', 'Upload Video': 'videos',
-  'Connect': 'profile', 'Communities': 'chat', 'Messages': 'msg', 'Random Chat': 'camera', 'Multistream': 'live',
+  'Connect': 'profile', 'PIKK Communities': 'chat', 'Communities': 'chat', 'Messages': 'msg', 'Random Chat': 'camera', 'Multistream': 'live',
   'Discover Dating': 'heart', 'My Profile': 'profile', 'Safety Guidelines': 'heart',
   'PIKK Arcade': 'game', 'PIKK Speed': 'game', 'PIKK Blackjack': 'game', 'PIKK Slots': 'game', 'PIKK Poker': 'game', 'PIKK Spades': 'game', 'PIKK Dominoes': 'game', 'PIKK Chess': 'game', 'PIKK Clash': 'game', 'PIKK Knockout': 'game', 'PIKK Playground': 'game', 'PIKK Bowling': 'game', 'PIKK Pickleball': 'game', 'PIKK Pool': 'game', 'PIKK Cup Pong': 'game', 'Block Wars': 'game',
   'PIKK Shop': 'merch', 'Marketplace': 'merch', 'Foreign X-Change': 'merch', 'Creator Pricing': 'posts',
