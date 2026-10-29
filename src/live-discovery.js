@@ -27,7 +27,7 @@ export const LIVE_DISCOVERY_GROUPS = Object.freeze([
     description: 'Shared conversations, learning and networking for everyone',
     names: [
       "Let's Talk", 'The Hangout', 'Wealth Academy', 'Business Connect',
-      'Money Talk', 'Game Room', 'Creator Spotlight', 'Tech Talk',
+      'Money Talk', 'City Connect', 'Game Room', 'Creator Spotlight', 'Tech Talk',
       'Couples Corner', 'Conspiracy Room',
     ],
   },
