@@ -1,5 +1,3 @@
-import './featured-promos.css';
-
 // Owner-approved introductory inventory, shown for information only.
 // No booking or payment endpoint is connected yet.
 export const PIKK_FEATURED_RATES = Object.freeze([
