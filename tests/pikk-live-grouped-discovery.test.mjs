@@ -13,19 +13,19 @@ const names = [...block.matchAll(/^\s*\[\s*(?:'((?:\\'|[^'])*)'|"((?:\\"|[^"])*)
   .map(match => (match[1] ?? match[2]).replace(/\\'/g, "'"));
 const escapeHtml = text => String(text).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('"', '&quot;');
 
-test('Live room discovery keeps all 78 approved categories in exactly one folder', () => {
-  assert.equal(names.length, 78, 'all categories retained');
-  assert.equal(new Set(names).size, 78, 'category names are unique');
+test('Live room discovery keeps all 79 approved categories in exactly one folder', () => {
+  assert.equal(names.length, 79, 'all categories retained');
+  assert.equal(new Set(names).size, 79, 'category names are unique');
   const grouped = LIVE_DISCOVERY_GROUPS.flatMap(group => group.names);
-  assert.equal(grouped.length, 78, 'every category assigned');
-  assert.equal(new Set(grouped).size, 78, 'no duplicated category cards');
+  assert.equal(grouped.length, 79, 'every category assigned');
+  assert.equal(new Set(grouped).size, 79, 'no duplicated category cards');
   assert.deepEqual([...grouped].sort(), [...names].sort(), 'group map matches exact discovery categories');
   assert.equal(LIVE_DISCOVERY_GROUPS.find(g => g.id === 'women').names.length, 15);
   assert.equal(LIVE_DISCOVERY_GROUPS.find(g => g.id === 'men').names.length, 15);
-  assert.equal(LIVE_DISCOVERY_GROUPS.find(g => g.id === 'coed').names.length, 10);
+  assert.equal(LIVE_DISCOVERY_GROUPS.find(g => g.id === 'coed').names.length, 11);
   for (const removed of ['The Garage', 'The Grill']) assert.ok(!names.includes(removed), removed + ' removed');
   for (const retained of ['Girl Talk', 'Tea Time', "What's the Word?", 'Who Did What?', 'IRL', 'Gaming', "Let's Talk",
-    'Wealth Academy', 'Basketball', 'Football', 'Soccer', 'Baseball', 'Hockey',
+    'Wealth Academy', 'City Connect', 'Basketball', 'Football', 'Soccer', 'Baseball', 'Hockey',
     'Why Are You Single?', 'What Are You Looking For?', 'Single & Ready to Mingle'])
     assert.ok(names.includes(retained), retained + ' preserved');
 });
@@ -33,11 +33,11 @@ test('Live room discovery keeps all 78 approved categories in exactly one folder
 test('directory renders accessible collapsible groups with real channel filters', () => {
   const html = renderLiveDiscoveryDirectory(names.map(name => [name, 'Example description', '💬']), escapeHtml);
   assert.equal((html.match(/class="pikk-live-directory-group"/g) || []).length, 8);
-  assert.equal((html.match(/class="live-cat-card pikk-live-room-card"/g) || []).length, 78);
+  assert.equal((html.match(/class="live-cat-card pikk-live-room-card"/g) || []).length, 79);
   assert.equal((html.match(/class="pikk-live-directory-summary"/g) || []).length, 8);
   assert.match(html, /id="pikk-live-group-coed" open/);
   assert.match(html, /15 rooms/);
-  assert.match(html, /10 rooms/);
+  assert.match(html, /11 rooms/);
   assert.match(html, /category=Why%20Are%20You%20Single%3F/);
   assert.match(html, /category=Single%20%26%20Ready%20to%20Mingle/);
   assert.match(html, /href="#\/roast-arena"/);
