@@ -45,7 +45,7 @@ export function renderViralLive() {
             <a class="btn ghost" href="#/shorts">Explore Clips</a>
           </div>
         </div>
-        <div class="pikk-viral-hero-mark" aria-hidden="true"><span>▶</span><small>PIKK</small></div>
+        <div class="pikk-viral-hero-mark" aria-hidden="true"><img class="pikk-viral-hero-logo" src="/brand/pikk-official-approved.jpg" alt="" decoding="async" loading="eager"></div>
       </section>
 
       <div class="pikk-viral-notice" role="status">
