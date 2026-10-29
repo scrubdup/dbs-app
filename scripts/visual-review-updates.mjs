@@ -19,8 +19,13 @@ for (const [name, width, height] of [['mobile', 390, 844], ['desktop', 1440, 900
   const count = await page.locator('.pikk-update-card').count();
   if (count !== 5) throw new Error(name + ': expected 5 published release cards, got ' + count);
   if (!(await page.locator('.pikk-updates-hero-mark img').isVisible())) throw new Error(name + ': approved chrome logo artwork missing');
-  if (!(await page.locator('.pikk-update-card').first().getByText('Premium Wallet & Payouts').isVisible())) throw new Error(name + ': latest Wallet release missing');
+  if (!(await page.locator('.pikk-update-card').first().getByText('Connect: Accessible Navigation').isVisible())) throw new Error(name + ': recent Connect release missing');
   if (await page.locator('.pikk-update-kind').count() !== 5) throw new Error(name + ': test-mode status labels missing');
+  const hrefs = await page.locator('.pikk-update-links a.btn').evaluateAll(nodes => nodes.map(a => a.getAttribute('href')));
+  const expected = ['#/connect', '#/dating', '#/ai-artists', '#/shield', '#/live'];
+  if (JSON.stringify(hrefs) !== JSON.stringify(expected)) throw new Error(name + ': release route links mismatch: ' + hrefs);
+  const titles = await page.locator('.pikk-update-card h3').allTextContents();
+  if (!titles.includes('PIKK Shield: Rights Declarations') || !titles.includes('AI Artists: Rights-Aware Drafts')) throw new Error(name + ': latest verified features missing');
   const tabs = await page.locator('#tabbar a').allTextContents();
   if (tabs.length !== 7) throw new Error(name + ': approved seven-tab navigation changed: ' + tabs.length);
   if (!(await page.locator('#dbs-sticky-player').isVisible())) throw new Error(name + ': sticky player missing');
@@ -28,9 +33,9 @@ for (const [name, width, height] of [['mobile', 390, 844], ['desktop', 1440, 900
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - innerWidth);
   if (overflow > 3) throw new Error(name + ': horizontal overflow ' + overflow + 'px');
   await page.screenshot({ path: 'visual-review/updates-' + name + '.png', fullPage: true });
-  await page.locator('.pikk-update-card a[href="#/wallet"]').click();
-  await page.waitForURL(url => url.hash === '#/wallet', { timeout: 10000 });
-  await page.locator('#app h1').getByText('Wallet', { exact: false }).waitFor({ state: 'visible', timeout: 10000 });
+  await page.locator('.pikk-update-card a[href="#/connect"]').click();
+  await page.waitForURL(url => url.hash === '#/connect', { timeout: 10000 });
+  await page.locator('#app h1').getByText('Connect', { exact: false }).waitFor({ state: 'visible', timeout: 10000 });
   if (errors.length) throw new Error(name + ': page errors: ' + errors.join('; '));
   await context.close();
 }
