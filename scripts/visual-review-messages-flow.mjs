@@ -58,10 +58,22 @@ try {
       assert.ok(await page.locator('#msgInbox .has-unread:visible').count() > 0, 'unread threads shown');
       assert.equal(await page.locator('#msgInbox [data-open-thread]:visible:not(.has-unread)').count(), 0, 'read threads hidden');
       await verify('unread-only');
+      const clearFilters = page.locator('#pikkMsgClearFilters');
+      assert.equal(await clearFilters.isVisible(), true, 'clear available with unread-only active');
       await page.locator('#pikkMsgSearch').fill('unlikely-unread-filter-match-2026');
       await page.getByText('No unread conversations match your search.').waitFor({ state: 'visible' });
-      await page.locator('#pikkMsgSearch').fill('');
-      await unreadOnly.uncheck();
+      await verify('filters-active');
+      await clearFilters.click();
+      assert.equal(await page.locator('#pikkMsgSearch').inputValue(), '', 'search cleared');
+      assert.equal(await unreadOnly.isChecked(), false, 'unread-only cleared');
+      assert.equal(await clearFilters.isVisible(), false, 'clear hidden when no filters active');
+      assert.ok(await page.locator('#msgInbox [data-open-thread]:visible').count() > 0, 'inbox restored');
+      assert.equal(await page.locator('#pikkMsgNoResults').isVisible(), false, 'empty state cleared');
+      await verify('filters-cleared');
+      await page.locator('#pikkMsgSearch').fill('no-such-conversation-pikk-2026');
+      assert.equal(await clearFilters.isVisible(), true, 'clear available for search-only');
+      await clearFilters.click();
+      assert.equal(await page.locator('#pikkMsgSearch').inputValue(), '', 'search-only reset');
 
       // One-time demo unread messages must be actionable and stay read on reload.
       const markAll = page.locator('#msgMarkAllRead');
