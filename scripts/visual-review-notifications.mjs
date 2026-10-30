@@ -54,6 +54,19 @@ try {
       assert.equal(await page.locator('#pikk-notif-lives').isChecked(), false, 'preference persists after reload');
       assert.equal(await page.locator('#pikkNotifEnabled').textContent(), '2 of 4');
       await verify('saved');
+      await page.locator('#pikk-notif-quietHours').check();
+      assert.equal(await page.locator('#pikkNotifEnabled').textContent(), '3 of 4');
+      await page.locator('#pikkNotifReset').click();
+      assert.equal(await page.locator('#pikkNotifEnabled').textContent(), '3 of 4');
+      assert.match(await page.locator('#pikkNotifStatus').textContent(), /restored to defaults/);
+      for (const [key, expected] of Object.entries({ releases: true, lives: true, messages: true, quietHours: false })) {
+        assert.equal(await page.locator('#pikk-notif-' + key).isChecked(), expected, key + ' reset');
+      }
+      await verify('reset');
+      await page.reload({ waitUntil: 'domcontentloaded' });
+      await page.locator('.pikk-notif-hero').waitFor({ state: 'visible', timeout: 10000 });
+      assert.equal(await page.locator('#pikk-notif-lives').isChecked(), true, 'reset persisted after reload');
+      assert.equal(await page.locator('#pikk-notif-quietHours').isChecked(), false, 'quiet hours reset persisted');
       await context.close();
     }
   } finally { await browser.close(); }
