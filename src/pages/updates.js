@@ -8,11 +8,11 @@ import { freshPikkUrl } from '../refresh-url.js';
 export const PIKK_BUILD_SHA = import.meta.env.VITE_BUILD_SHA || '';
 // Curated, merged UI releases only. Keep this list factual; planned backend features are not shipped.
 export const RECENT_RELEASES = Object.freeze([
-  { title: 'Connect: Accessible Navigation', detail: 'Random Chat and Broadcasting section links respect reduced-motion preferences. Matching and streaming remain previews.', route: '#/connect', pr: 147, kind: 'ACCESSIBILITY · TEST MODE' },
-  { title: 'Dating: Premium Discover', detail: 'Refreshed red-and-blue layout with Discover, Experiences, Dating Live and Safety sections. Real matching is not live.', route: '#/dating', pr: 139, kind: 'UI · TEST MODE' },
-  { title: 'AI Artists: Rights-Aware Drafts', detail: 'Separate AI music category, disclosure and commercial-rights acknowledgment with private local drafts. No public sales yet.', route: '#/ai-artists', pr: 135, kind: 'UI · TEST MODE' },
-  { title: 'PIKK Shield: Rights Declarations', detail: 'Creators can save music ownership declaration drafts on this device. Fingerprinting, takedowns and review are not active.', route: '#/shield', pr: 132, kind: 'LOCAL DRAFT · TEST MODE' },
-  { title: 'Live Rooms: Men’s Room Labels', detail: 'Refined the approved handshake icon treatment for Men’s Rooms while keeping the existing room directory.', route: '#/live', pr: 131, kind: 'UI · TEST MODE' },
+  { title: 'Profile: True Public View', detail: 'Public view now shows your actual read-only profile instead of reopening the edit screen. Your original posts and Edit profile shortcut remain available.', route: '#/profile', pr: 163, kind: 'PROFILE · TEST MODE' },
+  { title: 'Explore: Correct Creator Links', detail: 'People search results open the matched creator’s profile instead of redirecting to your own.', route: '#/explore', pr: 162, kind: 'NAVIGATION · TEST MODE' },
+  { title: 'Merch: Full-Size Photo Preview', detail: 'Open original product images full size with a visible Close control, Escape key, keyboard focus containment and focus return.', route: '#/merch', pr: 161, kind: 'ACCESSIBILITY · PREVIEW' },
+  { title: 'Messages: Clear Filters', detail: 'Clear search and Unread only together to restore the full browser-local inbox and return focus to search.', route: '#/messages', pr: 160, kind: 'MESSAGES · TEST MODE' },
+  { title: 'Shop: Reset Sort and Filters', detail: 'Reset view now restores Featured order along with search and category filters, keeping the original merchandise catalog.', route: '#/shop', pr: 159, kind: 'SHOP · TEST MODE' },
 ]);
 
 export function renderUpdates() {
@@ -36,7 +36,7 @@ export function renderUpdates() {
       <div>
         <p class="kicker">PIKK · WHAT'S NEW</p>
         <h2>See what changed. <span>Know what loaded.</span></h2>
-        <p>Five recent verified interface improvements are below. Open each updated section and see exactly what shipped. Backend services marked TEST MODE are not production-ready.</p>
+        <p>Five recent user-visible improvements are below. Open each updated section and see exactly what shipped. Backend services marked TEST MODE are not production-ready.</p>
         <div class="pikk-updates-build">
           <span>Version loaded on this device</span>
           <strong id="pikkLoadedBuild" data-build="${esc(build)}">${esc(build)}</strong>
