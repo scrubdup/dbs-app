@@ -90,7 +90,7 @@ function renderInbox(user) {
       <label for="pikkMsgSearch">Search conversations</label>
       <input id="pikkMsgSearch" type="search" placeholder="Search messages..." autocomplete="off" aria-controls="msgInbox" />
       <label class="row" style="gap:8px;align-items:center;margin-top:8px" for="pikkMsgUnreadOnly"><input id="pikkMsgUnreadOnly" type="checkbox" aria-controls="msgInbox" /> Unread only (${unreadThreads.length})</label>
-      <div class="pikk-msg-tool-actions"><button type="button" class="btn primary" id="pikkNewChatTop">+ New chat</button><button type="button" class="btn ghost" id="pikkGroupTop">Group chat</button></div>
+      <div class="pikk-msg-tool-actions"><button type="button" class="btn ghost" id="pikkMsgClearFilters" aria-controls="msgInbox" hidden>Clear filters</button><button type="button" class="btn primary" id="pikkNewChatTop">+ New chat</button><button type="button" class="btn ghost" id="pikkGroupTop">Group chat</button></div>
     </div>
     <div class="card msg-team-card">
       <h3>DatBoiSkeet · Team inbox</h3>
@@ -334,7 +334,17 @@ export function bindMessages(root) {
         : 'No conversations match your search.';
       empty.hidden = shown > 0 || (!query && !unreadOnly);
     }
+    const clearFilters = root.querySelector('#pikkMsgClearFilters');
+    if (clearFilters) clearFilters.hidden = !query && !unreadOnly;
   };
+  root.querySelector('#pikkMsgClearFilters')?.addEventListener('click', () => {
+    const search = root.querySelector('#pikkMsgSearch');
+    const unread = root.querySelector('#pikkMsgUnreadOnly');
+    if (search) search.value = '';
+    if (unread) unread.checked = false;
+    filterInbox();
+    search?.focus();
+  });
   root.querySelector('#pikkMsgSearch')?.addEventListener('input', filterInbox);
   root.querySelector('#pikkMsgUnreadOnly')?.addEventListener('change', filterInbox);
   root.querySelector('#msgEmptyNew')?.addEventListener('click', () => refresh('#/messages?view=new'));
