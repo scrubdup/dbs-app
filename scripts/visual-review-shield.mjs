@@ -48,6 +48,8 @@ try{
   const source=review.locator('a');
   assert.equal(await source.getAttribute('href'),'https://example.com/official-track');
   assert.equal(await source.getAttribute('rel'),'noopener noreferrer');
+  // Full-page screenshots must start at the top; otherwise sticky headers appear mid-capture.
+  await page.evaluate(()=>{ document.activeElement?.blur(); window.scrollTo({top:0,behavior:'instant'}); });
   await check('expanded');
   // Dismiss first: the saved rights draft must remain intact.
   page.once('dialog',dialog=>dialog.dismiss());
