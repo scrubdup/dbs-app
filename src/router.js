@@ -12,7 +12,10 @@ export function getRoute() {
     routePart = rawHash.slice(0, fragAt);
   }
   const path = routePart.startsWith('/') ? routePart : '/' + routePart;
-  const [pathname, query = ''] = path.split('?');
+  // Split only at the first ?: later question marks can be literal query values.
+  const queryAt = path.indexOf('?');
+  const pathname = queryAt === -1 ? path : path.slice(0, queryAt);
+  const query = queryAt === -1 ? '' : path.slice(queryAt + 1);
   const parts = pathname.split('/').filter(Boolean);
   return {
     path: '/' + (parts[0] || 'home'),
