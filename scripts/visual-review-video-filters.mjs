@@ -48,7 +48,7 @@ try {
         await check('all');
         await page.locator('[data-videos-filter="Music Videos"]').click();
         assert.equal(await page.locator('.pikk-video-coming-list').isHidden(), true, 'unrelated upcoming content should disappear');
-        assert.equal(await page.locator('[data-video-filter-status]').textContent(), 'Showing Music Videos videos.');
+        assert.equal(await page.locator('[data-video-filter-status]').textContent(), 'Showing Music Videos.');
         await page.locator('[data-videos-filter="Interviews"]').click();
         assert.equal(await page.locator('.pikk-video-coming-card:not([hidden])').count(), 1, 'show only upcoming interviews');
         assert.equal(await page.locator('.pikk-video-coming-card:not([hidden]) h3').textContent(), 'Interviews');
