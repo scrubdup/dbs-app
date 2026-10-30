@@ -40,6 +40,18 @@ try{
       assert.equal(await page.locator('#saveProfile').isVisible(),true);
       assert.equal(await page.locator('.pikk-profile-stats>div').count(),3);
       await verify('own');
+      // Public view must show the owner's real public profile, without edit or self-follow controls.
+      const previewLink=page.locator('.pikk-profile-shortcuts a',{hasText:'Public view'});
+      const previewHref=await previewLink.getAttribute('href');
+      assert.match(previewHref,/^#\/profile\/u_[^?]+\?view=public$/);
+      await previewLink.click();
+      await page.locator('.pikk-profile-cover[aria-label="Public PIKK profile"]').waitFor({state:'visible',timeout:10000});
+      assert.equal(await page.locator('#saveProfile').count(),0);
+      assert.equal(await page.locator('#pubFollow').count(),0);
+      assert.equal(await page.locator('.pikk-profile-shortcuts a',{hasText:'Edit profile'}).isVisible(),true);
+      await verify('own-public');
+      await page.locator('.pikk-profile-shortcuts a',{hasText:'Edit profile'}).click();
+      await page.locator('#saveProfile').waitFor({state:'visible',timeout:10000});
       await page.goto(base+'#/profile/dbs',{waitUntil:'domcontentloaded'});
       await page.locator('.pikk-profile-cover[aria-label="Public PIKK profile"]').waitFor({state:'visible',timeout:10000});
       assert.equal(await page.locator('#pubFollow').isVisible(),true);
