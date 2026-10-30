@@ -53,7 +53,7 @@ try {
       assert.match(await artistHit.innerText(), /@DatBoiSkeet/);
       await capture('profile-result');
       await artistHit.click();
-      await page.waitForURL(/#\\/profile\\/dbs$/, { timeout: 10000 });
+      await page.waitForURL(/#\/profile\/dbs$/, { timeout: 10000 });
       await page.locator('.pikk-profile-cover-kicker').waitFor({ state: 'visible' });
       assert.match(await page.locator('.pikk-profile-cover').innerText(), /DatBoiSkeet/);
       await capture('profile-open');
