@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {normalizeShieldSubmission,readShieldIntakes,saveShieldIntake,removeShieldIntake,safeShieldUrl} from '../src/pikk-shield.js';
+import {normalizeShieldSubmission,readShieldIntakes,saveShieldIntake,removeShieldIntake,safeShieldUrl,serializeShieldDrafts} from '../src/pikk-shield.js';
 const page=readFileSync(new URL('../src/pages/shield.js',import.meta.url),'utf8');
 const main=readFileSync(new URL('../src/main.js',import.meta.url),'utf8');
 const music=readFileSync(new URL('../src/pages/music.js',import.meta.url),'utf8');
@@ -66,4 +66,31 @@ test('Shield local draft search filters song and artist without mutating storage
   assert.ok(page.includes('Showing ${visible} of ${cards.length} drafts'));
   assert.ok(page.includes('No saved drafts match your search.'));
   assert.ok(!page.includes('removeShieldIntake(window.localStorage,card.dataset'), 'search never deletes saved drafts');
+});
+
+test('PIKK Shield offline JSON backup exports only rights draft fields without mutating local data',()=>{
+ const m=new Map();const storage={getItem:k=>m.get(k)||null,setItem:(k,v)=>m.set(k,v)};
+ storage.setItem('other_app_secret','do not export');
+ const record=normalizeShieldSubmission({title:'Song',owner:'Artist',rights:'Original creator',contact:'artist@example.com',source:'https://example.com/song',notes:'Private rights note',certified:true},42);
+ saveShieldIntake(storage,record);
+ const before=storage.getItem('pikk_shield_intake_v1');
+ const backup=JSON.parse(serializeShieldDrafts(storage));
+ assert.equal(backup.format,'PIKK Shield local rights drafts');
+ assert.equal(backup.version,1);
+ assert.equal(backup.drafts.length,1);
+ assert.equal(backup.drafts[0].title,'Song');
+ assert.equal(backup.drafts[0].contact,'artist@example.com');
+ assert.equal(backup.drafts[0].notes,'Private rights note');
+ assert.equal(backup.drafts[0].status,'Local draft — not submitted');
+ assert.equal(serializeShieldDrafts(storage).includes('do not export'),false);
+ assert.equal(storage.getItem('pikk_shield_intake_v1'),before);
+ assert.deepEqual(JSON.parse(serializeShieldDrafts({getItem:()=>null})).drafts,[]);
+});
+test('PIKK Shield backup is explicitly user initiated and warns about private contact data',()=>{
+ assert.ok(page.includes('id="shieldExportDrafts"'));
+ assert.ok(page.includes('Download local backup (.json)'));
+ assert.ok(page.includes('This backup includes your contact and rights details.'));
+ assert.ok(page.includes("serializeShieldDrafts(window.localStorage)"));
+ assert.ok(page.includes("link.download = 'pikk-shield-local-drafts.json'"));
+ assert.ok(page.includes("URL.revokeObjectURL(url)"));
 });

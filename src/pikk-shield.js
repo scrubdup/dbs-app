@@ -37,3 +37,20 @@ export function removeShieldIntake(storage,id) {
   storage.setItem(SHIELD_STORAGE_KEY,JSON.stringify(items));
   return items;
 }
+
+/** User-initiated offline backup. Export only known fields, never other localStorage data. */
+export function serializeShieldDrafts(storage) {
+  const drafts = readShieldIntakes(storage).map(item => ({
+    id: String(item.id || ''),
+    type: 'rights-declaration',
+    title: String(item.title || ''),
+    owner: String(item.owner || ''),
+    rights: String(item.rights || ''),
+    contact: String(item.contact || ''),
+    notes: String(item.notes || ''),
+    source: safeShieldUrl(item.source),
+    at: Number.isFinite(item.at) ? item.at : null,
+    status: 'Local draft — not submitted'
+  }));
+  return JSON.stringify({format:'PIKK Shield local rights drafts',version:1,drafts},null,2);
+}
