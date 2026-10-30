@@ -27,6 +27,20 @@ try{
    await page.screenshot({path:'visual-review/shield-'+label+'-'+stage+'.png',fullPage:true,animations:'disabled'});
   };
   await check('empty');
+  // Reset clears only unsaved form values and certification; it never deletes drafts.
+  await page.locator('#shieldTitle').fill('Unsaved song');
+  await page.locator('#shieldOwner').fill('Unsaved artist');
+  await page.locator('#shieldContact').fill('unsaved@example.com');
+  await page.locator('#shieldSource').fill('https://example.com/unsaved');
+  await page.locator('#shieldNotes').fill('Unsaved rights note');
+  await page.locator('#shieldCertify').check();
+  await page.locator('#shieldForm button[type=reset]').click();
+  for(const selector of ['#shieldTitle','#shieldOwner','#shieldContact','#shieldSource','#shieldNotes']){
+    assert.equal(await page.locator(selector).inputValue(),'','reset must clear '+selector);
+  }
+  assert.equal(await page.locator('#shieldCertify').isChecked(),false);
+  assert.equal(await page.locator('.shield-entry').count(),0,'reset must not create or delete drafts');
+  await check('cleared');
   await page.locator('#shieldTitle').fill('Original demo song');
   await page.locator('#shieldOwner').fill('PIKK Test Artist');
   await page.locator('#shieldContact').fill('test@example.com');
