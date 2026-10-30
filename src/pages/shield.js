@@ -64,6 +64,9 @@ export function bindShield(root) {
     } catch(e){toast(e.message)}
   });
   root.querySelectorAll('.shield-delete').forEach(b=>b.addEventListener('click',()=>{
+    // Drafts exist only in this browser: accidental deletion cannot be recovered from PIKK.
+    const title = b.closest('.shield-entry')?.querySelector('strong')?.textContent || 'this rights draft';
+    if (!window.confirm(`Delete local rights draft "${title}"? This cannot be undone.`)) return;
     removeShieldIntake(window.localStorage,b.dataset.id);
     toast('Local draft deleted');
     window.dispatchEvent(new HashChangeEvent('hashchange'));
