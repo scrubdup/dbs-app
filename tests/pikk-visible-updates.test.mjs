@@ -12,19 +12,24 @@ test('update center is a real route and accessible from menu and footer', () => 
   assert.match(main, /href="#\/updates"/);
   assert.match(html, /href="#\/updates"/);
 });
-test('release links point to actual completed PIKK sections and PRs', () => {
-  assert.match(updates, /pr: 163[\s\S]*pr: 162[\s\S]*pr: 161[\s\S]*pr: 160[\s\S]*pr: 159/);
-  for (const route of ['#/profile', '#/explore', '#/merch', '#/messages', '#/shop']) {
+test('release links point to the five latest verified Shield and Videos UI fixes', () => {
+  assert.match(updates, /pr: 177[\s\S]*pr: 176[\s\S]*pr: 175[\s\S]*pr: 174[\s\S]*pr: 173/);
+  for (const route of ['#/shield', '#/videos']) {
     assert.ok(updates.includes("route: '" + route + "'"), 'Missing published section: ' + route);
+    assert.ok(main.includes("'" + route.slice(1) + "': { render:"), 'Missing real app route: ' + route);
   }
+  assert.match(updates, /Search saved browser-local declarations/);
+  assert.match(updates, /Use Left\/Right arrows/);
+  assert.match(updates, /Reset unsubmitted ownership fields/);
+  assert.match(updates, /Selecting a video category also filters upcoming titles/);
+  assert.match(updates, /Expand saved local drafts/);
+  assert.match(updates, /No upload scanning or enforcement is active/);
   assert.doesNotMatch(updates, /Premium Wallet & Payouts/);
-  assert.match(updates, /read-only profile/i);
-  assert.match(updates, /original merchandise catalog/i);
   assert.ok(updates.includes('href="${esc(release.route)}"'));
   assert.match(updates, /pikkUpdatesRefresh/);
   assert.match(updates, /pikk-official-approved\.jpg/);
-  assert.match(updates, /PROFILE · TEST MODE/);
-  assert.match(updates, /ACCESSIBILITY · PREVIEW/);
+  assert.match(updates, /SHIELD · LOCAL PREVIEW/);
+  assert.match(updates, /VIDEOS · ACCESSIBILITY/);
 });
 test('production version is the source commit of the deployed build', () => {
   assert.match(workflow, /VITE_BUILD_SHA: \$\{\{ github\.sha \}\}/);
