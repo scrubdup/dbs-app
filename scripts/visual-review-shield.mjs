@@ -38,6 +38,12 @@ try{
   await page.locator('.shield-entry').waitFor({state:'visible'});
   assert.equal(await page.locator('.shield-entry').count(),1,'local persistence');
   await check('saved');
+  // Dismiss first: the saved rights draft must remain intact.
+  page.once('dialog',dialog=>dialog.dismiss());
+  await page.locator('.shield-delete').click();
+  assert.equal(await page.locator('.shield-entry').count(),1,'cancelled deletion must preserve draft');
+  // Confirm second: deletion removes only the selected browser-local draft.
+  page.once('dialog',dialog=>dialog.accept());
   await page.locator('.shield-delete').click();
   await page.locator('.shield-history').getByText('No rights declarations').waitFor();
   await context.close();
