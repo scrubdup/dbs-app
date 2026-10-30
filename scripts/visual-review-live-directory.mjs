@@ -71,6 +71,8 @@ try {
     assert.equal(await page.locator('.live-goal-custom-form').count(),1);
     assert.equal(await page.locator('#liveGoalSupportMessage').getAttribute('maxlength'),'180');
     await page.locator('#liveGoalSupportMessage').fill('Thank you for the music!');
+    const goalWidth = await page.locator('#liveDailyGoal').evaluate(el=>el.getBoundingClientRect().width);
+    assert.ok(goalWidth <= width - (device === 'mobile' ? 24 : 0), device+' goal card exceeds viewport: '+goalWidth);
     await page.locator('#liveDailyGoal').screenshot({path:'visual-review/pikk-live-'+device+'-goal-message.png'});
     assert.deepEqual(errors, [], device + ' browser errors');
     await context.close();
