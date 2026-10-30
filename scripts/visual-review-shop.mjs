@@ -53,7 +53,16 @@ try {
         await page.screenshot({ path: 'visual-review/shop-' + name + '-sorted-low.png', fullPage: false });
       }
     }
-    assert.equal(await page.locator('#pikkShopReset').isVisible(), false, 'clear filters hidden by default');
+    assert.equal(await page.locator('#pikkShopReset').isVisible(), false, 'reset view hidden by default');
+    await sort.selectOption('price-desc');
+    assert.equal(await page.locator('#pikkShopReset').isVisible(), true, 'reset view visible when only sorting changes');
+    await page.screenshot({ path: 'visual-review/shop-' + name + '-reset-sort-active.png', fullPage: false });
+    await page.locator('#pikkShopReset').click();
+    assert.equal(await sort.inputValue(), 'featured', 'reset view restores featured sort');
+    assert.deepEqual(await page.locator('#pikkShopProducts .pikk-shop-product')
+      .evaluateAll((items) => items.map((item) => item.dataset.productId)), MERCH.map((item) => item.id));
+    assert.equal(await page.locator('#pikkShopReset').isVisible(), false, 'reset view hidden after restoring defaults');
+    await page.screenshot({ path: 'visual-review/shop-' + name + '-reset-sort-restored.png', fullPage: false });
     await page.locator('.pikk-shop-category[data-category="Hats"]').click();
     const catalogPosition = await page.locator('#pikkShopCatalog').boundingBox();
     assert.ok(catalogPosition && catalogPosition.y >= 175, name + ' catalog must clear sticky header');

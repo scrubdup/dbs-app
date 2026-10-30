@@ -90,7 +90,7 @@ export function renderPikkShop() {
       <input id="pikkShopSearch" type="search" placeholder="Search hats, shirts, jackets…" autocomplete="off" />
       <div class="row wrap" role="group" aria-label="Product category" style="gap:8px;margin-top:12px">
         ${chips}
-        <button type="button" class="btn ghost" id="pikkShopReset" style="display:none" hidden>Clear filters</button>
+        <button type="button" class="btn ghost" id="pikkShopReset" style="display:none" hidden>Reset view</button>
       </div>
       <div class="pikk-shop-sort-row" style="display:flex;justify-content:flex-end;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px">
         <label for="pikkShopSort">Sort by</label>
@@ -154,7 +154,7 @@ export function bindPikkShop(root) {
     if (count) count.textContent = `${ids.size} ${ids.size === 1 ? 'item' : 'items'}`;
     if (empty) empty.hidden = ids.size > 0;
     if (reset) {
-      const active = category !== 'All' || !!search?.value.trim();
+      const active = category !== 'All' || !!search?.value.trim() || (sort?.value || 'featured') !== 'featured';
       reset.hidden = !active;
       reset.style.display = active ? '' : 'none';
     }
@@ -173,6 +173,7 @@ export function bindPikkShop(root) {
   reset?.addEventListener('click', () => {
     category = 'All';
     if (search) search.value = '';
+    if (sort) sort.value = 'featured';
     applyFilters();
     search?.focus();
   });
