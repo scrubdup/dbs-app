@@ -36,3 +36,13 @@ test('Messages visual is isolated, responsive, keyboard accessible and preserves
   assert.match(html, /pikk-official-approved\.jpg/);
   assert.match(html, /dbs-sticky-player/);
 });
+
+
+test('Messages bulk mark-read action uses the real local read state and never fakes server delivery', () => {
+  assert.match(page, /id="msgMarkAllRead"/);
+  assert.match(page, /unreadThreads\.length \? '' : 'disabled'/);
+  assert.match(page, /listThreads\(\)\.filter\(t => getThreadUnreadCount\(t\) > 0\)/);
+  assert.match(page, /unread\.forEach\(t => markThreadRead\(t\.id\)\)/);
+  assert.match(page, /refresh\('#\/messages'\)/);
+  assert.match(page, /ensureDemoUnreadMessages\(\);[\s\S]*const view = route\?\.query/);
+});

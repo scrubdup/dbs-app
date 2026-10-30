@@ -52,6 +52,19 @@ try {
       await page.locator('.pikk-messages-hero').waitFor({ state: 'visible', timeout: 10000 });
       await verify('inbox');
 
+      // One-time demo unread messages must be actionable and stay read on reload.
+      const markAll = page.locator('#msgMarkAllRead');
+      assert.equal(await markAll.isEnabled(), true, 'mark all read available for seeded unread thread');
+      assert.ok(await page.locator('#msgInbox .has-unread').count() > 0, 'inbox shows unread conversation');
+      await markAll.click();
+      await page.waitForFunction(() => document.querySelector('#msgMarkAllRead')?.disabled === true);
+      assert.equal(await page.locator('#msgInbox .has-unread').count(), 0, 'unread chips cleared');
+      await page.reload({ waitUntil: 'domcontentloaded' });
+      await page.locator('.pikk-messages-hero').waitFor({ state: 'visible', timeout: 10000 });
+      assert.equal(await page.locator('#msgInbox .has-unread').count(), 0, 'read state persists after reload');
+      assert.equal(await page.locator('#msgMarkAllRead').isDisabled(), true, 'no accidental demo re-seeding');
+      await verify('read-all');
+
       await page.locator('#pikkNewChatTop').click();
       await page.locator('.pikk-msg-contact-grid').waitFor({ state: 'visible', timeout: 10000 });
       assert.ok(await page.locator('.pikk-msg-contact-card').count() > 0, 'original contacts');
