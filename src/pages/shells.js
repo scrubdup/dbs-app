@@ -157,7 +157,7 @@ export function bindVideos(root) {
       filterStatus.textContent = category === 'All'
         ? 'Showing all video categories and upcoming titles.'
         : publishedVisible
-          ? `Showing ${category} videos${upcomingVisible ? ' and upcoming titles' : ''}.`
+          ? `Showing ${category}${upcomingVisible ? ' and upcoming titles' : ''}.`
           : upcomingVisible
             ? `No published ${category} videos yet. Upcoming titles are listed below.`
             : `No published ${category} videos yet.`;
