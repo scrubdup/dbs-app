@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { SECTION_MENU_ITEMS } from '../src/section-menus.js';
+import { PIKK_GAMES } from '../src/games/arcade-catalog.js';
 
 const main = readFileSync(new URL('../src/main.js', import.meta.url), 'utf8');
 const source = readFileSync(new URL('../src/section-menus.js', import.meta.url), 'utf8');
@@ -46,4 +47,20 @@ test('menus retain fail-safe disclosure and protect player and branding', () => 
   assert.match(SECTION_MENU_ITEMS.games.find(item => item.title === 'PIKK Arcade').detail, /preview/);
   assert.match(html, /id="dbs-sticky-player"/);
   assert.match(html, /brand\/pikk-official-approved\.jpg/);
+});
+
+// Keep the Games popup in lockstep with the fifteen exact owner-approved Arcade tiles.
+test('Games tab shows all 15 games in approved order without fake playable links', () => {
+  const games = SECTION_MENU_ITEMS.games;
+  assert.equal(games[0].title, 'PIKK Arcade');
+  const tiles = games.slice(1);
+  assert.equal(tiles.length, 15);
+  assert.deepEqual(tiles.map(item => item.title), PIKK_GAMES.map(game => game.name));
+  assert.equal(tiles[0].title, 'Block Wars');
+  assert.equal(tiles[1].title, 'PIKK Playground');
+  for (const [index, tile] of tiles.entries()) {
+    const catalog = PIKK_GAMES[index];
+    assert.equal(tile.href, catalog.href);
+    if (!catalog.href) assert.match(tile.detail, /planned/i);
+  }
 });
