@@ -23,6 +23,11 @@ try {
     assert.equal(await drawer.getAttribute('aria-hidden'), 'false');
     assert.equal(await drawer.evaluate(el => el.inert), false);
     assert.equal(await page.evaluate(() => document.querySelector('#sideNav').contains(document.activeElement)), true);
+    // Allow the existing 300ms drawer transition to finish before inspecting pixels.
+    await page.waitForTimeout(400);
+    const drawerRect = await drawer.boundingBox();
+    assert.ok(drawerRect && drawerRect.x >= 0 && drawerRect.x < width, 'drawer must be visible inside viewport');
+    assert.ok(Number(await page.locator('#scrim').evaluate(el => getComputedStyle(el).opacity)) > 0.9, 'backdrop must be visible');
     await page.screenshot({ path: `visual-review/drawer-open-${name}.png`, fullPage: false });
     await page.keyboard.press('Escape');
     assert.equal(await menu.getAttribute('aria-expanded'), 'false');
