@@ -1,0 +1,30 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { TABBAR } from '../src/data.js';
+
+const explore = readFileSync(new URL('../src/pages/explore.js', import.meta.url), 'utf8');
+const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
+
+test('Explore search preserves a stable result container on Discover and Following', () => {
+  assert.match(explore, /panel\.querySelector\('#exploreLiveInsert'\)/);
+  assert.match(explore, /insert\.innerHTML = renderResults\(res\)/);
+  assert.doesNotMatch(explore, /box\.outerHTML = renderResults\(res\)/);
+  assert.match(explore, /root\.querySelector\('#exploreLiveInsert'\)\?\.remove\(\)/);
+});
+
+test('Clear cancels pending debounced search and resets the input', () => {
+  const clearHandler = explore.split("clear?.addEventListener('click', () => {")[1]?.split("toast('Cleared')")[0];
+  assert.ok(clearHandler, 'Explore clear handler exists');
+  assert.match(clearHandler, /clearTimeout\(debounce\)/);
+  assert.match(clearHandler, /input\.value = ''/);
+  assert.match(explore, /e\.key === 'Enter'/);
+});
+
+test('Explore retains original PIKK navigation, logo, and player', () => {
+  assert.deepEqual(TABBAR.map(t => t.label), ['Music', 'Videos', 'Connect', 'Create', 'Dating', 'Games', 'Shop']);
+  assert.match(html, /pikk-official-approved\.jpg/);
+  assert.match(html, /id="dbs-sticky-player"/);
+  assert.match(explore, /export function renderExplore\(\)/);
+  assert.match(explore, /export function bindExplore\(root\)/);
+});

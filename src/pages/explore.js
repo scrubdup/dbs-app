@@ -324,19 +324,21 @@ export function renderExplore() {
 
 function runSearch(root, q) {
   const res = exploreSearch(q);
-  const wrap = root.querySelector('#exploreResultsWrap') || root.querySelector('#explorePanel');
-  // When on Trending tab, results sit in exploreResultsWrap; otherwise inject at top of panel
-  if (root.querySelector('#exploreResultsWrap')) {
-    root.querySelector('#exploreResultsWrap').innerHTML = renderResults(res);
-  } else if (wrap) {
-    let box = root.querySelector('#exploreResults');
-    if (!box) {
-      const div = document.createElement('div');
-      div.id = 'exploreLiveInsert';
-      div.innerHTML = renderResults(res);
-      wrap.prepend(div);
-    } else {
-      box.outerHTML = renderResults(res);
+  const resultsWrap = root.querySelector('#exploreResultsWrap');
+  if (resultsWrap) {
+    resultsWrap.innerHTML = renderResults(res);
+  } else {
+    // Keep a stable container across repeated searches on Following and Discover.
+    // Replacing #exploreResults itself orphaned subsequent results from Clear.
+    const panel = root.querySelector('#explorePanel');
+    if (panel) {
+      let insert = panel.querySelector('#exploreLiveInsert');
+      if (!insert) {
+        insert = document.createElement('div');
+        insert.id = 'exploreLiveInsert';
+        panel.prepend(insert);
+      }
+      insert.innerHTML = renderResults(res);
     }
   }
   const total =
@@ -359,6 +361,7 @@ export function bindExplore(root) {
 
   go?.addEventListener('click', doSearch);
   clear?.addEventListener('click', () => {
+    clearTimeout(debounce);
     if (input) input.value = '';
     const wrap = root.querySelector('#exploreResultsWrap');
     if (wrap) wrap.innerHTML = renderResults(null);
