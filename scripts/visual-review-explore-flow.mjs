@@ -45,6 +45,21 @@ try {
       await page.locator('#splash').waitFor({ state: 'hidden', timeout: 15000 });
       await capture('trending');
 
+      // Search results for people must open that person's profile, not the visitor's profile.
+      await page.locator('#exploreQ').fill('DatBoiSkeet');
+      await page.locator('#exploreGo').click();
+      const artistHit = page.locator('#exploreResultsWrap .explore-hit[href="#/profile/dbs"]');
+      await artistHit.waitFor({ state: 'visible', timeout: 10000 });
+      assert.match(await artistHit.innerText(), /@DatBoiSkeet/);
+      await capture('profile-result');
+      await artistHit.click();
+      await page.waitForURL(/#\\/profile\\/dbs$/, { timeout: 10000 });
+      await page.locator('.pikk-profile-cover-kicker').waitFor({ state: 'visible' });
+      assert.match(await page.locator('.pikk-profile-cover').innerText(), /DatBoiSkeet/);
+      await capture('profile-open');
+      await page.goto(base + '#/explore', { waitUntil: 'domcontentloaded' });
+      await page.locator('#exploreQ').waitFor({ state: 'visible', timeout: 20000 });
+
       await page.locator('[data-explore-tab="discover"]').click();
       await page.locator('[data-explore-tab="discover"].on').waitFor({ state: 'visible' });
       await page.locator('#exploreQ').fill('music');
