@@ -1,5 +1,5 @@
 import {esc, shellPage, toast} from '../ui.js';
-import {normalizeShieldSubmission,readShieldIntakes,saveShieldIntake,removeShieldIntake,RIGHTS_OPTIONS,safeShieldUrl,serializeShieldDrafts} from '../pikk-shield.js';
+import {normalizeShieldSubmission,readShieldIntakes,saveShieldIntake,removeShieldIntake,RIGHTS_OPTIONS,safeShieldUrl,serializeShieldDrafts,importShieldDrafts} from '../pikk-shield.js';
 const data = () => readShieldIntakes(window.localStorage);
 export function renderShield() {
   const entries = data();
@@ -51,8 +51,8 @@ export function renderShield() {
             <div><strong>03 · Dispute and appeals</strong><span>Planned — no claim or takedown enforcement active</span></div>
             <div><strong>04 · External platform notices</strong><span>Planned — PIKK cannot automatically remove copies from YouTube, Apple or Spotify</span></div>
           </div>
-          <div class="row wrap shield-drafts-header"><h3>My local drafts (${entries.length})</h3>${entries.length ? '<button type="button" class="btn ghost" id="shieldExportDrafts">Download local backup (.json)</button>' : ""}</div>
-          ${entries.length ? '<p class="muted shield-backup-notice">This backup includes your contact and rights details. Store it privately. Downloading does not register or submit copyright claims.</p>' : ""}
+          <div class="row wrap shield-drafts-header"><h3>My local drafts (${entries.length})</h3><div class="row wrap shield-backup-actions">${entries.length ? '<button type="button" class="btn ghost" id="shieldExportDrafts">Download local backup (.json)</button>' : ""}<button type="button" class="btn ghost" id="shieldImportDrafts">Restore local backup (.json)</button><input id="shieldImportFile" type="file" accept=".json,application/json" hidden aria-label="Choose a PIKK Shield JSON backup" /></div></div>
+          <p class="muted shield-backup-notice">Backups contain your contact and rights details. Store them privately. Restoring merges drafts on this device only; it does not register or submit copyright claims.</p>
           ${entries.length ? `<div class="field shield-search"><label for="shieldDraftSearch">Find a saved draft</label><input id="shieldDraftSearch" type="search" placeholder="Search song or artist" autocomplete="off" /><p class="muted shield-search-count" role="status" aria-live="polite" id="shieldSearchCount">Showing ${entries.length} of ${entries.length} drafts</p></div>` : ""}
           <div class="shield-history">${history}</div>
           ${entries.length ? '<p class="muted" id="shieldSearchEmpty" hidden>No saved drafts match your search.</p>' : ""}
@@ -76,6 +76,21 @@ export function bindShield(root) {
       // Re-render through an explicit hash update (even if the route was already open).
       window.dispatchEvent(new HashChangeEvent('hashchange'));
     } catch(e){toast(e.message)}
+  });
+  const importFile = root.querySelector('#shieldImportFile');
+  root.querySelector('#shieldImportDrafts')?.addEventListener('click', () => importFile?.click());
+  importFile?.addEventListener('change', async () => {
+    const file = importFile.files?.[0];
+    if (!file) return;
+    try {
+      if (file.size > 65536) throw new Error('Backup file must be under 64 KB.');
+      const json = await file.text();
+      if (!window.confirm('Restore PIKK Shield drafts from this file? Valid drafts will be merged into this browser, without replacing existing drafts.')) return;
+      const result = importShieldDrafts(window.localStorage, json);
+      toast(`Restored ${result.added} local draft(s); ${result.duplicates} already saved`);
+      window.dispatchEvent(new HashChangeEvent('hashchange'));
+    } catch (error) { toast(error.message || 'Unable to restore backup'); }
+    finally { importFile.value = ''; }
   });
   root.querySelector('#shieldExportDrafts')?.addEventListener('click', () => {
     // Only a direct user click creates a local download; no data is sent to PIKK.
