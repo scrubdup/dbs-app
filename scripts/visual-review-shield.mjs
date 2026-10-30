@@ -30,6 +30,8 @@ try{
   await page.locator('#shieldTitle').fill('Original demo song');
   await page.locator('#shieldOwner').fill('PIKK Test Artist');
   await page.locator('#shieldContact').fill('test@example.com');
+  await page.locator('#shieldSource').fill('https://example.com/official-track');
+  await page.locator('#shieldNotes').fill('Original composition; rights held by PIKK Test Artist.');
   await page.locator('#shieldCertify').check();
   await page.locator('#shieldForm button[type=submit]').click();
   await page.locator('.shield-entry').waitFor({state:'visible'});
@@ -38,6 +40,15 @@ try{
   await page.locator('.shield-entry').waitFor({state:'visible'});
   assert.equal(await page.locator('.shield-entry').count(),1,'local persistence');
   await check('saved');
+  const review=page.locator('.shield-draft-details');
+  await review.locator('summary').click();
+  assert.equal(await review.getAttribute('open'),'', 'review expands on click');
+  assert.match(await review.textContent(),/test@example.com/);
+  assert.match(await review.textContent(),/Original composition/);
+  const source=review.locator('a');
+  assert.equal(await source.getAttribute('href'),'https://example.com/official-track');
+  assert.equal(await source.getAttribute('rel'),'noopener noreferrer');
+  await check('expanded');
   // Dismiss first: the saved rights draft must remain intact.
   page.once('dialog',dialog=>dialog.dismiss());
   await page.locator('.shield-delete').click();
