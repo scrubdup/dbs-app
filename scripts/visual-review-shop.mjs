@@ -39,15 +39,32 @@ try {
     assert.ok(searchBox && searchBox.width >= Math.min(width - 70, 400), name + ' search must be full width');
 
     await page.screenshot({ path: 'visual-review/shop-' + name + '.png', fullPage: true });
+    assert.equal(await page.locator('#pikkShopReset').isVisible(), false, 'clear filters hidden by default');
     await page.locator('.pikk-shop-category[data-category="Hats"]').click();
     assert.equal(await page.locator('#pikkShopProducts .pikk-shop-product:visible').count(),
       MERCH.filter(p => p.category === 'Hats').length);
     assert.equal(await page.locator('.pikk-shop-category[data-category="Hats"]').getAttribute('aria-pressed'), 'true');
+    assert.equal(await page.locator('#pikkShopReset').isVisible(), true, 'clear filters available for category');
     await page.screenshot({ path: 'visual-review/shop-' + name + '-hats.png', fullPage: false });
     await page.locator('.pikk-shop-category[data-category="All"]').click();
     await page.locator('#pikkShopSearch').fill('Buffalo');
     assert.equal(await page.locator('#pikkShopProducts .pikk-shop-product:visible').count(),
       MERCH.filter(p => (p.name + ' ' + p.category).toLowerCase().includes('buffalo')).length);
+    assert.equal(await page.locator('#pikkShopReset').isVisible(), true, 'clear filters available for search');
+    await page.locator('#pikkShopSearch').fill('definitely-no-such-merchandise-000');
+    assert.equal(await page.locator('#pikkShopProducts .pikk-shop-product:visible').count(), 0);
+    assert.equal(await page.locator('#pikkShopEmpty').isVisible(), true, 'empty state visible');
+    await page.screenshot({ path: 'visual-review/shop-' + name + '-no-results.png', fullPage: false });
+    await page.locator('#pikkShopReset').focus();
+    await page.keyboard.press('Enter');
+    assert.equal(await page.locator('#pikkShopSearch').inputValue(), '');
+    assert.equal(await page.locator('#pikkShopProducts .pikk-shop-product:visible').count(), MERCH.length, 'all original products restored');
+    assert.equal(await page.locator('#pikkShopCount').textContent(), MERCH.length + ' items');
+    assert.equal(await page.locator('#pikkShopEmpty').isVisible(), false);
+    assert.equal(await page.locator('#pikkShopReset').isVisible(), false);
+    assert.equal(await page.locator('.pikk-shop-category[data-category="All"]').getAttribute('aria-pressed'), 'true');
+    assert.equal(await page.locator('#pikkShopSearch').evaluate(el => document.activeElement === el), true, 'keyboard focus returned to search');
+    await page.screenshot({ path: 'visual-review/shop-' + name + '-filters-cleared.png', fullPage: false });
     assert.deepEqual(errors, [], name + ' page exceptions');
     await context.close();
   }
