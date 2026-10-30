@@ -50,7 +50,7 @@ test('official approved PIKK JPG remains the brand source', () => {
 
 test('shop exposes a real clear-filters control without changing the original merchandise', () => {
   const html = renderPikkShop();
-  assert.match(html, /id="pikkShopReset"[^>]*hidden>Clear filters<\/button>/);
+  assert.match(html, /id="pikkShopReset"[^>]*hidden>Reset view<\/button>/);
   assert.equal((html.match(/class="merch-card pikk-shop-product"/g) || []).length, MERCH.length);
   assert.ok(html.includes('id="pikkShopSearch"'));
   assert.ok(html.includes('id="pikkShopCount" aria-live="polite"'));
@@ -71,4 +71,12 @@ test('Shop sorts genuine products by price or name without mutating the approved
   assert.match(html, /Price: low to high/);
   assert.match(html, /Price: high to low/);
   assert.match(html, /Name: A to Z/);
+});
+
+
+test('Shop reset view restores featured sorting as well as category and search', () => {
+  const source = readFileSync(new URL('../src/pages/pikk-shop.js', import.meta.url), 'utf8');
+  assert.match(source, /\(sort\?\.value \|\| 'featured'\) !== 'featured'/);
+  assert.match(source, /if \(sort\) sort\.value = 'featured';/);
+  assert.match(renderPikkShop(), /id="pikkShopReset"[^>]*hidden>Reset view<\/button>/);
 });
