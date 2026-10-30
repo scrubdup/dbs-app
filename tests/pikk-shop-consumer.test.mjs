@@ -46,3 +46,12 @@ test('official approved PIKK JPG remains the brand source', () => {
   assert.match(index, /brand\/pikk-official-approved\.jpg/);
   assert.ok(existsSync(new URL('../public/brand/pikk-official-approved.jpg', import.meta.url)));
 });
+
+
+test('shop exposes a real clear-filters control without changing the original merchandise', () => {
+  const html = renderPikkShop();
+  assert.match(html, /id="pikkShopReset"[^>]*hidden>Clear filters<\/button>/);
+  assert.equal((html.match(/class="merch-card pikk-shop-product"/g) || []).length, MERCH.length);
+  assert.ok(html.includes('id="pikkShopSearch"'));
+  assert.ok(html.includes('id="pikkShopCount" aria-live="polite"'));
+});

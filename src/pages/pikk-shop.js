@@ -76,12 +76,13 @@ export function renderPikkShop() {
       <button type="button" class="pikk-shop-category" data-category="Hats" aria-pressed="false">Hats</button>
       <a href="#/profile-shop">Accessories · Preview</a>
     </nav>
-    <section class="card pikk-shop-catalog" id="pikkShopCatalog" aria-label="Browse merchandise">
+    <section class="card pikk-shop-catalog" id="pikkShopCatalog" aria-label="Browse merchandise" style="scroll-margin-top:190px">
       <div class="pikk-shop-catalog-heading"><div><p class="kicker">THE COLLECTION</p><h3>Popular items</h3></div><span class="chip">Authentic Foreign X-Change</span></div>
       <label for="pikkShopSearch">Search merchandise</label>
       <input id="pikkShopSearch" type="search" placeholder="Search hats, shirts, jackets…" autocomplete="off" />
       <div class="row wrap" role="group" aria-label="Product category" style="gap:8px;margin-top:12px">
         ${chips}
+        <button type="button" class="btn ghost" id="pikkShopReset" style="display:none" hidden>Clear filters</button>
       </div>
       <p class="muted small" id="pikkShopCount" aria-live="polite">${MERCH.length} items</p>
       <div class="merch-grid pikk-shop-premium-grid pikk-shop-real-grid" id="pikkShopProducts">${MERCH.map(merchCard).join('')}</div>
@@ -117,6 +118,7 @@ export function bindPikkShop(root) {
   const buttons = [...root.querySelectorAll('.pikk-shop-filter, .pikk-shop-category')];
   const count = root.querySelector('#pikkShopCount');
   const empty = root.querySelector('#pikkShopEmpty');
+  const reset = root.querySelector('#pikkShopReset');
   let category = 'All';
   function applyFilters() {
     const ids = new Set(filterPikkShopProducts(MERCH, category, search?.value || '').map((item) => item.id));
@@ -127,6 +129,11 @@ export function bindPikkShop(root) {
     }
     if (count) count.textContent = `${ids.size} ${ids.size === 1 ? 'item' : 'items'}`;
     if (empty) empty.hidden = ids.size > 0;
+    if (reset) {
+      const active = category !== 'All' || !!search?.value.trim();
+      reset.hidden = !active;
+      reset.style.display = active ? '' : 'none';
+    }
     for (const button of buttons) {
       const active = button.dataset.category === category;
       button.setAttribute('aria-pressed', String(active));
@@ -138,6 +145,12 @@ export function bindPikkShop(root) {
     }
   }
   search?.addEventListener('input', applyFilters);
+  reset?.addEventListener('click', () => {
+    category = 'All';
+    if (search) search.value = '';
+    applyFilters();
+    search?.focus();
+  });
   root.querySelector('[data-shop-scroll]')?.addEventListener('click', () => root.querySelector('#pikkShopCatalog')?.scrollIntoView({ behavior: window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches ? 'instant' : 'smooth', block: 'start' }));
   for (const button of buttons) {
     button.addEventListener('click', () => {
