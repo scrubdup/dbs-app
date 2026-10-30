@@ -13,3 +13,8 @@
 .shield-search input{width:100%;min-height:42px;border-radius:10px}
 .shield-search-count{font-size:12px;margin:7px 0 0}
 .shield-entry[hidden],#shieldSearchEmpty[hidden]{display:none!important}
+
+.shield-drafts-header{align-items:center;justify-content:space-between;gap:10px;margin:8px 0}
+.shield-drafts-header h3{margin:0}
+.shield-backup-notice{font-size:12px;line-height:1.5;margin:0 0 12px}
+@media(max-width:420px){.shield-drafts-header .btn{width:100%}}
