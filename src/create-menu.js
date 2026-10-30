@@ -36,7 +36,7 @@ export const CREATE_MENU_GROUPS = Object.freeze([
     { title: 'Creator Dashboard', href: '#/profile', detail: 'Creator profile', icon: 'profile' },
     { title: 'Manage Content', href: '#/posts', detail: 'Posts and content', icon: 'posts' },
     { title: 'Drafts', detail: 'Draft management · Planned', icon: 'posts' },
-    { title: 'Artist Protection', detail: 'PIKK Shield · Planned', icon: 'music' },
+    { title: 'Artist Protection', href: '#/shield', detail: 'PIKK Shield local rights drafts · TEST MODE', icon: 'music' },
     { title: 'AI Support', detail: 'Support assistant · Planned', icon: 'chat' },
   ]},
 ]);

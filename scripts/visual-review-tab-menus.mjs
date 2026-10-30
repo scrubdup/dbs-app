@@ -113,6 +113,21 @@ try {
       await page.waitForFunction(expected => location.hash === expected, firstHref);
       assert.equal(await page.locator('#tabbar a').count(), 7, 'navigation preserved after route');
     }
+    // The Create menu must navigate to the real, explicitly local-only Shield prototype.
+    await page.evaluate(() => { location.hash = '#/home'; });
+    await page.locator('#tabbar a[href="#/create"]').click();
+    const shieldLink = page.locator('#pikkCreateMenu a[href="#/shield"]');
+    await shieldLink.scrollIntoViewIfNeeded();
+    assert.equal(await shieldLink.getByText('Artist Protection').isVisible(), true);
+    await shieldLink.click();
+    await page.waitForFunction(() => location.hash === '#/shield');
+    assert.equal(await page.locator('#pikkCreateMenu').isHidden(), true);
+    await page.locator('.shield-hero').waitFor({ state: 'visible', timeout: 10000 });
+    assert.equal(await page.locator('.shield-hero').isVisible(), true);
+    assert.match(await page.locator('.shield-notice').innerText(), /No upload scanning, automated fingerprinting/i);
+    assert.equal(await page.locator('#dbs-sticky-player').isVisible(), true);
+    assert.equal(await page.locator('#tabbar a').count(), 7);
+    await page.screenshot({ path: 'visual-review/tabs-' + device + '-shield-route.png' });
     assert.deepEqual(errors, [], device + ' uncaught errors');
     await context.close();
   }
