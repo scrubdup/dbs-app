@@ -4,3 +4,7 @@
 .shield-draft-details summary:focus-visible{outline:2px solid #83b9ff;outline-offset:4px;border-radius:3px}
 .shield-draft-details p{margin:9px 0 0;overflow-wrap:anywhere}
 .shield-draft-details a{color:#a9d1ff;text-decoration:underline;text-underline-offset:2px}
+
+.shield-form-actions{align-items:center;gap:10px}
+.shield-form-actions .btn{min-height:42px}
+@media(max-width:420px){.shield-form-actions{display:grid;grid-template-columns:1fr}.shield-form-actions .btn{width:100%}}
