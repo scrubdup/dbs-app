@@ -126,3 +126,15 @@ test('Shield import UI requires explicit file choice and confirmation',()=>{
  assert.ok(page.includes('importShieldDrafts(window.localStorage, json)'));
  assert.ok(page.includes("file.size > 65536"));
 });
+
+test('Shield restore at capacity never evicts previously saved drafts',()=>{
+ const m=new Map();const storage={getItem:k=>m.get(k)||null,setItem:(k,v)=>m.set(k,v)};
+ const make=(n)=>normalizeShieldSubmission({title:'Track '+n,owner:'Artist',rights:'Original creator',contact:'contact',certified:true},n);
+ for(let i=0;i<30;i++)saveShieldIntake(storage,make(i));
+ const before=readShieldIntakes(storage).map(x=>x.id);
+ const other={getItem:()=>null,setItem:()=>{}};
+ const incoming=make(99);
+ const backup=JSON.stringify({format:'PIKK Shield local rights drafts',version:1,drafts:[incoming]});
+ assert.deepEqual(importShieldDrafts(storage,backup),{added:0,duplicates:0,total:30});
+ assert.deepEqual(readShieldIntakes(storage).map(x=>x.id),before);
+});
