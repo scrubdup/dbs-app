@@ -41,6 +41,8 @@ try {
     await page.screenshot({ path: 'visual-review/shop-' + name + '.png', fullPage: true });
     assert.equal(await page.locator('#pikkShopReset').isVisible(), false, 'clear filters hidden by default');
     await page.locator('.pikk-shop-category[data-category="Hats"]').click();
+    const catalogPosition = await page.locator('#pikkShopCatalog').boundingBox();
+    assert.ok(catalogPosition && catalogPosition.y >= 175, name + ' catalog must clear sticky header');
     assert.equal(await page.locator('#pikkShopProducts .pikk-shop-product:visible').count(),
       MERCH.filter(p => p.category === 'Hats').length);
     assert.equal(await page.locator('.pikk-shop-category[data-category="Hats"]').getAttribute('aria-pressed'), 'true');
