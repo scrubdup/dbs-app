@@ -36,3 +36,11 @@ test('video filters also hide unrelated Coming Soon categories and explain empty
  assert.match(src,/data-video-category="Admin"/);
  assert.match(src,/VIDEO_COMING_SOON/);
 });
+
+test('video category buttons support accessible keyboard selection without removing tab stops',()=>{
+ assert.match(src,/\.pikk-video-filters'\)\?\.addEventListener\('keydown'/);
+ for(const key of ['ArrowLeft','ArrowRight','Home','End'])assert.ok(src.includes(key));
+ assert.match(src,/filterButtons\[next\]\.focus\(\)/);
+ assert.match(src,/filterButtons\[next\]\.click\(\)/);
+ assert.match(src,/aria-pressed/);
+});

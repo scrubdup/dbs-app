@@ -53,6 +53,18 @@ try {
         assert.equal(await page.locator('.pikk-video-coming-card:not([hidden])').count(), 1, 'show only upcoming interviews');
         assert.equal(await page.locator('.pikk-video-coming-card:not([hidden]) h3').textContent(), 'Interviews');
         await check('interviews');
+        // Keyboard category navigation: Right/Left wrap, Home/End jump, and update aria-pressed.
+        await page.locator('[data-videos-filter="Interviews"]').focus();
+        await page.keyboard.press('ArrowRight');
+        assert.equal(await page.locator('[data-videos-filter="All"]').getAttribute('aria-pressed'), 'true');
+        assert.equal(await page.locator('[data-videos-filter="All"]').evaluate(el => document.activeElement === el), true);
+        await page.keyboard.press('ArrowLeft');
+        assert.equal(await page.locator('[data-videos-filter="Interviews"]').getAttribute('aria-pressed'), 'true');
+        await page.keyboard.press('Home');
+        assert.equal(await page.locator('[data-videos-filter="All"]').getAttribute('aria-pressed'), 'true');
+        await page.keyboard.press('End');
+        assert.equal(await page.locator('[data-videos-filter="Interviews"]').getAttribute('aria-pressed'), 'true');
+        await check('keyboard-interviews');
         await page.locator('[data-videos-filter="Mixes"]').click();
         assert.equal(await page.locator('.pikk-video-coming-list').isHidden(), true, 'Mixes should not display unrelated upcoming titles');
         await page.locator('[data-videos-filter="All"]').click();

@@ -163,6 +163,19 @@ export function bindVideos(root) {
             : `No published ${category} videos yet.`;
     }
   }));
+  // Accessible shortcut: Left/Right arrows move between video category buttons.
+  // Buttons remain ordinary tabbable controls; arrow navigation is an enhancement.
+  root.querySelector('.pikk-video-filters')?.addEventListener('keydown', (event) => {
+    if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+    const current = filterButtons.indexOf(event.target);
+    if (current < 0 || !filterButtons.length) return;
+    event.preventDefault();
+    const next = event.key === 'Home' ? 0
+      : event.key === 'End' ? filterButtons.length - 1
+      : (current + (event.key === 'ArrowRight' ? 1 : -1) + filterButtons.length) % filterButtons.length;
+    filterButtons[next].focus();
+    filterButtons[next].click();
+  });
   // §17: real YT play via IFrame API (Media Links binder) — not cross-origin pointerdown
   bindPageYoutubeEmbeds(root);
   root.querySelectorAll('video.catalog-video').forEach((vid) => {
