@@ -49,3 +49,9 @@ test('Saved Shield drafts reveal existing details without exposing unsafe local 
   assert.equal(safeShieldUrl('javascript:alert(1)'), '');
   assert.equal(safeShieldUrl('https://example.com/track'), 'https://example.com/track');
 });
+
+test('Shield clear form is a native reset and never deletes saved rights drafts',()=>{
+  assert.match(page, /<form id="shieldForm">[\s\S]*<button type="reset" class="btn ghost">Clear form<\/button>[\s\S]*<\/form>/);
+  assert.ok(!page.includes('shieldForm.reset()'), 'native form reset is sufficient');
+  assert.ok(page.includes('window.confirm('), 'saved-draft deletion still requires confirmation');
+});
