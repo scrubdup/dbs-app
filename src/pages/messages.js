@@ -69,7 +69,7 @@ function renderInbox(user) {
         ? `<span class="chip msg-unread-chip" aria-label="${unreadN} unread">${unreadN}</span>`
         : '';
       return `
-      <button type="button" class="msg-thread-row${unreadN ? ' has-unread' : ''}" data-search="${esc(String(t.peerName || t.peerId).toLowerCase())}" data-open-thread="${esc(t.id)}">
+      <button type="button" class="msg-thread-row${unreadN ? ' has-unread' : ''}" data-search="${esc(String(t.peerName || t.peerId).toLowerCase())}" data-unread="${unreadN > 0}" data-open-thread="${esc(t.id)}">
         <div class="pikk-msg-avatar" aria-hidden="true">${esc(String(t.peerName || t.peerId || "?").slice(0,1).toUpperCase())}</div>
         <div class="pikk-msg-thread-body"><div class="msg-thread-top">
           <strong>${esc(t.peerName || t.peerId)}</strong>
@@ -89,6 +89,7 @@ function renderInbox(user) {
     <div class="pikk-msg-tools">
       <label for="pikkMsgSearch">Search conversations</label>
       <input id="pikkMsgSearch" type="search" placeholder="Search messages..." autocomplete="off" aria-controls="msgInbox" />
+      <label class="row" style="gap:8px;align-items:center;margin-top:8px" for="pikkMsgUnreadOnly"><input id="pikkMsgUnreadOnly" type="checkbox" aria-controls="msgInbox" /> Unread only (${unreadThreads.length})</label>
       <div class="pikk-msg-tool-actions"><button type="button" class="btn primary" id="pikkNewChatTop">+ New chat</button><button type="button" class="btn ghost" id="pikkGroupTop">Group chat</button></div>
     </div>
     <div class="card msg-team-card">
@@ -316,16 +317,26 @@ export function bindMessages(root) {
   });
   root.querySelector('#msgNewChat')?.addEventListener('click', () => refresh('#/messages?view=new'));
   root.querySelector('#pikkNewChatTop')?.addEventListener('click', () => refresh('#/messages?view=new'));
-  root.querySelector('#pikkMsgSearch')?.addEventListener('input', e => {
-    const query=String(e.target.value||'').trim().toLowerCase();
+  const filterInbox = () => {
+    const query = String(root.querySelector('#pikkMsgSearch')?.value || '').trim().toLowerCase();
+    const unreadOnly = !!root.querySelector('#pikkMsgUnreadOnly')?.checked;
     let shown = 0;
     root.querySelectorAll('#msgInbox [data-open-thread]').forEach(row => {
-      row.hidden = !!query && !String(row.dataset.search || '').includes(query);
+      const matchesSearch = !query || String(row.dataset.search || '').includes(query);
+      const matchesUnread = !unreadOnly || row.dataset.unread === 'true';
+      row.hidden = !(matchesSearch && matchesUnread);
       if (!row.hidden) shown++;
     });
     const empty = root.querySelector('#pikkMsgNoResults');
-    if (empty) empty.hidden = !query || shown > 0;
-  });
+    if (empty) {
+      empty.textContent = unreadOnly
+        ? (query ? 'No unread conversations match your search.' : 'No unread conversations.')
+        : 'No conversations match your search.';
+      empty.hidden = shown > 0 || (!query && !unreadOnly);
+    }
+  };
+  root.querySelector('#pikkMsgSearch')?.addEventListener('input', filterInbox);
+  root.querySelector('#pikkMsgUnreadOnly')?.addEventListener('change', filterInbox);
   root.querySelector('#msgEmptyNew')?.addEventListener('click', () => refresh('#/messages?view=new'));
   root.querySelector('#msgOpenTeam')?.addEventListener('click', () => refresh('#/messages?view=team'));
 
