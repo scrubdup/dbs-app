@@ -16,8 +16,8 @@
   <meta property="og:title" content="PIKK" />
   <meta property="og:description" content="PIKK — videos, music, live, dating, shopping, games, and creators." />
   <meta property="og:image" content="https://scrubdup.github.io/pikk-app/og-image.png" />
-  <script type="module" crossorigin src="/pikk-app/assets/index-B87zMwgw.js"></script>
-  <link rel="stylesheet" crossorigin href="/pikk-app/assets/index-ycXbY8hd.css">
+  <script type="module" crossorigin src="/pikk-app/assets/index-DKU2iTFd.js"></script>
+  <link rel="stylesheet" crossorigin href="/pikk-app/assets/index-BZo8s4i5.css">
 </head>
 <body>
   <!-- §19 Splash t178u: official logo 3s + tuning-fork chime (legacy PNG kept under /loading/) -->
@@ -30,6 +30,8 @@
       <source src="/pikk-app/loading/dbs-tuning-fork.wav" type="audio/wav" />
     </audio>
   </div>
+  <!-- Keyboard-only shortcut: keep hash routing intact instead of linking to #app. -->
+  <button type="button" id="pikkSkipContent" class="pikk-skip-content">Skip to main content</button>
   <!-- TEST MODE remains enforced; disclosure stays in footer, not the top header. -->
   <header class="top" id="topBar">
     <a href="#/home" class="logo" aria-label="PIKK Home">
@@ -97,7 +99,7 @@
   </nav>
   <nav class="side" id="sideNav" aria-hidden="true"></nav>
   <div class="scrim" id="scrim"></div>
-  <main id="app"></main>
+  <main id="app" tabindex="-1"></main>
   <footer class="foot">
     <p class="muted" style="font-size:12px;margin:0 0 4px">PIKK Network · music-first · TEST MODE demo</p>
     <p class="muted" style="font-size:12px;margin:4px 0"><a href="#/updates">See what changed in PIKK</a> · <a id="pikk-refresh-link" href="?refresh=latest#/home" aria-label="Check for latest PIKK updates">Refresh app</a></p>
