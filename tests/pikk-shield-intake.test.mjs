@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {normalizeShieldSubmission,readShieldIntakes,saveShieldIntake,removeShieldIntake,safeShieldUrl,serializeShieldDrafts} from '../src/pikk-shield.js';
+import {normalizeShieldSubmission,readShieldIntakes,saveShieldIntake,removeShieldIntake,safeShieldUrl,serializeShieldDrafts,importShieldDrafts} from '../src/pikk-shield.js';
 const page=readFileSync(new URL('../src/pages/shield.js',import.meta.url),'utf8');
 const main=readFileSync(new URL('../src/main.js',import.meta.url),'utf8');
 const music=readFileSync(new URL('../src/pages/music.js',import.meta.url),'utf8');
@@ -89,8 +89,40 @@ test('PIKK Shield offline JSON backup exports only rights draft fields without m
 test('PIKK Shield backup is explicitly user initiated and warns about private contact data',()=>{
  assert.ok(page.includes('id="shieldExportDrafts"'));
  assert.ok(page.includes('Download local backup (.json)'));
- assert.ok(page.includes('This backup includes your contact and rights details.'));
+ assert.ok(page.includes('Backups contain your contact and rights details.'));
  assert.ok(page.includes("serializeShieldDrafts(window.localStorage)"));
  assert.ok(page.includes("link.download = 'pikk-shield-local-drafts.json'"));
  assert.ok(page.includes("URL.revokeObjectURL(url)"));
+});
+
+test('Shield restores valid JSON backups locally and ignores duplicate IDs',()=>{
+ const m=new Map();const storage={getItem:k=>m.get(k)||null,setItem:(k,v)=>m.set(k,v)};
+ const record=normalizeShieldSubmission({title:'Restored song',owner:'Artist',rights:'Original creator',contact:'artist@example.com',certified:true},42);
+ saveShieldIntake(storage,record);
+ const backup=serializeShieldDrafts(storage);
+ storage.setItem('pikk_shield_intake_v1','[]');
+ assert.deepEqual(importShieldDrafts(storage,backup),{added:1,duplicates:0,total:1});
+ assert.deepEqual(importShieldDrafts(storage,backup),{added:0,duplicates:1,total:1});
+ assert.equal(readShieldIntakes(storage)[0].title,'Restored song');
+});
+test('Shield rejects malformed, oversized, and unsafe backups without changing stored drafts',()=>{
+ const m=new Map();const storage={getItem:k=>m.get(k)||null,setItem:(k,v)=>m.set(k,v)};
+ const record=normalizeShieldSubmission({title:'Original',owner:'Artist',rights:'Original creator',contact:'contact',certified:true},99);
+ saveShieldIntake(storage,record);
+ const original=storage.getItem('pikk_shield_intake_v1');
+ const backup=JSON.parse(serializeShieldDrafts(storage));
+ for(const bad of ['bad json','x'.repeat(65537),JSON.stringify({...backup,version:9}),
+ JSON.stringify({...backup,drafts:[{...backup.drafts[0],source:'javascript:alert(1)'}]}),
+ JSON.stringify({...backup,drafts:[{...backup.drafts[0],title:''}]}),
+ JSON.stringify({...backup,drafts:Array(31).fill(backup.drafts[0])})]){
+   assert.throws(()=>importShieldDrafts(storage,bad));
+   assert.equal(storage.getItem('pikk_shield_intake_v1'),original);
+ }
+});
+test('Shield import UI requires explicit file choice and confirmation',()=>{
+ assert.ok(page.includes('id="shieldImportDrafts"'));
+ assert.ok(page.includes('id="shieldImportFile"'));
+ assert.ok(page.includes("window.confirm('Restore PIKK Shield drafts"));
+ assert.ok(page.includes('importShieldDrafts(window.localStorage, json)'));
+ assert.ok(page.includes("file.size > 65536"));
 });
