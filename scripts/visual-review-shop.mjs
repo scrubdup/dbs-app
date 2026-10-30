@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { mkdir } from 'node:fs/promises';
 import { chromium } from 'playwright';
 import { MERCH } from '../src/data.js';
+import { sortPikkShopProducts } from '../src/pages/pikk-shop.js';
 
 process.env.PW_TEST_SCREENSHOT_NO_FONTS_READY = '1';
 await mkdir('visual-review', { recursive: true });
@@ -39,6 +40,19 @@ try {
     assert.ok(searchBox && searchBox.width >= Math.min(width - 70, 400), name + ' search must be full width');
 
     await page.screenshot({ path: 'visual-review/shop-' + name + '.png', fullPage: true });
+    const sort = page.locator('#pikkShopSort');
+    assert.equal(await sort.isVisible(), true, name + ' sort menu must be visible');
+    for (const order of ['price-asc', 'price-desc', 'name-asc', 'featured']) {
+      await sort.selectOption(order);
+      const actual = await page.locator('#pikkShopProducts .pikk-shop-product')
+        .evaluateAll((items) => items.map((item) => item.dataset.productId));
+      assert.deepEqual(actual, sortPikkShopProducts(MERCH, order).map((item) => item.id),
+        name + ' merchandise order for ' + order);
+      assert.equal(await page.locator('#pikkShopProducts .pikk-shop-product:visible').count(), MERCH.length);
+      if (order === 'price-asc') {
+        await page.screenshot({ path: 'visual-review/shop-' + name + '-sorted-low.png', fullPage: false });
+      }
+    }
     assert.equal(await page.locator('#pikkShopReset').isVisible(), false, 'clear filters hidden by default');
     await page.locator('.pikk-shop-category[data-category="Hats"]').click();
     const catalogPosition = await page.locator('#pikkShopCatalog').boundingBox();
