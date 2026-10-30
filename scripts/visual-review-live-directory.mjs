@@ -65,6 +65,7 @@ try {
       localStorage.setItem('dbs_v1',JSON.stringify(state));
     });
     await page.goto('http://127.0.0.1:5173/#/live', {waitUntil:'domcontentloaded'});
+    await page.reload({waitUntil:'domcontentloaded'});
     await page.locator('#liveGoalSupportMessage').waitFor({state:'visible'});
     assert.equal(await page.locator('.live-goal-donate').count(),3);
     assert.equal(await page.locator('.live-goal-custom-form').count(),1);
