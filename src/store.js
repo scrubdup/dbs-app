@@ -1675,7 +1675,7 @@ export function listDailyGoals(now = Date.now()) {
  * 100 coins = $2. Caps debit to remaining USD (no over-charge past target); completed → error.
  * Returns { ok, goal, coins, donated } or { error: signin|invalid_amount|unknown_goal|expired|insufficient|completed }.
  */
-export function donateToGoal(goalId, amountCoins) {
+export function donateToGoal(goalId, amountCoins, options = {}) {
   const user = state.user;
   if (!user) return { error: 'signin' };
   const coinsAmt = Math.floor(Number(amountCoins));
@@ -1735,12 +1735,15 @@ export function donateToGoal(goalId, amountCoins) {
     ...(completedAt ? { completedAt } : {}),
   };
 
+  // Optional supporter message is stored only in this browser's demo coin history.
+  const message = String(options?.message || '').trim().slice(0, 180);
   const coinHist = {
     at: now,
     amount: -applyCoins,
     note: `Goal donate · ${goal.name} · $${donatedUsd.toFixed(2)} · TEST MODE`,
     kind: 'goal',
     goalId: goal.id,
+    ...(message ? { message } : {}),
     usd: donatedUsd,
   };
   const nextCoins = {
@@ -1763,7 +1766,7 @@ export function donateToGoal(goalId, amountCoins) {
     ok: true,
     goal: cloneGoal(nextGoal),
     coins: nextCoins,
-    donated: { coins: applyCoins, usd: donatedUsd, requested: coinsAmt },
+    donated: { coins: applyCoins, usd: donatedUsd, requested: coinsAmt, message },
   };
 }
 
