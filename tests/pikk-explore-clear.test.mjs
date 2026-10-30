@@ -28,3 +28,9 @@ test('Explore retains original PIKK navigation, logo, and player', () => {
   assert.match(explore, /export function renderExplore\(\)/);
   assert.match(explore, /export function bindExplore\(root\)/);
 });
+
+
+test('Explore people results link to the matched public profile, not the signed-in profile', () => {
+  assert.match(explore, /href: `#\/profile\/\$\{p\.id\}`/);
+  assert.match(explore, /title: `@\$\{p\.username \|\| p\.id\}`/);
+});
