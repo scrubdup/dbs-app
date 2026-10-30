@@ -25,6 +25,11 @@ test('PIKK Shield stores, reads and deletes local drafts without backend claims'
   storage.setItem('pikk_shield_intake_v1','corrupt');
   assert.deepEqual(readShieldIntakes(storage),[]);
 });
+test('Shield local draft deletion asks for explicit confirmation before removal',()=>{
+  assert.ok(page.includes('window.confirm('),'delete must ask for confirmation');
+  assert.ok(page.includes('This cannot be undone.'),'warning must explain permanent local deletion');
+  assert.ok(page.indexOf('window.confirm(') < page.indexOf('removeShieldIntake(window.localStorage,b.dataset.id)'));
+});
 test('Shield page is routed, reachable from music and clear about prototype limits',()=>{
   assert.ok(main.includes("'/shield': { render: renderShield, bind: bindShield }"));
   assert.ok(main.includes("import './shield.css'"));
