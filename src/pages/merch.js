@@ -52,7 +52,8 @@ export function bindMerch(root) {
   const openZoom = (opener) => {
     if (!lb || !lbImg || !closeButton) return;
     lastOpener = opener;
-    lbImg.src = opener.dataset.zoom;
+    // Use the rendered image URL so the preview also works under the /pikk-app/ Pages base path.
+    lbImg.src = opener.querySelector('img')?.currentSrc || opener.dataset.zoom;
     lbImg.alt = opener.querySelector('img')?.alt || 'Product preview';
     lb.classList.add('show');
     lb.setAttribute('aria-hidden', 'false');
