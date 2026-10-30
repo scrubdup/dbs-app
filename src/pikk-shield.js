@@ -83,6 +83,8 @@ export function importShieldDrafts(storage, json) {
   const ids = new Set(existing.map(item => item.id));
   const added = [];
   for (const item of imported) if (!ids.has(item.id)) {ids.add(item.id);added.push(item);}
-  if (added.length) storage.setItem(SHIELD_STORAGE_KEY,JSON.stringify([...added,...existing].slice(0,MAX_ITEMS)));
-  return {added:added.length,duplicates:imported.length-added.length,total:readShieldIntakes(storage).length};
+  // Preserve every existing draft; if storage is full, do not evict it during restore.
+  const accepted = added.slice(0, Math.max(0, MAX_ITEMS - existing.length));
+  if (accepted.length) storage.setItem(SHIELD_STORAGE_KEY,JSON.stringify([...accepted,...existing]));
+  return {added:accepted.length,duplicates:imported.length-added.length,total:readShieldIntakes(storage).length};
 }
