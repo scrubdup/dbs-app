@@ -102,6 +102,18 @@ try{
   page.once('dialog',dialog=>dialog.accept());
   await page.locator('.shield-delete').click();
   await page.locator('.shield-history').getByText('No rights declarations').waitFor();
+  // Restore the exported backup through the actual file picker and confirmation.
+  page.once('dialog', dialog => dialog.accept());
+  await page.locator('#shieldImportFile').setInputFiles(downloadPath);
+  await page.locator('.shield-entry').waitFor({state:'visible'});
+  assert.equal(await page.locator('.shield-entry').count(),1,'backup restores deleted draft');
+  assert.match(await page.locator('.shield-entry').textContent(),/Original demo song/);
+  await page.reload({waitUntil:'domcontentloaded'});
+  assert.equal(await page.locator('.shield-entry').count(),1,'restored draft persists after reload');
+  page.once('dialog', dialog => dialog.accept());
+  await page.locator('#shieldImportFile').setInputFiles(downloadPath);
+  assert.equal(await page.locator('.shield-entry').count(),1,'duplicate backup import does not duplicate drafts');
+  await check('restored');
   await context.close();
  }}finally{await browser.close()}
 }finally{server.kill('SIGTERM')}

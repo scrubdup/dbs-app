@@ -54,3 +54,37 @@ export function serializeShieldDrafts(storage) {
   }));
   return JSON.stringify({format:'PIKK Shield local rights drafts',version:1,drafts},null,2);
 }
+
+/** Restore a PIKK-generated backup locally. Validate the entire file before any write. */
+export function importShieldDrafts(storage, json) {
+  if (typeof json !== 'string' || json.length > 65536) throw new Error('Backup file must be under 64 KB.');
+  let backup;
+  try { backup = JSON.parse(json); } catch { throw new Error('Invalid JSON backup file.'); }
+  if (!backup || backup.format !== 'PIKK Shield local rights drafts' || backup.version !== 1 || !Array.isArray(backup.drafts) || backup.drafts.length > MAX_ITEMS) {
+    throw new Error('Not a supported PIKK Shield backup (maximum 30 drafts).');
+  }
+  const imported = backup.drafts.map((item, i) => {
+    if (!item || typeof item !== 'object' || Array.isArray(item)) throw new Error('Invalid draft in backup.');
+    for (const key of ['id','title','owner','rights','contact','notes','source']) {
+      if (typeof item[key] !== 'string') throw new Error('Invalid draft field: ' + key);
+    }
+    if (!/^shield-[a-zA-Z0-9-]{1,80}$/.test(item.id) || !item.title.trim() || item.title.length > 120 ||
+        !item.owner.trim() || item.owner.length > 100 || !RIGHTS_OPTIONS.includes(item.rights) ||
+        !item.contact.trim() || item.contact.length > 180 || item.notes.length > 800 ||
+        (item.source && (!safeShieldUrl(item.source) || safeShieldUrl(item.source) !== item.source)) ||
+        (item.at !== null && (!Number.isFinite(item.at) || item.at < 0))) {
+      throw new Error('Backup draft ' + (i + 1) + ' contains invalid fields.');
+    }
+    return {id:item.id,type:'rights-declaration',title:item.title.trim(),owner:item.owner.trim(),
+      rights:item.rights,contact:item.contact.trim(),notes:item.notes,source:safeShieldUrl(item.source),
+      at:item.at ?? Date.now(),status:'Local draft — not submitted'};
+  });
+  const existing = readShieldIntakes(storage);
+  const ids = new Set(existing.map(item => item.id));
+  const added = [];
+  for (const item of imported) if (!ids.has(item.id)) {ids.add(item.id);added.push(item);}
+  // Preserve every existing draft; if storage is full, do not evict it during restore.
+  const accepted = added.slice(0, Math.max(0, MAX_ITEMS - existing.length));
+  if (accepted.length) storage.setItem(SHIELD_STORAGE_KEY,JSON.stringify([...accepted,...existing]));
+  return {added:accepted.length,duplicates:imported.length-added.length,total:readShieldIntakes(storage).length};
+}
