@@ -47,3 +47,6 @@
   .pikk-msg-flow-panel.msg-thread-head .msg-privacy-btns{width:100%}
 }
 @media(prefers-reduced-motion:reduce){.pikk-msg-flow-hero,.pikk-msg-flow-panel{scroll-behavior:auto}}
+
+/* Keep the reset control out of the layout until a search or unread filter is active. */
+.pikk-msg-tool-actions #pikkMsgClearFilters[hidden]{display:none!important}
