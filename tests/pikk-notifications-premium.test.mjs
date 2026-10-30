@@ -50,3 +50,14 @@ test('Notification Center can restore only the four local preferences without cl
   assert.match(css, /\.pikk-notif-tools\{/);
   assert.match(css, /\.pikk-notif-studio button:focus-visible/);
 });
+
+test('Notification Center bulk pause and resume preserve Quiet hours and remain local-only', () => {
+  assert.match(page, /id="pikkNotifPause"/);
+  assert.match(page, /id="pikkNotifResume"/);
+  assert.match(page, /const alertKeys = \['releases', 'lives', 'messages'\]/);
+  assert.match(page, /setNotifPrefs\(Object\.fromEntries\(alertKeys\.map\(key => \[key, enabled\]\)\)\)/);
+  assert.match(page, /if \(alertKeys\.includes\(input\.dataset\.k\)\) input\.checked = enabled/);
+  assert.match(page, /Real push delivery is not connected/);
+  assert.match(css, /\.pikk-notif-tool-actions\{/);
+  assert.match(css, /\.pikk-notif-tool-actions\{width:100%;flex:initial;flex-direction:column\}/);
+});
