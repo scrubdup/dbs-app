@@ -46,3 +46,12 @@ test('Messages bulk mark-read action uses the real local read state and never fa
   assert.match(page, /refresh\('#\/messages'\)/);
   assert.match(page, /ensureDemoUnreadMessages\(\);[\s\S]*const view = route\?\.query/);
 });
+
+test('Messages clear filters resets both browser-local inbox filters and restores all conversations', () => {
+  assert.match(page, /id="pikkMsgClearFilters"[^>]*hidden>Clear filters<\/button>/);
+  assert.match(page, /clearFilters\.hidden = !query && !unreadOnly/);
+  assert.match(page, /if \(search\) search\.value = ''/);
+  assert.match(page, /if \(unread\) unread\.checked = false/);
+  assert.match(page, /filterInbox\(\);\s*search\?\.focus\(\)/);
+  assert.match(css, /#pikkMsgClearFilters\[hidden\]\{display:none!important\}/);
+});
