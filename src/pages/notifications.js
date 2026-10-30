@@ -3,6 +3,13 @@ import { shellPage, toast } from '../ui.js';
 
 // These four settings already exist in the browser-local PIKK demo store.
 // This screen does not imply that push delivery or subscriber events are live.
+const DEFAULT_PREFERENCES = Object.freeze({
+  releases: true,
+  lives: true,
+  messages: true,
+  quietHours: false,
+});
+
 const PREFERENCES = Object.freeze([
   { key: 'releases', title: 'New music releases', detail: 'Keep track of new DatBoiSkeet music and official drops.', group: 'discover' },
   { key: 'lives', title: 'Livestreams', detail: 'Choose whether you want live-session updates.', group: 'discover' },
@@ -54,6 +61,10 @@ export function renderNotifications() {
           ${PREFERENCES.filter(item => item.group === 'social').map(item => preferenceRow(item, settings)).join('')}
         </section>
       </div>
+      <div class="pikk-notif-tools">
+        <span>Changed your mind? Restore the original settings on this device.</span>
+        <button class="btn ghost" type="button" id="pikkNotifReset">Restore defaults</button>
+      </div>
       <p class="pikk-notif-save-status" id="pikkNotifStatus" role="status" aria-live="polite">Preferences are saved locally. Real push delivery is not connected in this demo.</p>
       <section class="pikk-notif-roadmap" aria-label="Upcoming live subscriber alerts">
         <div><span class="pikk-notif-kicker">IN DEVELOPMENT</span><h3>New Subscriber Live Alerts</h3><p>Animated username and membership-tier popups, sound controls, durations, and a streamer activity inbox are planned. Confirmed subscription event integration is not available yet.</p></div>
@@ -65,6 +76,17 @@ export function renderNotifications() {
 export function bindNotifications(root) {
   const panel = root.querySelector('#notifPrefs');
   if (!panel) return;
+  panel.querySelector('#pikkNotifReset')?.addEventListener('click', () => {
+    setNotifPrefs(DEFAULT_PREFERENCES);
+    panel.querySelectorAll('input[data-k]').forEach(input => {
+      input.checked = DEFAULT_PREFERENCES[input.dataset.k];
+    });
+    const summary = panel.querySelector('#pikkNotifEnabled');
+    if (summary) summary.textContent = '3 of 4';
+    const status = panel.querySelector('#pikkNotifStatus');
+    if (status) status.textContent = 'Notification preferences restored to defaults on this device.';
+    toast('Defaults restored');
+  });
   panel.querySelectorAll('input[data-k]').forEach(input => {
     input.addEventListener('change', () => {
       const key = input.dataset.k;

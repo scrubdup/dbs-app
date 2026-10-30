@@ -37,3 +37,16 @@ test('Notification Center uses scoped responsive premium styles without replacin
   assert.match(html, /pikk-official-approved\.jpg/);
   assert.match(html, /dbs-sticky-player/);
 });
+
+test('Notification Center can restore only the four local preferences without claiming push support', () => {
+  assert.match(page, /const DEFAULT_PREFERENCES = Object\.freeze\(\{/);
+  for (const line of ['releases: true', 'lives: true', 'messages: true', 'quietHours: false']) {
+    assert.ok(page.includes(line), line);
+  }
+  assert.match(page, /id="pikkNotifReset"/);
+  assert.match(page, /setNotifPrefs\(DEFAULT_PREFERENCES\)/);
+  assert.match(page, /input\.checked = DEFAULT_PREFERENCES\[input\.dataset\.k\]/);
+  assert.match(page, /Notification preferences restored to defaults on this device/);
+  assert.match(css, /\.pikk-notif-tools\{/);
+  assert.match(css, /\.pikk-notif-studio button:focus-visible/);
+});
