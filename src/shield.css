@@ -8,3 +8,8 @@
 .shield-form-actions{align-items:center;gap:10px}
 .shield-form-actions .btn{min-height:42px}
 @media(max-width:420px){.shield-form-actions{display:grid;grid-template-columns:1fr}.shield-form-actions .btn{width:100%}}
+
+.shield-search{margin:10px 0 14px}
+.shield-search input{width:100%;min-height:42px;border-radius:10px}
+.shield-search-count{font-size:12px;margin:7px 0 0}
+.shield-entry[hidden],#shieldSearchEmpty[hidden]{display:none!important}

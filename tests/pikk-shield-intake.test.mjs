@@ -55,3 +55,15 @@ test('Shield clear form is a native reset and never deletes saved rights drafts'
   assert.ok(!page.includes('shieldForm.reset()'), 'native form reset is sufficient');
   assert.ok(page.includes('window.confirm('), 'saved-draft deletion still requires confirmation');
 });
+
+test('Shield local draft search filters song and artist without mutating storage',()=>{
+  assert.ok(page.includes('id="shieldDraftSearch"'));
+  assert.ok(page.includes('data-shield-search='));
+  assert.ok(page.includes('e.title || ""'));
+  assert.ok(page.includes('e.owner || ""'));
+  assert.ok(page.includes("search?.addEventListener('input'"));
+  assert.ok(page.includes('card.hidden = !matches'));
+  assert.ok(page.includes('Showing ${visible} of ${cards.length} drafts'));
+  assert.ok(page.includes('No saved drafts match your search.'));
+  assert.ok(!page.includes('removeShieldIntake(window.localStorage,card.dataset'), 'search never deletes saved drafts');
+});

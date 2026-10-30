@@ -7,7 +7,7 @@ export function renderShield() {
     // Local storage can be edited outside the form: validate links again before rendering.
     const source = safeShieldUrl(e.source);
     return `
-    <article class="card shield-entry" data-shield-id="${esc(e.id)}">
+    <article class="card shield-entry" data-shield-id="${esc(e.id)}" data-shield-search="${esc(`${e.title || ""} ${e.owner || ""}`.toLocaleLowerCase())}">
       <div class="row wrap"><strong>${esc(e.title)}</strong><span class="chip">${esc(e.status)}</span></div>
       <p class="muted">${esc(e.owner)} · ${esc(e.rights)}</p>
       <details class="shield-draft-details">
@@ -52,7 +52,9 @@ export function renderShield() {
             <div><strong>04 · External platform notices</strong><span>Planned — PIKK cannot automatically remove copies from YouTube, Apple or Spotify</span></div>
           </div>
           <h3>My local drafts (${entries.length})</h3>
+          ${entries.length ? `<div class="field shield-search"><label for="shieldDraftSearch">Find a saved draft</label><input id="shieldDraftSearch" type="search" placeholder="Search song or artist" autocomplete="off" /><p class="muted shield-search-count" role="status" aria-live="polite" id="shieldSearchCount">Showing ${entries.length} of ${entries.length} drafts</p></div>` : ""}
           <div class="shield-history">${history}</div>
+          ${entries.length ? '<p class="muted" id="shieldSearchEmpty" hidden>No saved drafts match your search.</p>' : ""}
         </section>
       </div>
     </div>`, {lead:'Rights declaration preview · No official copyright protection is active yet'});
@@ -73,6 +75,21 @@ export function bindShield(root) {
       // Re-render through an explicit hash update (even if the route was already open).
       window.dispatchEvent(new HashChangeEvent('hashchange'));
     } catch(e){toast(e.message)}
+  });
+  const search = root.querySelector('#shieldDraftSearch');
+  const cards = [...root.querySelectorAll('.shield-entry')];
+  search?.addEventListener('input', () => {
+    const term = search.value.trim().toLocaleLowerCase();
+    let visible = 0;
+    cards.forEach(card => {
+      const matches = card.dataset.shieldSearch.includes(term);
+      card.hidden = !matches;
+      if (matches) visible++;
+    });
+    const count = root.querySelector('#shieldSearchCount');
+    if (count) count.textContent = `Showing ${visible} of ${cards.length} drafts`;
+    const empty = root.querySelector('#shieldSearchEmpty');
+    if (empty) empty.hidden = visible !== 0;
   });
   root.querySelectorAll('.shield-delete').forEach(b=>b.addEventListener('click',()=>{
     // Drafts exist only in this browser: accidental deletion cannot be recovered from PIKK.
