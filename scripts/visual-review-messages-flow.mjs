@@ -52,6 +52,17 @@ try {
       await page.locator('.pikk-messages-hero').waitFor({ state: 'visible', timeout: 10000 });
       await verify('inbox');
 
+      // Unread-only filter shows real unread threads, and combines with search.
+      const unreadOnly = page.locator('#pikkMsgUnreadOnly');
+      await unreadOnly.check();
+      assert.ok(await page.locator('#msgInbox .has-unread:visible').count() > 0, 'unread threads shown');
+      assert.equal(await page.locator('#msgInbox [data-open-thread]:visible:not(.has-unread)').count(), 0, 'read threads hidden');
+      await verify('unread-only');
+      await page.locator('#pikkMsgSearch').fill('unlikely-unread-filter-match-2026');
+      await page.getByText('No unread conversations match your search.').waitFor({ state: 'visible' });
+      await page.locator('#pikkMsgSearch').fill('');
+      await unreadOnly.uncheck();
+
       // One-time demo unread messages must be actionable and stay read on reload.
       const markAll = page.locator('#msgMarkAllRead');
       assert.equal(await markAll.isEnabled(), true, 'mark all read available for seeded unread thread');
@@ -63,6 +74,10 @@ try {
       await page.locator('.pikk-messages-hero').waitFor({ state: 'visible', timeout: 10000 });
       assert.equal(await page.locator('#msgInbox .has-unread').count(), 0, 'read state persists after reload');
       assert.equal(await page.locator('#msgMarkAllRead').isDisabled(), true, 'no accidental demo re-seeding');
+      await page.locator('#pikkMsgUnreadOnly').check();
+      await page.getByText('No unread conversations.', { exact: true }).waitFor({ state: 'visible' });
+      await verify('unread-empty');
+      await page.locator('#pikkMsgUnreadOnly').uncheck();
       await verify('read-all');
 
       await page.locator('#pikkNewChatTop').click();

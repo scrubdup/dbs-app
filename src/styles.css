@@ -4513,6 +4513,7 @@ input:focus, select:focus, textarea:focus {
 .pikk-msg-tools{display:flex;flex-direction:column;gap:7px;margin:0 0 13px;border-radius:15px}
 .pikk-msg-tools label{font-size:11px;font-weight:800;color:#d7cfe4}
 .pikk-msg-tools input{width:100%;background:#171724;border:1px solid #4a4965;border-radius:999px;color:#f2effb;padding:11px 17px;font-size:13px}
+.pikk-msg-tools input[type="checkbox"]{width:17px;height:17px;padding:0;flex:0 0 17px;accent-color:#db5da5;cursor:pointer}
 .pikk-msg-tools input:focus-visible{outline:2px solid #9e75e9;outline-offset:2px}
 .pikk-msg-tool-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:3px}
 .msg-inbox .msg-thread-row{display:flex;align-items:center;gap:12px;text-align:left;border:1px solid #3b3a55;border-radius:13px;background:linear-gradient(130deg,#242136,#161822);padding:13px;margin:0 0 8px;box-shadow:0 5px 15px #0004}
