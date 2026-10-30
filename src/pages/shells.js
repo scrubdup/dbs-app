@@ -111,7 +111,7 @@ export function renderVideos() {
       <button type="button" data-videos-filter="Interviews" aria-pressed="false">Interviews</button>
       ${adminVids.length ? '<button type="button" data-videos-filter="Admin" aria-pressed="false">Admin</button>' : ''}
     </nav>
-    <p class="pikk-video-filter-status muted" role="status" aria-live="polite" data-video-filter-status>Showing all video categories and upcoming titles.</p>
+    <p class="card pikk-video-source-info pikk-video-filter-status muted" role="status" aria-live="polite" data-video-filter-status>Showing all video categories and upcoming titles.</p>
     <div class="card pikk-video-source-info"><p class="muted" style="margin:0">Official DatBoiSkeet music videos, mixes, and interviews — YouTube embeds from the original source. No rehosted files.</p>
       <div class="row wrap" style="margin-top:8px;gap:8px">
         <a class="btn" href="https://www.youtube.com/channel/UCA2GGwQ-cOUW0ZqmWaGzEBA" target="_blank" rel="noopener">Official YouTube channel</a>
@@ -121,7 +121,7 @@ export function renderVideos() {
     </div>
     ${sections}${extra}
     ${adminHtml ? `<section class="pikk-video-section" data-video-category="Admin"><h3>From Admin</h3><div class="pikk-video-grid">${adminHtml}</div></section>` : ''}
-    <section class="pikk-video-coming-list" aria-label="Upcoming videos">
+    <section class="pikk-video-section pikk-video-coming-list" aria-label="Upcoming videos">
       <h3>Upcoming on PIKK</h3>
       ${coming}
     </section>`,
