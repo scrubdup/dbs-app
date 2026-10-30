@@ -609,7 +609,7 @@ export function renderSignup() {
     `<div class="card">
       <p class="kicker">Join PIKK</p>
       <h2 style="margin:0 0 8px">Fan account first</h2>
-      <p>Everyone creates a DatBoiSkeet account to participate — follow, comment, save, join Lounge rooms, buy memberships, message the team, or apply to earn. Visitors can browse public promo pages; signing up unlocks the network.</p>
+      <p>Everyone creates a PIKK account to participate — follow, comment, save, join Lounge rooms, buy memberships, message the team, or apply to earn. Visitors can browse public promo pages; signing up unlocks the network.</p>
       <p class="muted" style="margin:8px 0 12px"><strong>Basic fan signup is free</strong> — no manual approval. This demo uses local Profile sign-in (TEST MODE · no real email/auth yet).</p>
       <a class="btn primary" href="#/profile">Sign in / create demo user</a>
       <a class="btn ghost" href="#/guidelines" style="margin-left:8px">Read Guidelines</a>
