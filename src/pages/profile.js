@@ -40,10 +40,11 @@ function peopleList(title, people) {
 export function renderProfile(route) {
   const viewId = route?.parts?.[1] || null;
   const { user, posts } = getState();
-  const viewingOther = viewId && (!user || viewId !== user.id);
+  const isOwnPreview = !!(viewId && user && viewId === user.id && route?.query?.view === 'public');
+  const viewingOther = !!viewId && (!user || viewId !== user.id);
 
-  // Public profile by id
-  if (viewingOther || (viewId && viewId !== user?.id)) {
+  // Public profile by id, including the signed-in owner's read-only preview.
+  if (viewingOther || isOwnPreview) {
     const profile = getProfile(viewId);
     if (!profile) {
       return shellPage(
@@ -53,7 +54,7 @@ export function renderProfile(route) {
       );
     }
     const theirPosts = posts.filter((p) => p.userId === profile.id);
-    const isFollowing = user && (user.following || []).includes(profile.id);
+    const isFollowing = user && !isOwnPreview && (user.following || []).includes(profile.id);
     const followers = listFollowers(profile.id);
     const following = listFollowing(profile.id);
     const body = `
@@ -74,14 +75,16 @@ export function renderProfile(route) {
         </div>
         <div class="row wrap pikk-profile-shortcuts">
           ${
-            user
-              ? `<button class="btn ${isFollowing ? 'ghost' : 'primary'}" id="pubFollow" data-uid="${esc(
-                  profile.id
-                )}" data-on="${isFollowing ? '1' : '0'}">${isFollowing ? 'Unfollow' : 'Follow'}</button>`
-              : `<a class="btn primary" href="#/profile">Sign in to follow</a>`
+            isOwnPreview
+              ? `<a class="btn primary" href="#/profile">Edit profile</a>`
+              : user
+                ? `<button class="btn ${isFollowing ? 'ghost' : 'primary'}" id="pubFollow" data-uid="${esc(
+                    profile.id
+                  )}" data-on="${isFollowing ? '1' : '0'}">${isFollowing ? 'Unfollow' : 'Follow'}</button>`
+                : `<a class="btn primary" href="#/profile">Sign in to follow</a>`
           }
           <a class="btn ghost" href="#/posts">Posts feed</a>
-          <a class="btn ghost" href="#/profile">My profile</a>
+          ${isOwnPreview ? '' : '<a class="btn ghost" href="#/profile">My profile</a>'}
         </div>
       </section>
       <div class="card">
@@ -166,7 +169,7 @@ export function renderProfile(route) {
       </div>
       <div class="row wrap pikk-profile-shortcuts">
         <a class="btn" href="#/posts">New post</a>
-        <a class="btn" href="#/profile/${esc(user.id)}">Public view</a>
+        <a class="btn" href="#/profile/${esc(user.id)}?view=public">Public view</a>
         <a class="btn" href="#/profile-shop">Profile Shop</a>
         <a class="btn" href="#/messages">Messages</a>
         <button class="btn ghost" id="signoutBtn">Sign out</button>
