@@ -49,6 +49,7 @@ function renderSignIn() {
 
 function renderInbox(user) {
   const threads = listThreads();
+  const unreadThreads = threads.filter(t => getThreadUnreadCount(t) > 0);
   const prefs = getState().messagePrefs || { allowDMs: true, allowRequests: true };
   const rows = threads
     .map((t) => {
@@ -100,6 +101,7 @@ function renderInbox(user) {
       <div class="row wrap" style="justify-content:space-between;gap:8px">
         <h3 style="margin:0">Inbox</h3>
         <div class="row wrap" style="gap:8px">
+          <button type="button" class="btn ghost" id="msgMarkAllRead" ${unreadThreads.length ? '' : 'disabled'}>Mark all read${unreadThreads.length ? ` (${unreadThreads.length})` : ''}</button>
           <button type="button" class="btn" id="msgNewChat">New chat</button>
           <button type="button" class="btn ghost" id="msgOpenGroup">DBS Fans group</button>
         </div>
@@ -270,6 +272,8 @@ export function renderMessages(route) {
   if (!user) return renderSignIn();
 
   ensureDemoMessageContacts();
+  // Seed the one-time demo unread thread before rendering inbox counts.
+  ensureDemoUnreadMessages();
 
   const view = route?.query?.view || '';
   const threadId = route?.query?.t || '';
@@ -300,11 +304,16 @@ export function bindMessages(root) {
   const user = getState().user;
   if (!user) return;
 
-  ensureDemoUnreadMessages();
-
   const goInbox = () => refresh('#/messages');
 
   root.querySelector('#msgBackInbox')?.addEventListener('click', goInbox);
+  root.querySelector('#msgMarkAllRead')?.addEventListener('click', () => {
+    const unread = listThreads().filter(t => getThreadUnreadCount(t) > 0);
+    if (!unread.length) return;
+    unread.forEach(t => markThreadRead(t.id));
+    toast(`${unread.length} conversation${unread.length === 1 ? '' : 's'} marked read`);
+    refresh('#/messages');
+  });
   root.querySelector('#msgNewChat')?.addEventListener('click', () => refresh('#/messages?view=new'));
   root.querySelector('#pikkNewChatTop')?.addEventListener('click', () => refresh('#/messages?view=new'));
   root.querySelector('#pikkMsgSearch')?.addEventListener('input', e => {
