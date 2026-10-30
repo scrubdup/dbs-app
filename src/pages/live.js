@@ -691,6 +691,11 @@ function renderLiveDailyGoalCard(live, user) {
         <span class="muted"> · ${pct}%</span>
         <span class="chip" style="margin-left:8px">Coins ${esc(fmtCoins(coinsBal))}</span>
       </p>
+      <div class="field live-goal-message-field" style="margin:10px 0 8px">
+        <label for="liveGoalSupportMessage">Message to the creator (optional)</label>
+        <input id="liveGoalSupportMessage" maxlength="180" placeholder="Show some love with your donation" autocomplete="off" />
+        <p class="muted" style="font-size:11px;margin:4px 0 0">Saved with your demo coin transaction on this device only. Not delivered to a real streamer.</p>
+      </div>
       <div class="row wrap live-goal-donate-row" style="gap:8px">
         ${donateBtns}
       </div>
@@ -1263,7 +1268,7 @@ function mountLiveDailyGoal(root) {
       event.preventDefault();
       const coins = Number(form.querySelector('.live-goal-custom-coins')?.value);
       if (!Number.isSafeInteger(coins) || coins < 1 || coins > 1000000) return toast('Enter 1–1,000,000 whole coins');
-      const result = donateToGoal(form.dataset.goalId, coins);
+      const result = donateToGoal(form.dataset.goalId, coins, {message:root.querySelector('#liveGoalSupportMessage')?.value || ''});
       if (result?.error === 'signin') return toast('Sign in first');
       if (result?.error === 'insufficient') return toast('Not enough demo coins');
       if (result?.error) return toast('Donation unavailable · TEST MODE');
@@ -1276,7 +1281,7 @@ function mountLiveDailyGoal(root) {
     btn.addEventListener('click', () => {
       const goalId = btn.dataset.goalId;
       const coins = Number(btn.dataset.coins);
-      const res = donateToGoal(goalId, coins);
+      const res = donateToGoal(goalId, coins, {message:root.querySelector('#liveGoalSupportMessage')?.value || ''});
       if (res?.error === 'signin') return toast('Sign in first');
       if (res?.error === 'insufficient') {
         return toast(`Need ${fmtCoins(res.need)} coins — buy a pack in Gifts · TEST MODE`);
