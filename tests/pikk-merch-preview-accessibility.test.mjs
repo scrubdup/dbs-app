@@ -22,7 +22,7 @@ test('merch preview opens by keyboard, traps focus and closes with Escape restor
   const opener = {
     dataset: { zoom: '/merch/example.jpeg' },
     isConnected: true,
-    querySelector() { return { alt: 'Original product' }; },
+    querySelector() { return { alt: 'Original product', currentSrc: '/pikk-app/merch/example.jpeg' }; },
     addEventListener(type, fn) { handlers['opener:' + type] = fn; },
     focus() { focused = 'opener'; },
   };
@@ -46,7 +46,7 @@ test('merch preview opens by keyboard, traps focus and closes with Escape restor
   assert.equal(prevented, true);
   assert.equal(classes.has('show'), true);
   assert.equal(attributes['aria-hidden'], 'false');
-  assert.equal(image.src, '/merch/example.jpeg');
+  assert.equal(image.src, '/pikk-app/merch/example.jpeg');
   assert.equal(image.alt, 'Original product');
   assert.equal(focused, 'close');
 
