@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, existsSync } from 'node:fs';
 import { MERCH, TABBAR, DRAWER_GROUPS, HOME_SECTIONS } from '../src/data.js';
-import { filterPikkShopProducts, renderPikkShop } from '../src/pages/pikk-shop.js';
+import { filterPikkShopProducts, sortPikkShopProducts, renderPikkShop } from '../src/pages/pikk-shop.js';
 
 const main = readFileSync(new URL('../src/main.js', import.meta.url), 'utf8');
 const profile = readFileSync(new URL('../src/pages/profile.js', import.meta.url), 'utf8');
@@ -54,4 +54,21 @@ test('shop exposes a real clear-filters control without changing the original me
   assert.equal((html.match(/class="merch-card pikk-shop-product"/g) || []).length, MERCH.length);
   assert.ok(html.includes('id="pikkShopSearch"'));
   assert.ok(html.includes('id="pikkShopCount" aria-live="polite"'));
+});
+
+test('Shop sorts genuine products by price or name without mutating the approved catalog', () => {
+  const original = MERCH.map((item) => item.id);
+  const low = sortPikkShopProducts(MERCH, 'price-asc');
+  const high = sortPikkShopProducts(MERCH, 'price-desc');
+  const names = sortPikkShopProducts(MERCH, 'name-asc');
+  assert.deepEqual(low.map((item) => item.price), [...low.map((item) => item.price)].sort((a, b) => a - b));
+  assert.deepEqual(high.map((item) => item.price), [...high.map((item) => item.price)].sort((a, b) => b - a));
+  assert.deepEqual(names.map((item) => item.name), [...names.map((item) => item.name)].sort((a, b) => a.localeCompare(b)));
+  assert.deepEqual(sortPikkShopProducts(MERCH).map((item) => item.id), original);
+  assert.deepEqual(MERCH.map((item) => item.id), original);
+  const html = renderPikkShop();
+  assert.match(html, /id="pikkShopSort"/);
+  assert.match(html, /Price: low to high/);
+  assert.match(html, /Price: high to low/);
+  assert.match(html, /Name: A to Z/);
 });
