@@ -1,4 +1,5 @@
 import './styles.css';
+import './skip-content.css';
 import './featured-promos.css';
 import './viral-live.css';
 import './earnings-premium.css';
@@ -453,6 +454,10 @@ function wireMessagesUnreadBadge() {
 }
 
 function boot() {
+  // Do not use a #app anchor: PIKK uses the URL hash for routing.
+  document.getElementById('pikkSkipContent')?.addEventListener('click', () => {
+    document.getElementById('app')?.focus();
+  });
   ensureDemoPosts();
   rewriteAssetUrls(document);
   buildTabbar();
