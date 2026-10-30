@@ -24,3 +24,11 @@ test('profile remains accessible on mobile, preserves seven tabs and player',()=
   assert.match(html,/pikk-official-approved\.jpg/);
   assert.match(html,/dbs-sticky-player/);
 });
+
+test('Public view shows the signed-in owner their read-only profile, not the edit screen', () => {
+  assert.match(profile, /route\?\.query\?\.view === 'public'/);
+  assert.match(profile, /if \(viewingOther \|\| isOwnPreview\)/);
+  assert.match(profile, /\?view=public">Public view<\/a>/);
+  assert.match(profile, /isOwnPreview\s*\? `<a class="btn primary" href="#\/profile">Edit profile<\/a>`/);
+  assert.match(profile, /user && !isOwnPreview &&/);
+});
