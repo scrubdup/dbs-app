@@ -1,5 +1,6 @@
 import './styles.css';
 import './skip-content.css';
+import './page-announcement.css';
 import './featured-promos.css';
 import './viral-live.css';
 import './earnings-premium.css';
@@ -32,6 +33,7 @@ import { startRouter, onRoute, getRoute } from './router.js';
 import { ICONS, esc } from './ui.js';
 import { asset, rewriteAssetUrls } from './asset.js';
 import { markActiveTab } from './tabbar-state.js';
+import { updateRouteIdentity } from './page-announcement.js';
 import { toggleMusicMenu, closeMusicMenu } from './music-menu.js';
 
 import { renderHome, bindHome } from './pages/home.js';
@@ -367,6 +369,7 @@ function render(route) {
   rewriteAssetUrls(app);
   entry?.bind?.(app);
   updateChrome(route);
+  updateRouteIdentity(route, app, document.getElementById('pikkRouteAnnouncer'));
   onRouteForPlayer(route.path);
   window.scrollTo(0, 0);
   // Vault deep-link
