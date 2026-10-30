@@ -23,6 +23,7 @@ test('inbox has functional search, quick chat, group and empty search results', 
   assert.match(messages, /data-unread/);
   assert.match(messages, /row\.dataset\.unread === 'true'/);
   assert.match(messages, /No unread conversations/);
+  assert.match(css, /\.pikk-msg-tools input\[type="checkbox"\]/);
   assert.match(css, /\.msg-inbox \.msg-thread-row\[hidden\]\{display:none!important\}/);
   assert.match(css, /\.pikk-msg-no-results\[hidden\]\{display:none!important\}/);
 });
