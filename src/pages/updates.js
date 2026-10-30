@@ -8,11 +8,11 @@ import { freshPikkUrl } from '../refresh-url.js';
 export const PIKK_BUILD_SHA = import.meta.env.VITE_BUILD_SHA || '';
 // Curated, merged UI releases only. Keep this list factual; planned backend features are not shipped.
 export const RECENT_RELEASES = Object.freeze([
-  { title: 'Profile: True Public View', detail: 'Public view now shows your actual read-only profile instead of reopening the edit screen. Your original posts and Edit profile shortcut remain available.', route: '#/profile', pr: 163, kind: 'PROFILE · TEST MODE' },
-  { title: 'Explore: Correct Creator Links', detail: 'People search results open the matched creator’s profile instead of redirecting to your own.', route: '#/explore', pr: 162, kind: 'NAVIGATION · TEST MODE' },
-  { title: 'Merch: Full-Size Photo Preview', detail: 'Open original product images full size with a visible Close control, Escape key, keyboard focus containment and focus return.', route: '#/merch', pr: 161, kind: 'ACCESSIBILITY · PREVIEW' },
-  { title: 'Messages: Clear Filters', detail: 'Clear search and Unread only together to restore the full browser-local inbox and return focus to search.', route: '#/messages', pr: 160, kind: 'MESSAGES · TEST MODE' },
-  { title: 'Shop: Reset Sort and Filters', detail: 'Reset view now restores Featured order along with search and category filters, keeping the original merchandise catalog.', route: '#/shop', pr: 159, kind: 'SHOP · TEST MODE' },
+  { title: 'Shield: Find Saved Rights Drafts', detail: 'Search saved browser-local declarations by song or artist, see matching counts and a no-results message. No upload scanning or enforcement is active.', route: '#/shield', pr: 177, kind: 'SHIELD · LOCAL PREVIEW' },
+  { title: 'Videos: Keyboard Category Navigation', detail: 'Use Left/Right arrows to move between video categories and Home/End to jump to the first or last. Existing filters and video content remain intact.', route: '#/videos', pr: 176, kind: 'VIDEOS · ACCESSIBILITY' },
+  { title: 'Shield: Clear Unsaved Form', detail: 'Reset unsubmitted ownership fields without removing any saved rights drafts. Declarations stay on this device and are not submitted to PIKK.', route: '#/shield', pr: 175, kind: 'SHIELD · LOCAL PREVIEW' },
+  { title: 'Videos: Better Coming Soon Filters', detail: 'Selecting a video category also filters upcoming titles. An empty-results message explains when no published videos match; All restores the full view.', route: '#/videos', pr: 174, kind: 'VIDEOS · TEST MODE' },
+  { title: 'Shield: Review Before Deleting', detail: 'Expand saved local drafts to inspect contact, source link and rights notes before choosing whether to delete. This is not copyright registration.', route: '#/shield', pr: 173, kind: 'SHIELD · LOCAL PREVIEW' },
 ]);
 
 export function renderUpdates() {
