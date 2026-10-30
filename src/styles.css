@@ -955,6 +955,15 @@ a.text-link:hover { color: #7aa0ff; }
   object-fit: contain; border-radius: 12px;
   box-shadow: 0 20px 60px #000;
 }
+.lightbox .merch-lightbox-close {
+  position: absolute; top: max(18px, env(safe-area-inset-top)); right: max(18px, env(safe-area-inset-right));
+  width: 44px; height: 44px; border-radius: 50%;
+  border: 1px solid rgba(255,255,255,.5); background: #1c1c28; color: #fff;
+  font-size: 28px; line-height: 1; cursor: pointer;
+}
+.lightbox .merch-lightbox-close:focus-visible {
+  outline: 3px solid #78b8ff; outline-offset: 3px;
+}
 
 /* Music & Vault (§8) */
 .vault-panel {
