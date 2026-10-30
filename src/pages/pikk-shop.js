@@ -22,6 +22,14 @@ export function filterPikkShopProducts(products, category = 'All', query = '') {
   );
 }
 
+export function sortPikkShopProducts(products, order = 'featured') {
+  const sorted = [...products];
+  if (order === 'price-asc') return sorted.sort((a, b) => Number(a.price) - Number(b.price));
+  if (order === 'price-desc') return sorted.sort((a, b) => Number(b.price) - Number(a.price));
+  if (order === 'name-asc') return sorted.sort((a, b) => String(a.name).localeCompare(String(b.name)));
+  return sorted;
+}
+
 function merchCard(item) {
   return `
     <article class="merch-card pikk-shop-product" data-product-id="${esc(item.id)}">
@@ -84,6 +92,15 @@ export function renderPikkShop() {
         ${chips}
         <button type="button" class="btn ghost" id="pikkShopReset" style="display:none" hidden>Clear filters</button>
       </div>
+      <div class="pikk-shop-sort-row" style="display:flex;justify-content:flex-end;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px">
+        <label for="pikkShopSort">Sort by</label>
+        <select id="pikkShopSort" style="width:auto;min-width:190px;max-width:100%">
+          <option value="featured">Featured order</option>
+          <option value="price-asc">Price: low to high</option>
+          <option value="price-desc">Price: high to low</option>
+          <option value="name-asc">Name: A to Z</option>
+        </select>
+      </div>
       <p class="muted small" id="pikkShopCount" aria-live="polite">${MERCH.length} items</p>
       <div class="merch-grid pikk-shop-premium-grid pikk-shop-real-grid" id="pikkShopProducts">${MERCH.map(merchCard).join('')}</div>
       <p class="muted" id="pikkShopEmpty" hidden>No matching merchandise. Try another search or category.</p>
@@ -119,9 +136,16 @@ export function bindPikkShop(root) {
   const count = root.querySelector('#pikkShopCount');
   const empty = root.querySelector('#pikkShopEmpty');
   const reset = root.querySelector('#pikkShopReset');
+  const sort = root.querySelector('#pikkShopSort');
+  const productGrid = root.querySelector('#pikkShopProducts');
+  const cardsById = new Map(cards.map((card) => [card.dataset.productId, card]));
   let category = 'All';
   function applyFilters() {
     const ids = new Set(filterPikkShopProducts(MERCH, category, search?.value || '').map((item) => item.id));
+    for (const item of sortPikkShopProducts(MERCH, sort?.value || 'featured')) {
+      const card = cardsById.get(item.id);
+      if (card) productGrid?.appendChild(card);
+    }
     for (const card of cards) {
       const show = ids.has(card.dataset.productId);
       card.hidden = !show;
@@ -145,6 +169,7 @@ export function bindPikkShop(root) {
     }
   }
   search?.addEventListener('input', applyFilters);
+  sort?.addEventListener('change', applyFilters);
   reset?.addEventListener('click', () => {
     category = 'All';
     if (search) search.value = '';
