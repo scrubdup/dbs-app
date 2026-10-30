@@ -62,8 +62,12 @@ export function renderNotifications() {
         </section>
       </div>
       <div class="pikk-notif-tools">
-        <span>Changed your mind? Restore the original settings on this device.</span>
-        <button class="btn ghost" type="button" id="pikkNotifReset">Restore defaults</button>
+        <span>Pause or resume music, live and message preferences without changing Quiet hours. Settings stay on this device.</span>
+        <div class="pikk-notif-tool-actions">
+          <button class="btn ghost" type="button" id="pikkNotifPause">Pause alerts</button>
+          <button class="btn ghost" type="button" id="pikkNotifResume">Resume alerts</button>
+          <button class="btn ghost" type="button" id="pikkNotifReset">Restore defaults</button>
+        </div>
       </div>
       <p class="pikk-notif-save-status" id="pikkNotifStatus" role="status" aria-live="polite">Preferences are saved locally. Real push delivery is not connected in this demo.</p>
       <section class="pikk-notif-roadmap" aria-label="Upcoming live subscriber alerts">
@@ -76,6 +80,25 @@ export function renderNotifications() {
 export function bindNotifications(root) {
   const panel = root.querySelector('#notifPrefs');
   if (!panel) return;
+  // These controls only update local demo preferences, never real push delivery.
+  const setAlertPreferences = (enabled) => {
+    const alertKeys = ['releases', 'lives', 'messages'];
+    setNotifPrefs(Object.fromEntries(alertKeys.map(key => [key, enabled])));
+    panel.querySelectorAll('input[data-k]').forEach(input => {
+      if (alertKeys.includes(input.dataset.k)) input.checked = enabled;
+    });
+    const current = getState().notifications || {};
+    const count = PREFERENCES.filter(item => !!current[item.key]).length;
+    const summary = panel.querySelector('#pikkNotifEnabled');
+    if (summary) summary.textContent = `${count} of 4`;
+    const status = panel.querySelector('#pikkNotifStatus');
+    if (status) status.textContent = enabled
+      ? 'Music, live and message preferences resumed on this device. Real push delivery is not connected.'
+      : 'Music, live and message preferences paused on this device. Real push delivery is not connected.';
+    toast(enabled ? 'Alerts resumed' : 'Alerts paused');
+  };
+  panel.querySelector('#pikkNotifPause')?.addEventListener('click', () => setAlertPreferences(false));
+  panel.querySelector('#pikkNotifResume')?.addEventListener('click', () => setAlertPreferences(true));
   panel.querySelector('#pikkNotifReset')?.addEventListener('click', () => {
     setNotifPrefs(DEFAULT_PREFERENCES);
     panel.querySelectorAll('input[data-k]').forEach(input => {
