@@ -63,6 +63,28 @@ try {
         assert.equal(await page.locator('#pikk-notif-' + key).isChecked(), expected, key + ' reset');
       }
       await verify('reset');
+      // Pause/resume only the three alert preferences, preserving Quiet hours.
+      await page.locator('#pikk-notif-quietHours').check();
+      await page.locator('#pikkNotifPause').click();
+      assert.equal(await page.locator('#pikkNotifEnabled').textContent(), '1 of 4');
+      assert.equal(await page.locator('#pikk-notif-quietHours').isChecked(), true);
+      for (const key of ['releases', 'lives', 'messages']) {
+        assert.equal(await page.locator('#pikk-notif-' + key).isChecked(), false, key + ' paused');
+      }
+      assert.match(await page.locator('#pikkNotifStatus').textContent(), /paused on this device/);
+      await verify('paused');
+      await page.reload({ waitUntil: 'domcontentloaded' });
+      await page.locator('.pikk-notif-hero').waitFor({ state: 'visible', timeout: 10000 });
+      assert.equal(await page.locator('#pikkNotifEnabled').textContent(), '1 of 4', 'paused settings persist');
+      assert.equal(await page.locator('#pikk-notif-quietHours').isChecked(), true);
+      await page.locator('#pikkNotifResume').click();
+      assert.equal(await page.locator('#pikkNotifEnabled').textContent(), '4 of 4');
+      for (const key of ['releases', 'lives', 'messages', 'quietHours']) {
+        assert.equal(await page.locator('#pikk-notif-' + key).isChecked(), true, key + ' after resume');
+      }
+      assert.match(await page.locator('#pikkNotifStatus').textContent(), /resumed on this device/);
+      await verify('resumed');
+      await page.locator('#pikkNotifReset').click();
       await page.reload({ waitUntil: 'domcontentloaded' });
       await page.locator('.pikk-notif-hero').waitFor({ state: 'visible', timeout: 10000 });
       assert.equal(await page.locator('#pikk-notif-lives').isChecked(), true, 'reset persisted after reload');
