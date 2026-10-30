@@ -122,6 +122,7 @@ try {
     await shieldLink.click();
     await page.waitForFunction(() => location.hash === '#/shield');
     assert.equal(await page.locator('#pikkCreateMenu').isHidden(), true);
+    await page.locator('.shield-hero').waitFor({ state: 'visible', timeout: 10000 });
     assert.equal(await page.locator('.shield-hero').isVisible(), true);
     assert.match(await page.locator('.shield-notice').innerText(), /No upload scanning, automated fingerprinting/i);
     assert.equal(await page.locator('#dbs-sticky-player').isVisible(), true);
