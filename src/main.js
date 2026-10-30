@@ -34,6 +34,7 @@ import { ICONS, esc } from './ui.js';
 import { asset, rewriteAssetUrls } from './asset.js';
 import { markActiveTab } from './tabbar-state.js';
 import { updateRouteIdentity } from './page-announcement.js';
+import { applyDrawerState } from './drawer-state.js';
 import { toggleMusicMenu, closeMusicMenu } from './music-menu.js';
 
 import { renderHome, bindHome } from './pages/home.js';
@@ -298,10 +299,12 @@ function buildDrawer() {
   el.innerHTML = `<h2>PIKK Network</h2>${groupsHtml}<a class="drawer-direct" href="#/updates">What's New · App Updates</a>`;
 }
 
-function setDrawer(open) {
-  document.getElementById('sideNav').classList.toggle('open', open);
-  document.getElementById('sideNav').setAttribute('aria-hidden', open ? 'false' : 'true');
-  document.getElementById('scrim').classList.toggle('show', open);
+function setDrawer(open, restoreFocus = false) {
+  applyDrawerState({
+    drawer: document.getElementById('sideNav'),
+    scrim: document.getElementById('scrim'),
+    trigger: document.getElementById('menuBtn'),
+  }, open, restoreFocus);
 }
 
 function updateChrome(route) {
@@ -362,6 +365,8 @@ function refreshHeaderMsgBadge() {
 }
 
 function render(route) {
+  // Route changes always dismiss the drawer without stealing focus from navigation.
+  setDrawer(false);
   const app = document.getElementById('app');
   const entry = ROUTES[route.path];
   const html = entry ? entry.render(route) : renderNotFound(route.path);
@@ -470,7 +475,12 @@ function boot() {
   wireMessagesUnreadBadge();
 
   document.getElementById('menuBtn').addEventListener('click', () => setDrawer(true));
-  document.getElementById('scrim').addEventListener('click', () => setDrawer(false));
+  document.getElementById('scrim').addEventListener('click', () => setDrawer(false, true));
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape' || !document.getElementById('sideNav')?.classList.contains('open')) return;
+    event.preventDefault();
+    setDrawer(false, true);
+  });
   document.getElementById('sideNav').addEventListener('click', (e) => {
     const cat = e.target.closest('.drawer-cat');
     if (cat) {
