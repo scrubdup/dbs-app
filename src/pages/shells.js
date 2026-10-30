@@ -79,7 +79,7 @@ export function renderVideos() {
   const coming = Object.entries(byCat)
     .map(
       ([cat, items]) => `
-      <div class="card">
+      <div class="card pikk-video-coming-card" data-video-coming-category="${esc(cat)}">
         <h3>${esc(cat)}</h3>
         <p class="muted" style="margin:0 0 8px">No verified URLs in repo yet — titles from plan §9 only. No invented view counts.</p>
         <ul class="list-plain">${items
@@ -111,6 +111,7 @@ export function renderVideos() {
       <button type="button" data-videos-filter="Interviews" aria-pressed="false">Interviews</button>
       ${adminVids.length ? '<button type="button" data-videos-filter="Admin" aria-pressed="false">Admin</button>' : ''}
     </nav>
+    <p class="card pikk-video-source-info pikk-video-filter-status muted" role="status" aria-live="polite" data-video-filter-status>Showing all video categories and upcoming titles.</p>
     <div class="card pikk-video-source-info"><p class="muted" style="margin:0">Official DatBoiSkeet music videos, mixes, and interviews — YouTube embeds from the original source. No rehosted files.</p>
       <div class="row wrap" style="margin-top:8px;gap:8px">
         <a class="btn" href="https://www.youtube.com/channel/UCA2GGwQ-cOUW0ZqmWaGzEBA" target="_blank" rel="noopener">Official YouTube channel</a>
@@ -120,7 +121,10 @@ export function renderVideos() {
     </div>
     ${sections}${extra}
     ${adminHtml ? `<section class="pikk-video-section" data-video-category="Admin"><h3>From Admin</h3><div class="pikk-video-grid">${adminHtml}</div></section>` : ''}
-    ${coming}`,
+    <section class="pikk-video-section pikk-video-coming-list" aria-label="Upcoming videos">
+      <h3>Upcoming on PIKK</h3>
+      ${coming}
+    </section>`,
     { lead: 'Official MVs · Mixes · Interviews · admin uploads.' }
   );
 }
@@ -129,6 +133,9 @@ export function bindVideos(root) {
   // Filter only video sections; preserve embedded playback and uploaded content.
   const filterButtons = [...root.querySelectorAll('[data-videos-filter]')];
   const videoSections = [...root.querySelectorAll('.pikk-video-section[data-video-category]')];
+  const comingCards = [...root.querySelectorAll('[data-video-coming-category]')];
+  const comingList = root.querySelector('.pikk-video-coming-list');
+  const filterStatus = root.querySelector('[data-video-filter-status]');
   filterButtons.forEach((button) => button.addEventListener('click', () => {
     const category = button.dataset.videosFilter || 'All';
     filterButtons.forEach((candidate) => {
@@ -140,6 +147,21 @@ export function bindVideos(root) {
       const visible = category === 'All' || section.dataset.videoCategory === category;
       section.hidden = !visible;
     });
+    comingCards.forEach((card) => {
+      card.hidden = category !== 'All' && card.dataset.videoComingCategory !== category;
+    });
+    const upcomingVisible = comingCards.some(card => !card.hidden);
+    if (comingList) comingList.hidden = !upcomingVisible;
+    if (filterStatus) {
+      const publishedVisible = videoSections.some(section => !section.hidden);
+      filterStatus.textContent = category === 'All'
+        ? 'Showing all video categories and upcoming titles.'
+        : publishedVisible
+          ? `Showing ${category}${upcomingVisible ? ' and upcoming titles' : ''}.`
+          : upcomingVisible
+            ? `No published ${category} videos yet. Upcoming titles are listed below.`
+            : `No published ${category} videos yet.`;
+    }
   }));
   // §17: real YT play via IFrame API (Media Links binder) — not cross-origin pointerdown
   bindPageYoutubeEmbeds(root);
