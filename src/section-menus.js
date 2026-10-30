@@ -1,3 +1,4 @@
+import { PIKK_GAMES } from './games/arcade-catalog.js';
 import { ICONS } from './ui.js';
 
 // PIKK approved category menus: route only to existing sections.
@@ -25,21 +26,14 @@ export const SECTION_MENU_ITEMS = Object.freeze({
   ],
   games: [
     { title: 'PIKK Arcade', href: '#/games', detail: 'View the full game collection · preview', icon: '♜' },
-    { title: 'PIKK Speed', detail: 'Card game · planned', icon: '♠' },
-    { title: 'PIKK Blackjack', detail: 'Card game · planned', icon: '♠' },
-    { title: 'PIKK Slots', detail: 'Play-chip game · planned', icon: '♜' },
-    { title: 'PIKK Poker', detail: 'Play-chip card game · planned', icon: '♠' },
-    { title: 'PIKK Spades', detail: 'Card game · planned', icon: '♠' },
-    { title: 'PIKK Dominoes', detail: 'Table game · planned', icon: '♜' },
-    { title: 'PIKK Chess', detail: 'Strategy game · planned', icon: '♜' },
-    { title: 'PIKK Clash', detail: 'Neighborhood puzzle · planned', icon: '♜' },
-    { title: 'PIKK Knockout', detail: 'Physics challenge · planned', icon: '♜' },
-    { title: 'PIKK Playground', detail: 'Social mini-games · planned', icon: '♜' },
-    { title: 'PIKK Bowling', detail: 'Bowling · planned', icon: '♜' },
-    { title: 'PIKK Pickleball', detail: 'Pickleball · planned', icon: '♜' },
-    { title: 'PIKK Pool', detail: 'Pool · planned', icon: '♜' },
-    { title: 'PIKK Cup Pong', detail: 'Cup pong · planned', icon: '♜' },
-    { title: 'Block Wars', href: '#/blockwars', detail: 'Fighting game · development preview', icon: '▣' },
+    // Keep the fifteen game tiles in the owner's approved Arcade artwork order.
+    // The Arcade catalog is the single source of truth for names, order and preview routes.
+    ...PIKK_GAMES.map(game => ({
+      title: game.name,
+      ...(game.href ? { href: game.href } : {}),
+      detail: game.href ? 'Fighting game · development preview' : game.description + ' · planned',
+      icon: game.name === 'Block Wars' ? '▣' : '♜',
+    })),
   ],
   shop: [
     { title: 'PIKK Shop', href: '#/shop', detail: 'Browse available products', icon: '▤' },
