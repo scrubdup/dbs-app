@@ -76,7 +76,7 @@ export function renderPikkShop() {
       <button type="button" class="pikk-shop-category" data-category="Hats" aria-pressed="false">Hats</button>
       <a href="#/profile-shop">Accessories · Preview</a>
     </nav>
-    <section class="card pikk-shop-catalog" id="pikkShopCatalog" aria-label="Browse merchandise">
+    <section class="card pikk-shop-catalog" id="pikkShopCatalog" aria-label="Browse merchandise" style="scroll-margin-top:190px">
       <div class="pikk-shop-catalog-heading"><div><p class="kicker">THE COLLECTION</p><h3>Popular items</h3></div><span class="chip">Authentic Foreign X-Change</span></div>
       <label for="pikkShopSearch">Search merchandise</label>
       <input id="pikkShopSearch" type="search" placeholder="Search hats, shirts, jackets…" autocomplete="off" />
