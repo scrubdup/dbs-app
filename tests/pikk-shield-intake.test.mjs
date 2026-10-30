@@ -36,3 +36,16 @@ test('Shield page is routed, reachable from music and clear about prototype limi
   assert.ok(music.includes('href="#/shield"'));
   for(const token of ['TEST MODE','No upload scanning','not sent to PIKK','Audio fingerprinting','Dispute and appeals','External platform notices','shieldForm','shieldCertify'])assert.ok(page.includes(token),token);
 });
+
+test('Saved Shield drafts reveal existing details without exposing unsafe local links',()=>{
+  assert.ok(page.includes('<details class="shield-draft-details">'));
+  assert.ok(page.includes('Review saved draft details'));
+  assert.ok(page.includes('esc(e.contact ||'));
+  assert.ok(page.includes('esc(e.notes)'));
+  assert.ok(page.includes('safeShieldUrl(e.source)'), 'revalidate even tampered localStorage links');
+  assert.ok(page.includes('href="${esc(source)}"'));
+  assert.ok(page.includes('rel="noopener noreferrer"'));
+  assert.ok(page.includes('Not submitted to PIKK'));
+  assert.equal(safeShieldUrl('javascript:alert(1)'), '');
+  assert.equal(safeShieldUrl('https://example.com/track'), 'https://example.com/track');
+});

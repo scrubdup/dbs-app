@@ -1,14 +1,25 @@
 import {esc, shellPage, toast} from '../ui.js';
-import {normalizeShieldSubmission,readShieldIntakes,saveShieldIntake,removeShieldIntake,RIGHTS_OPTIONS} from '../pikk-shield.js';
+import {normalizeShieldSubmission,readShieldIntakes,saveShieldIntake,removeShieldIntake,RIGHTS_OPTIONS,safeShieldUrl} from '../pikk-shield.js';
 const data = () => readShieldIntakes(window.localStorage);
 export function renderShield() {
   const entries = data();
-  const history = entries.length ? entries.map(e=>`
+  const history = entries.length ? entries.map(e=>{
+    // Local storage can be edited outside the form: validate links again before rendering.
+    const source = safeShieldUrl(e.source);
+    return `
     <article class="card shield-entry" data-shield-id="${esc(e.id)}">
       <div class="row wrap"><strong>${esc(e.title)}</strong><span class="chip">${esc(e.status)}</span></div>
       <p class="muted">${esc(e.owner)} · ${esc(e.rights)}</p>
+      <details class="shield-draft-details">
+        <summary>Review saved draft details</summary>
+        <p class="muted"><strong>Contact:</strong> ${esc(e.contact || 'Not provided')}</p>
+        ${source ? `<p class="muted"><strong>Source:</strong> <a href="${esc(source)}" target="_blank" rel="noopener noreferrer">Open official source</a></p>` : ''}
+        ${e.notes ? `<p class="muted"><strong>Rights details:</strong> ${esc(e.notes)}</p>` : ''}
+        <p class="muted">Saved on this device only · Not submitted to PIKK</p>
+      </details>
       <div class="row wrap"><small>${new Date(e.at).toLocaleDateString()}</small><button type="button" class="btn ghost shield-delete" data-id="${esc(e.id)}">Delete local draft</button></div>
-    </article>`).join('') : '<p class="muted">No rights declarations saved on this device.</p>';
+    </article>`;
+  }).join('') : '<p class="muted">No rights declarations saved on this device.</p>';
   return shellPage('PIKK Shield', `
     <div class="shield-studio">
       <header class="shield-hero">
