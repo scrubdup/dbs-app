@@ -24,6 +24,7 @@ try{
    assert.deepEqual(errors,[],'JS errors');
    const bounds=await page.evaluate(()=>({document:document.documentElement.scrollWidth,viewport:innerWidth}));
    assert.ok(bounds.document<=bounds.viewport+3,'horizontal overflow '+JSON.stringify(bounds));
+   await page.evaluate(()=>{document.activeElement?.blur();window.scrollTo({top:0,behavior:'instant'});});
    await page.screenshot({path:'visual-review/shield-'+label+'-'+stage+'.png',fullPage:true,animations:'disabled'});
   };
   await check('empty');
