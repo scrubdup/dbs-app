@@ -4923,3 +4923,9 @@ html body #tabbar.tabbar.tabbar-reshaped.tabbar-fit7 > a.tab-primary > span:last
 .live-goal-message-field{min-width:0;max-width:100%}
 .live-goal-message-field input{width:100%;min-width:0;max-width:100%}
 @media(max-width:720px){#liveDailyGoal{width:calc(100vw - 32px);max-width:calc(100vw - 32px);min-width:0;overflow:hidden}#liveDailyGoal .live-goal-custom-form{min-width:0}#liveDailyGoal .live-goal-custom-form label{min-width:0;flex:1 1 140px}#liveDailyGoal .live-goal-custom-form input{min-width:0;max-width:100%}}
+
+/* Respect reduced-motion preferences for the navigation drawer as well as its scrim.
+   This also prevents a closing drawer from obscuring a newly rendered Live goal. */
+@media (prefers-reduced-motion: reduce) {
+  .side, .scrim { transition: none; }
+}
