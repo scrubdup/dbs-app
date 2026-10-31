@@ -73,6 +73,9 @@ try {
     await page.locator('#liveGoalSupportMessage').fill('Thank you for the music!');
     assert.equal(await page.locator('#sideNav').getAttribute('aria-hidden'), 'true', device+' drawer must be hidden on Live route');
     assert.equal(await page.locator('#menuBtn').getAttribute('aria-expanded'), 'false', device+' drawer trigger must be collapsed');
+    const hiddenDrawer = await page.locator('#sideNav').evaluate(el => el.getBoundingClientRect().left);
+    assert.ok(hiddenDrawer >= width - 1, device+' closed drawer must be off-screen, not covering goal: '+hiddenDrawer);
+    assert.equal(await page.locator('#scrim').evaluate(el => getComputedStyle(el).pointerEvents), 'none', device+' scrim must not intercept donations');
     await page.locator('#liveDailyGoal').scrollIntoViewIfNeeded();
     const goalGeometry = await page.locator('#liveDailyGoal').evaluate(el => {
       const rect = el.getBoundingClientRect();
