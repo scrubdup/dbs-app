@@ -47,6 +47,23 @@ try {
       assert.match(await page.locator('#explorePanel').innerText(), /Trending Across PIKK/);
       await capture('trending');
 
+      // Keyboard-only navigation must switch sections and restore focus after rerender.
+      assert.equal(await page.locator('[role="tablist"][aria-label="Explore sections"] [role="tab"]').count(), 3);
+      await page.locator('[data-explore-tab="trending"]').focus();
+      await page.keyboard.press('ArrowRight');
+      assert.equal(await page.locator('[data-explore-tab="following"]').getAttribute('aria-selected'), 'true');
+      assert.equal(await page.locator('[data-explore-tab="following"]').evaluate(el => el === document.activeElement), true);
+      await page.keyboard.press('End');
+      assert.equal(await page.locator('[data-explore-tab="discover"]').getAttribute('aria-selected'), 'true');
+      assert.match(await page.locator('#explorePanel').innerText(), /Suggested accounts/);
+      await page.keyboard.press('Home');
+      assert.equal(await page.locator('[data-explore-tab="trending"]').getAttribute('aria-selected'), 'true');
+      await page.keyboard.press('ArrowLeft');
+      assert.equal(await page.locator('[data-explore-tab="discover"]').getAttribute('aria-selected'), 'true');
+      await page.keyboard.press('Home');
+      assert.equal(await page.locator('[data-explore-tab="trending"]').evaluate(el => el === document.activeElement), true);
+      await capture('keyboard-tabs');
+
       // Search results for people must open that person's profile, not the visitor's profile.
       await page.locator('#exploreQ').fill('DatBoiSkeet');
       await page.locator('#exploreGo').click();
