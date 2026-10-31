@@ -53,7 +53,7 @@ test('Explore Following and Discover account cards link to the selected profile'
   const discover = explore.split('function discoverPanel() {')[1]?.split('export function renderExplore()')[0];
   assert.ok(following && discover, 'both account panels exist');
   for (const [name, panel] of [['Following', following], ['Discover', discover]]) {
-    assert.match(panel, /href: `#\\/profile\\/\\$\\{encodeURIComponent\\(p\\.id\\)\\}`/, name + ' must deep-link to the matched profile');
-    assert.doesNotMatch(panel, /href: '#\\/profile'/, name + ' must not send visitors to their own profile');
+    assert.ok(panel.includes('href: `#/profile/${encodeURIComponent(p.id)}`'), name + ' must deep-link to the matched profile');
+    assert.ok(!panel.includes("href: '#/profile'"), name + ' must not send visitors to their own profile');
   }
 });
