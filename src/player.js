@@ -564,7 +564,7 @@ function syncUi() {
     art.src = track.cover || coverFromYtId(track.youtubeId || '') || '/brand/logo-dbs-v3@2x.webp';
     art.alt = track.title || '';
   }
-  if (title) title.textContent = track?.title || 'DatBoiSkeet';
+  if (title) title.textContent = track?.title || 'PIKK Music';
   if (sub) {
     if (!userArmed) sub.textContent = 'Tap Play · YouTube embed · Stream Everywhere';
     else if (interrupted) sub.textContent = `Paused · ${[...interrupts][0]} interrupt`;
@@ -572,7 +572,7 @@ function syncUi() {
   }
   if (playBtn) {
     playBtn.textContent = playing ? '❚❚' : '▶';
-    playBtn.setAttribute('aria-label', playing ? 'Pause' : 'Play DBS Music');
+    playBtn.setAttribute('aria-label', playing ? 'Pause' : 'Play PIKK Music');
     playBtn.dataset.playing = playing ? '1' : '0';
   }
   if (openBtn && track) {
@@ -629,7 +629,7 @@ function playInternal() {
       setTimeout(() => clearInterval(wait), 8000);
     }
   } catch (_) {
-    toast('Tap Play DBS Music again if autoplay blocked');
+    toast('Tap Play PIKK Music again if autoplay blocked');
   }
   syncUi();
 }
