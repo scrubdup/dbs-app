@@ -6,7 +6,7 @@ process.env.PW_TEST_SCREENSHOT_NO_FONTS_READY = '1';
 await mkdir('visual-review', { recursive: true });
 const browser = await chromium.launch({ headless: true, args: ['--no-sandbox'] });
 try {
-  for (const [device, width, height] of [['mobile',390,844],['desktop',1440,900]]) {
+  for (const [device, width, height] of [['small-mobile',320,740],['mobile',390,844],['desktop',1440,900]]) {
     const context = await browser.newContext({ viewport: { width, height }, reducedMotion: 'reduce' });
     const page = await context.newPage();
     const errors = [];
