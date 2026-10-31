@@ -60,8 +60,8 @@ test('featured source thumbnails are derived from original YouTube video IDs, no
 
 test('Viral Live content tabs use roving keyboard focus without changing source content', () => {
   const html = renderViralLive();
-  assert.equal((html.match(/tabindex="0"/g) || []).length, 1);
-  assert.equal((html.match(/tabindex="-1"/g) || []).length, 3);
+  assert.equal((html.match(/role="tab"[^>]*tabindex="0"/g) || []).length, 1);
+  assert.equal((html.match(/role="tab"[^>]*tabindex="-1"/g) || []).length, 3);
   const source = readFileSync(new URL('../src/pages/viral-live.js', import.meta.url), 'utf8');
   for (const key of ['ArrowRight', 'ArrowLeft', 'Home', 'End']) {
     assert.ok(source.includes("'" + key + "'"), key + ' supported');
