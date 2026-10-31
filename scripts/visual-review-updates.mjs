@@ -25,6 +25,10 @@ for (const [name, width, height] of [['mobile', 390, 844], ['desktop', 1440, 900
   const expected = ['#/viral-live', '#/viral-live', '#/viral-live', '#/explore', '#/explore'];
   if (JSON.stringify(hrefs) !== JSON.stringify(expected)) throw new Error(name + ': release route links mismatch: ' + hrefs);
   const titles = await page.locator('.pikk-update-card h3').allTextContents();
+  const accessibleNames = await page.locator('.pikk-update-links a.btn').evaluateAll(nodes => nodes.map(a => a.getAttribute('aria-label')));
+  const expectedNames = titles.map(title => 'See ' + title + ' in PIKK');
+  if (JSON.stringify(accessibleNames) !== JSON.stringify(expectedNames)) throw new Error(name + ': release links need unique descriptive accessible names: ' + accessibleNames);
+  if (new Set(accessibleNames).size !== 5) throw new Error(name + ': release link names are not unique');
   if (!titles.includes('Viral Live: Source Queue Keyboard Browsing') || !titles.includes('Explore: Escape Clears Search')) throw new Error(name + ': latest verified features missing');
   const prLinks = await page.locator('.pikk-update-source').evaluateAll(nodes => nodes.map(a => a.getAttribute('href')));
   const expectedPrs = [197, 196, 195, 194, 193].map(n => 'https://github.com/scrubdup/pikk-app/pull/' + n);
