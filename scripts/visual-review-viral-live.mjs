@@ -71,6 +71,17 @@ try {
     await page.keyboard.press('End');
     assert.equal(await page.locator('[data-viral-type="photos"]').getAttribute('tabindex'), '0');
     assert.equal(await page.locator('#viral-panel-photos').isVisible(), true);
+    if (device !== 'desktop') {
+      // Photos is initially off-screen in the 320px horizontal tab strip.
+      // End must both select it and reveal its full touch target.
+      await page.waitForFunction(() => {
+        const tab = document.querySelector('[data-viral-type="photos"]');
+        const rail = tab?.closest('.pikk-viral-tabs');
+        if (!tab || !rail) return false;
+        const a = tab.getBoundingClientRect(), b = rail.getBoundingClientRect();
+        return a.left >= b.left - 2 && a.right <= b.right + 2;
+      });
+    }
     await page.keyboard.press('Home');
     assert.equal(await page.locator('[data-viral-type="videos"]').getAttribute('aria-selected'), 'true');
     assert.equal(await page.locator('#viral-panel-videos').isVisible(), true);

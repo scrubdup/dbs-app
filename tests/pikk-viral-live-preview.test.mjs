@@ -69,7 +69,9 @@ test('Viral Live content tabs use roving keyboard focus without changing source 
   assert.match(source, /event\.preventDefault\(\)/);
   assert.match(source, /item\.tabIndex = selected \? 0 : -1/);
   assert.match(source, /selectType\(typeTabs\[next\], true\)/);
-  assert.match(source, /if \(moveFocus\) button\.focus\(\)/);
+  assert.match(source, /if \(moveFocus\) \{/);
+  assert.match(source, /button\.focus\(\)/);
+  assert.match(source, /button\.scrollIntoView\(\{ block: 'nearest', inline: 'nearest' \}\)/);
 });
 
 test('original source queue supports accessible keyboard browsing and selection', () => {

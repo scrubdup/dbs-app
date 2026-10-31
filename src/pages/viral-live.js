@@ -146,7 +146,11 @@ export function bindViralLive(root) {
     page.querySelectorAll('[data-viral-panel]').forEach(panel => {
       panel.hidden = panel.dataset.viralPanel !== type;
     });
-    if (moveFocus) button.focus();
+    if (moveFocus) {
+      button.focus();
+      // On 320px screens the content tabs scroll horizontally. Keep keyboard selection visible.
+      button.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+    }
   }
   typeTabs.forEach((button, index) => {
     button.addEventListener('click', () => selectType(button));
