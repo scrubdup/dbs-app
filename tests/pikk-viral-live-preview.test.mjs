@@ -106,3 +106,22 @@ test('small-phone Viral Live categories remain a single swipeable row with visib
   assert.match(css, /\.pikk-viral-tabs button:focus-visible/);
   assert.match(css, /scroll-snap-type: x proximity/);
 });
+
+test('empty Viral Live categories link to matching existing PIKK sections', () => {
+  const html = renderViralLive();
+  const expected = [
+    ['clips', '#/shorts', 'Browse existing PIKK Clips'],
+    ['songs', '#/music', 'Explore PIKK Music'],
+    ['photos', '#/home', 'Explore PIKK Home'],
+  ];
+  for (const [type, href, label] of expected) {
+    const panel = html.match(new RegExp('<section class="pikk-viral-empty" id="viral-panel-' + type + '"[\\s\\S]*?<\\/section>'))?.[0];
+    assert.ok(panel, type + ' empty panel exists');
+    assert.ok(panel.includes('href="' + href + '"'), type + ' destination');
+    assert.ok(panel.includes(label), type + ' visible link label');
+    assert.equal((panel.match(/class="btn ghost"/g) || []).length, 1, type + ' has one fallback');
+  }
+  for (const route of ["'/shorts'", "'/music'", "'/home'"]) {
+    assert.ok(main.includes(route), route + ' is a registered PIKK route');
+  }
+});
