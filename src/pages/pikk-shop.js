@@ -169,6 +169,15 @@ export function bindPikkShop(root) {
     }
   }
   search?.addEventListener('input', applyFilters);
+  // Escape clears only the search query; keep the selected category and sort order.
+  // The catalog and live result count update without taking keyboard focus away.
+  search?.addEventListener('keydown', event => {
+    if (event.key !== 'Escape' || !search.value) return;
+    event.preventDefault();
+    event.stopPropagation();
+    search.value = '';
+    applyFilters();
+  });
   sort?.addEventListener('change', applyFilters);
   reset?.addEventListener('click', () => {
     category = 'All';
