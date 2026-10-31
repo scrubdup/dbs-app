@@ -113,6 +113,13 @@ try {
       assert.equal(await fallback.isVisible(), true, type + ' fallback visible');
       assert.equal(await fallback.getAttribute('href'), destination, type + ' link destination');
       assert.equal((await fallback.textContent()).trim(), label, type + ' descriptive link');
+      // Reset keyboard focus and scroll before full-page capture so fixed chrome is
+      // captured at its natural top-of-page position on narrow devices.
+      await page.evaluate(() => {
+        document.activeElement?.blur();
+        window.scrollTo({ top: 0, behavior: 'instant' });
+      });
+      await page.waitForTimeout(150);
       await page.screenshot({ path: 'visual-review/pikk-viral-live-' + device + '-' + type + '.png', fullPage: true });
       await fallback.click();
       await page.waitForFunction(hash => location.hash === hash, destination);
