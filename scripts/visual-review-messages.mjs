@@ -37,7 +37,15 @@ try {
     await page.locator('#pikkMsgSearch').fill('unfindable___999');
     assert.equal(await page.locator('#msgInbox [data-open-thread]:visible').count(), 0);
     assert.equal(await page.locator('#pikkMsgNoResults:visible').count(), 1);
-    await page.locator('#pikkMsgSearch').fill('');
+    // Escape clears search while retaining Unread only and keyboard focus.
+    await page.locator('#pikkMsgUnreadOnly').check();
+    await page.locator('#pikkMsgSearch').press('Escape');
+    assert.equal(await page.locator('#pikkMsgSearch').inputValue(), '');
+    assert.equal(await page.locator('#pikkMsgUnreadOnly').isChecked(), true);
+    assert.equal(await page.locator('#pikkMsgSearch').evaluate(el => el === document.activeElement), true);
+    assert.equal(await page.locator('#pikkMsgNoResults').textContent(), 'No unread conversations.');
+    await page.screenshot({ path: 'visual-review/messages-' + name + '-escape.png', fullPage: true });
+    await page.locator('#pikkMsgUnreadOnly').uncheck();
     assert.ok(await page.locator('#msgInbox [data-open-thread]:visible').count() > 0);
     // Check the page is not wider than the viewport; keyboard focus remains usable.
     const overflows = await page.evaluate(() => document.documentElement.scrollWidth > innerWidth + 2);

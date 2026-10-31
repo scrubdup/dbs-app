@@ -55,3 +55,11 @@ test('Messages clear filters resets both browser-local inbox filters and restore
   assert.match(page, /filterInbox\(\);\s*search\?\.focus\(\)/);
   assert.match(css, /#pikkMsgClearFilters\[hidden\]\{display:none!important\}/);
 });
+
+test('Escape clears only Messages inbox search and keeps the unread filter intact', () => {
+  assert.match(page, /inboxSearch\?\.addEventListener\('keydown', event => \{/);
+  assert.match(page, /event\.key !== 'Escape' \|\| !inboxSearch\.value/);
+  assert.match(page, /event\.preventDefault\(\);\s*event\.stopPropagation\(\);\s*inboxSearch\.value = '';\s*filterInbox\(\);/);
+  assert.match(page, /const unreadOnly = !!root\.querySelector\('#pikkMsgUnreadOnly'\)\?\.checked/);
+  assert.match(page, /clearFilters\.hidden = !query && !unreadOnly/);
+});

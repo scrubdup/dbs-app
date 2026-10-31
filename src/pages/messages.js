@@ -345,7 +345,17 @@ export function bindMessages(root) {
     filterInbox();
     search?.focus();
   });
-  root.querySelector('#pikkMsgSearch')?.addEventListener('input', filterInbox);
+  const inboxSearch = root.querySelector('#pikkMsgSearch');
+  inboxSearch?.addEventListener('input', filterInbox);
+  // Escape clears the search text without resetting the Unread only filter.
+  // Keep focus in the field so keyboard users can immediately search again.
+  inboxSearch?.addEventListener('keydown', event => {
+    if (event.key !== 'Escape' || !inboxSearch.value) return;
+    event.preventDefault();
+    event.stopPropagation();
+    inboxSearch.value = '';
+    filterInbox();
+  });
   root.querySelector('#pikkMsgUnreadOnly')?.addEventListener('change', filterInbox);
   root.querySelector('#msgEmptyNew')?.addEventListener('click', () => refresh('#/messages?view=new'));
   root.querySelector('#msgOpenTeam')?.addEventListener('click', () => refresh('#/messages?view=team'));
