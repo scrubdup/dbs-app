@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { renderViralLive } from '../src/pages/viral-live.js';
+import { renderViralLive, viralLiveLogoSrc } from '../src/pages/viral-live.js';
 import { VIDEOS } from '../src/data.js';
 const FEATURED = VIDEOS.filter(video => ['dirty-money', '93', 'no-love'].includes(video.id));
 
@@ -34,6 +34,12 @@ test('channel preview uses only existing official source links with no fabricate
     // Other original links are selected by bindViralLive and checked in browser CI.
     assert.ok(video.youtube.startsWith('https://www.youtube.com/watch?v='));
   }
+});
+
+test('approved PIKK hero artwork respects root and GitHub Pages project base', () => {
+  assert.equal(viralLiveLogoSrc('/'), '/brand/pikk-official-approved.jpg');
+  assert.equal(viralLiveLogoSrc('/pikk-app/'), '/pikk-app/brand/pikk-official-approved.jpg');
+  assert.equal(viralLiveLogoSrc('/pikk-app'), '/pikk-app/brand/pikk-official-approved.jpg');
 });
 
 test('featured source thumbnails are derived from original YouTube video IDs, not fabricated assets', () => {
