@@ -71,6 +71,14 @@ try {
     assert.equal(await page.locator('.pikk-shop-category[data-category="Hats"]').getAttribute('aria-pressed'), 'true');
     assert.equal(await page.locator('#pikkShopReset').isVisible(), true, 'clear filters available for category');
     await page.screenshot({ path: 'visual-review/shop-' + name + '-hats.png', fullPage: false });
+    await page.locator('#pikkShopSearch').fill('not-a-real-hat-98765');
+    assert.equal(await page.locator('#pikkShopProducts .pikk-shop-product:visible').count(), 0);
+    await page.keyboard.press('Escape');
+    assert.equal(await page.locator('#pikkShopSearch').inputValue(), '', name + ' Escape clears search');
+    assert.equal(await page.locator('.pikk-shop-category[data-category="Hats"]').getAttribute('aria-pressed'), 'true', name + ' Escape keeps category');
+    assert.equal(await page.locator('#pikkShopProducts .pikk-shop-product:visible').count(), MERCH.filter(p => p.category === 'Hats').length, name + ' Escape restores category results');
+    assert.equal(await page.locator('#pikkShopSearch').evaluate(el => document.activeElement === el), true, name + ' Escape keeps search focus');
+    await page.screenshot({ path: 'visual-review/shop-' + name + '-escape-keeps-hats.png', fullPage: false });
     await page.locator('.pikk-shop-category[data-category="All"]').click();
     await page.locator('#pikkShopSearch').fill('Buffalo');
     assert.equal(await page.locator('#pikkShopProducts .pikk-shop-product:visible').count(),

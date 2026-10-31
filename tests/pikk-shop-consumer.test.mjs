@@ -74,6 +74,14 @@ test('Shop sorts genuine products by price or name without mutating the approved
 });
 
 
+test('Shop Escape clears only the query while preserving category and sort', () => {
+  const source = readFileSync(new URL('../src/pages/pikk-shop.js', import.meta.url), 'utf8');
+  assert.match(source, /search\?\.addEventListener\('keydown', event => \{/);
+  assert.match(source, /event\.key !== 'Escape' \|\| !search\.value/);
+  assert.match(source, /search\.value = '';\s+applyFilters\(\);/);
+  assert.match(renderPikkShop(), /id="pikkShopSearch" type="search"/);
+});
+
 test('Shop reset view restores featured sorting as well as category and search', () => {
   const source = readFileSync(new URL('../src/pages/pikk-shop.js', import.meta.url), 'utf8');
   assert.match(source, /\(sort\?\.value \|\| 'featured'\) !== 'featured'/);
