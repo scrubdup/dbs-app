@@ -57,3 +57,17 @@ test('Explore Following and Discover account cards link to the selected profile'
     assert.ok(!panel.includes("href: '#/profile'"), name + ' must not send visitors to their own profile');
   }
 });
+
+test('Explore sections are a keyboard-accessible tablist with focus restored after route refresh', () => {
+  assert.match(explore, /role="tablist" aria-label="Explore sections"/);
+  assert.match(explore, /role="tab" id="explore-tab-\$\{t\.id\}"/);
+  assert.match(explore, /aria-selected="\$\{t\.id === tab\}"/);
+  assert.match(explore, /tabindex="\$\{t\.id === tab \? 0 : -1\}"/);
+  assert.match(explore, /role="tabpanel" aria-labelledby="explore-tab-\$\{tab\}"/);
+  for (const key of ['ArrowLeft', 'ArrowRight', 'Home', 'End']) {
+    assert.ok(explore.includes("'" + key + "'"), key + ' keyboard action is supported');
+  }
+  assert.match(explore, /event\.preventDefault\(\)/);
+  assert.match(explore, /activateTab\(tabs\[next\]\.dataset\.exploreTab, true\)/);
+  assert.match(explore, /document\.getElementById\('explore-tab-' \+ id\)\?\.focus\(\)/);
+});

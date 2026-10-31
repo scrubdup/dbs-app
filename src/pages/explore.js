@@ -286,7 +286,7 @@ export function renderExplore() {
   const tab = getState().exploreTab || 'trending';
   const tabBtns = TABS.map(
     (t) =>
-      `<button type="button" class="shop-chip${t.id === tab ? ' on' : ''}" data-explore-tab="${t.id}">${esc(t.label)}</button>`
+      `<button type="button" role="tab" id="explore-tab-${t.id}" aria-controls="explorePanel" aria-selected="${t.id === tab}" tabindex="${t.id === tab ? 0 : -1}" class="shop-chip${t.id === tab ? ' on' : ''}" data-explore-tab="${t.id}">${esc(t.label)}</button>`
   ).join('');
 
   let panel = '';
@@ -312,8 +312,8 @@ export function renderExplore() {
       </div>
       <p class="muted" style="margin:10px 0 0;font-size:12px">Local demo index · DEMO/TEST MODE · no backend · no exact locations</p>
     </div>
-    <div class="shop-chips" style="margin:0 0 12px" role="tablist">${tabBtns}</div>
-    <div id="explorePanel">${panel}</div>
+    <div class="shop-chips" style="margin:0 0 12px" role="tablist" aria-label="Explore sections">${tabBtns}</div>
+    <div id="explorePanel" role="tabpanel" aria-labelledby="explore-tab-${tab}">${panel}</div>
   `;
 
   return shellPage('Explore', body, {
@@ -381,10 +381,24 @@ export function bindExplore(root) {
     }
   });
 
-  root.querySelectorAll('[data-explore-tab]').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      setState({ exploreTab: btn.getAttribute('data-explore-tab') });
-      navigate('/explore');
+  // One keyboard stop for the tablist; arrow/Home/End keys activate the next section.
+  // navigate('/explore') replaces the panel, so restore focus to the new tab element.
+  const tabs = [...root.querySelectorAll('[data-explore-tab]')];
+  function activateTab(id, restoreFocus = false) {
+    setState({ exploreTab: id });
+    navigate('/explore');
+    if (restoreFocus) document.getElementById('explore-tab-' + id)?.focus();
+  }
+  tabs.forEach((btn, index) => {
+    btn.addEventListener('click', () => activateTab(btn.dataset.exploreTab));
+    btn.addEventListener('keydown', (event) => {
+      if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+      event.preventDefault();
+      const last = tabs.length - 1;
+      const next = event.key === 'Home' ? 0
+        : event.key === 'End' ? last
+        : (index + (event.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length;
+      activateTab(tabs[next].dataset.exploreTab, true);
     });
   });
 
