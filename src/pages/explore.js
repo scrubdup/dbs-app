@@ -226,7 +226,7 @@ function followingPanel() {
     .map((id) => {
       const p = getState().profiles?.[id] || { id, username: id };
       return resultRow({
-        href: '#/profile',
+        href: `#/profile/${encodeURIComponent(p.id)}`,
         title: `@${p.username || p.id}`,
         meta: (p.bio || 'Following').slice(0, 80),
         chip: 'Following',
@@ -241,7 +241,7 @@ function discoverPanel() {
   const rows = suggested
     .map((p) =>
       resultRow({
-        href: '#/profile',
+        href: `#/profile/${encodeURIComponent(p.id)}`,
         title: `@${p.username}`,
         meta: (p.bio || 'Suggested').slice(0, 80),
         chip: p.verified ? 'Verified' : 'Suggest',
