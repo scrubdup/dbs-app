@@ -1,6 +1,11 @@
 import { VIDEOS } from '../data.js';
 import { esc, shellPage } from '../ui.js';
 
+/** Keep the approved PIKK artwork visible on GitHub Pages project URLs. */
+export function viralLiveLogoSrc(base = (import.meta.env && import.meta.env.BASE_URL) || '/') {
+  return String(base).replace(/\/?$/, '/') + 'brand/pikk-official-approved.jpg';
+}
+
 /**
  * PIKK 24/7 Viral Live: rights-safe discovery PREVIEW only.
  * Source links are not a rebroadcast license. Do not autoplay, rehost, claim
@@ -45,7 +50,7 @@ export function renderViralLive() {
             <a class="btn ghost" href="#/shorts">Explore Clips</a>
           </div>
         </div>
-        <div class="pikk-viral-hero-mark" aria-hidden="true"><img class="pikk-viral-hero-logo" src="/brand/pikk-official-approved.jpg" alt="" decoding="async" loading="eager"></div>
+        <div class="pikk-viral-hero-mark" aria-hidden="true"><img class="pikk-viral-hero-logo" src="${esc(viralLiveLogoSrc())}" alt="" decoding="async" loading="eager"></div>
       </section>
 
       <div class="pikk-viral-notice" role="status">
