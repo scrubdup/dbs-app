@@ -91,7 +91,7 @@ test('original source queue supports accessible keyboard browsing and selection'
 test('all Viral Live tab panels are reachable by keyboard with visible focus', () => {
   const html = renderViralLive();
   assert.equal((html.match(/role="tabpanel" tabindex="0"/g) || []).length, 4);
-  assert.match(css, /\.pikk-viral-page \\[role="tabpanel"\\]:focus-visible/);
+  assert.match(css, /\.pikk-viral-page \[role="tabpanel"\]:focus-visible/);
 });
 
 test('content type tabs and empty states distinguish videos from uncleared clips, songs and photos', () => {
