@@ -47,3 +47,13 @@ test('Explore uses PIKK platform branding without miscrediting untagged creator 
   assert.ok(explore.includes("meta: `${c.artist || 'Creator not credited'} · picture`"));
   assert.doesNotMatch(explore, /c\.artist \|\| 'DatBoiSkeet'/);
 });
+
+test('Explore Following and Discover account cards link to the selected profile', () => {
+  const following = explore.split('function followingPanel() {')[1]?.split('function discoverPanel() {')[0];
+  const discover = explore.split('function discoverPanel() {')[1]?.split('export function renderExplore()')[0];
+  assert.ok(following && discover, 'both account panels exist');
+  for (const [name, panel] of [['Following', following], ['Discover', discover]]) {
+    assert.ok(panel.includes('href: `#/profile/${encodeURIComponent(p.id)}`'), name + ' must deep-link to the matched profile');
+    assert.ok(!panel.includes("href: '#/profile'"), name + ' must not send visitors to their own profile');
+  }
+});
