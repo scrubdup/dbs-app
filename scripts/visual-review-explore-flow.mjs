@@ -73,6 +73,8 @@ try {
       await page.locator('#exploreQ').fill('video');
       await page.locator('#exploreGo').click();
       assert.equal(await page.locator('#exploreLiveInsert').count(), 1, 'second search reuses wrapper');
+      assert.match(await page.locator('#exploreLiveInsert #exploreResults').innerText(), /Video catalog/, 'video results identify catalog rather than claiming an admin upload');
+      await capture('video-results');
       await page.locator('#exploreClear').click();
       await sleep(400);
       assert.equal(await page.locator('#exploreLiveInsert').count(), 0, 'Clear removes results after repeated searches');
