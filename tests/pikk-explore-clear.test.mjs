@@ -14,11 +14,22 @@ test('Explore search preserves a stable result container on Discover and Followi
 });
 
 test('Clear cancels pending debounced search and resets the input', () => {
-  const clearHandler = explore.split("clear?.addEventListener('click', () => {")[1]?.split("toast('Cleared')")[0];
+  const clearHandler = explore.split('function clearSearch() {')[1]?.split("toast('Cleared')")[0];
   assert.ok(clearHandler, 'Explore clear handler exists');
   assert.match(clearHandler, /clearTimeout\(debounce\)/);
   assert.match(clearHandler, /input\.value = ''/);
   assert.match(explore, /e\.key === 'Enter'/);
+  assert.match(explore, /clear\?\.addEventListener\('click', clearSearch\)/);
+});
+
+test('Escape clears stale search results, cancels debounce and retains keyboard focus', () => {
+  const keyHandler = explore.split("input?.addEventListener('keydown', (e) => {")[1]?.split("\n  });")[0];
+  assert.ok(keyHandler, 'Explore search keyboard handler exists');
+  assert.match(keyHandler, /e\.key === 'Escape' && input\.value/);
+  assert.match(keyHandler, /e\.preventDefault\(\)/);
+  assert.match(keyHandler, /clearSearch\(\)/);
+  assert.match(keyHandler, /input\.focus\(\)/);
+  assert.match(explore, /clearTimeout\(debounce\)/);
 });
 
 test('Explore retains original PIKK navigation, logo, and player', () => {

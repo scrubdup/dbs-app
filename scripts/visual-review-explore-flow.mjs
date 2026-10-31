@@ -146,6 +146,18 @@ try {
       assert.match(await page.locator('#exploreLiveInsert #exploreResults').innerText(), /Artist not credited/);
       await capture('discover-retained-search');
 
+      // Escape clears both the search field and the rendered results, not just native input text.
+      await page.locator('#exploreQ').focus();
+      await page.keyboard.press('Escape');
+      await sleep(400);
+      assert.equal(await page.locator('#exploreQ').inputValue(), '', 'Escape empties search');
+      assert.equal(await page.locator('#exploreLiveInsert').count(), 0, 'Escape removes stale Discover results');
+      assert.equal(await page.locator('#exploreQ').evaluate(el => el === document.activeElement), true, 'Escape retains input focus');
+      await capture('discover-escape-cleared');
+
+      await page.locator('#exploreQ').fill('video');
+      await page.locator('#exploreGo').click();
+      await page.locator('#exploreLiveInsert #exploreResults').waitFor({ state: 'visible' });
       await page.locator('#exploreClear').click();
       await sleep(400);
       assert.equal(await page.locator('#exploreLiveInsert').count(), 0, 'Clear removes results after repeated searches');
@@ -167,6 +179,13 @@ try {
       await page.locator('#exploreQ').fill('music');
       await page.locator('#exploreQ').press('Enter');
       await page.locator('#exploreResultsWrap #exploreResults').waitFor({ state: 'visible' });
+      await page.locator('#exploreQ').press('Escape');
+      await sleep(300);
+      assert.equal(await page.locator('#exploreQ').inputValue(), '', 'Trending Escape empties search');
+      assert.match(await page.locator('#exploreResultsWrap').innerText(), /Search creators, fans, songs/);
+      await capture('trending-escape-cleared');
+      await page.locator('#exploreQ').fill('music');
+      await page.locator('#exploreGo').click();
       await page.locator('#exploreClear').click();
       assert.match(await page.locator('#exploreResultsWrap').innerText(), /Search creators, fans, songs/);
       await capture('trending-cleared');
