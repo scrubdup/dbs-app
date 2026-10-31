@@ -40,6 +40,23 @@ try {
     assert.match(await page.locator('#pikkViralThumbnail').getAttribute('src'), /zC0BYFxs5W0\/hqdefault\.jpg$/);
     assert.equal(await page.locator('#pikkViralSource').getAttribute('href'), 'https://www.youtube.com/watch?v=zC0BYFxs5W0');
     assert.equal(await page.locator('[data-viral-pick="1"]').getAttribute('aria-pressed'), 'true');
+    // Arrow/Home/End navigation in the source queue changes the preview and focus together.
+    await page.locator('[data-viral-pick="1"]').focus();
+    await page.keyboard.press('ArrowRight');
+    assert.match(await page.locator('#pikkViralTitle').textContent(), /No Love/i);
+    assert.equal(await page.locator('[data-viral-pick="2"]').getAttribute('aria-pressed'), 'true');
+    assert.equal(await page.locator('[data-viral-pick="2"]').evaluate(el => el === document.activeElement), true);
+    await page.keyboard.press('Home');
+    assert.equal(await page.locator('[data-viral-pick="0"]').getAttribute('aria-pressed'), 'true');
+    assert.equal(await page.locator('#pikkViralSource').getAttribute('href'), 'https://www.youtube.com/watch?v=-rHDLWfiuDI');
+    await page.keyboard.press('End');
+    assert.equal(await page.locator('[data-viral-pick="2"]').getAttribute('aria-pressed'), 'true');
+    await page.keyboard.press('ArrowRight');
+    assert.equal(await page.locator('[data-viral-pick="0"]').getAttribute('aria-pressed'), 'true', 'right arrow wraps');
+    await page.keyboard.press('ArrowUp');
+    assert.equal(await page.locator('[data-viral-pick="2"]').getAttribute('aria-pressed'), 'true', 'up arrow wraps');
+    await page.keyboard.press('ArrowDown');
+    assert.equal(await page.locator('[data-viral-pick="0"]').getAttribute('aria-pressed'), 'true', 'down arrow wraps');
     await page.locator('[data-viral-type="photos"]').click();
     assert.equal(await page.locator('#viral-panel-photos').isVisible(), true);
     assert.equal(await page.locator('#viral-panel-videos').isVisible(), false);

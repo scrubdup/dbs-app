@@ -74,7 +74,7 @@ export function renderViralLive() {
           </div>
         </div>
         <div class="pikk-viral-section-head"><h3>Up next · source library</h3><span>Manual preview · ${SOURCES.length} existing music videos</span></div>
-        <div class="pikk-viral-queue" id="pikkViralQueue">${choices}</div>
+        <div class="pikk-viral-queue" id="pikkViralQueue" role="group" aria-label="Choose an original video source">${choices}</div>
       </section>
 
       ${TYPES.filter(type => type.id !== 'videos').map(type => `
@@ -115,6 +115,23 @@ export function bindViralLive(root) {
         item.classList.toggle('is-selected', selected);
         item.setAttribute('aria-pressed', String(selected));
       });
+    });
+  });
+  // The source library supports keyboard browsing without changing the licensed-content preview.
+  // Reuse each button's click handler so its aria-pressed state and source link stay in sync.
+  const sourceButtons = Array.from(page.querySelectorAll('[data-viral-pick]'));
+  sourceButtons.forEach((button, index) => {
+    button.addEventListener('keydown', event => {
+      if (!['ArrowRight', 'ArrowLeft', 'ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) return;
+      event.preventDefault();
+      const last = sourceButtons.length - 1;
+      const next = event.key === 'Home' ? 0
+        : event.key === 'End' ? last
+        : (index + (['ArrowRight', 'ArrowDown'].includes(event.key) ? 1 : -1) + sourceButtons.length) % sourceButtons.length;
+      const target = sourceButtons[next];
+      target.click();
+      target.focus();
+      target.scrollIntoView({ block: 'nearest', inline: 'nearest' });
     });
   });
   // A tablist is one keyboard stop. Arrows and Home/End switch panels and move focus.
