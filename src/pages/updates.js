@@ -8,11 +8,11 @@ import { freshPikkUrl } from '../refresh-url.js';
 export const PIKK_BUILD_SHA = import.meta.env.VITE_BUILD_SHA || '';
 // Curated, merged UI releases only. Keep this list factual; planned backend features are not shipped.
 export const RECENT_RELEASES = Object.freeze([
-  { title: 'Shield: Find Saved Rights Drafts', detail: 'Search saved browser-local declarations by song or artist, see matching counts and a no-results message. No upload scanning or enforcement is active.', route: '#/shield', pr: 177, kind: 'SHIELD · LOCAL PREVIEW' },
-  { title: 'Videos: Keyboard Category Navigation', detail: 'Use Left/Right arrows to move between video categories and Home/End to jump to the first or last. Existing filters and video content remain intact.', route: '#/videos', pr: 176, kind: 'VIDEOS · ACCESSIBILITY' },
-  { title: 'Shield: Clear Unsaved Form', detail: 'Reset unsubmitted ownership fields without removing any saved rights drafts. Declarations stay on this device and are not submitted to PIKK.', route: '#/shield', pr: 175, kind: 'SHIELD · LOCAL PREVIEW' },
-  { title: 'Videos: Better Coming Soon Filters', detail: 'Selecting a video category also filters upcoming titles. An empty-results message explains when no published videos match; All restores the full view.', route: '#/videos', pr: 174, kind: 'VIDEOS · TEST MODE' },
-  { title: 'Shield: Review Before Deleting', detail: 'Expand saved local drafts to inspect contact, source link and rights notes before choosing whether to delete. This is not copyright registration.', route: '#/shield', pr: 173, kind: 'SHIELD · LOCAL PREVIEW' },
+  { title: 'Viral Live: Keyboard Category Navigation', detail: 'Use Left/Right arrows or Home/End to switch between Videos, Viral Clips, Songs and Photos. This remains a discovery preview, not a 24/7 broadcast.', route: '#/viral-live', pr: 183, kind: 'VIRAL LIVE · PREVIEW' },
+  { title: 'Live: Donation Message Character Counter', detail: 'See a live 0/180 character count while writing an optional supporter message. Donations and messages are local demo transactions, not real payments or streamer delivery.', route: '#/live', pr: 182, kind: 'LIVE · DEMO ONLY' },
+  { title: 'Live: Personal Donation Messages', detail: 'Attach an optional personal note to a successful demo goal donation. The note stays in this browser’s transaction history; streamers do not receive it.', route: '#/live', pr: 181, kind: 'LIVE · DEMO ONLY' },
+  { title: 'Shield: Restore Local Rights Drafts', detail: 'Choose a saved JSON backup to restore eligible rights drafts with validation and duplicate protection. This is browser-local, not a copyright registration or enforcement service.', route: '#/shield', pr: 180, kind: 'SHIELD · LOCAL PREVIEW' },
+  { title: 'Shield: Download Rights Draft Backup', detail: 'Download a private JSON copy of saved browser-local rights drafts. No drafts are uploaded or submitted to a copyright registry.', route: '#/shield', pr: 179, kind: 'SHIELD · LOCAL PREVIEW' },
 ]);
 
 export function renderUpdates() {
