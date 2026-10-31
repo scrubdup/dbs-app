@@ -6,7 +6,7 @@ process.env.PW_TEST_SCREENSHOT_NO_FONTS_READY = '1';
 await mkdir('visual-review', { recursive: true });
 const browser = await chromium.launch({ headless: true, args: ['--no-sandbox'] });
 try {
-  for (const [device, width, height] of [['mobile',390,844],['desktop',1440,900]]) {
+  for (const [device, width, height] of [['small-mobile',320,740],['mobile',390,844],['desktop',1440,900]]) {
     const context = await browser.newContext({ viewport: { width, height }, reducedMotion: 'reduce' });
     const page = await context.newPage();
     const errors = [];
@@ -23,10 +23,14 @@ try {
     assert.equal(await page.locator('#pikkViralSource').getAttribute('href'), 'https://www.youtube.com/watch?v=-rHDLWfiuDI');
     assert.match(await page.locator('#pikkViralThumbnail').getAttribute('src'), /-rHDLWfiuDI\/hqdefault\.jpg$/);
     assert.equal(await page.locator('.pikk-viral-choice-thumb').count(), 3);
-    if (device === 'mobile') {
+    if (device !== 'desktop') {
       const tabs = await page.locator('[data-viral-type]').evaluateAll(items => items.map(el => ({ top: el.getBoundingClientRect().top, width: el.getBoundingClientRect().width })));
       assert.equal(tabs.length, 4, 'all content categories remain present');
-      assert.ok(tabs.every(tab => Math.abs(tab.top - tabs[0].top) <= 2), 'all four category tabs fit in one mobile row');
+      assert.ok(tabs.every(tab => Math.abs(tab.top - tabs[0].top) <= 2), 'all four category tabs remain in one mobile row');
+      if (device === 'small-mobile') {
+        const strip = await page.locator('.pikk-viral-tabs').evaluate(el => ({ scrollWidth: el.scrollWidth, clientWidth: el.clientWidth }));
+        assert.ok(strip.scrollWidth > strip.clientWidth, '320px category strip scrolls inside its container');
+      }
     }
     await page.locator('[data-viral-pick="1"]').click();
     assert.match(await page.locator('#pikkViralTitle').textContent(), /^93 ft/);
@@ -56,8 +60,11 @@ try {
     assert.equal(await page.locator('[data-viral-type="videos"]').getAttribute('tabindex'), '0');
     assert.equal(await page.locator('[data-viral-type="videos"]').evaluate(el => el === document.activeElement), true);
 
-    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - innerWidth);
-    assert.ok(overflow <= 3, device + ' horizontal overflow ' + overflow);
+    const overflowReport = await page.evaluate(() => ({
+      overflow: document.documentElement.scrollWidth - innerWidth,
+      offenders: Array.from(document.querySelectorAll('body *')).filter(el => el.getBoundingClientRect().right > innerWidth + 3 && getComputedStyle(el).position !== 'fixed').slice(0, 8).map(el => ({ tag: el.tagName, className: String(el.className).slice(0, 100), right: Math.round(el.getBoundingClientRect().right) }))
+    }));
+    assert.ok(overflowReport.overflow <= 3, device + ' horizontal overflow ' + JSON.stringify(overflowReport));
     // Interacting with Up Next scrolls to the queue; return to the top before reviewing first paint.
     await page.evaluate(() => window.scrollTo(0, 0));
     await page.waitForTimeout(250);

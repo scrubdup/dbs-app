@@ -51,8 +51,9 @@
 .pikk-viral-page [hidden] { display: none !important; }
 @media(max-width:700px) {
   .pikk-viral-hero { grid-template-columns: 1fr; min-height: 0; padding: 24px 18px; }
-  .pikk-viral-tabs { gap: 6px; }
-  .pikk-viral-tabs button { padding: 9px 11px; font-size: 12px; }
+  /* Keep every category on one swipeable row, even on 320px phones. */
+  .pikk-viral-tabs { gap: 6px; flex-wrap: nowrap; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x proximity; scroll-padding-inline: 3px; overscroll-behavior-inline: contain; scrollbar-width: thin; scrollbar-color: #7188dc transparent; }
+  .pikk-viral-tabs button { flex: 0 0 auto; min-width: 88px; min-height: 44px; scroll-snap-align: start; padding: 10px 13px; font-size: 13px; }
   .pikk-viral-hero-mark { display: grid; width: min(100%, 200px); justify-self: start; padding: 8px; border-radius: 14px; margin-top: 6px; }
   .pikk-viral-hero h2 { font-size: clamp(31px,9vw,42px); }
   .pikk-viral-notice { align-items: flex-start; flex-direction: column; gap: 5px; }

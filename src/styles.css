@@ -475,6 +475,17 @@ a.header-profile.pill .header-profile-label {
 @media (max-width: 380px) {
   .sp-play-next .sp-pn-sub { display: none; }
 }
+/* Preserve every universal music-player control without horizontal page overflow on 320px phones. */
+@media (max-width: 360px) {
+  .sp-row { gap: 4px; padding-inline: 5px; }
+  .sp-art { width: 36px; height: 36px; flex-basis: 36px; }
+  .sp-controls { gap: 2px; }
+  .sp-btn { width: 30px; height: 30px; }
+  .sp-btn.sp-play { width: 36px; height: 36px; }
+  .sp-btn.sp-open, .sp-btn.sp-queue { width: 32px; }
+  .sp-play-next { min-width: 0; max-width: 78px; padding-inline: 5px; }
+  .sp-play-next .sp-pn-label { max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
+}
 
 /* legacy mini-player removed */
 .mini-player { display: none !important; }
