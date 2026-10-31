@@ -71,6 +71,8 @@ try {
     assert.equal(await page.locator('.live-goal-custom-form').count(),1);
     assert.equal(await page.locator('#liveGoalSupportMessage').getAttribute('maxlength'),'180');
     await page.locator('#liveGoalSupportMessage').fill('Thank you for the music!');
+    assert.equal(await page.locator('#sideNav').getAttribute('aria-hidden'), 'true', device+' drawer must be hidden on Live route');
+    assert.equal(await page.locator('#menuBtn').getAttribute('aria-expanded'), 'false', device+' drawer trigger must be collapsed');
     await page.locator('#liveDailyGoal').scrollIntoViewIfNeeded();
     const goalGeometry = await page.locator('#liveDailyGoal').evaluate(el => {
       const rect = el.getBoundingClientRect();
