@@ -43,6 +43,8 @@ try {
       await page.goto(base + '#/explore', { waitUntil: 'domcontentloaded', timeout: 30000 });
       await page.locator('#exploreQ').waitFor({ state: 'visible', timeout: 20000 });
       await page.locator('#splash').waitFor({ state: 'hidden', timeout: 15000 });
+      assert.equal(await page.locator('label[for="exploreQ"]').innerText(), 'Search PIKK');
+      assert.match(await page.locator('#explorePanel').innerText(), /Trending Across PIKK/);
       await capture('trending');
 
       // Search results for people must open that person's profile, not the visitor's profile.

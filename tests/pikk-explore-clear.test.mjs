@@ -34,3 +34,14 @@ test('Explore people results link to the matched public profile, not the signed-
   assert.match(explore, /href: `#\/profile\/\$\{p\.id\}`/);
   assert.match(explore, /title: `@\$\{p\.username \|\| p\.id\}`/);
 });
+
+test('Explore uses PIKK platform branding without miscrediting untagged creator content', () => {
+  assert.match(explore, /Trending Across PIKK/);
+  assert.match(explore, /Search PIKK/);
+  assert.match(explore, /Universal search & discovery across PIKK/);
+  assert.doesNotMatch(explore, /(?:Trending Across|Search|across) DBS/);
+  assert.ok(explore.includes("meta: `${c.artist || 'Artist not credited'} · ${c.type}`"));
+  assert.ok(explore.includes("meta: `${c.artist || 'Artist not credited'} · From Admin`"));
+  assert.ok(explore.includes("meta: `${c.artist || 'Creator not credited'} · picture`"));
+  assert.doesNotMatch(explore, /c\.artist \|\| 'DatBoiSkeet'/);
+});
