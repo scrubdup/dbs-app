@@ -68,7 +68,7 @@ try {
       assert.match(await discoverArtist.innerText(), /DatBoiSkeet/);
       await capture('discover-account-link');
       await discoverArtist.click();
-      await page.waitForURL(/#\\/profile\\/dbs$/, { timeout: 10000 });
+      await page.waitForURL(url => url.hash === '#/profile/dbs', { timeout: 10000 });
       assert.match(await page.locator('.pikk-profile-cover').innerText(), /DatBoiSkeet/);
 
       // Following uses the same public route after a local demo sign-in.
@@ -82,7 +82,7 @@ try {
       await followedArtist.waitFor({ state: 'visible' });
       await capture('following-account-link');
       await followedArtist.click();
-      await page.waitForURL(/#\\/profile\\/dbs$/, { timeout: 10000 });
+      await page.waitForURL(url => url.hash === '#/profile/dbs', { timeout: 10000 });
       assert.match(await page.locator('.pikk-profile-cover').innerText(), /DatBoiSkeet/);
 
       await page.goto(base + '#/explore', { waitUntil: 'domcontentloaded' });
