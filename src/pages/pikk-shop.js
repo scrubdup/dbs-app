@@ -186,7 +186,15 @@ export function bindPikkShop(root) {
     applyFilters();
     search?.focus();
   });
-  root.querySelector('[data-shop-scroll]')?.addEventListener('click', () => root.querySelector('#pikkShopCatalog')?.scrollIntoView({ behavior: window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches ? 'instant' : 'smooth', block: 'start' }));
+  // Move keyboard focus into the collection when the hero CTA jumps there.
+  // Keep the catalog's existing reduced-motion scroll behavior.
+  root.querySelector('[data-shop-scroll]')?.addEventListener('click', () => {
+    search?.focus({ preventScroll: true });
+    root.querySelector('#pikkShopCatalog')?.scrollIntoView({
+      behavior: window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches ? 'instant' : 'smooth',
+      block: 'start',
+    });
+  });
   for (const button of buttons) {
     button.addEventListener('click', () => {
       category = button.dataset.category || 'All';
