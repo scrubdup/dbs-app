@@ -82,6 +82,14 @@ test('Shop Escape clears only the query while preserving category and sort', () 
   assert.match(renderPikkShop(), /id="pikkShopSearch" type="search"/);
 });
 
+test('Shop collection CTA moves keyboard focus into search while preserving reduced-motion scrolling', () => {
+  const source = readFileSync(new URL('../src/pages/pikk-shop.js', import.meta.url), 'utf8');
+  assert.match(renderPikkShop(), /data-shop-scroll>Shop the collection<\/button>/);
+  assert.match(source, /search\?\.focus\(\{ preventScroll: true \}\)/);
+  assert.match(source, /root\.querySelector\('#pikkShopCatalog'\)\?\.scrollIntoView/);
+  assert.match(source, /prefers-reduced-motion: reduce/);
+});
+
 test('Shop reset view restores featured sorting as well as category and search', () => {
   const source = readFileSync(new URL('../src/pages/pikk-shop.js', import.meta.url), 'utf8');
   assert.match(source, /\(sort\?\.value \|\| 'featured'\) !== 'featured'/);
