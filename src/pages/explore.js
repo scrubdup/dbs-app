@@ -95,7 +95,7 @@ function renderResults(res) {
       resultRow({
         href: '#/music',
         title: c.title,
-        meta: `${c.artist || 'DatBoiSkeet'} · ${c.type}`,
+        meta: `${c.artist || 'Artist not credited'} · ${c.type}`,
         chip: c.type === 'album' ? 'Album' : 'Song',
       })
     )
@@ -107,7 +107,7 @@ function renderResults(res) {
       resultRow({
         href: '#/videos',
         title: c.title,
-        meta: `${c.artist || 'DatBoiSkeet'} · From Admin`,
+        meta: `${c.artist || 'Artist not credited'} · From Admin`,
         chip: 'Video',
       })
     )
@@ -119,7 +119,7 @@ function renderResults(res) {
       resultRow({
         href: '#/home',
         title: c.title,
-        meta: `${c.artist || 'DatBoiSkeet'} · picture`,
+        meta: `${c.artist || 'Creator not credited'} · picture`,
         chip: 'Picture',
       })
     )
@@ -294,7 +294,7 @@ export function renderExplore() {
   else if (tab === 'discover') panel = discoverPanel();
   else
     panel = `<div class="card">
-      <h3>Trending Across DBS</h3>
+      <h3>Trending Across PIKK</h3>
       <p class="muted" style="margin:0 0 10px">High-engagement public posts and seeded demo cards (not a full engagement pipeline).</p>
       ${trendingStrip()}
     </div>
@@ -303,7 +303,7 @@ export function renderExplore() {
   const body = `
     <div class="card explore-search">
       <div class="field" style="margin-bottom:8px">
-        <label for="exploreQ">Search DBS</label>
+        <label for="exploreQ">Search PIKK</label>
         <input id="exploreQ" type="search" autocomplete="off" placeholder="Creators, fans, songs, albums, videos, posts, lives, products…" />
       </div>
       <div class="row wrap" style="gap:8px">
@@ -317,7 +317,7 @@ export function renderExplore() {
   `;
 
   return shellPage('Explore', body, {
-    lead: 'Universal search & discovery across DBS.',
+    lead: 'Universal search & discovery across PIKK.',
     badge: 'Phase 2 demo',
   });
 }
