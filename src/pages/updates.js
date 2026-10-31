@@ -25,7 +25,7 @@ export function renderUpdates() {
         <h3>${esc(release.title)}</h3>
         <p>${esc(release.detail)}</p>
         <div class="pikk-update-links">
-          <a class="btn primary" href="${esc(release.route)}">See in PIKK</a>
+          <a class="btn primary" href="${esc(release.route)}" aria-label="${esc(`See ${release.title} in PIKK`)}">See in PIKK</a>
           <a class="pikk-update-source" href="https://github.com/scrubdup/pikk-app/pull/${release.pr}" target="_blank" rel="noopener noreferrer">Code update #${release.pr}</a>
         </div>
       </div>
