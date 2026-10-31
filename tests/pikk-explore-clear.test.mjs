@@ -41,7 +41,9 @@ test('Explore uses PIKK platform branding without miscrediting untagged creator 
   assert.match(explore, /Universal search & discovery across PIKK/);
   assert.doesNotMatch(explore, /(?:Trending Across|Search|across) DBS/);
   assert.ok(explore.includes("meta: `${c.artist || 'Artist not credited'} · ${c.type}`"));
-  assert.ok(explore.includes("meta: `${c.artist || 'Artist not credited'} · From Admin`"));
+  assert.ok(explore.includes("meta: `${c.artist || 'Artist not credited'} · Video catalog`"));
+  assert.ok(explore.includes("meta: `${v.artist || 'Artist not credited'} · Official MV`"));
+  assert.doesNotMatch(explore, /From Admin|v\.artist \|\| 'DatBoiSkeet'/);
   assert.ok(explore.includes("meta: `${c.artist || 'Creator not credited'} · picture`"));
   assert.doesNotMatch(explore, /c\.artist \|\| 'DatBoiSkeet'/);
 });

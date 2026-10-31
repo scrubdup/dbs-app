@@ -107,7 +107,7 @@ function renderResults(res) {
       resultRow({
         href: '#/videos',
         title: c.title,
-        meta: `${c.artist || 'Artist not credited'} · From Admin`,
+        meta: `${c.artist || 'Artist not credited'} · Video catalog`,
         chip: 'Video',
       })
     )
@@ -177,7 +177,7 @@ function renderResults(res) {
       resultRow({
         href: '#/videos',
         title: v.title,
-        meta: `${v.artist || 'DatBoiSkeet'} · Official MV`,
+        meta: `${v.artist || 'Artist not credited'} · Official MV`,
         chip: 'MV',
       })
     ),
