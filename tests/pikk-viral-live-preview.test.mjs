@@ -52,6 +52,20 @@ test('featured source thumbnails are derived from original YouTube video IDs, no
   assert.doesNotMatch(html, /autoplay=1|data-fake-viewers/);
 });
 
+test('Viral Live content tabs use roving keyboard focus without changing source content', () => {
+  const html = renderViralLive();
+  assert.equal((html.match(/tabindex="0"/g) || []).length, 1);
+  assert.equal((html.match(/tabindex="-1"/g) || []).length, 3);
+  const source = readFileSync(new URL('../src/pages/viral-live.js', import.meta.url), 'utf8');
+  for (const key of ['ArrowRight', 'ArrowLeft', 'Home', 'End']) {
+    assert.ok(source.includes("'" + key + "'"), key + ' supported');
+  }
+  assert.match(source, /event\.preventDefault\(\)/);
+  assert.match(source, /item\.tabIndex = selected \? 0 : -1/);
+  assert.match(source, /selectType\(typeTabs\[next\], true\)/);
+  assert.match(source, /if \(moveFocus\) button\.focus\(\)/);
+});
+
 test('content type tabs and empty states distinguish videos from uncleared clips, songs and photos', () => {
   const html = renderViralLive();
   assert.equal((html.match(/role="tab"/g) || []).length, 4);
