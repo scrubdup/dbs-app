@@ -385,8 +385,20 @@ export function bindExplore(root) {
   // navigate('/explore') replaces the panel, so restore focus to the new tab element.
   const tabs = [...root.querySelectorAll('[data-explore-tab]')];
   function activateTab(id, restoreFocus = false) {
+    // Switching sections must not silently discard an in-progress search.
+    // Keep the query only in the current UI, not in persisted account state.
+    const query = input?.value || '';
+    clearTimeout(debounce);
     setState({ exploreTab: id });
     navigate('/explore');
+    if (query.trim()) {
+      const nextRoot = document.getElementById('app');
+      const nextInput = nextRoot?.querySelector('#exploreQ');
+      if (nextInput) {
+        nextInput.value = query;
+        runSearch(nextRoot, query);
+      }
+    }
     if (restoreFocus) document.getElementById('explore-tab-' + id)?.focus();
   }
   tabs.forEach((btn, index) => {
