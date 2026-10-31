@@ -54,7 +54,7 @@ export function renderViralLive() {
       </div>
 
       <nav class="pikk-viral-tabs" aria-label="Viral Live content types" role="tablist">
-        ${TYPES.map((type, i) => `<button type="button" role="tab" data-viral-type="${type.id}" aria-selected="${i === 0}" aria-controls="viral-panel-${type.id}" id="viral-tab-${type.id}">${type.label}</button>`).join('')}
+        ${TYPES.map((type, i) => `<button type="button" role="tab" data-viral-type="${type.id}" aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}" aria-controls="viral-panel-${type.id}" id="viral-tab-${type.id}">${type.label}</button>`).join('')}
       </nav>
 
       <section id="viral-panel-videos" data-viral-panel="videos" role="tabpanel" aria-labelledby="viral-tab-videos">
@@ -112,15 +112,30 @@ export function bindViralLive(root) {
       });
     });
   });
-  page.querySelectorAll('[data-viral-type]').forEach(button => {
-    button.addEventListener('click', () => {
-      const type = button.dataset.viralType;
-      page.querySelectorAll('[data-viral-type]').forEach(item => {
-        item.setAttribute('aria-selected', String(item === button));
-      });
-      page.querySelectorAll('[data-viral-panel]').forEach(panel => {
-        panel.hidden = panel.dataset.viralPanel !== type;
-      });
+  // A tablist is one keyboard stop. Arrows and Home/End switch panels and move focus.
+  const typeTabs = Array.from(page.querySelectorAll('[data-viral-type]'));
+  function selectType(button, moveFocus = false) {
+    const type = button.dataset.viralType;
+    typeTabs.forEach(item => {
+      const selected = item === button;
+      item.setAttribute('aria-selected', String(selected));
+      item.tabIndex = selected ? 0 : -1;
+    });
+    page.querySelectorAll('[data-viral-panel]').forEach(panel => {
+      panel.hidden = panel.dataset.viralPanel !== type;
+    });
+    if (moveFocus) button.focus();
+  }
+  typeTabs.forEach((button, index) => {
+    button.addEventListener('click', () => selectType(button));
+    button.addEventListener('keydown', event => {
+      if (!['ArrowRight', 'ArrowLeft', 'Home', 'End'].includes(event.key)) return;
+      event.preventDefault();
+      const last = typeTabs.length - 1;
+      const next = event.key === 'Home' ? 0
+        : event.key === 'End' ? last
+        : (index + (event.key === 'ArrowRight' ? 1 : -1) + typeTabs.length) % typeTabs.length;
+      selectType(typeTabs[next], true);
     });
   });
 }
