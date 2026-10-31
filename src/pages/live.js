@@ -693,8 +693,11 @@ function renderLiveDailyGoalCard(live, user) {
       </p>
       <div class="field live-goal-message-field" style="margin:10px 0 8px">
         <label for="liveGoalSupportMessage">Message to the creator (optional)</label>
-        <input id="liveGoalSupportMessage" maxlength="180" placeholder="Show some love with your donation" autocomplete="off" />
-        <p class="muted" style="font-size:11px;margin:4px 0 0">Saved with your demo coin transaction on this device only. Not delivered to a real streamer.</p>
+        <input id="liveGoalSupportMessage" maxlength="180" placeholder="Show some love with your donation" autocomplete="off" aria-describedby="liveGoalSupportMessageHint liveGoalSupportMessageCount" />
+        <div class="live-goal-message-meta">
+          <p class="muted" id="liveGoalSupportMessageHint">Saved with your demo coin transaction on this device only. Not delivered to a real streamer.</p>
+          <output id="liveGoalSupportMessageCount" for="liveGoalSupportMessage" aria-live="off">0 / 180</output>
+        </div>
       </div>
       <div class="row wrap live-goal-donate-row" style="gap:8px">
         ${donateBtns}
@@ -1262,6 +1265,16 @@ function mountLiveDailyGoal(root) {
     toast(`Goal live · $${res.goal.targetAmount} · 24h window · TEST MODE`);
     refresh();
   });
+
+  const supportMessage = root.querySelector('#liveGoalSupportMessage');
+  const supportCount = root.querySelector('#liveGoalSupportMessageCount');
+  if (supportMessage && supportCount) {
+    const updateCount = () => {
+      supportCount.textContent = `${supportMessage.value.length} / 180`;
+    };
+    supportMessage.addEventListener('input', updateCount);
+    updateCount();
+  }
 
   root.querySelectorAll('.live-goal-custom-form').forEach((form) => {
     form.addEventListener('submit', (event) => {

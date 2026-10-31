@@ -70,7 +70,11 @@ try {
     assert.equal(await page.locator('.live-goal-donate').count(),3);
     assert.equal(await page.locator('.live-goal-custom-form').count(),1);
     assert.equal(await page.locator('#liveGoalSupportMessage').getAttribute('maxlength'),'180');
-    await page.locator('#liveGoalSupportMessage').fill('Thank you for the music!');
+    assert.equal(await page.locator('#liveGoalSupportMessageCount').textContent(), '0 / 180', device+' initial message counter');
+    const message = 'Thank you for the music!';
+    await page.locator('#liveGoalSupportMessage').fill(message);
+    assert.equal(await page.locator('#liveGoalSupportMessageCount').textContent(), message.length+' / 180', device+' counter follows typing');
+    assert.equal(await page.locator('#liveGoalSupportMessage').getAttribute('aria-describedby'), 'liveGoalSupportMessageHint liveGoalSupportMessageCount');
     assert.equal(await page.locator('#sideNav').getAttribute('aria-hidden'), 'true', device+' drawer must be hidden on Live route');
     assert.equal(await page.locator('#menuBtn').getAttribute('aria-expanded'), 'false', device+' drawer trigger must be collapsed');
     const hiddenDrawer = await page.locator('#sideNav').evaluate(el => el.getBoundingClientRect().left);

@@ -51,3 +51,11 @@ test('both quick and custom goal donation flows include optional message, with e
   assert.ok(page.includes("donateToGoal(goalId, coins, {message:"));
   assert.ok(page.includes('maxlength="180"'));
 });
+
+test('live goal message shows a bound, accessible 180-character counter', () => {
+  assert.ok(page.includes('aria-describedby="liveGoalSupportMessageHint liveGoalSupportMessageCount"'));
+  assert.ok(page.includes('id="liveGoalSupportMessageHint"'));
+  assert.ok(page.includes('id="liveGoalSupportMessageCount" for="liveGoalSupportMessage"'));
+  assert.ok(page.includes('supportMessage.addEventListener(\'input\', updateCount)'));
+  assert.ok(page.includes('supportCount.textContent = `${supportMessage.value.length} / 180`'));
+});
