@@ -72,6 +72,20 @@ test('Viral Live content tabs use roving keyboard focus without changing source 
   assert.match(source, /if \(moveFocus\) button\.focus\(\)/);
 });
 
+test('original source queue supports accessible keyboard browsing and selection', () => {
+  const html = renderViralLive();
+  const source = readFileSync(new URL('../src/pages/viral-live.js', import.meta.url), 'utf8');
+  assert.match(html, /id="pikkViralQueue" role="group" aria-label="Choose an original video source"/);
+  assert.match(source, /const sourceButtons = Array.from\(page.querySelectorAll\('\[data-viral-pick\]'\)\)/);
+  for (const key of ['ArrowRight', 'ArrowLeft', 'ArrowDown', 'ArrowUp', 'Home', 'End']) {
+    assert.ok(source.includes("'" + key + "'"), key + ' supported');
+  }
+  assert.match(source, /target\.click\(\)/);
+  assert.match(source, /target\.focus\(\)/);
+  assert.match(source, /target\.scrollIntoView\(\{ block: 'nearest', inline: 'nearest' \}\)/);
+  assert.match(html, /aria-pressed="true"/);
+});
+
 test('content type tabs and empty states distinguish videos from uncleared clips, songs and photos', () => {
   const html = renderViralLive();
   assert.equal((html.match(/role="tab"/g) || []).length, 4);
