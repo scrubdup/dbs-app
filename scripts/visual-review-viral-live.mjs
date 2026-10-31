@@ -3,6 +3,7 @@ import { mkdir } from 'node:fs/promises';
 import { chromium } from 'playwright';
 
 process.env.PW_TEST_SCREENSHOT_NO_FONTS_READY = '1';
+const BASE_URL = process.env.PIKK_VISUAL_BASE_URL || 'http://127.0.0.1:5173/';
 await mkdir('visual-review', { recursive: true });
 const browser = await chromium.launch({ headless: true, args: ['--no-sandbox'] });
 try {
@@ -11,13 +12,15 @@ try {
     const page = await context.newPage();
     const errors = [];
     page.on('pageerror', e => errors.push(String(e)));
-    await page.goto('http://127.0.0.1:5173/#/viral-live', { waitUntil: 'domcontentloaded' });
+    await page.goto(BASE_URL + '#/viral-live', { waitUntil: 'domcontentloaded' });
     await page.locator('#pikkViralPreview').waitFor({ state: 'visible', timeout: 20000 });
     assert.equal(await page.locator('#tabbar a').count(), 7, 'seven approved tabs remain');
     assert.equal(await page.locator('.logo-img').isVisible(), true, 'approved PIKK logo remains');
     assert.equal(await page.locator('.pikk-viral-hero-logo').isVisible(), true, 'official approved PIKK hero logo visible on mobile and desktop');
     assert.match(await page.locator('.pikk-viral-hero-logo').getAttribute('src'), /\/brand\/pikk-official-approved\.jpg$/);
     assert.equal(await page.locator('.pikk-viral-hero-logo').evaluate(el => el.complete && el.naturalWidth > 0), true, 'approved hero image loads');
+    const heroPath = await page.locator('.pikk-viral-hero-logo').evaluate(el => new URL(el.currentSrc).pathname);
+    assert.equal(heroPath, new URL('brand/pikk-official-approved.jpg', BASE_URL).pathname, 'hero artwork uses the actual deployment base');
     assert.equal(await page.locator('#dbs-sticky-player').isVisible(), true, 'persistent player remains');
     assert.equal(await page.locator('[data-viral-pick]').count(), 3, 'three original sources');
     assert.equal(await page.locator('#pikkViralSource').getAttribute('href'), 'https://www.youtube.com/watch?v=-rHDLWfiuDI');
@@ -71,7 +74,7 @@ try {
     await page.screenshot({ path: 'visual-review/pikk-viral-live-'+device+'-viewport.png' });
     await page.screenshot({ path: 'visual-review/pikk-viral-live-'+device+'.png', fullPage: true });
     assert.deepEqual(errors, [], device + ' JS errors');
-    await page.goto('http://127.0.0.1:5173/#/live?tab=categories', { waitUntil: 'domcontentloaded' });
+    await page.goto(BASE_URL + '#/live?tab=categories', { waitUntil: 'domcontentloaded' });
     await page.locator('#liveTabCategories').waitFor({ state: 'visible' });
     assert.ok(await page.locator('a[href="#/viral-live"]').count() > 0, 'Viral Live linked from Live categories');
     await context.close();
