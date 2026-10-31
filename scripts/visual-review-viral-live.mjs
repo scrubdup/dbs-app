@@ -23,10 +23,14 @@ try {
     assert.equal(await page.locator('#pikkViralSource').getAttribute('href'), 'https://www.youtube.com/watch?v=-rHDLWfiuDI');
     assert.match(await page.locator('#pikkViralThumbnail').getAttribute('src'), /-rHDLWfiuDI\/hqdefault\.jpg$/);
     assert.equal(await page.locator('.pikk-viral-choice-thumb').count(), 3);
-    if (device === 'mobile') {
+    if (device !== 'desktop') {
       const tabs = await page.locator('[data-viral-type]').evaluateAll(items => items.map(el => ({ top: el.getBoundingClientRect().top, width: el.getBoundingClientRect().width })));
       assert.equal(tabs.length, 4, 'all content categories remain present');
-      assert.ok(tabs.every(tab => Math.abs(tab.top - tabs[0].top) <= 2), 'all four category tabs fit in one mobile row');
+      assert.ok(tabs.every(tab => Math.abs(tab.top - tabs[0].top) <= 2), 'all four category tabs remain in one mobile row');
+      if (device === 'small-mobile') {
+        const strip = await page.locator('.pikk-viral-tabs').evaluate(el => ({ scrollWidth: el.scrollWidth, clientWidth: el.clientWidth }));
+        assert.ok(strip.scrollWidth > strip.clientWidth, '320px category strip scrolls inside its container');
+      }
     }
     await page.locator('[data-viral-pick="1"]').click();
     assert.match(await page.locator('#pikkViralTitle').textContent(), /^93 ft/);
