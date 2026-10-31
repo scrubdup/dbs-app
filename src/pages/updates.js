@@ -8,11 +8,11 @@ import { freshPikkUrl } from '../refresh-url.js';
 export const PIKK_BUILD_SHA = import.meta.env.VITE_BUILD_SHA || '';
 // Curated, merged UI releases only. Keep this list factual; planned backend features are not shipped.
 export const RECENT_RELEASES = Object.freeze([
-  { title: 'Viral Live: Keyboard Category Navigation', detail: 'Use Left/Right arrows or Home/End to switch between Videos, Viral Clips, Songs and Photos. This remains a discovery preview, not a 24/7 broadcast.', route: '#/viral-live', pr: 183, kind: 'VIRAL LIVE · PREVIEW' },
-  { title: 'Live: Donation Message Character Counter', detail: 'See a live 0/180 character count while writing an optional supporter message. Donations and messages are local demo transactions, not real payments or streamer delivery.', route: '#/live', pr: 182, kind: 'LIVE · DEMO ONLY' },
-  { title: 'Live: Personal Donation Messages', detail: 'Attach an optional personal note to a successful demo goal donation. The note stays in this browser’s transaction history; streamers do not receive it.', route: '#/live', pr: 181, kind: 'LIVE · DEMO ONLY' },
-  { title: 'Shield: Restore Local Rights Drafts', detail: 'Choose a saved JSON backup to restore eligible rights drafts with validation and duplicate protection. This is browser-local, not a copyright registration or enforcement service.', route: '#/shield', pr: 180, kind: 'SHIELD · LOCAL PREVIEW' },
-  { title: 'Shield: Download Rights Draft Backup', detail: 'Download a private JSON copy of saved browser-local rights drafts. No drafts are uploaded or submitted to a copyright registry.', route: '#/shield', pr: 179, kind: 'SHIELD · LOCAL PREVIEW' },
+  { title: 'Viral Live: Correct Category Destinations', detail: 'Viral Clips opens Clips, Songs opens Music, and Photos opens Home. These are links to existing PIKK sections; the 24/7 channel is still a preview, not broadcasting.', route: '#/viral-live', pr: 197, kind: 'VIRAL LIVE · PREVIEW' },
+  { title: 'Viral Live: Mobile Category Visibility', detail: 'On narrow phones, keyboard-selected Videos, Viral Clips, Songs and Photos tabs scroll into view without changing the existing swipeable design. Continuous broadcasting is not live.', route: '#/viral-live', pr: 196, kind: 'VIRAL LIVE · PREVIEW' },
+  { title: 'Viral Live: Source Queue Keyboard Browsing', detail: 'Use arrow keys or Home/End to select among three original music-video sources. The preview updates its artwork and YouTube source link; this is not a livestream.', route: '#/viral-live', pr: 195, kind: 'VIRAL LIVE · PREVIEW' },
+  { title: 'Explore: Escape Clears Search', detail: 'Press Escape in Explore search to clear the query and results while keeping focus in the search field. Existing discovery and profiles remain available.', route: '#/explore', pr: 194, kind: 'EXPLORE · NAVIGATION' },
+  { title: 'Explore: Search Survives Tab Changes', detail: 'Keep an Explore search when switching between Trending, Following and Discover; Clear resets the query and results. This improves browsing, not backend search coverage.', route: '#/explore', pr: 193, kind: 'EXPLORE · NAVIGATION' },
 ]);
 
 export function renderUpdates() {

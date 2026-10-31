@@ -19,13 +19,16 @@ for (const [name, width, height] of [['mobile', 390, 844], ['desktop', 1440, 900
   const count = await page.locator('.pikk-update-card').count();
   if (count !== 5) throw new Error(name + ': expected 5 published release cards, got ' + count);
   if (!(await page.locator('.pikk-updates-hero-mark img').isVisible())) throw new Error(name + ': approved chrome logo artwork missing');
-  if (!(await page.locator('.pikk-update-card').first().getByText('Viral Live: Keyboard Category Navigation').isVisible())) throw new Error(name + ': latest Viral Live release missing');
+  if (!(await page.locator('.pikk-update-card').first().getByText('Viral Live: Correct Category Destinations').isVisible())) throw new Error(name + ': latest Viral Live release missing');
   if (await page.locator('.pikk-update-kind').count() !== 5) throw new Error(name + ': test-mode status labels missing');
   const hrefs = await page.locator('.pikk-update-links a.btn').evaluateAll(nodes => nodes.map(a => a.getAttribute('href')));
-  const expected = ['#/viral-live', '#/live', '#/live', '#/shield', '#/shield'];
+  const expected = ['#/viral-live', '#/viral-live', '#/viral-live', '#/explore', '#/explore'];
   if (JSON.stringify(hrefs) !== JSON.stringify(expected)) throw new Error(name + ': release route links mismatch: ' + hrefs);
   const titles = await page.locator('.pikk-update-card h3').allTextContents();
-  if (!titles.includes('Live: Donation Message Character Counter') || !titles.includes('Shield: Restore Local Rights Drafts')) throw new Error(name + ': latest verified features missing');
+  if (!titles.includes('Viral Live: Source Queue Keyboard Browsing') || !titles.includes('Explore: Escape Clears Search')) throw new Error(name + ': latest verified features missing');
+  const prLinks = await page.locator('.pikk-update-source').evaluateAll(nodes => nodes.map(a => a.getAttribute('href')));
+  const expectedPrs = [197, 196, 195, 194, 193].map(n => 'https://github.com/scrubdup/pikk-app/pull/' + n);
+  if (JSON.stringify(prLinks) !== JSON.stringify(expectedPrs)) throw new Error(name + ': verified PR links mismatch');
   const tabs = await page.locator('#tabbar a').allTextContents();
   if (tabs.length !== 7) throw new Error(name + ': approved seven-tab navigation changed: ' + tabs.length);
   if (!(await page.locator('#dbs-sticky-player').isVisible())) throw new Error(name + ': sticky player missing');
@@ -33,7 +36,7 @@ for (const [name, width, height] of [['mobile', 390, 844], ['desktop', 1440, 900
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - innerWidth);
   if (overflow > 3) throw new Error(name + ': horizontal overflow ' + overflow + 'px');
   await page.screenshot({ path: 'visual-review/updates-' + name + '.png', fullPage: true });
-  for (const [route, heading] of [['viral-live', 'PIKK Viral Live'], ['live', 'PIKK Live'], ['shield', 'PIKK Shield']]) {
+  for (const [route, heading] of [['viral-live', 'PIKK Viral Live'], ['explore', 'Explore']]) {
     await page.locator('.pikk-update-card a[href="#/' + route + '"]').first().click();
     await page.waitForURL(url => url.hash === '#/' + route, { timeout: 10000 });
     await page.locator('#app h1').getByText(heading, { exact: false }).waitFor({ state: 'visible', timeout: 10000 });
