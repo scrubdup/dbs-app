@@ -102,6 +102,31 @@ try {
     await page.screenshot({ path: 'visual-review/pikk-viral-live-'+device+'-viewport.png' });
     await page.screenshot({ path: 'visual-review/pikk-viral-live-'+device+'.png', fullPage: true });
     assert.deepEqual(errors, [], device + ' JS errors');
+    // Empty categories must offer relevant working routes, not send every visitor to Clips.
+    for (const [type, destination, label] of [
+      ['clips', '#/shorts', 'Browse existing PIKK Clips'],
+      ['songs', '#/music', 'Explore PIKK Music'],
+      ['photos', '#/home', 'Explore PIKK Home'],
+    ]) {
+      await page.locator('[data-viral-type="' + type + '"]').click();
+      const fallback = page.locator('#viral-panel-' + type + ' a.btn.ghost');
+      assert.equal(await fallback.isVisible(), true, type + ' fallback visible');
+      assert.equal(await fallback.getAttribute('href'), destination, type + ' link destination');
+      assert.equal((await fallback.textContent()).trim(), label, type + ' descriptive link');
+      // Reset keyboard focus and scroll before full-page capture so fixed chrome is
+      // captured at its natural top-of-page position on narrow devices.
+      await page.evaluate(() => {
+        document.activeElement?.blur();
+        window.scrollTo({ top: 0, behavior: 'instant' });
+      });
+      await page.waitForTimeout(150);
+      await page.screenshot({ path: 'visual-review/pikk-viral-live-' + device + '-' + type + '.png', fullPage: true });
+      await fallback.click();
+      await page.waitForFunction(hash => location.hash === hash, destination);
+      assert.equal(await page.locator('#dbs-sticky-player').isVisible(), true, type + ' retains persistent player');
+      await page.goto(BASE_URL + '#/viral-live', { waitUntil: 'domcontentloaded' });
+      await page.locator('#pikkViralPreview').waitFor({ state: 'visible' });
+    }
     await page.goto(BASE_URL + '#/live?tab=categories', { waitUntil: 'domcontentloaded' });
     await page.locator('#liveTabCategories').waitFor({ state: 'visible' });
     assert.ok(await page.locator('a[href="#/viral-live"]').count() > 0, 'Viral Live linked from Live categories');

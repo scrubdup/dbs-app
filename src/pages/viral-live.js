@@ -22,9 +22,9 @@ const SOURCES = VIDEOS.filter(video => ['dirty-money', '93', 'no-love'].includes
 
 const TYPES = [
   { id: 'videos', label: 'Videos' },
-  { id: 'clips', label: 'Viral clips' },
-  { id: 'songs', label: 'Songs' },
-  { id: 'photos', label: 'Photos' },
+  { id: 'clips', label: 'Viral clips', browseHref: '#/shorts', browseLabel: 'Browse existing PIKK Clips' },
+  { id: 'songs', label: 'Songs', browseHref: '#/music', browseLabel: 'Explore PIKK Music' },
+  { id: 'photos', label: 'Photos', browseHref: '#/home', browseLabel: 'Explore PIKK Home' },
 ];
 
 export function renderViralLive() {
@@ -82,7 +82,7 @@ export function renderViralLive() {
           <span class="pikk-viral-empty-symbol" aria-hidden="true">◇</span>
           <h3>${esc(type.label)} are being prepared</h3>
           <p>No approved items are queued in this category yet. Creator permission, licensing and moderation must be confirmed before content appears here.</p>
-          <a class="btn ghost" href="#/shorts">Browse existing PIKK Clips</a>
+          <a class="btn ghost" href="${esc(type.browseHref)}">${esc(type.browseLabel)}</a>
         </section>`).join('')}
 
       <section class="pikk-viral-safety" aria-label="Channel launch requirements">
