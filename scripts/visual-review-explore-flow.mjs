@@ -135,6 +135,17 @@ try {
       assert.match(videoResultText, /Artist not credited/, 'missing artist is not assigned to DatBoiSkeet');
       assert.match(videoResultText, /DatBoiSkeet/, 'genuine artist credit is preserved');
       await capture('video-results');
+
+      // Search stays visible and actionable when moving between Explore sections.
+      await page.locator('[data-explore-tab="following"]').click();
+      assert.equal(await page.locator('#exploreQ').inputValue(), 'video', 'Following keeps search text');
+      assert.match(await page.locator('#exploreLiveInsert #exploreResults').innerText(), /Video catalog/);
+      await capture('following-retained-search');
+      await page.locator('[data-explore-tab="discover"]').click();
+      assert.equal(await page.locator('#exploreQ').inputValue(), 'video', 'Discover keeps search text');
+      assert.match(await page.locator('#exploreLiveInsert #exploreResults').innerText(), /Artist not credited/);
+      await capture('discover-retained-search');
+
       await page.locator('#exploreClear').click();
       await sleep(400);
       assert.equal(await page.locator('#exploreLiveInsert').count(), 0, 'Clear removes results after repeated searches');

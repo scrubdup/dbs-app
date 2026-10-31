@@ -71,3 +71,13 @@ test('Explore sections are a keyboard-accessible tablist with focus restored aft
   assert.match(explore, /activateTab\(tabs\[next\]\.dataset\.exploreTab, true\)/);
   assert.match(explore, /document\.getElementById\('explore-tab-' \+ id\)\?\.focus\(\)/);
 });
+
+test('Explore retains the current search across section changes without saving it to account state', () => {
+  const activate = explore.split('function activateTab(id, restoreFocus = false) {')[1]?.split('\n  tabs.forEach')[0];
+  assert.ok(activate, 'tab activation handler exists');
+  assert.match(activate, /const query = input\?\.value \|\| ''/);
+  assert.match(activate, /clearTimeout\(debounce\)/);
+  assert.match(activate, /nextInput\.value = query/);
+  assert.match(activate, /runSearch\(nextRoot, query\)/);
+  assert.doesNotMatch(activate, /setState\(\{[^}]*query/);
+});
