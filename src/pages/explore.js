@@ -360,14 +360,15 @@ export function bindExplore(root) {
   const doSearch = () => runSearch(root, input?.value || '');
 
   go?.addEventListener('click', doSearch);
-  clear?.addEventListener('click', () => {
+  function clearSearch() {
     clearTimeout(debounce);
     if (input) input.value = '';
     const wrap = root.querySelector('#exploreResultsWrap');
     if (wrap) wrap.innerHTML = renderResults(null);
     root.querySelector('#exploreLiveInsert')?.remove();
     toast('Cleared');
-  });
+  }
+  clear?.addEventListener('click', clearSearch);
 
   let debounce;
   input?.addEventListener('input', () => {
@@ -375,8 +376,14 @@ export function bindExplore(root) {
     debounce = setTimeout(doSearch, 220);
   });
   input?.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === 'Escape' && input.value) {
+      // Native search inputs may clear their text without clearing our rendered results.
       e.preventDefault();
+      clearSearch();
+      input.focus();
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      clearTimeout(debounce);
       doSearch();
     }
   });
