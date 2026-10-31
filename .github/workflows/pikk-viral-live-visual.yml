@@ -28,16 +28,18 @@ jobs:
         run: |
           npm test
           npm run build
-      - name: Start local app
+      - name: Start production build under the GitHub Pages project base
         run: |
-          npm run dev -- --host 127.0.0.1 > /tmp/pikk-viral-vite.log 2>&1 &
+          npm run preview -- --host 127.0.0.1 --port 5173 > /tmp/pikk-viral-vite.log 2>&1 &
           for i in $(seq 1 40); do
-            if curl -fsS http://127.0.0.1:5173/ > /dev/null; then exit 0; fi
+            if curl -fsS http://127.0.0.1:5173/pikk-app/ > /dev/null; then exit 0; fi
             sleep 1
           done
           cat /tmp/pikk-viral-vite.log
           exit 1
       - name: Verify mobile and desktop route, interaction and screenshots
+        env:
+          PIKK_VISUAL_BASE_URL: http://127.0.0.1:5173/pikk-app/
         run: node scripts/visual-review-viral-live.mjs
       - uses: actions/upload-artifact@v4
         if: always()
