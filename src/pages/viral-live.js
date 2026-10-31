@@ -62,7 +62,7 @@ export function renderViralLive() {
         ${TYPES.map((type, i) => `<button type="button" role="tab" data-viral-type="${type.id}" aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}" aria-controls="viral-panel-${type.id}" id="viral-tab-${type.id}">${type.label}</button>`).join('')}
       </nav>
 
-      <section id="viral-panel-videos" data-viral-panel="videos" role="tabpanel" aria-labelledby="viral-tab-videos">
+      <section id="viral-panel-videos" data-viral-panel="videos" role="tabpanel" tabindex="0" aria-labelledby="viral-tab-videos">
         <div class="pikk-viral-stage" aria-label="Original video discovery">
           <div class="pikk-viral-stage-art"><img id="pikkViralThumbnail" src="${esc(first.thumbnail)}" alt="" decoding="async" referrerpolicy="no-referrer"><span class="pikk-viral-stage-play" aria-hidden="true">▶</span><small>ORIGINAL VIDEO · SOURCE PREVIEW</small></div>
           <div class="pikk-viral-stage-body">
@@ -78,7 +78,7 @@ export function renderViralLive() {
       </section>
 
       ${TYPES.filter(type => type.id !== 'videos').map(type => `
-        <section class="pikk-viral-empty" id="viral-panel-${type.id}" data-viral-panel="${type.id}" role="tabpanel" aria-labelledby="viral-tab-${type.id}" hidden>
+        <section class="pikk-viral-empty" id="viral-panel-${type.id}" data-viral-panel="${type.id}" role="tabpanel" tabindex="0" aria-labelledby="viral-tab-${type.id}" hidden>
           <span class="pikk-viral-empty-symbol" aria-hidden="true">◇</span>
           <h3>${esc(type.label)} are being prepared</h3>
           <p>No approved items are queued in this category yet. Creator permission, licensing and moderation must be confirmed before content appears here.</p>

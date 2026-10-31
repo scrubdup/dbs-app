@@ -60,6 +60,12 @@ try {
     await page.locator('[data-viral-type="photos"]').click();
     assert.equal(await page.locator('#viral-panel-photos').isVisible(), true);
     assert.equal(await page.locator('#viral-panel-videos').isVisible(), false);
+    // Tab from the selected category to its panel, including the empty states.
+    await page.locator('[data-viral-type="photos"]').focus();
+    await page.keyboard.press('Tab');
+    assert.equal(await page.locator('#viral-panel-photos').evaluate(el => el === document.activeElement), true, 'selected panel receives keyboard focus');
+    assert.equal(await page.locator('#viral-panel-photos').evaluate(el => getComputedStyle(el).outlineStyle), 'solid', 'focused panel has a visible outline');
+    await page.screenshot({ path: 'visual-review/pikk-viral-live-'+device+'-panel-focus.png' });
     await page.locator('[data-viral-type="videos"]').click();
     assert.equal(await page.locator('#viral-panel-videos').isVisible(), true);
     // Keyboard interaction is part of the WAI-ARIA tablist contract.
