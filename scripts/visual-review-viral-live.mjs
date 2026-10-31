@@ -38,6 +38,24 @@ try {
     assert.equal(await page.locator('#viral-panel-videos').isVisible(), false);
     await page.locator('[data-viral-type="videos"]').click();
     assert.equal(await page.locator('#viral-panel-videos').isVisible(), true);
+    // Keyboard interaction is part of the WAI-ARIA tablist contract.
+    await page.locator('[data-viral-type="videos"]').focus();
+    await page.keyboard.press('ArrowRight');
+    assert.equal(await page.locator('[data-viral-type="clips"]').getAttribute('aria-selected'), 'true');
+    assert.equal(await page.locator('#viral-panel-clips').isVisible(), true);
+    assert.equal(await page.locator('[data-viral-type="clips"]').evaluate(el => el === document.activeElement), true);
+    await page.keyboard.press('End');
+    assert.equal(await page.locator('[data-viral-type="photos"]').getAttribute('tabindex'), '0');
+    assert.equal(await page.locator('#viral-panel-photos').isVisible(), true);
+    await page.keyboard.press('Home');
+    assert.equal(await page.locator('[data-viral-type="videos"]').getAttribute('aria-selected'), 'true');
+    assert.equal(await page.locator('#viral-panel-videos').isVisible(), true);
+    await page.keyboard.press('ArrowLeft');
+    assert.equal(await page.locator('[data-viral-type="photos"]').getAttribute('aria-selected'), 'true', 'left arrow wraps to last tab');
+    await page.keyboard.press('ArrowRight');
+    assert.equal(await page.locator('[data-viral-type="videos"]').getAttribute('tabindex'), '0');
+    assert.equal(await page.locator('[data-viral-type="videos"]').evaluate(el => el === document.activeElement), true);
+
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - innerWidth);
     assert.ok(overflow <= 3, device + ' horizontal overflow ' + overflow);
     // Interacting with Up Next scrolls to the queue; return to the top before reviewing first paint.
