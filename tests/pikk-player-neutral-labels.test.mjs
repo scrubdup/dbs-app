@@ -14,9 +14,11 @@ test('persistent PIKK music player has platform-neutral initial labels', () => {
 });
 
 test('artist credit remains track metadata and playback is not replaced', () => {
-  assert.match(player, /title\.textContent = track\.title/);
+  assert.match(player, /title\.textContent = track\?\.title \|\| 'PIKK Music'/);
   assert.match(player, /sub\.textContent =/);
   assert.match(player, /artist: r\.artist \|\| 'DatBoiSkeet'/);
+  assert.match(player, /playing \? 'Pause' : 'Play PIKK Music'/);
+  assert.doesNotMatch(player, /Play DBS Music/);
   assert.match(html, /id="spPlay" aria-label="Play PIKK Music"/);
   assert.match(html, /id="dbsStickyFrame"/);
   assert.match(html, /id="spPrev"/);
