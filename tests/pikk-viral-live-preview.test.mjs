@@ -80,7 +80,7 @@ test('content type tabs and empty states distinguish videos from uncleared clips
 
 test('small-phone Viral Live categories remain a single swipeable row with visible keyboard focus', () => {
   assert.match(css, /\.pikk-viral-tabs \{[^}]*flex-wrap: nowrap;[^}]*overflow-x: auto;/);
-  assert.match(css, /\.pikk-viral-tabs button \{[^}]*flex: 0 0 auto;/);
+  assert.match(css, /\.pikk-viral-tabs button \{[^}]*flex: 0 0 auto;[^}]*min-width: 88px;[^}]*min-height: 44px;/);
   assert.match(css, /\.pikk-viral-tabs button:focus-visible/);
   assert.match(css, /scroll-snap-type: x proximity/);
 });
