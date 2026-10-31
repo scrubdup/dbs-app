@@ -33,6 +33,7 @@ test('update center lists five verified recent merged UI releases in newest-firs
   assert.match(updates, /not backend search coverage/);
   assert.doesNotMatch(updates, /Premium Wallet & Payouts|real-time viewer counts are live/);
   assert.ok(updates.includes('href="${esc(release.route)}"'));
+  assert.ok(updates.includes('aria-label="${esc(`See ${release.title} in PIKK`)}"'), 'Each release link has a descriptive screen-reader name');
   assert.match(updates, /pikkUpdatesRefresh/);
   assert.match(updates, /pikk-official-approved\.jpg/);
   assert.match(updates, /VIRAL LIVE · PREVIEW/);
