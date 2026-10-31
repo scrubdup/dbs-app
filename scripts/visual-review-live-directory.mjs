@@ -71,8 +71,18 @@ try {
     assert.equal(await page.locator('.live-goal-custom-form').count(),1);
     assert.equal(await page.locator('#liveGoalSupportMessage').getAttribute('maxlength'),'180');
     await page.locator('#liveGoalSupportMessage').fill('Thank you for the music!');
-    const goalWidth = await page.locator('#liveDailyGoal').evaluate(el=>el.getBoundingClientRect().width);
-    assert.ok(goalWidth <= width - (device === 'mobile' ? 24 : 0), device+' goal card exceeds viewport: '+goalWidth);
+    await page.locator('#liveDailyGoal').scrollIntoViewIfNeeded();
+    const goalGeometry = await page.locator('#liveDailyGoal').evaluate(el => {
+      const rect = el.getBoundingClientRect();
+      const input = el.querySelector('#liveGoalSupportMessage').getBoundingClientRect();
+      const submit = el.querySelector('.live-goal-custom-form button').getBoundingClientRect();
+      const hit = document.elementFromPoint(input.left + input.width / 2, input.top + input.height / 2);
+      return {left:rect.left,right:rect.right,width:rect.width,inputRight:input.right,submitRight:submit.right,inputReachable:hit === el.querySelector('#liveGoalSupportMessage')};
+    });
+    assert.ok(goalGeometry.left >= 0 && goalGeometry.right <= width + 2, device+' goal card clipped: '+JSON.stringify(goalGeometry));
+    assert.ok(goalGeometry.inputRight <= width + 2 && goalGeometry.submitRight <= width + 2, device+' donation controls clipped: '+JSON.stringify(goalGeometry));
+    assert.ok(goalGeometry.inputReachable, device+' donation message covered by another element: '+JSON.stringify(goalGeometry));
+    await page.screenshot({path:'visual-review/pikk-live-'+device+'-goal-full.png'});
     await page.locator('#liveDailyGoal').screenshot({path:'visual-review/pikk-live-'+device+'-goal-message.png'});
     assert.deepEqual(errors, [], device + ' browser errors');
     await context.close();
