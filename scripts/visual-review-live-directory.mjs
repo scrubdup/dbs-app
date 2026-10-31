@@ -54,6 +54,41 @@ try {
     await page.locator('#pikk-live-group-coed a').filter({ hasText: 'Why Are You Single?' }).click();
     await page.waitForTimeout(200);
     assert.ok(page.url().includes('tab=channels&category=Why%20Are%20You%20Single%3F'), 'dating room routes to channel filter');
+    // Verify an actual active Live goal's donation-message UI, without a real broadcast.
+    await page.evaluate(() => {
+      const now = Date.now();
+      const state = JSON.parse(localStorage.getItem('dbs_v1') || '{}');
+      state.user = {id:'visual-host',username:'VisualHost',following:[],followers:[]};
+      state.live = {id:'visual-live',hostId:'visual-host',hostName:'VisualHost',title:'Visual review stream',startedAt:now,viewers:0,chat:[],gifts:[],tipsTotal:0};
+      state.coins = {balance:300,history:[]};
+      state.dailyGoals = {app:null,history:[],liveByHost:{'visual-host':{id:'goal_live_visual',scope:'live',hostId:'visual-host',hostName:'VisualHost',name:'Studio session',targetAmount:50,raised:0,createdAt:now,endsAt:now+86400000}}};
+      localStorage.setItem('dbs_v1',JSON.stringify(state));
+    });
+    await page.goto('http://127.0.0.1:5173/#/live', {waitUntil:'domcontentloaded'});
+    await page.reload({waitUntil:'domcontentloaded'});
+    await page.locator('#liveGoalSupportMessage').waitFor({state:'visible'});
+    assert.equal(await page.locator('.live-goal-donate').count(),3);
+    assert.equal(await page.locator('.live-goal-custom-form').count(),1);
+    assert.equal(await page.locator('#liveGoalSupportMessage').getAttribute('maxlength'),'180');
+    await page.locator('#liveGoalSupportMessage').fill('Thank you for the music!');
+    assert.equal(await page.locator('#sideNav').getAttribute('aria-hidden'), 'true', device+' drawer must be hidden on Live route');
+    assert.equal(await page.locator('#menuBtn').getAttribute('aria-expanded'), 'false', device+' drawer trigger must be collapsed');
+    const hiddenDrawer = await page.locator('#sideNav').evaluate(el => el.getBoundingClientRect().left);
+    assert.ok(hiddenDrawer >= width - 1, device+' closed drawer must be off-screen, not covering goal: '+hiddenDrawer);
+    assert.equal(await page.locator('#scrim').evaluate(el => getComputedStyle(el).pointerEvents), 'none', device+' scrim must not intercept donations');
+    await page.locator('#liveDailyGoal').scrollIntoViewIfNeeded();
+    const goalGeometry = await page.locator('#liveDailyGoal').evaluate(el => {
+      const rect = el.getBoundingClientRect();
+      const input = el.querySelector('#liveGoalSupportMessage').getBoundingClientRect();
+      const submit = el.querySelector('.live-goal-custom-form button').getBoundingClientRect();
+      const hit = document.elementFromPoint(input.left + input.width / 2, input.top + input.height / 2);
+      return {left:rect.left,right:rect.right,width:rect.width,inputRight:input.right,submitRight:submit.right,inputReachable:hit === el.querySelector('#liveGoalSupportMessage')};
+    });
+    assert.ok(goalGeometry.left >= 0 && goalGeometry.right <= width + 2, device+' goal card clipped: '+JSON.stringify(goalGeometry));
+    assert.ok(goalGeometry.inputRight <= width + 2 && goalGeometry.submitRight <= width + 2, device+' donation controls clipped: '+JSON.stringify(goalGeometry));
+    assert.ok(goalGeometry.inputReachable, device+' donation message covered by another element: '+JSON.stringify(goalGeometry));
+    await page.screenshot({path:'visual-review/pikk-live-'+device+'-goal-full.png'});
+    await page.locator('#liveDailyGoal').screenshot({path:'visual-review/pikk-live-'+device+'-goal-message.png'});
     assert.deepEqual(errors, [], device + ' browser errors');
     await context.close();
   }

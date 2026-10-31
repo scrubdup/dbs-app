@@ -4918,3 +4918,14 @@ html body #tabbar.tabbar.tabbar-reshaped.tabbar-fit7 > a.tab-primary > span:last
 .pikk-profile-cover a:focus-visible,.pikk-profile-cover button:focus-visible,.pikk-profile-guest-hero a:focus-visible{outline:3px solid #f3b7e5;outline-offset:3px}
 @media(max-width:520px){.pikk-profile-cover{gap:12px;padding:15px}.pikk-profile-stats{gap:6px}.pikk-profile-stats>div{padding:10px 5px}.pikk-profile-stats strong{font-size:20px}.pikk-profile-shortcuts a,.pikk-profile-shortcuts button{font-size:11px;padding:9px 11px}.pikk-profile-guest-hero{padding:18px}}
 @media(prefers-reduced-motion:reduce){.pikk-profile-cover,.pikk-profile-guest-hero{scroll-behavior:auto}}
+
+/* Keep the demo goal and its personal-message field usable on narrow phones. */
+.live-goal-message-field{min-width:0;max-width:100%}
+.live-goal-message-field input{width:100%;min-width:0;max-width:100%}
+@media(max-width:720px){#liveDailyGoal{width:calc(100vw - 32px);max-width:calc(100vw - 32px);min-width:0;overflow:hidden}#liveDailyGoal .live-goal-custom-form{min-width:0}#liveDailyGoal .live-goal-custom-form label{min-width:0;flex:1 1 140px}#liveDailyGoal .live-goal-custom-form input{min-width:0;max-width:100%}}
+
+/* Respect reduced-motion preferences for the navigation drawer as well as its scrim.
+   This also prevents a closing drawer from obscuring a newly rendered Live goal. */
+@media (prefers-reduced-motion: reduce) {
+  .side, .scrim { transition: none; }
+}
