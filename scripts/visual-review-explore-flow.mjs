@@ -61,6 +61,20 @@ try {
       await capture('profile-open');
       await page.goto(base + '#/explore', { waitUntil: 'domcontentloaded' });
       await page.locator('#exploreQ').waitFor({ state: 'visible', timeout: 20000 });
+      // Test-only catalog entries exercise missing vs. genuine artist credits.
+      // The production catalog and user data are never changed by this fixture.
+      await page.evaluate(() => {
+        const key = 'dbs_v1';
+        const saved = JSON.parse(localStorage.getItem(key) || '{}');
+        saved.catalog = [
+          ...(saved.catalog || []),
+          { id: 'visual-untagged-video', type: 'video', title: 'Video attribution QA', artist: '', published: true },
+          { id: 'visual-credited-video', type: 'video', title: 'Credited video QA', artist: 'DatBoiSkeet', published: true },
+        ];
+        localStorage.setItem(key, JSON.stringify(saved));
+      });
+      await page.reload({ waitUntil: 'domcontentloaded' });
+      await page.locator('#exploreQ').waitFor({ state: 'visible', timeout: 20000 });
 
       await page.locator('[data-explore-tab="discover"]').click();
       await page.locator('[data-explore-tab="discover"].on').waitFor({ state: 'visible' });
@@ -73,7 +87,10 @@ try {
       await page.locator('#exploreQ').fill('video');
       await page.locator('#exploreGo').click();
       assert.equal(await page.locator('#exploreLiveInsert').count(), 1, 'second search reuses wrapper');
-      assert.match(await page.locator('#exploreLiveInsert #exploreResults').innerText(), /Video catalog/, 'video results identify catalog rather than claiming an admin upload');
+      const videoResultText = await page.locator('#exploreLiveInsert #exploreResults').innerText();
+      assert.match(videoResultText, /Video catalog/, 'video results do not claim an admin upload');
+      assert.match(videoResultText, /Artist not credited/, 'missing artist is not assigned to DatBoiSkeet');
+      assert.match(videoResultText, /DatBoiSkeet/, 'genuine artist credit is preserved');
       await capture('video-results');
       await page.locator('#exploreClear').click();
       await sleep(400);
