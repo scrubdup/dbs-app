@@ -40,6 +40,13 @@ try {
     assert.ok(searchBox && searchBox.width >= Math.min(width - 70, 400), name + ' search must be full width');
 
     await page.screenshot({ path: 'visual-review/shop-' + name + '.png', fullPage: true });
+    // The hero CTA must work with Enter and place focus inside the collection,
+    // rather than leaving keyboard users stranded on the hero button.
+    await page.locator('[data-shop-scroll]').focus();
+    await page.keyboard.press('Enter');
+    assert.equal(await page.locator('#pikkShopSearch').evaluate(el => document.activeElement === el),
+      true, name + ' collection CTA moves focus to merchandise search');
+    await page.screenshot({ path: 'visual-review/shop-' + name + '-collection-focus.png', fullPage: false });
     const sort = page.locator('#pikkShopSort');
     assert.equal(await sort.isVisible(), true, name + ' sort menu must be visible');
     for (const order of ['price-asc', 'price-desc', 'name-asc', 'featured']) {
