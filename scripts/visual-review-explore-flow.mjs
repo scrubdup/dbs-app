@@ -59,6 +59,32 @@ try {
       await page.locator('.pikk-profile-cover-kicker').waitFor({ state: 'visible' });
       assert.match(await page.locator('.pikk-profile-cover').innerText(), /DatBoiSkeet/);
       await capture('profile-open');
+
+      // Discover suggestions must open the selected public profile, not My Profile.
+      await page.goto(base + '#/explore', { waitUntil: 'domcontentloaded' });
+      await page.locator('[data-explore-tab="discover"]').click();
+      const discoverArtist = page.locator('#explorePanel .explore-hit[href="#/profile/dbs"]');
+      await discoverArtist.waitFor({ state: 'visible' });
+      assert.match(await discoverArtist.innerText(), /DatBoiSkeet/);
+      await capture('discover-account-link');
+      await discoverArtist.click();
+      await page.waitForURL(/#\\/profile\\/dbs$/, { timeout: 10000 });
+      assert.match(await page.locator('.pikk-profile-cover').innerText(), /DatBoiSkeet/);
+
+      // Following uses the same public route after a local demo sign-in.
+      await page.goto(base + '#/profile', { waitUntil: 'domcontentloaded' });
+      await page.locator('#signinName').fill('Explore QA');
+      await page.locator('#signinBtn').click();
+      await page.locator('#signoutBtn').waitFor({ state: 'visible' });
+      await page.goto(base + '#/explore', { waitUntil: 'domcontentloaded' });
+      await page.locator('[data-explore-tab="following"]').click();
+      const followedArtist = page.locator('#explorePanel .explore-hit[href="#/profile/dbs"]');
+      await followedArtist.waitFor({ state: 'visible' });
+      await capture('following-account-link');
+      await followedArtist.click();
+      await page.waitForURL(/#\\/profile\\/dbs$/, { timeout: 10000 });
+      assert.match(await page.locator('.pikk-profile-cover').innerText(), /DatBoiSkeet/);
+
       await page.goto(base + '#/explore', { waitUntil: 'domcontentloaded' });
       await page.locator('#exploreQ').waitFor({ state: 'visible', timeout: 20000 });
       // Test-only catalog entries exercise missing vs. genuine artist credits.
