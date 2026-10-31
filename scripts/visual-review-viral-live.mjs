@@ -60,8 +60,11 @@ try {
     assert.equal(await page.locator('[data-viral-type="videos"]').getAttribute('tabindex'), '0');
     assert.equal(await page.locator('[data-viral-type="videos"]').evaluate(el => el === document.activeElement), true);
 
-    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - innerWidth);
-    assert.ok(overflow <= 3, device + ' horizontal overflow ' + overflow);
+    const overflowReport = await page.evaluate(() => ({
+      overflow: document.documentElement.scrollWidth - innerWidth,
+      offenders: Array.from(document.querySelectorAll('body *')).filter(el => el.getBoundingClientRect().right > innerWidth + 3 && getComputedStyle(el).position !== 'fixed').slice(0, 8).map(el => ({ tag: el.tagName, className: String(el.className).slice(0, 100), right: Math.round(el.getBoundingClientRect().right) }))
+    }));
+    assert.ok(overflowReport.overflow <= 3, device + ' horizontal overflow ' + JSON.stringify(overflowReport));
     // Interacting with Up Next scrolls to the queue; return to the top before reviewing first paint.
     await page.evaluate(() => window.scrollTo(0, 0));
     await page.waitForTimeout(250);
